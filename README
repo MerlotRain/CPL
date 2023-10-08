@@ -1,16 +1,15 @@
-# libCore
+![M2](E:\01_code\m2\img\m2.svg)
 
-# 实现C++跨平台能力的封装
+## Overview
 
-# 将第三方MIT库直接编译到组件中，对只能链接的库进行链接管理
+libm2 is a cross platform C++basic library that encapsulates commonly used 
+C++ classes and functional modules, shields system functions from 
+the outside, and provides a unified interface.
 
-* 字符串库
-* 日期库
-* 数据库相关
-* 网络通信
-* 压缩解压缩
-* 对象和智能指针
-* 线程
-* 内存管理
-* 文件系统
-* 
+## Licensing
+
+libm2 is licensed under the MIT license. Check the [LICENSE](LICENSE) and
+[LICENSE-extra](LICENSE-extra) files.
+
+The documentation is licensed under the CC BY 4.0 license. Check the
+[LICENSE-docs file](LICENSE-docs).

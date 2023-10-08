@@ -1,0 +1,9 @@
+<svg width="600" height="600" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>Layer 1</title>
+  <ellipse stroke-width="15" ry="230" rx="230" id="svg_1" cy="300" cx="300" stroke="#E6E6FA" fill="#E6E6FA"/>
+  <text stroke-dasharray="5,5" font-style="italic" transform="matrix(9.017 0 0 7.44217 -970.057 -1331.13)" stroke="#e2dc61" xml:space="preserve" text-anchor="start" font-family="'Andada Pro'" font-size="24" id="svg_2" y="226.62521" x="116.45302" stroke-width="0" fill="#EE6363">M</text>
+  <text transform="matrix(12.0836 0 0 12.5072 -3802.33 -2806.05)" stroke="#FFEBFF" xml:space="preserve" text-anchor="start" font-family="'Arimo'" font-size="24" id="svg_4" y="254.79068" x="339.58117" stroke-width="0" fill="#87CEFF">2</text>
+ </g>
+</svg>
