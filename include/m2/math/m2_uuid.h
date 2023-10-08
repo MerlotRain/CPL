@@ -29,3 +29,20 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_UUID_H_
+#define M2_UUID_H_
+
+#include <preconfig.h>
+
+namespace m2 {
+
+class UUID
+{
+public:
+    UUID();
+};
+
+}// namespace m2
+
+#endif//M2_UUID_H_

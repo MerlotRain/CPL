@@ -30,14 +30,13 @@
 **
 ****************************************************************************/
 
-#ifndef M2_VECTOR_H
-#define M2_VECTOR_H
-
-#include <m2_math.h>
+#ifndef M2_TRANSFORM_H_
+#define M2_TRANSFORM_H_
 
 namespace m2 {
 
+    
 
 }// namespace m2
 
-#endif//M2_VECTOR_H
+#endif//M2_TRANSFORM_H_

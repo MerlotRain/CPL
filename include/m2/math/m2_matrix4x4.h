@@ -30,14 +30,21 @@
 **
 ****************************************************************************/
 
-#ifndef M2_VECTOR_H
-#define M2_VECTOR_H
-
-#include <m2_math.h>
+#ifndef M2_MATRIX4X4_H_
+#define M2_MATRIX4X4_H_
 
 namespace m2 {
 
+class Matrix4x4
+{
+public:
+    inline Matrix4x4();
+    explicit Matrix4x4(const float* values);
+    
+private:
+    float m[4][4];
+};
 
 }// namespace m2
 
-#endif//M2_VECTOR_H
+#endif//M2_MATRIX4X4_H_

@@ -30,28 +30,20 @@
 **
 ****************************************************************************/
 
+#ifndef M2_ERROR_H_
+#define M2_ERROR_H_
 
-#pragma once
-
-#include "stringhelp.h"
+#include <m2_string.h>
 
 namespace m2 {
 
-/// @brief 错误信息
-/// @details 用于捕获平台抛出的错误代码和错误信息
-/// @details 仅Utility模块使用，其余模块应脱离系统函数，或将需要的系统函数封装到Utility模块中
-/// @details 所有错误信息都会被写入到日志中
-class M2_API GsError
+class M2_API Error
 {
 public:
-    /// @brief 获取系统最近的错误编码
-    /// @return
-    static int LastError();
-
-    /// @brief 获取错误编码对应的错误信息
-    /// @param code
-    /// @return
-    static GsString Message(int code);
+    static int lastError();
+    static String message(int code);
 };
 
 }// namespace m2
+
+#endif//M2_ERROR_H_

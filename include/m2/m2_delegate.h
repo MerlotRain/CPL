@@ -32,42 +32,31 @@
 
 #pragma once
 
-#include "delegateT.h"
+#include "m2_delegateT.h"
 #include <memory>
 #include <mutex>
 #include <type_traits>
 #include <vector>
 
-
 namespace m2 {
 
+template<typename Return, typename... Args>
+class Delegate;
 
 template<typename Return, typename... Args>
-class GsDelegate;
-
-
-/// @brief 带返回值的函数委托
-/// @tparam Return
-/// @tparam ...Args
-template<typename Return, typename... Args>
-class GsDelegate<Return(Args...)>
+class Delegate<Return(Args...)>
 {
     typedef std::shared_ptr<DelegateT<Return, Args...>> DelegateTPtr;
     std::vector<DelegateTPtr> _invokeDelegates;
     std::mutex _mutex;
 
 public:
-    GsDelegate() = default;
-    ~GsDelegate() { Clear(); }
+    Delegate() = default;
+    ~Delegate() { clear(); }
+    void clear() { _invokeDelegates.clear(); }
 
-    /// @brief 清空所有绑定的委托
-    void Clear() { _invokeDelegates.clear(); }
-
-    /// @brief 绑定静态函数委托
-    /// @tparam Fun
-    /// @param _fun
     template<typename Fun>
-    void Add(Fun _fun)
+    void add(Fun _fun)
     {
         std::unique_lock<std::mutex> l(this->_mutex);
         DelegateTPtr oneDelegate(_newDelegate(_fun));
@@ -75,19 +64,14 @@ public:
         {
             for (auto &_invokeObj: _invokeDelegates)
             {
-                if (oneDelegate->Compare(_invokeObj.get())) { return; }
+                if (oneDelegate->compare(_invokeObj.get())) { return; }
             }
             _invokeDelegates.emplace_back(oneDelegate);
         }
     }
 
-    /// @brief 绑定成员函数类型的函数委托
-    /// @tparam T 类的类型
-    /// @tparam Fun 成员函数名称
-    /// @param _object 类对象
-    /// @param _fun 类对象的函数指针
     template<typename T, typename Fun>
-    void Add(T *_object, Fun _fun)
+    void add(T *_object, Fun _fun)
     {
         std::unique_lock<std::mutex> l(this->_mutex);
         DelegateTPtr oneDelegate(_newDelegate(_object, _fun));
@@ -95,17 +79,14 @@ public:
         {
             for (auto &_invokeObj: _invokeDelegates)
             {
-                if (oneDelegate->Compare(_invokeObj.get())) { return; }
+                if (oneDelegate->compare(_invokeObj.get())) { return; }
             }
             _invokeDelegates.emplace_back(oneDelegate);
         }
     }
 
-    /// @brief 解绑静态函数委托
-    /// @tparam Fun
-    /// @param _fun
     template<typename Fun>
-    void Remove(Fun _fun)
+    void remove(Fun _fun)
     {
         std::unique_lock<std::mutex> l(this->_mutex);
         DelegateTPtr oneDelegate(_newDelegate(_fun));
@@ -114,7 +95,7 @@ public:
             auto it = _invokeDelegates.begin();
             while (it != _invokeDelegates.end())
             {
-                if (oneDelegate->Compare(it.get()))
+                if (oneDelegate->compare(it.get()))
                 {
                     _invokeDelegates.erase(it);
                     return;
@@ -124,13 +105,8 @@ public:
         }
     }
 
-    /// @brief 解绑成员函数类型的函数委托
-    /// @tparam T
-    /// @tparam Fun
-    /// @param _object
-    /// @param _fun
     template<typename T, typename Fun>
-    void Remove(T *_object, Fun _fun)
+    void remove(T *_object, Fun _fun)
     {
         std::unique_lock<std::mutex> l(this->_mutex);
         DelegateTPtr oneDelegate(_newDelegate(_object, _fun));
@@ -139,7 +115,7 @@ public:
             auto it = _invokeDelegates.begin();
             while (it != _invokeDelegates.end())
             {
-                if (oneDelegate->Compare(it.get()))
+                if (oneDelegate->compare(it.get()))
                 {
                     _invokeDelegates.erase(it);
                     return;
@@ -149,41 +125,35 @@ public:
         }
     }
 
-    /// @brief 执行函数委托
-    /// @param ...args
-    /// @return
     std::vector<Return> operator()(Args... args)
     {
         std::vector<Return> vecRt;
         for (auto &_invokeObj: _invokeDelegates)
         {
-            if (_invokeObj && _invokeObj->CanInvoke())
+            if (_invokeObj && _invokeObj->canInvoke())
             {
-                vecRt.push_back(_invokeObj->Invoke(std::forward<Args>(args)...));
+                vecRt.push_back(_invokeObj->invoke(std::forward<Args>(args)...));
             }
         }
         return vecRt;
     }
 };
 
-
-/// @brief 特例化无返回值的函数委托
-/// @tparam ...Args
 template<typename... Args>
-class GsDelegate<void(Args...)>
+class Delegate<void(Args...)>
 {
     typedef std::shared_ptr<DelegateT<void, Args...>> DelegateTPtr;
     std::vector<DelegateTPtr> _invokeDelegates;
     std::mutex _mutex;
 
 public:
-    GsDelegate() = default;
-    ~GsDelegate() { clear(); }
+    Delegate() = default;
+    ~Delegate() { clear(); }
 
     void clear() { _invokeDelegates.clear(); }
 
     template<typename Fun>
-    void Add(Fun &&_fun)
+    void add(Fun &&_fun)
     {
         _mutex.lock();
         DelegateTPtr oneDelegate(_newDelegate(_fun));
@@ -191,7 +161,7 @@ public:
         {
             for (auto &_invokeObj: _invokeDelegates)
             {
-                if (oneDelegate->Compare(_invokeObj.get()))
+                if (oneDelegate->compare(_invokeObj.get()))
                 {
                     _mutex.unlock();
                     return;
@@ -203,7 +173,7 @@ public:
     }
 
     template<typename T, typename Fun>
-    void Add(T *_object, Fun &&_fun)
+    void add(T *_object, Fun &&_fun)
     {
         _mutex.lock();
         DelegateTPtr oneDelegate(_newDelegate(_object, _fun));
@@ -211,7 +181,7 @@ public:
         {
             for (auto &_invokeObj: _invokeDelegates)
             {
-                if (oneDelegate->Compare(_invokeObj.get()))
+                if (oneDelegate->compare(_invokeObj.get()))
                 {
                     _mutex.unlock();
                     return;
@@ -223,7 +193,7 @@ public:
     }
 
     template<typename Fun>
-    void Remove(Fun &&_fun)
+    void remove(Fun &&_fun)
     {
         _mutex.lock();
         DelegateTPtr oneDelegate(_newDelegate(_fun));
@@ -232,7 +202,7 @@ public:
             auto it = _invokeDelegates.begin();
             while (it != _invokeDelegates.end())
             {
-                if (oneDelegate->Compare(it.get()))
+                if (oneDelegate->compare(it.get()))
                 {
                     _invokeDelegates.erase(it);
                     _mutex.unlock();
@@ -245,7 +215,7 @@ public:
     }
 
     template<typename T, typename Fun>
-    void Remove(T *_object, Fun &&_fun)
+    void remove(T *_object, Fun &&_fun)
     {
         _mutex.lock();
         DelegateTPtr oneDelegate(_newDelegate(_object, _fun));
@@ -254,7 +224,7 @@ public:
             auto it = _invokeDelegates.begin();
             while (it != _invokeDelegates.end())
             {
-                if (oneDelegate->Compare(it->get()))
+                if (oneDelegate->compare(it->get()))
                 {
                     _invokeDelegates.erase(it);
                     _mutex.unlock();
@@ -270,9 +240,9 @@ public:
     {
         for (auto &_invokeObj: _invokeDelegates)
         {
-            if (_invokeObj && _invokeObj->CanInvoke())
+            if (_invokeObj && _invokeObj->canInvoke())
             {
-                _invokeObj->Invoke(std::forward<Args>(args)...);
+                _invokeObj->invoke(std::forward<Args>(args)...);
             }
         }
     }

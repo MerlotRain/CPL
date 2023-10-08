@@ -48,10 +48,10 @@ class DelegateT
 public:
     DelegateT() = default;
     virtual ~DelegateT() = default;
-    virtual bool IsType(const std::type_info &_type) = 0;
-    virtual bool CanInvoke() const = 0;
-    virtual Return Invoke(Args... args) = 0;
-    virtual bool Compare(DelegateT<Return, Args...> *_delegate) const = 0;
+    virtual bool isType(const std::type_info &_type) = 0;
+    virtual bool canInvoke() const = 0;
+    virtual Return invoke(Args... args) = 0;
+    virtual bool compare(DelegateT<Return, Args...> *_delegate) const = 0;
 };
 
 template<typename Return, typename... Args>
@@ -62,17 +62,17 @@ public:
     typedef Return (*InvokeFun)(Args...);
     explicit StaticDelegateT(InvokeFun _fun) : m_invokefun(_fun) {}
     virtual ~StaticDelegateT() = default;
-    bool IsType(const std::type_info &_type) override
+    bool isType(const std::type_info &_type) override
     {
         return typeid(StaticDelegateT<Return (*)(Args...)>) == _type;
     }
-    Return Invoke(Args... args) override
+    Return invoke(Args... args) override
     {
         return m_invokefun(std::forward<Args>(args)...);
     }
-    bool Compare(DelegateT<Return, Args...> *_delegate) const override
+    bool compare(DelegateT<Return, Args...> *_delegate) const override
     {
-        if (!_delegate || !_delegate->IsType(typeid(StaticDelegateT<Return (*)(Args...)>)))
+        if (!_delegate || !_delegate->isType(typeid(StaticDelegateT<Return (*)(Args...)>)))
         {
             return false;
         }
@@ -81,7 +81,7 @@ public:
 
         return m_invokefun == cast->m_invokefun;
     }
-    bool CanInvoke() const override
+    bool canInvoke() const override
     {
         return m_invokefun;
     }
@@ -97,17 +97,17 @@ public:
     typedef Return (T::*memInvokeFun)(Args...);
 
     ClassMemberDelegateT(T *_object, memInvokeFun _memfun) : obj(_object), m_invokefun(_memfun) {}
-    virtual bool IsType(const std::type_info &_type)
+    virtual bool isType(const std::type_info &_type)
     {
         return typeid(ClassMemberDelegateT<T, Return (T::*)(Args...)>) == _type;
     }
-    Return Invoke(Args... args) override
+    Return invoke(Args... args) override
     {
         return (obj->*m_invokefun)(std::forward<Args>(args)...);
     }
-    bool Compare(DelegateT<Return, Args...> *_delegate) const override
+    bool compare(DelegateT<Return, Args...> *_delegate) const override
     {
-        if (!_delegate || !_delegate->IsType(typeid(ClassMemberDelegateT<T, Return (T::*)(Args...)>)))
+        if (!_delegate || !_delegate->isType(typeid(ClassMemberDelegateT<T, Return (T::*)(Args...)>)))
         {
             return false;
         }
@@ -115,7 +115,7 @@ public:
         auto *cast = dynamic_cast<ClassMemberDelegateT<T, Return (T::*)(Args...)> *>(_delegate);
         return m_invokefun == cast->m_invokefun && obj == cast->obj;
     }
-    virtual bool CanInvoke() const
+    virtual bool canInvoke() const
     {
         return obj && m_invokefun;
     }

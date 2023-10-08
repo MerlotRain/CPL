@@ -8,7 +8,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(m2_include_files 
     ./include/preconfig.h
     ./include/m2.h
-    ./include/m2/memory/m2_allocator.h
+    ./include/m2/m2_allocator.h
+    ./include/m2/m2_logger.h
     ./include/m2/text/m2_ascii.h
     ./include/m2/text/m2_regularexpression.h
     ./include/m2/text/m2_string.h
@@ -17,18 +18,19 @@ set(m2_include_files
     ./include/m2/text/m2_textconvertor.h
     ./include/m2/text/m2_utf8.h
     ./include/m2/text/m2_wstring.h
-    ./include/m2/math/m2_area.h
     ./include/m2/math/m2_bigdecimal.h
     ./include/m2/math/m2_biginteger.h
-    ./include/m2/math/m2_length.h
     ./include/m2/math/m2_math.h
+    ./include/m2/math/m2_matrix4x4.h
     ./include/m2/math/m2_random.h
+    ./include/m2/math/m2_transform.h
+    ./include/m2/math/m2_unitsconvertor.h
     ./include/m2/math/m2_uuid.h
     ./include/m2/math/m2_vector.h
-    ./include/m2/math/m2_volume.h
     ./include/m2/image/m2_color.h
     ./include/m2/image/m2_image.h
     ./include/m2/image/m2_margins.h
+    ./include/m2/image/m2_pagesize.h
     ./include/m2/image/m2_point.h
     ./include/m2/image/m2_rect.h
     ./include/m2/image/m2_size.h

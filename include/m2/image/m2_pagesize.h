@@ -1,4 +1,4 @@
-﻿/****************************************************************************
+/****************************************************************************
 **
 ** Copyright (C) 2023 MerlotRain
 ** Github:https://github.com/MerlotRain
@@ -30,56 +30,22 @@
 **
 ****************************************************************************/
 
-#pragma once
-
-#include "preconfig.h"
-#include "stringhelp.h"
-#include <stdexcept>
-#include <string>
-
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 4251)
-#pragma warning(disable : 4275)
-#endif
+#ifndef M2_PAGESIZE_H_
+#define M2_PAGESIZE_H_
 
 namespace m2 {
 
-
-/// @brief 异常
-class M2_API GsException : public std::runtime_error
+class PageSize
 {
 public:
-    GsException() : std::runtime_error("Unknown error") {}
-
-    explicit GsException(GsString const &msg) : std::runtime_error(msg) {}
-
-    GsException(GsString const &name, GsString const &msg)
-        : std::runtime_error(name + ": " + msg)
+    enum PageSizeId
     {
-    }
-};
-
-/// @brief 参数错误的异常
-class M2_API GsIllegalArgumentException : public GsException
-{
-public:
-    GsIllegalArgumentException()
-        : GsException("IllegalArgumentException", "")
-    {
-    }
-
-    explicit GsIllegalArgumentException(const std::string &msg)
-        : GsException("IllegalArgumentException", msg)
-    {
-    }
-
-    ~GsIllegalArgumentException() noexcept override = default;
+        Letter,
+        Legal,
+        
+    };
 };
 
 }// namespace m2
 
-
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif
+#endif//M2_PAGESIZE_H_
