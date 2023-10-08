@@ -30,8 +30,8 @@
 **
 ****************************************************************************/
 
-#ifndef M2_STRING_H
-#define M2_STRING_H
+#ifndef M2_STRING_H_
+#define M2_STRING_H_
 
 #include <m2_allocator.h>
 
@@ -95,9 +95,9 @@ public:
     String &trimmed();
     StringList split(const char *strSep);
     void split(const char *strSep, StringList &vecStr);
-    String &replace(char from, char to, size_type start = 0);
-    String &replace(const char *from, const char *to, size_type start = 0);
-    String &replace(const String &from, const String &to, size_type start = 0);
+    String &replaceTo(char from, char to, size_type start = 0);
+    String &replaceTo(const char *from, const char *to, size_type start = 0);
+    String &replaceTo(const String &from, const String &to, size_type start = 0);
 
     inline bool isNullOrEmpty() const;
     inline bool startsWith(const char *strHead, bool bIgnoringCase = false) const;
@@ -147,27 +147,27 @@ public:
         eOnAndOff,
     };
     static String toString(bool value, BoolFormat format = eFalseAndTrue);
-    static String toString(short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    static String toString(unsigned short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    static String toString(int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    static String toString(unsigned int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    static String toString(long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    static String toString(unsigned long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    static String toString(long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    static String toString(unsigned long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    static String toString(short value, int base = 10, int width = -1, char fill = '0');
+    static String toString(unsigned short value, int base = 10, int width = -1, char fill = '0');
+    static String toString(int value, int base = 10, int width = -1, char fill = '0');
+    static String toString(unsigned int value, int base = 10, int width = -1, char fill = '0');
+    static String toString(long value, int base = 10, int width = -1, char fill = '0');
+    static String toString(unsigned long value, int base = 10, int width = -1, char fill = '0');
+    static String toString(long long value, int base = 10, int width = -1, char fill = '0');
+    static String toString(unsigned long long value, int base = 10, int width = -1, char fill = '0');
     static String toString(float value, char format = 'g', int precision = 6);
     static String toString(double value, char format = 'g', int precision = 6);
 
     String &appendTo(const String &str, int width = -1, char fill = ' ');
     String &appendTo(String &&str, int width = -1, char fill = ' ');
-    String &appendTo(short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &appendTo(unsigned short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &appendTo(int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &appendTo(unsigned int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &appendTo(long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &appendTo(unsigned long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &appendTo(long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &appendTo(unsigned long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &appendTo(short value, int base = 10, int width = -1, char fill = '0');
+    String &appendTo(unsigned short value, int base = 10, int width = -1, char fill = '0');
+    String &appendTo(int value, int base = 10, int width = -1, char fill = '0');
+    String &appendTo(unsigned int value, int base = 10, int width = -1, char fill = '0');
+    String &appendTo(long value, int base = 10, int width = -1, char fill = '0');
+    String &appendTo(unsigned long value, int base = 10, int width = -1, char fill = '0');
+    String &appendTo(long long value, int base = 10, int width = -1, char fill = '0');
+    String &appendTo(unsigned long long value, int base = 10, int width = -1, char fill = '0');
     String &appendTo(float value, char format = 'g', int precision = 6);
     String &appendTo(double value, char format = 'g', int precision = 6);
 
@@ -232,5 +232,4 @@ inline bool operator==(const char *a, const String &b)
 
 }// namespace m2
 
-
-#endif//M2_STRING_H
+#endif//M2_STRING_H_

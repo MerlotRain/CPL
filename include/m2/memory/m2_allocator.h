@@ -48,9 +48,6 @@ template<typename T>
 class Allocator : public ByteAllocator
 {
 public:
-    Allocator()
-    {
-    }
     typedef T value_type;
     typedef T *pointer;
     typedef const T *const_pointer;
@@ -59,42 +56,19 @@ public:
     typedef std::size_t size_type;
     typedef std::ptrdiff_t difference_type;
 
-    pointer allocate(size_type n)
-    {
-        return static_cast<pointer>(Allocate(n * sizeof(T)));
-    }
-
-    void deallocate(pointer p, size_type n)
-    {
-        Deallocate(p, n * sizeof(T));
-    }
-
-
-    size_type max_size() const
-    {
-        return size_t(-1) / sizeof(T);
-    }
-
-    pointer address(reference x) const
-    {
-        return std::addressof(x);
-    }
-
-    const_pointer address(const_reference x) const
-    {
-        return std::addressof(x);
-    }
+    Allocator() {}
+    pointer allocate(size_type n) { return static_cast<pointer>(Allocate(n * sizeof(T))); }
+    void deallocate(pointer p, size_type n) { Deallocate(p, n * sizeof(T)); }
+    size_type max_size() const { return size_t(-1) / sizeof(T); }
+    pointer address(reference x) const { return std::addressof(x); }
+    const_pointer address(const_reference x) const { return std::addressof(x); }
 
     template<typename... Args>
     void construct(pointer p, Args &&...args)
     {
         ::new (static_cast<void *>(p)) T(std::forward<Args>(args)...);
     }
-    void destroy(pointer p)
-    {
-        p->~T();
-    }
-
+    void destroy(pointer p) { p->~T(); }
     template<typename U>
     Allocator(const Allocator<U> &)
     {
