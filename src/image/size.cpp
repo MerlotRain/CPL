@@ -1,7 +1,6 @@
 ﻿#include <shape.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 void GsSize::Transpose() noexcept
 {
@@ -70,5 +69,4 @@ GsSizeF GsSizeF::Scaled(const GsSizeF &s, GsAspectRatioMode mode) const noexcept
     }
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

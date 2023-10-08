@@ -7,8 +7,7 @@
 #include <pthread.h>
 #endif
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 class GsSemaphoreImpl
 {
@@ -140,5 +139,4 @@ bool GsSemaphore::TryWait(int milliseconds)
     return false;
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

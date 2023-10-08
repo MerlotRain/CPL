@@ -1,7 +1,6 @@
 #include "sqlitehelp.h"
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 namespace Data {
 
 }// namespace Data

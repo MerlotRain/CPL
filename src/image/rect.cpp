@@ -1,7 +1,6 @@
 ﻿#include <shape.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 GsRect GsRect::Normalized() const noexcept
 {
@@ -280,5 +279,4 @@ GsRect GsRectF::ToAlignedRect() const noexcept
 }
 
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

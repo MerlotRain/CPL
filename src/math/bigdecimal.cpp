@@ -1,10 +1,9 @@
-#include <bigdecimal.h>
+#include <mathhelp.h>
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 GsBigDecimal::GsBigDecimal() noexcept
 {
@@ -1372,5 +1371,4 @@ GsString GsBigDecimal::StringToHex(GsString &lhs, int caps)
 }
 
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

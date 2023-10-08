@@ -17,8 +17,7 @@
 
 // clang-format on
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 #ifdef _WIN32
 
@@ -941,5 +940,4 @@ std::vector<GsStackTrace::GsStackLine> GsStackTrace::Trace(unsigned int maxFrame
 #endif
 
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

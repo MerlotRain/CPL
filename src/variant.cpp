@@ -1,8 +1,7 @@
 #include <variant.h>
 
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 GsVariant::~GsVariant()
 {
@@ -343,5 +342,4 @@ const GsVariant &GsVariant::Empty()
 }
 
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

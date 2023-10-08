@@ -5,8 +5,7 @@
 #include <string.h>
 #include <stringhelp.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 static bool bHaveWarned1 = false;
 static bool bHaveWarned2 = false;
@@ -267,5 +266,4 @@ bool GsTextConverter::Convert(const wchar_t *wstr, GsString &str)
     return GsTextConverter::Convert(wstr, GsTextConverter::ENCODING_UTF16, GsTextConverter::ENCODING_UTF8, str);
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

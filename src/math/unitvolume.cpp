@@ -1,8 +1,6 @@
 #include <mathhelp.h>
-#include <unitsconverter.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 
 /// @brief 立方米转立方千米
@@ -278,5 +276,4 @@ double GsVolume::ConvertScale(GsVolumeUnits from, GsVolumeUnits to)
     return factor1 * factor2;
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

@@ -5,8 +5,7 @@
 #else
 #endif
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 #ifdef _WIN32
 
@@ -87,5 +86,4 @@ GsString GsError::Message(int code)
 #endif
 
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

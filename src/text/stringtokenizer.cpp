@@ -2,8 +2,7 @@
 #include <stringhelp.h>
 #include <stringtokenizer.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 GsStringTokenizer::GsStringTokenizer(const GsString &txt) : m_str(txt), m_stok(""), m_ntok(0.0)
 {
@@ -185,5 +184,4 @@ GsString GsStringTokenizer::GetSVal() const
     return m_stok;
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

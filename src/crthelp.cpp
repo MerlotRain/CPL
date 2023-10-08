@@ -1,7 +1,5 @@
 #include <crthelp.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

@@ -1,7 +1,6 @@
-#include "mathvector.h"
+#include "mathhelp.h"
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 GsVector2D::GsVector2D(double x, double y) : m_X(x), m_Y(y)
 {
@@ -242,5 +241,4 @@ GsVector3D GsVector3D::PerpendicularPoint(const GsVector3D &v1, const GsVector3D
     return P;
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

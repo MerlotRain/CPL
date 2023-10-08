@@ -6,8 +6,7 @@
 #include <pthread.h>
 #endif
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 class GsRWLockImpl
 {
@@ -292,5 +291,4 @@ void GsRWLock::Unlock()
         (static_cast<GsRWLockImpl *>(m_Handle))->Unlock();
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

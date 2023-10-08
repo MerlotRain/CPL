@@ -1,7 +1,6 @@
 #include <urlparser.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 GsUrl::GsUrl()
 {
@@ -316,5 +315,4 @@ void GsUrl::BuildPath(const std::vector<GsString> &segments, bool leadingSlash, 
 }
 
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

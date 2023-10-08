@@ -1,8 +1,7 @@
 ﻿#include <color.h>
 #include <mathhelp.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 GsColor::GsColor() noexcept
 {
     A = 0xff;
@@ -443,5 +442,4 @@ GsColor &GsColor::Blend(const GsColor &color, PhotoShopColorBlendMode mode)
     return *this;
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

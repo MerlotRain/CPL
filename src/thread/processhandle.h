@@ -17,8 +17,7 @@
 #include <unistd.h>
 #endif
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 #ifdef _WIN32
 
@@ -105,8 +104,7 @@ private:
 #endif
 
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2
 
 
 #endif//UTILITY_PROCESSHANDLE_H

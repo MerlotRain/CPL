@@ -1,12 +1,11 @@
 #include <ctime>
-#include <random.h>
+#include <mathhelp.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <utility>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 static constexpr unsigned long long int drand48_data_a = 0x5deece66dull;
 
@@ -275,5 +274,4 @@ void GsRandom::NextBytes(unsigned char *bytes, int nLen)
     memset(bytes, num, nLen);
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

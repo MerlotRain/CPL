@@ -2,8 +2,7 @@
 #include "filesystem.h"
 #include "processhandle.h"
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 /*********************************** GsProcessHandle ***********************************/
 
@@ -160,5 +159,4 @@ void GsProcess::RequestTermination(unsigned int pid)
     GsProcessImpl::RequestTermination(pid);
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

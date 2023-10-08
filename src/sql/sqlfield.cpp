@@ -1,7 +1,6 @@
 #include "sqldatabase.h"
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 namespace Data {
 
 
@@ -77,5 +76,4 @@ const GsSqlFields &GsSqlFields::Empty()
 }
 
 }// namespace Data
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

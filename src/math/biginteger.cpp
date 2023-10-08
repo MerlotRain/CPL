@@ -1,10 +1,9 @@
-#include <biginteger.h>
+#include <mathhelp.h>
 #include <cmath>
 #include <iostream>
 #include <sstream>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 GsBigInteger::GsBigInteger(GsString number) : m_Value(number)
 {
@@ -724,5 +723,4 @@ const GsBigInteger GsBigInteger::operator--(int)
     return t;
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

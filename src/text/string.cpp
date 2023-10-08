@@ -4,8 +4,7 @@
 #include <regex>
 #include <stringhelp.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 
 GsString::GsString() noexcept
@@ -661,5 +660,4 @@ double GsString::ToDouble(bool *ok) const noexcept
     return 0.0;
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

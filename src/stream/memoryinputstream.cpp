@@ -1,6 +1,4 @@
 #include "datastream.h"
 
-namespace Lite {
-namespace Utility {
-}// namespace Utility
-}// namespace Lite
+namespace m2 {
+}// namespace m2

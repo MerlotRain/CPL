@@ -3,8 +3,7 @@
 #include <logger.h>
 #include <stringtokenizer.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 #define TO_JSONOBJ(x) static_cast<json_object *>(x)
 
@@ -940,5 +939,4 @@ bool GsJsonDocument::Load(const GsString &path)
 }
 
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

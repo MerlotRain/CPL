@@ -6,8 +6,7 @@
 #endif
 
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 /******************************************* GsPipeImpl *******************************************/
 
@@ -155,5 +154,4 @@ void *GsPipe::Handle()
     return m_Handle;
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

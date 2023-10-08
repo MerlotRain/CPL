@@ -1,10 +1,8 @@
-#include <cryptographichash.h>
+#include <mathhelp.h>
 #include <endian.h>
-#include <random.h>
-#include <uuid.h>
+#include <encryption.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 namespace MiscUtils {
 inline char toHexUpper(unsigned int value) noexcept
@@ -369,5 +367,4 @@ GsUUID GsUUID::FromRfc4122(const GsByteBuffer &bytes)
 }
 
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

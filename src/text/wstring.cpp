@@ -1,7 +1,6 @@
 #include <stringhelp.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 
 GsWString::GsWString() noexcept
@@ -128,5 +127,4 @@ bool GsWString::IsNullOrEmpty(const wchar_t *str)
     return false;
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

@@ -1,8 +1,6 @@
 #include <mathhelp.h>
-#include <unitsconverter.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 
 /// @brief 米转千米
@@ -307,5 +305,4 @@ double GsLength::ConvertScale(GsLengthUnits from, GsLengthUnits to)
 }
 
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

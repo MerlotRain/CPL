@@ -1,8 +1,6 @@
 ﻿#include <mathhelp.h>
-#include <unitsconverter.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 /// @brief 平方米转平方公里
 static constexpr auto Meter2ToKilemeter2 = 0.000001;
@@ -314,5 +312,4 @@ double GsArea::ConvertScale(GsAreaUnits from, GsAreaUnits to)
 }
 
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

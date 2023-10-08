@@ -4,7 +4,7 @@ PROJECT(gsutility)
 
 add_library(${PROJECT_NAME} SHARED)
 
-IF (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     target_compile_definitions(${PROJECT_NAME} PRIVATE UTILITY_LIBRARY)
     target_compile_definitions(${PROJECT_NAME} PRIVATE XPCORE_EXPORTS)
     target_compile_definitions(${PROJECT_NAME} PRIVATE JSON_DLL_BUILD)
@@ -37,24 +37,14 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif ()
 
 target_sources(${PROJECT_NAME} PRIVATE
-    ${UTILITY_INCLUDE_DIR}/bigdecimal.h
-    ${UTILITY_INCLUDE_DIR}/biginteger.h
-    ${UTILITY_INCLUDE_DIR}/bitset.h
-    ${UTILITY_INCLUDE_DIR}/bytebuffer.h
-    ${UTILITY_INCLUDE_DIR}/color.h
     ${UTILITY_INCLUDE_DIR}/configuration.h
-    ${UTILITY_INCLUDE_DIR}/cryptographichash.h
-    ${UTILITY_INCLUDE_DIR}/datastream.h
     ${UTILITY_INCLUDE_DIR}/datetime.h
     ${UTILITY_INCLUDE_DIR}/delegate.h
     ${UTILITY_INCLUDE_DIR}/delegateT.h
     ${UTILITY_INCLUDE_DIR}/encryption.h
     ${UTILITY_INCLUDE_DIR}/endian.h
-    ${UTILITY_INCLUDE_DIR}/error.h
-    ${UTILITY_INCLUDE_DIR}/exception.h
     ${UTILITY_INCLUDE_DIR}/filesystem.h
     ${UTILITY_INCLUDE_DIR}/flags.h
-    ${UTILITY_INCLUDE_DIR}/globalstatic.h
     ${UTILITY_INCLUDE_DIR}/http.h
     ${UTILITY_INCLUDE_DIR}/html.h
     ${UTILITY_INCLUDE_DIR}/image.h
@@ -64,17 +54,12 @@ target_sources(${PROJECT_NAME} PRIVATE
     ${UTILITY_INCLUDE_DIR}/locker.h
     ${UTILITY_INCLUDE_DIR}/logger.h
     ${UTILITY_INCLUDE_DIR}/mathhelp.h
-    ${UTILITY_INCLUDE_DIR}/mathvector.h
     ${UTILITY_INCLUDE_DIR}/matrix.h
+    ${UTILITY_INCLUDE_DIR}/memorymanager.h
     ${UTILITY_INCLUDE_DIR}/object.h
-    ${UTILITY_INCLUDE_DIR}/packagedtask.h
     ${UTILITY_INCLUDE_DIR}/preconfig.h
     ${UTILITY_INCLUDE_DIR}/process.h
     ${UTILITY_INCLUDE_DIR}/qrcode.h
-    ${UTILITY_INCLUDE_DIR}/random.h
-    ${UTILITY_INCLUDE_DIR}/regularexpression.h
-    ${UTILITY_INCLUDE_DIR}/serialize.h
-    ${UTILITY_INCLUDE_DIR}/shape.h
     ${UTILITY_INCLUDE_DIR}/shape.inl
     ${UTILITY_INCLUDE_DIR}/sharedmemory.h
     ${UTILITY_INCLUDE_DIR}/socket.h
@@ -83,13 +68,9 @@ target_sources(${PROJECT_NAME} PRIVATE
     ${UTILITY_INCLUDE_DIR}/sqlitehelp.h
     ${UTILITY_INCLUDE_DIR}/stlhelp.h
     ${UTILITY_INCLUDE_DIR}/stringhelp.h
-    ${UTILITY_INCLUDE_DIR}/stringtokenizer.h
     ${UTILITY_INCLUDE_DIR}/timer.h
     ${UTILITY_INCLUDE_DIR}/tinyxml2.h
     ${UTILITY_INCLUDE_DIR}/trace.h
-    ${UTILITY_INCLUDE_DIR}/unitsconverter.h
-    ${UTILITY_INCLUDE_DIR}/urlparser.h
-    ${UTILITY_INCLUDE_DIR}/uuid.h
     ${UTILITY_INCLUDE_DIR}/variant.h
     ${UTILITY_INCLUDE_DIR}/workthread.h
     ${UTILITY_INCLUDE_DIR}/zipper.h
@@ -97,14 +78,42 @@ target_sources(${PROJECT_NAME} PRIVATE
 )
 
 target_sources(${PROJECT_NAME} PRIVATE
-    #平台
-    exception_p.h
-    error.cpp
-    tinyxml2.cpp
-    variant.cpp
-    logger.cpp
-    crthelp.cpp
-    # json库
+    configuration/jsonserializestream.cpp
+    configuration/jsonserializestream.h
+    configuration/serialize.cpp
+    configuration/xmlserializestream.cpp
+    configuration/xmlserializestream.h
+    datetime/clock.cpp
+    datetime/datetime.cpp
+    datetime/deallinetimer.cpp
+    datetime/elapsedtimer.cpp
+    datetime/timer.cpp
+    datetime/timespan.cpp
+    datetime/timestamp.cpp
+    datetime/timezone.cpp
+    encryption/cryptographichash.cpp
+    filesystem/dir.cpp
+    filesystem/file.cpp
+
+    image/bmpimageio.cpp
+    image/color.cpp
+    image/ddsimageio.cpp
+    image/gifimageio.cpp
+    image/icoimageio.cpp
+    image/image.cpp
+    image/imageio.cpp
+    image/imageprocess.cpp
+    image/pngimageio.cpp
+    image/ppmimageio.cpp
+    image/rect.cpp
+    image/size.cpp
+    image/svgimageio.cpp
+    image/tgaimageio.cpp
+    image/tiffimageio.cpp
+    image/wbmpimageio.cpp
+    image/webpimageio.cpp
+    image/xbmimageio.cpp
+    image/xpmimageio.cpp
     json/libjson/arraylist.h
     json/libjson/config.h
     json/libjson/debug.h
@@ -132,87 +141,43 @@ target_sources(${PROJECT_NAME} PRIVATE
     json/libjson/random_seed.c
     json/libjson/strerror_override.c
     json/jsonfile.cpp
-    #字符库
-    text/ascii.cpp
-    text/numericstring.cpp
-    text/numericstring.h
-    text/regularexpression.cpp
-    text/string.cpp
-    text/stringlist.cpp
-    text/stringstream.cpp
-    text/stringtokenizer.cpp
-    text/textconverter.cpp
-    text/wstring.cpp
-    #对象和内存模型库
-    byte/bitset.cpp
-    byte/bytebuffer.cpp
-    byte/classfactory.cpp
-    byte/endian.cpp
-    byte/library.cpp
-    byte/object.cpp
-    byte/sharedmemory.cpp
-    byte/sharedmemoryhandle.cpp
-    byte/sharedmemoryhandle.h
-    byte/stlhelp.cpp
-    #数据流操作
-    stream/bytebufferstream.cpp
-    stream/cborserializestream.cpp
-    stream/cborserializestream.h
-    stream/dir.cpp
-    stream/file.cpp
-    stream/fileinputstream.cpp
-    stream/fileoutputstream.cpp
-    stream/filesystem.cpp
-    stream/inputstream.cpp
-    stream/jsonserializestream.cpp
-    stream/jsonserializestream.h
-    stream/memoryinputstream.cpp
-    stream/memoryoutputstream.cpp
-    stream/operatorsystemenvironment.cpp
-    stream/outputstream.cpp
-    stream/serialize.cpp
-    stream/xmlserializestream.cpp
-    stream/xmlserializestream.h
-    #数学库
     math/bigdecimal.cpp
     math/biginteger.cpp
-    math/cryptographichash.cpp
     math/mathvector.cpp
+    math/math_traits.h
     math/random.cpp
     math/sine_table.cpp
-    math/uuid.cpp
     math/unitarea.cpp
     math/unitlength.cpp
     math/unitvolume.cpp
-    #时间库
-    tm/clock.cpp
-    tm/datetime.cpp
-    tm/deallinetimer.cpp
-    tm/elapsedtimer.cpp
-    tm/timespan.cpp
-    tm/timezone.cpp
-    tm/timestamp.cpp
-    #图像库
-    image/bmpimageio.cpp
-    image/color.cpp
-    image/ddsimageio.cpp
-    image/gifimageio.cpp
-    image/icoimageio.cpp
-    image/image.cpp
-    image/imageio.cpp
-    image/imageprocess.cpp
-    image/pngimageio.cpp
-    image/ppmimageio.cpp
-    image/rect.cpp
-    image/size.cpp
-    image/svgimageio.cpp
-    image/tgaimageio.cpp
-    image/tiffimageio.cpp
-    image/wbmpimageio.cpp
-    image/webpimageio.cpp
-    image/xbmimageio.cpp
-    image/xpmimageio.cpp  
-    #线程模块
+    math/uuid.cpp
+    memorymanager/bitset.cpp
+    memorymanager/bytebuffer.cpp
+    memorymanager/bytebufferstream.cpp
+    memorymanager/cborserializestream.cpp
+    memorymanager/cborserializestream.h
+    memorymanager/fileinputstream.cpp
+    memorymanager/fileoutputstream.cpp
+    memorymanager/filesystem.cpp
+    memorymanager/inputstream.cpp
+    memorymanager/memoryinputstream.cpp
+    memorymanager/memoryoutputstream.cpp
+    memorymanager/operatorsystemenvironment.cpp
+    memorymanager/outputstream.cpp
+    sql/sqlite/sqlite3.c
+    sql/sqlite/sqlitehelp.cpp
+    sql/sqlfield.cpp
+    sql/sqlstatement.cpp
+    stringhelp/ascii.cpp
+    stringhelp/numericstring.cpp
+    stringhelp/numericstring.h
+    stringhelp/regularexpression.cpp
+    stringhelp/string.cpp
+    stringhelp/stringlist.cpp
+    stringhelp/stringstream.cpp
+    stringhelp/stringtokenizer.cpp
+    stringhelp/textconverter.cpp
+    stringhelp/wstring.cpp
     thread/backgroundtask.cpp
     thread/condition.cpp
     thread/handleholder.h
@@ -228,21 +193,21 @@ target_sources(${PROJECT_NAME} PRIVATE
     thread/waitevent.cpp
     thread/waitevent.h
     thread/workthread.cpp
-    #sql
-    sql/sqlite/sqlite3.c
-    sql/sqlite/sqlitehelp.cpp
-    sql/sqlfield.cpp
-    sql/sqlstatement.cpp
-    #崩溃日志
     trace/crashreport.cpp
+    trace/error.cpp
     trace/stacktrace.cpp
-    #html解析
-    html/htmldocument.cpp
-    #http模块
-    http/url.cpp
-    http/httpcookie.cpp
-    http/httprequest.cpp
-    http/httpsession.cpp
+    classfactory.cpp
+    endian.cpp
+    library.cpp
+    logger.cpp
+    object.cpp
+    sharedmemory.cpp
+    sharedmemoryhandle.cpp
+    sharedmemoryhandle.h
+    stlhelp.cpp
+    tinyxml2.cpp
+    variant.cpp
+
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE

@@ -1,8 +1,7 @@
 ﻿
 #include "exception.h"
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 
 /// @brief Utility模块通用的Exception，错误抛出时使用该类型
@@ -22,5 +21,4 @@ public:
     }
 };
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

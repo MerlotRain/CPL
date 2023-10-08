@@ -1,7 +1,6 @@
 #include "trace.h"
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 GsCrashReport::GsCrashReport()
 {
@@ -48,5 +47,4 @@ void GsCrashReport::VersionInfo(const GsStringList &versionInfo)
 {
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

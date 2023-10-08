@@ -1,7 +1,6 @@
 #include <logger.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 /************************************ GsFileCustomLogOutput ************************************/
 
@@ -123,5 +122,4 @@ GsLogger::GsLogStream GsLogger::operator<<(const GsLogLevel &l) const
 }
 
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

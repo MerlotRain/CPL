@@ -11,8 +11,7 @@
 #include <pthread.h>
 #endif
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 class GsWaitEvent : public GsNonCopyable
 {
@@ -43,7 +42,6 @@ private:
 #endif
 };
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2
 
 #endif//UTILITY_WAITEVENT_H

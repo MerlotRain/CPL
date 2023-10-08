@@ -1,8 +1,7 @@
 #include "locker.h"
 #include "waitevent.h"
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 void GsWaitCondition::Notify()
 {
@@ -46,5 +45,4 @@ void GsWaitCondition::Dequeue(GsWaitEvent &event)
     }
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

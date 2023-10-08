@@ -1,8 +1,7 @@
 #include "waitevent.h"
 #include "logger.h"
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 #if GS_OS_WIN
 
@@ -94,5 +93,4 @@ void GsWaitEvent::Reset()
 
 #endif
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

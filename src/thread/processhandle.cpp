@@ -5,8 +5,7 @@
 #include <logger.h>
 #include <process.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 
 /*********************************** GsProcessHandleImpl ***********************************/
@@ -492,5 +491,4 @@ GsProcessHandleImpl *GsProcessImpl::LaunchByForkExec(const GsString &command, co
 
 #endif
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

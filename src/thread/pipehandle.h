@@ -7,8 +7,7 @@
 #endif
 
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 /******************************************* GsPipeImpl *******************************************/
 
@@ -34,8 +33,7 @@ public:
 
 #define PIPE_HANDLE(x) (static_cast<GsPipeImpl *>(x))
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2
 
 
 #endif//UTILITY_PIPEHANDLE_H

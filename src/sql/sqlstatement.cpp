@@ -1,7 +1,6 @@
 #include "sqldatabase.h"
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 namespace Data {
 
 GsSqlStatement::GsSqlStatement()
@@ -108,5 +107,4 @@ int GsSqlStatement::Execute()
 
 
 }// namespace Data
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

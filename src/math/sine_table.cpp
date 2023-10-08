@@ -1,7 +1,6 @@
 #include <mathhelp.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 namespace Math {
 
 const double sine_table[SINE_TABLE_SIZE] = {double(0.0),
@@ -262,5 +261,4 @@ const double sine_table[SINE_TABLE_SIZE] = {double(0.0),
                                             double(-0.024541228522912448)};
 
 }// namespace Math
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

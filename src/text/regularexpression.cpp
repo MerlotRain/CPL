@@ -2,8 +2,7 @@
 #include <pcre2.h>
 #include <pcre2posix.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 GsRegularExpression::GsRegularExpression()
 {
@@ -232,5 +231,4 @@ int GsRegularExpression::matchOptions(GsRegularOptions options)
 }
 
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

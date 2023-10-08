@@ -11,8 +11,7 @@
 #include <pthread.h>
 #endif
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 class GsMutexImpl
 {
@@ -173,5 +172,4 @@ bool GsMutex::Trylock(long milliseconds)
     return false;
 }
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2

@@ -1,12 +1,10 @@
 #include <workthread.h>
 
-namespace Lite {
-namespace Utility {
+namespace m2 {
 
 class GsWorkThreadImpl
 {
 };
 
 
-}// namespace Utility
-}// namespace Lite
+}// namespace m2
