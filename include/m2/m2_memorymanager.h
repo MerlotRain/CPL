@@ -39,7 +39,7 @@ namespace m2 {
 
 
 /// @brief 内存块对象，内存只会增长，不会主动析构
-class UTILITY_EXPORT GsByteBuffer
+class M2_API GsByteBuffer
 {
 public:
     /// @brief 申请内存块
@@ -280,7 +280,7 @@ private:
 
 
 /// @brief 比特位管理
-class UTILITY_EXPORT GsBitset
+class M2_API GsBitset
 {
     GsByteBuffer m_Data;
     unsigned int m_Size = 0;
@@ -476,7 +476,7 @@ public:
 };
 
 
-class UTILITY_EXPORT GsByteBufferStream : public std::iostream
+class M2_API GsByteBufferStream : public std::iostream
 {
 public:
     GsByteBufferStream(GsByteBuffer *buffer);
@@ -507,7 +507,7 @@ enum GsStreamSeekOrigin
     eEnd     //!< 从流的尾部向前查询
 };
 
-class UTILITY_EXPORT GsInputStream : public GsRefObject
+class M2_API GsInputStream : public GsRefObject
 {
 public:
     /// @brief
@@ -645,7 +645,7 @@ protected:
 
 
 /// @brief 写入内存
-class UTILITY_EXPORT GsMemoryInputStream : public GsInputStream
+class M2_API GsMemoryInputStream : public GsInputStream
 {
 public:
     /// @brief
@@ -696,7 +696,7 @@ GS_SMARTER_PTR(GsMemoryInputStream)
 
 
 /// @brief 读文件
-class UTILITY_EXPORT GsFileInputStream : public GsInputStream
+class M2_API GsFileInputStream : public GsInputStream
 {
     FILE *m_pFile = NULL;
     unsigned long long m_nLength = 0;
@@ -749,7 +749,7 @@ GS_SMARTER_PTR(GsFileInputStream)
 
 
 /// @brief 写出流
-class UTILITY_EXPORT GsOutputStream : public GsRefObject
+class M2_API GsOutputStream : public GsRefObject
 {
 protected:
     GsOutputStream();
@@ -794,7 +794,7 @@ GS_SMARTER_PTR(GsOutputStream)
 
 
 /// @brief 写入内存
-class UTILITY_EXPORT GsMemoryOutputStream : public GsOutputStream
+class M2_API GsMemoryOutputStream : public GsOutputStream
 {
 public:
     /// @brief 缺省构造，将数据输出到内部ByteBuffer中，通过Buffer方法获取存储数据的对象。
@@ -843,7 +843,7 @@ GS_SMARTER_PTR(GsMemoryOutputStream)
 
 
 /// @brief 写入文件
-class UTILITY_EXPORT GsFileOutputStream : public GsOutputStream
+class M2_API GsFileOutputStream : public GsOutputStream
 {
     unsigned long long m_Start;
     FILE *m_pFile = NULL;

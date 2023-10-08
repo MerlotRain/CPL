@@ -74,9 +74,9 @@
 
 // utility模块
 #if defined(UTILITY_LIBRARY)
-#define UTILITY_EXPORT GS_DECL_EXPORT
+#define M2_API GS_DECL_EXPORT
 #else
-#define UTILITY_EXPORT GS_DECL_IMPORT
+#define M2_API GS_DECL_IMPORT
 #endif
 
 // kernel模块

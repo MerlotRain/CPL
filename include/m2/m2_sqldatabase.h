@@ -76,7 +76,7 @@ enum GsSqlFieldType
 
 
 /// @brief 字段结构
-struct UTILITY_EXPORT GsSqlField
+struct M2_API GsSqlField
 {
     /// @brief 字段名称
     GsString Name;
@@ -132,7 +132,7 @@ struct UTILITY_EXPORT GsSqlField
 
 
 /// @brief 字段集合
-struct UTILITY_EXPORT GsSqlFields
+struct M2_API GsSqlFields
 {
     std::vector<GsSqlField> Fields;
 
@@ -169,7 +169,7 @@ class GsSqlTransaction;
 /// @details 不使用智能指针封装，对GsGeoDatabase模块，GsSqlDatabase指针由内部管理
 /// @details 目前仅对外暴露sqlite数据库的封装
 /// @details 当应用层获取该指针执行sql时，无需析构
-class UTILITY_EXPORT GsSqlDatabase : private GsNonCopyable
+class M2_API GsSqlDatabase : private GsNonCopyable
 {
 public:
     /// @brief 默认析构
@@ -211,7 +211,7 @@ protected:
 
 
 /// @brief 数据库执行Statement对象
-class UTILITY_EXPORT GsSqlStatement : private GsNonCopyable
+class M2_API GsSqlStatement : private GsNonCopyable
 {
 protected:
     GsSqlDatabase *m_pDB;
@@ -283,7 +283,7 @@ public:
 
 
 /// @brief 数据库事务对象
-class UTILITY_EXPORT GsSqlTransaction : public GsRefObject
+class M2_API GsSqlTransaction : public GsRefObject
 {
 public:
     /// @brief 默认析构

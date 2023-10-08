@@ -39,7 +39,7 @@ namespace Network {
 
 
 /// @brief 网卡信息
-struct UTILITY_EXPORT GsNetworkAdpterInfomation
+struct M2_API GsNetworkAdpterInfomation
 {
     /// @brief 网卡名称
     GsString AdpterName;

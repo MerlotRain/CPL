@@ -37,7 +37,7 @@
 namespace m2 {
 
 /// @brief 单字节字符串,按照词组,数字 符号 读取方法
-class UTILITY_EXPORT GsStringTokenizer
+class M2_API GsStringTokenizer
 {
 public:
     enum TokenizerFlag : int

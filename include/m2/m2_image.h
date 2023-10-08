@@ -39,7 +39,7 @@
 namespace m2 {
 
 /// @brief 颜色模型
-struct UTILITY_EXPORT GsColor
+struct M2_API GsColor
 {
     /// @brief 默认构造
     GsColor() noexcept;
@@ -576,7 +576,7 @@ struct UTILITY_EXPORT GsColor
 
 
 /// @brief int点结构
-struct UTILITY_EXPORT GsPT
+struct M2_API GsPT
 {
     int X;
     int Y;
@@ -639,7 +639,7 @@ struct UTILITY_EXPORT GsPT
 
 
 /// @brief float点结构
-struct UTILITY_EXPORT GsPTF
+struct M2_API GsPTF
 {
     float X;
     float Y;
@@ -707,7 +707,7 @@ enum GsAspectRatioMode
 /// @brief int边距结构
 /// @details 在size,rect缩放过程中，需要主动指示正负值，Margins旨在于简化这个操作
 /// @details 其中四周边距都是正数，调用ExpandedTo和BoundedTo函数可以快速获取缩放后的结果
-struct UTILITY_EXPORT GsMargins
+struct M2_API GsMargins
 {
     int Left;
     int Top;
@@ -741,7 +741,7 @@ struct UTILITY_EXPORT GsMargins
 };
 
 /// @brief float类型边距结构
-struct UTILITY_EXPORT GsMarginsF
+struct M2_API GsMarginsF
 {
     float Left;
     float Top;
@@ -775,7 +775,7 @@ struct UTILITY_EXPORT GsMarginsF
 
 
 /// @brief 创建int类型的尺寸结构
-struct UTILITY_EXPORT GsSize
+struct M2_API GsSize
 {
     int Width;
     int Height;
@@ -855,7 +855,7 @@ struct UTILITY_EXPORT GsSize
 
 
 /// @brief 创建float类型的尺寸结构
-struct UTILITY_EXPORT GsSizeF
+struct M2_API GsSizeF
 {
     float Width;
     float Height;
@@ -935,7 +935,7 @@ struct UTILITY_EXPORT GsSizeF
 
 
 /// @brief int类型矩形结构
-struct UTILITY_EXPORT GsRect
+struct M2_API GsRect
 {
     int Left;
     int Top;
@@ -1146,7 +1146,7 @@ struct UTILITY_EXPORT GsRect
 
 
 /// @brief float矩形结构
-struct UTILITY_EXPORT GsRectF
+struct M2_API GsRectF
 {
     float Left;
     float Top;
@@ -1407,7 +1407,7 @@ enum class GsImageFormat
 
 
 /// @brief 图像基类
-class UTILITY_EXPORT GsImage
+class M2_API GsImage
 {
 public:
     /// @brief 默认析构
@@ -1506,13 +1506,13 @@ GS_SMARTER_PTR(GsImage)
 
 
 /// @brief 图像读写
-class UTILITY_EXPORT GsImageIO
+class M2_API GsImageIO
 {
 public:
     virtual bool CanRead(GsImage *image) = 0;
 };
 
-class UTILITY_EXPORT GsBmpImageIO : public GsImageIO
+class M2_API GsBmpImageIO : public GsImageIO
 {
 public:
     enum GsBmpFormat
@@ -1534,51 +1534,51 @@ private:
     unsigned long long offset;
 };
 
-class UTILITY_EXPORT GsPNGImageIO : public GsImageIO
+class M2_API GsPNGImageIO : public GsImageIO
 {
 };
 
-class UTILITY_EXPORT GsGifImageIO : public GsImageIO
+class M2_API GsGifImageIO : public GsImageIO
 {
 };
 
-class UTILITY_EXPORT GsWebpImageIO : public GsImageIO
+class M2_API GsWebpImageIO : public GsImageIO
 {
 };
 
-class UTILITY_EXPORT GsSvgImageIO : public GsImageIO
+class M2_API GsSvgImageIO : public GsImageIO
 {
 };
 
-class UTILITY_EXPORT GsTiffImageIO : public GsImageIO
+class M2_API GsTiffImageIO : public GsImageIO
 {
 };
 
-class UTILITY_EXPORT GsPpmImageIO : public GsImageIO
+class M2_API GsPpmImageIO : public GsImageIO
 {
 };
 
-class UTILITY_EXPORT GsXbmImageIO : public GsImageIO
+class M2_API GsXbmImageIO : public GsImageIO
 {
 };
 
-class UTILITY_EXPORT GsXpmImageIO : public GsImageIO
+class M2_API GsXpmImageIO : public GsImageIO
 {
 };
 
-class UTILITY_EXPORT GsICOImageIO : public GsImageIO
+class M2_API GsICOImageIO : public GsImageIO
 {
 };
 
-class UTILITY_EXPORT GsDDSImageIO : public GsImageIO
+class M2_API GsDDSImageIO : public GsImageIO
 {
 };
 
-class UTILITY_EXPORT GsTgaImageIO : public GsImageIO
+class M2_API GsTgaImageIO : public GsImageIO
 {
 };
 
-class UTILITY_EXPORT GsWbmpImageIO : public GsImageIO
+class M2_API GsWbmpImageIO : public GsImageIO
 {
 };
 

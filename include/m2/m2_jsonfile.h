@@ -39,7 +39,7 @@ namespace m2 {
 class GsJsonArray;
 
 /// @brief Json对象
-class UTILITY_EXPORT GsJsonObject
+class M2_API GsJsonObject
 {
 public:
     enum class ObjectType
@@ -133,7 +133,7 @@ private:
 
 
 /// @brief Json数组对象
-class UTILITY_EXPORT GsJsonArray : public GsJsonObject
+class M2_API GsJsonArray : public GsJsonObject
 {
     friend class GsJsonObject;
     friend class GsJsonDocument;
@@ -175,7 +175,7 @@ public:
 
 
 /// @brief Json文档
-class UTILITY_EXPORT GsJsonDocument
+class M2_API GsJsonDocument
 {
 public:
     GsJsonDocument();

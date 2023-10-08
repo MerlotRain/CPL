@@ -38,10 +38,10 @@
 namespace m2 {
 
 
-class UTILITY_EXPORT ThreadPool;
-class UTILITY_EXPORT WorkerThread;
+class M2_API ThreadPool;
+class M2_API WorkerThread;
 
-class UTILITY_EXPORT GsBackgroundTask : public GsRefObject
+class M2_API GsBackgroundTask : public GsRefObject
 {
 public:
     virtual ~GsBackgroundTask() {}
@@ -66,7 +66,7 @@ enum GsDispatchOption
 };
 
 class GsDispatchOp;
-class UTILITY_EXPORT GsPackagedTack : public GsRefObject
+class M2_API GsPackagedTack : public GsRefObject
 {
     std::queue<GsBackgroundTaskPtr> m_Tasks;
     std::unique_ptr<GsDispatchOp> m_Option;

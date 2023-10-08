@@ -47,7 +47,7 @@ namespace m2 {
 
 
 /// @brief 异常
-class UTILITY_EXPORT GsException : public std::runtime_error
+class M2_API GsException : public std::runtime_error
 {
 public:
     GsException() : std::runtime_error("Unknown error") {}
@@ -61,7 +61,7 @@ public:
 };
 
 /// @brief 参数错误的异常
-class UTILITY_EXPORT GsIllegalArgumentException : public GsException
+class M2_API GsIllegalArgumentException : public GsException
 {
 public:
     GsIllegalArgumentException()

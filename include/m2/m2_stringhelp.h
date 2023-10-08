@@ -51,7 +51,7 @@ class GsStringList;
 /// @details 所有写入GsString的字符串都应该是UTF-8编码
 /// @details 程序内部创建的字符串必须是UTF-8，外部读入的数据应该主动转换为UTF-8
 /// @details 数据写出时再主动转换为需要的编码格式
-class UTILITY_EXPORT GsString : public GsStlString
+class M2_API GsString : public GsStlString
 {
 public:
     /// @brief 缺省构造
@@ -550,7 +550,7 @@ inline bool operator==(const char *a, const GsString &b)
 
 /// @brief 宽字节字符串
 /// @details 建议使用UTF-16编码
-class UTILITY_EXPORT GsWString : public GsStlWString
+class M2_API GsWString : public GsStlWString
 {
 public:
     /// @brief 缺省构造
@@ -660,7 +660,7 @@ inline GsWString operator+(const GsWString &a, const std::wstring &b)
 
 
 /// @brief 字符串链表
-class UTILITY_EXPORT GsStringList : public std::list<GsString>
+class M2_API GsStringList : public std::list<GsString>
 {
 public:
     /// @brief
@@ -701,7 +701,7 @@ public:
 
 /// @brief ASCII编码表
 /// @details https://www.ascii-code.com/
-class UTILITY_EXPORT GsAscii
+class M2_API GsAscii
 {
 public:
     /// @brief 返回具有给定ASCII值的字符的ASCII字符属性
@@ -772,7 +772,7 @@ public:
 
 
 /// @brief 实现字符串编码相关的功能
-class UTILITY_EXPORT GsTextConverter
+class M2_API GsTextConverter
 {
 public:
     /// @brief current locale encoding
@@ -850,7 +850,7 @@ public:
 
 
 /// @brief 字符串输入输出流
-class UTILITY_EXPORT GsStringStream : public GsStlSStream
+class M2_API GsStringStream : public GsStlSStream
 {
     GsString m_str;
 
@@ -881,7 +881,7 @@ public:
 
 /// @brief 字符串输出流
 /// @details
-class UTILITY_EXPORT GsOStringStream : public GsStlOSStream
+class M2_API GsOStringStream : public GsStlOSStream
 {
     GsString m_str;
 
@@ -909,7 +909,7 @@ public:
 
 /// @brief 字符串输入流
 /// @details
-class UTILITY_EXPORT GsIStringStream : public GsStlISStream
+class M2_API GsIStringStream : public GsStlISStream
 {
     GsString m_str;
 
@@ -940,14 +940,14 @@ public:
 
 
 /// @brief 忽略字符大小写的比较
-struct UTILITY_EXPORT GsStringCompareIgnoreCase
+struct M2_API GsStringCompareIgnoreCase
 {
     bool operator()(const GsString &l, const GsString &r) const;
 };
 
 
 /// @brief 单字节字符串,按照词组,数字 符号 读取方法
-class UTILITY_EXPORT GsStringTokenizer
+class M2_API GsStringTokenizer
 {
 public:
     enum TokenizerFlag : int
@@ -1092,7 +1092,7 @@ using GsMatchResults = std::vector<GsMatchResult>;
 using GsMatchGroup = std::map<int, GsString>;
 
 
-class UTILITY_EXPORT GsRegularExpression
+class M2_API GsRegularExpression
 {
     void *m_Handle;
     GsString m_Description;

@@ -78,7 +78,7 @@ enum class GsBOMType
 
 
 /// @brief 操作系统环境变量相关
-class UTILITY_EXPORT GsOperatorSystemEnvironment
+class M2_API GsOperatorSystemEnvironment
 {
 public:
     /// @brief 获取当前的操作系统
@@ -126,7 +126,7 @@ public:
 };
 
 
-class UTILITY_EXPORT GsFileSystem
+class M2_API GsFileSystem
 {
 public:
     /// @brief 获取最大文件打开句柄数
@@ -223,7 +223,7 @@ public:
 class GsDir;
 
 /// @brief 文件
-class UTILITY_EXPORT GsFile
+class M2_API GsFile
 {
     GsString m_strPath;
 
@@ -367,7 +367,7 @@ protected:
 
 
 /// @brief 文件系统的目录
-class UTILITY_EXPORT GsDir
+class M2_API GsDir
 {
     GsString m_strPath;
 

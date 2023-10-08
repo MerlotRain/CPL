@@ -53,7 +53,7 @@ enum GsLogLevel
 };
 
 /// @brief 自定义的输出管道
-class UTILITY_EXPORT GsCustomLogOutput
+class M2_API GsCustomLogOutput
 {
 public:
     ~GsCustomLogOutput() {}
@@ -67,7 +67,7 @@ public:
 };
 
 /// @brief 将日志输出到文件
-class UTILITY_EXPORT GsFileCustomLogOutput : public GsCustomLogOutput
+class M2_API GsFileCustomLogOutput : public GsCustomLogOutput
 {
     std::ofstream m_file;
     bool m_ShowInConsole;
@@ -87,7 +87,7 @@ public:
 };
 
 /// @brief 创建日志
-class UTILITY_EXPORT GsLogger
+class M2_API GsLogger
 {
     GsString m_strName;
     GsCustomLogOutput *m_pHook;
@@ -95,7 +95,7 @@ class UTILITY_EXPORT GsLogger
 
     volatile GsLogLevel m_nLevel;
     /// @brief 日志流操作
-    class UTILITY_EXPORT GsLogStream : public Utility::GsStringStream
+    class M2_API GsLogStream : public Utility::GsStringStream
     {
         GsLogger &m_Log;
         bool m_bEnable;

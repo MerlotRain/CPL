@@ -38,7 +38,7 @@
 namespace m2 {
 
 /// @brief 匿名管道
-class UTILITY_EXPORT GsPipe
+class M2_API GsPipe
 {
 public:
     enum class GsPipeCloseMode
@@ -81,7 +81,7 @@ private:
 };
 
 /// @brief 进程操作
-class UTILITY_EXPORT GsProcessHandle
+class M2_API GsProcessHandle
 {
     friend class GsProcess;
     GsProcessHandle();
@@ -106,7 +106,7 @@ protected:
 };
 
 /// @brief 进程
-class UTILITY_EXPORT GsProcess
+class M2_API GsProcess
 {
 public:
     /// @brief 获取当前进程的PID

@@ -39,7 +39,7 @@ namespace m2 {
 
 
 /// @brief 类Java BigDecimal，解决需要高精度处理数据的地方，例如金额
-class UTILITY_EXPORT GsBigDecimal
+class M2_API GsBigDecimal
 {
 public:
     /// @brief 默认构造

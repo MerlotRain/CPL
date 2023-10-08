@@ -149,7 +149,7 @@ using GsMatchResults = std::vector<GsMatchResult>;
 using GsMatchGroup = std::map<int, GsString>;
 
 
-class UTILITY_EXPORT GsRegularExpression
+class M2_API GsRegularExpression
 {
     void *m_Handle;
     GsString m_Description;

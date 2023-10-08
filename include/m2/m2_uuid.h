@@ -38,7 +38,7 @@
 namespace m2 {
 
 
-struct UTILITY_EXPORT GsUUID
+struct M2_API GsUUID
 {
     unsigned int Data1;
     unsigned short Data2;

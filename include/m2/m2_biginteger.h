@@ -38,7 +38,7 @@
 namespace m2 {
 
 /// @brief Java like BigInteger
-class UTILITY_EXPORT GsBigInteger
+class M2_API GsBigInteger
 {
 public:
     /// @brief 默认构造

@@ -40,7 +40,7 @@ namespace m2 {
 class GsVector3D;
 
 /// @brief 二维向量类
-class UTILITY_EXPORT GsVector2D
+class M2_API GsVector2D
 {
 public:
     /// @brief 默认构造
@@ -141,7 +141,7 @@ private:
 
 
 /// @brief 三维向量类
-class UTILITY_EXPORT GsVector3D
+class M2_API GsVector3D
 {
 public:
     GsVector3D() = default;

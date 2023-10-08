@@ -40,7 +40,7 @@ namespace m2 {
 
 
 /// @brief Url解析类
-class UTILITY_EXPORT GsUrl
+class M2_API GsUrl
 {
 public:
     using GsQueryParameters = std::vector<std::pair<GsString, GsString>>;
@@ -539,7 +539,7 @@ class GsFTPClientSession;
 
 
 /// @brief Cookie 对象
-struct UTILITY_EXPORT GsCookie
+struct M2_API GsCookie
 {
     int Version;
     GsString Name;
@@ -574,22 +574,22 @@ struct UTILITY_EXPORT GsCookie
 
 /// @brief Media Type 对象
 /// @details https://www.iana.org/assignments/media-types/media-types.xhtml
-struct UTILITY_EXPORT GsMediaType
+struct M2_API GsMediaType
 {
     GsString Type;
     GsString SubType;
 };
 
 
-class UTILITY_EXPORT GsCookiesContainer
+class M2_API GsCookiesContainer
 {
 };
 
-class UTILITY_EXPORT GsHttpRequest
+class M2_API GsHttpRequest
 {
 };
 
-class UTILITY_EXPORT GsHttpResponse
+class M2_API GsHttpResponse
 {
 };
 

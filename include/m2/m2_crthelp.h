@@ -37,7 +37,7 @@
 namespace m2 {
 
 /// @brief 封装不同平台下的C语言运行时函数CRT
-class UTILITY_EXPORT GsCRT
+class M2_API GsCRT
 {
 public:
     /// @brief 计算四舍五入的结果

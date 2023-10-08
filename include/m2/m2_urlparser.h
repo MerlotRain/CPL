@@ -40,7 +40,7 @@ namespace m2 {
 
 
 /// @brief Url解析类
-class UTILITY_EXPORT GsUrl
+class M2_API GsUrl
 {
 public:
     using GsQueryParameters = std::vector<std::pair<GsString, GsString>>;

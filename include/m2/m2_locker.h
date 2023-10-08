@@ -110,7 +110,7 @@ public:
 };
 
 /// @brief 线程锁
-class UTILITY_EXPORT GsMutex
+class M2_API GsMutex
 {
 public:
     GsMutex();
@@ -142,7 +142,7 @@ private:
 };
 
 /// @brief 可递归线程锁，同一线程可以多次调用不会阻塞
-class UTILITY_EXPORT GsRecursiveMutex
+class M2_API GsRecursiveMutex
 {
 public:
     GsRecursiveMutex();
@@ -172,7 +172,7 @@ protected:
 
 /// @brief 读写锁
 /// @details 允许并发范围内，多个线程读，但只允许一个线程写
-class UTILITY_EXPORT GsRWLock
+class M2_API GsRWLock
 {
 public:
     GsRWLock();
@@ -203,7 +203,7 @@ private:
 
 /// @brief 自动读写锁
 /// @details 锁对象会主动释放
-class UTILITY_EXPORT GsScopedRWLock
+class M2_API GsScopedRWLock
 {
 public:
     explicit GsScopedRWLock(GsRWLock &l, bool write = false);
@@ -216,7 +216,7 @@ private:
 };
 
 /// @brief 自动读锁
-class UTILITY_EXPORT GsScopedReadRWLock : public GsScopedRWLock
+class M2_API GsScopedReadRWLock : public GsScopedRWLock
 {
 public:
     explicit GsScopedReadRWLock(GsRWLock &l);
@@ -224,7 +224,7 @@ public:
 };
 
 /// @brief 自动写锁
-class UTILITY_EXPORT GsScopedWriteRWLock : public GsScopedRWLock
+class M2_API GsScopedWriteRWLock : public GsScopedRWLock
 {
 public:
     explicit GsScopedWriteRWLock(GsRWLock &l);
@@ -240,7 +240,7 @@ public:
 /// @brief 等待事件
 class GsWaitEvent;
 /// @brief 条件变量
-class UTILITY_EXPORT GsWaitCondition
+class M2_API GsWaitCondition
 {
 public:
     GsWaitCondition();
@@ -318,7 +318,7 @@ private:
 
 
 /// @brief 信号量
-class UTILITY_EXPORT GsSemaphore
+class M2_API GsSemaphore
 {
 public:
     GsSemaphore(int n);

@@ -38,7 +38,7 @@ namespace m2 {
 
 
 /// @brief 比特位管理
-class UTILITY_EXPORT GsBitset
+class M2_API GsBitset
 {
     GsByteBuffer m_Data;
     unsigned int m_Size = 0;

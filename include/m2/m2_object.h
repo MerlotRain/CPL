@@ -40,7 +40,7 @@ namespace m2 {
 
 
 /// @brief 不可拷贝对象，所有继承此类的对象将不可拷贝
-class UTILITY_EXPORT GsNonCopyable
+class M2_API GsNonCopyable
 {
 public:
     GsNonCopyable() = default;
@@ -62,7 +62,7 @@ private:
 /// @details 默认裸指针的引用计数为0
 /// @details 建议所有引用对象在构造时都是用智能指针模板装饰，从而实现对引用计数的自动管理
 /// @details 引用对象基类接口的所有方法外部禁止调用和重写
-class UTILITY_EXPORT GsRefObject : public GsNonCopyable
+class M2_API GsRefObject : public GsNonCopyable
 {
 public:
     /// @brief 默认构造
@@ -115,7 +115,7 @@ protected:
 
 
 /// @brief 弱引用对象
-class UTILITY_EXPORT GsWeakReference : public GsRefObject
+class M2_API GsWeakReference : public GsRefObject
 {
 public:
     /// @brief 默认构造
@@ -681,7 +681,7 @@ public:
 
 
 /// @brief 类工厂模型
-class UTILITY_EXPORT GsClassFactory
+class M2_API GsClassFactory
 {
 public:
     typedef GsRefObject *(*FactoryCreateFun)();
@@ -747,7 +747,7 @@ private:
 };
 
 
-class UTILITY_EXPORT GsSingleton
+class M2_API GsSingleton
 {
 };
 

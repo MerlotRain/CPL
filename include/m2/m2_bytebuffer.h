@@ -39,7 +39,7 @@ namespace m2 {
 
 
 /// @brief 内存块对象，内存只会增长，不会主动析构
-class UTILITY_EXPORT GsByteBuffer
+class M2_API GsByteBuffer
 {
 public:
     /// @brief 申请内存块

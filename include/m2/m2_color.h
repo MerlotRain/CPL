@@ -36,7 +36,7 @@
 
 namespace m2 {
 
-struct UTILITY_EXPORT GsColor
+struct M2_API GsColor
 {
     /// @brief 默认构造
     GsColor() noexcept;

@@ -39,7 +39,7 @@ namespace m2 {
 
 /// @brief 对平台线程的封装
 /// @details 封装一种可以继承的线程，使其使用风格类似QThread
-class UTILITY_EXPORT GsWorkThread
+class M2_API GsWorkThread
 {
 public:
     /// @brief 线程优先权
@@ -187,7 +187,7 @@ private:
 
 class ThreadPool;
 
-class UTILITY_EXPORT GsBackgroundTask : public GsRefObject
+class M2_API GsBackgroundTask : public GsRefObject
 {
 public:
     virtual ~GsBackgroundTask() {}
@@ -212,7 +212,7 @@ enum GsDispatchOption
 };
 
 class GsDispatchOp;
-class UTILITY_EXPORT GsPackagedTack : public GsRefObject
+class M2_API GsPackagedTack : public GsRefObject
 {
     std::queue<GsBackgroundTaskPtr> m_Tasks;
     std::unique_ptr<GsDispatchOp> m_Option;

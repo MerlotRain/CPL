@@ -362,7 +362,7 @@ GS_REQUIRED_RESULT inline bool IsEqualSignificant(double a, double b, int signif
 
 
 /// @brief UUID构造
-struct UTILITY_EXPORT GsUUID
+struct M2_API GsUUID
 {
     unsigned int Data1;
     unsigned short Data2;
@@ -552,7 +552,7 @@ public:
 
 /// @brief Java like BigInteger
 /// @details
-class UTILITY_EXPORT GsBigInteger
+class M2_API GsBigInteger
 {
 public:
     /// @brief 默认构造
@@ -768,7 +768,7 @@ private:
 };
 
 /// @brief Java like BigDecimal
-class UTILITY_EXPORT GsBigDecimal
+class M2_API GsBigDecimal
 {
 public:
     /// @brief 默认构造
@@ -1034,7 +1034,7 @@ private:
 
 class GsVector3D;
 /// @brief 二维向量类
-class UTILITY_EXPORT GsVector2D
+class M2_API GsVector2D
 {
 public:
     /// @brief 默认构造
@@ -1134,7 +1134,7 @@ private:
 };
 
 /// @brief 三维向量类
-class UTILITY_EXPORT GsVector3D
+class M2_API GsVector3D
 {
 public:
     GsVector3D() = default;
@@ -1256,7 +1256,7 @@ enum class GsLengthUnits
 
 
 /// @brief 长度单位换算
-struct UTILITY_EXPORT GsLength
+struct M2_API GsLength
 {
     double Length = 0.0;
     GsLengthUnits Unit = GsLengthUnits::eMeter;
@@ -1389,7 +1389,7 @@ enum class GsAreaUnits
 
 
 /// @brief 面积单位换算
-struct UTILITY_EXPORT GsArea
+struct M2_API GsArea
 {
     double Area = 0.0;
     GsAreaUnits Unit = GsAreaUnits::eMeter2;
@@ -1529,7 +1529,7 @@ enum class GsVolumeUnits
 };
 
 /// @brief 体积
-struct UTILITY_EXPORT GsVolume
+struct M2_API GsVolume
 {
     double Volume = 0.0;
     GsVolumeUnits Unit = GsVolumeUnits::eCubicMeters;

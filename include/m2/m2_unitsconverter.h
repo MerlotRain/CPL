@@ -63,7 +63,7 @@ enum class GsLengthUnits
 
 
 /// @brief 长度单位换算
-struct UTILITY_EXPORT GsLength
+struct M2_API GsLength
 {
     double Length = 0.0;
     GsLengthUnits Unit = GsLengthUnits::eMeter;
@@ -196,7 +196,7 @@ enum class GsAreaUnits
 
 
 /// @brief 面积单位换算
-struct UTILITY_EXPORT GsArea
+struct M2_API GsArea
 {
     double Area = 0.0;
     GsAreaUnits Unit = GsAreaUnits::eMeter2;
@@ -336,7 +336,7 @@ enum class GsVolumeUnits
 };
 
 /// @brief 体积
-struct UTILITY_EXPORT GsVolume
+struct M2_API GsVolume
 {
     double Volume = 0.0;
     GsVolumeUnits Unit = GsVolumeUnits::eCubicMeters;

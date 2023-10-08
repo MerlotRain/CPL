@@ -49,7 +49,7 @@ static constexpr long long TM_HOURS = 60 * TM_MINUTES;
 static constexpr long long TM_DAYS = 24 * TM_HOURS;
 
 /// @brief 高精度的微秒级别的时间间隔
-struct UTILITY_EXPORT GsTimeSpan
+struct M2_API GsTimeSpan
 {
     /// @brief 时间跨度，单位（微秒）
     long long TimeSpan;
@@ -263,7 +263,7 @@ struct UTILITY_EXPORT GsTimeSpan
  * This is very useful to computer systems for tracking and sorting dated information in dynamic
  * and distributed applications both online and client side.
 */
-struct UTILITY_EXPORT GsTimestamp
+struct M2_API GsTimestamp
 {
     /// @brief 时间戳
     long long Timestamp;
@@ -486,7 +486,7 @@ enum GsDateTimeFormat
  * http://en.wikipedia.org/wiki/UTC
  * http://en.wikipedia.org/wiki/ISO_8601
  */
-class UTILITY_EXPORT GsDateTime
+class M2_API GsDateTime
 {
 public:
     enum
@@ -754,7 +754,7 @@ private:
 
 
 /// @brief 时区
-class UTILITY_EXPORT GsTimeZone
+class M2_API GsTimeZone
 {
 public:
     /// @brief 返回本地时间到UTC的偏移量（以秒为单位）
@@ -795,7 +795,7 @@ public:
 
 
 /// @brief 时钟
-class UTILITY_EXPORT GsClock
+class M2_API GsClock
 {
 public:
     /// @brief 默认构造
