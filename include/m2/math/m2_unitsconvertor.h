@@ -37,53 +37,51 @@
 
 namespace m2 {
 
-enum class LengthUnits
-{
-    eKilometer,
-    eMeter,
-    eDecimetre,
-    eCentimeter,
-    eMillimeter,
-    eMicron,
-    eNanometer,
-    eInche,
-    eMile,
-    eFeet,
-    eYard,
-    eNauticalMile,
-    eZhang,
-    eChi,
-    eCun,
-    eFen,
-#ifdef SPATIAL_FEATURE
-    eDegrees,
-#endif
-};
 
 class M2_API Length
 {
-    double length = 0.0;
-    LengthUnits unit = LengthUnits::eMeter;
-
 public:
-    Length() noexcept;
-    Length(const Length &rhs) noexcept;
-    Length &operator=(const Length &) noexcept;
-    Length(Length &&) noexcept;
-    Length &operator=(Length &&) noexcept;
-    Length(double len, LengthUnits unit) noexcept;
+    enum LengthUnits
+    {
+        eKilometer,
+        eMeter,
+        eDecimetre,
+        eCentimeter,
+        eMillimeter,
+        eMicron,
+        eNanometer,
+        eInche,
+        eMile,
+        eFeet,
+        eYard,
+        eNauticalMile,
+        eZhang,
+        eChi,
+        eCun,
+        eFen,
+#ifdef SPATIAL_FEATURE
+        eDegrees,
+#endif
+    };
+
+    constexpr Length() noexcept;
+    constexpr Length(const Length &rhs) noexcept;
+    constexpr Length &operator=(const Length &) noexcept;
+    constexpr Length(Length &&) noexcept;
+    constexpr Length &operator=(Length &&) noexcept;
+    constexpr Length(double len, LengthUnits unit) noexcept;
     void swap(Length &l) noexcept;
 
-    bool operator==(const Length &) const noexcept;
-    bool operator!=(const Length &) const noexcept;
-    bool operator<(const Length &) const noexcept;
-    bool operator<=(const Length &) const noexcept;
-    bool operator>(const Length &) const noexcept;
-    bool operator>=(const Length &) const noexcept;
-    Length operator-(const Length &) const noexcept;
-    Length operator+(const Length &) const noexcept;
-    Length &operator+=(const Length &) noexcept;
-    Length &operator-=(const Length &) noexcept;
+    constexpr inline bool operator==(const Length &) const noexcept;
+    constexpr inline bool operator!=(const Length &) const noexcept;
+    constexpr inline bool operator<(const Length &) const noexcept;
+    constexpr inline bool operator<=(const Length &) const noexcept;
+    constexpr inline bool operator>(const Length &) const noexcept;
+    constexpr inline bool operator>=(const Length &) const noexcept;
+    constexpr inline Length operator-(const Length &) const noexcept;
+    constexpr inline Length operator+(const Length &) const noexcept;
+    constexpr inline Length &operator+=(const Length &) noexcept;
+    constexpr inline Length &operator-=(const Length &) noexcept;
 
     operator double() const;
 
@@ -92,55 +90,57 @@ public:
     inline Length convertTo(LengthUnits units) const;
     static Length convertTo(double len, LengthUnits srcUnit, LengthUnits tagUnit);
     static double convertScale(LengthUnits from, LengthUnits to);
+
+private:
+    double length = 0.0;
+    LengthUnits unit = LengthUnits::eMeter;
 };
 
-enum class AreaUnits
-{
-    eKilometer2,
-    eMeter2,
-    ehm2,
-    eAre,
-    eDecimetre2,
-    eCentimeter2,
-    eMillimeter2,
-    eAcre,
-    eMile2,
-    eYard2,
-    eFeet2,
-    eInche2,
-    eRd2,
-    eQing,
-    eMu,
-    eFen,
-#ifdef SPATIAL_FEATURE
-    eDegree2,
-#endif
-};
 
 class M2_API Area
 {
-    double area = 0.0;
-    AreaUnits unit = AreaUnits::eMeter2;
-
 public:
-    Area() noexcept;
-    Area(const Area &rhs) noexcept;
-    Area &operator=(const Area &) noexcept;
-    Area(double a, AreaUnits uint) noexcept;
-    Area(Area &&rhs) noexcept;
-    Area &operator=(Area &&rhs) noexcept;
-    void swap(Area &rhs) noexcept;
-    bool operator==(const Area &rhs) const noexcept;
-    bool operator!=(const Area &rhs) const noexcept;
-    bool operator<(const Area &) const noexcept;
-    bool operator<=(const Area &) const noexcept;
-    bool operator>(const Area &) const noexcept;
-    bool operator>=(const Area &) const noexcept;
+    enum AreaUnits
+    {
+        eKilometer2,
+        eMeter2,
+        ehm2,
+        eAre,
+        eDecimetre2,
+        eCentimeter2,
+        eMillimeter2,
+        eAcre,
+        eMile2,
+        eYard2,
+        eFeet2,
+        eInche2,
+        eRd2,
+        eQing,
+        eMu,
+        eFen,
+#ifdef SPATIAL_FEATURE
+        eDegree2,
+#endif
+    };
 
-    Area operator-(const Area &) const noexcept;
-    Area operator+(const Area &) const noexcept;
-    Area &operator+=(const Area &) noexcept;
-    Area &operator-=(const Area &) noexcept;
+    constexpr Area() noexcept;
+    constexpr Area(const Area &rhs) noexcept;
+    constexpr Area &operator=(const Area &) noexcept;
+    constexpr Area(double a, AreaUnits uint) noexcept;
+    constexpr Area(Area &&rhs) noexcept;
+    constexpr Area &operator=(Area &&rhs) noexcept;
+    void swap(Area &rhs) noexcept;
+    constexpr inline bool operator==(const Area &rhs) const noexcept;
+    constexpr inline bool operator!=(const Area &rhs) const noexcept;
+    constexpr inline bool operator<(const Area &) const noexcept;
+    constexpr inline bool operator<=(const Area &) const noexcept;
+    constexpr inline bool operator>(const Area &) const noexcept;
+    constexpr inline bool operator>=(const Area &) const noexcept;
+
+    constexpr inline Area operator-(const Area &) const noexcept;
+    constexpr inline Area operator+(const Area &) const noexcept;
+    constexpr inline Area &operator+=(const Area &) noexcept;
+    constexpr inline Area &operator-=(const Area &) noexcept;
 
     operator double() const;
 
@@ -152,50 +152,52 @@ public:
     static Area convertTo(double a, AreaUnits srcUnit, AreaUnits tagUnit);
     static double meter2Area(double a, AreaUnits srcUnit, AreaUnits tagUnit);
     static double convertScale(AreaUnits from, AreaUnits to);
+
+private:
+    double area = 0.0;
+    AreaUnits unit = AreaUnits::eMeter2;
 };
 
-enum class VolumeUnits
-{
-    eCubicKilometers,
-    eCubicMeters,
-    eCubicDecimeter,
-    eCubicCentimeter,
-    eCubicMillimeter,
-    eLiter,
-    eDeciLiter,
-    eMillLiter,
-    eAcreFoot,
-    eCubicYard,
-    eCubicFeet,
-    eCubicInch,
-    eBarrel,
-    eGallonUS,
-};
 
 class M2_API Volume
 {
-    double volume = 0.0;
-    VolumeUnits unit = VolumeUnits::eCubicMeters;
-
 public:
-    Volume() noexcept;
-    Volume(const Volume &rhs) noexcept;
-    Volume &operator=(const Volume &) noexcept;
-    Volume(double vol, VolumeUnits uints) noexcept;
-    Volume(Volume &&vol) noexcept;
-    Volume &operator=(Volume &&) noexcept;
+    enum VolumeUnits
+    {
+        eCubicKilometers,
+        eCubicMeters,
+        eCubicDecimeter,
+        eCubicCentimeter,
+        eCubicMillimeter,
+        eLiter,
+        eDeciLiter,
+        eMillLiter,
+        eAcreFoot,
+        eCubicYard,
+        eCubicFeet,
+        eCubicInch,
+        eBarrel,
+        eGallonUS,
+    };
+
+    constexpr Volume() noexcept;
+    constexpr Volume(const Volume &rhs) noexcept;
+    constexpr Volume &operator=(const Volume &) noexcept;
+    constexpr Volume(double vol, VolumeUnits uints) noexcept;
+    constexpr Volume(Volume &&vol) noexcept;
+    constexpr Volume &operator=(Volume &&) noexcept;
     void swap(Volume &l) noexcept;
 
-    bool operator==(const Volume &) const noexcept;
-    bool operator!=(const Volume &) const noexcept;
-    bool operator<(const Volume &) const noexcept;
-    bool operator<=(const Volume &) const noexcept;
-    bool operator>(const Volume &) const noexcept;
-    bool operator>=(const Volume &) const noexcept;
-    Volume operator-(const Volume &) const noexcept;
-    Volume operator+(const Volume &) const noexcept;
-    Volume &operator+=(const Volume &) noexcept;
-    Volume &operator-=(const Volume &) noexcept;
+    constexpr inline bool operator==(const Volume &) const noexcept;
+    constexpr inline bool operator!=(const Volume &) const noexcept;
+    constexpr inline bool operator<(const Volume &) const noexcept;
+    constexpr inline bool operator<=(const Volume &) const noexcept;
+    constexpr inline bool operator>(const Volume &) const noexcept;
+    constexpr inline bool operator>=(const Volume &) const noexcept;
+    constexpr inline Volume operator-(const Volume &) const noexcept;
+    constexpr inline Volume operator+(const Volume &) const noexcept;
+    constexpr inline Volume &operator+=(const Volume &) noexcept;
+    constexpr inline Volume &operator-=(const Volume &) noexcept;
 
     operator double() const;
 
@@ -207,6 +209,10 @@ public:
     static Volume convertTo(double vol, VolumeUnits srcUnit, VolumeUnits tagUnit);
     static double meter3Volume(double a, VolumeUnits srcUnit, VolumeUnits tagUnit);
     static double convertScale(VolumeUnits from, VolumeUnits to);
+
+private:
+    double volume = 0.0;
+    VolumeUnits unit = VolumeUnits::eCubicMeters;
 };
 
 /*****************************************************************************

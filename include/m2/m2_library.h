@@ -30,15 +30,11 @@
 **
 ****************************************************************************/
 
-#pragma once
-
-#include "locker.h"
-#include "stringhelp.h"
+#ifndef M2_LIBRARY_H_
+#define M2_LIBRARY_H_
 
 namespace m2 {
 
-/// @brief 动态库模块
-/// @details 不继承引用对象，将内存管理权限交给用户
 class GsLibrary
 {
 public:
@@ -112,5 +108,6 @@ private:
     static GsRecursiveMutex m_mutex;
 };
 
-
 }// namespace m2
+
+#endif//M2_LIBRARY_H_

@@ -29,3 +29,24 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_MATRIXNXM_H_
+#define M2_MATRIXNXM_H_
+
+namespace m2 {
+
+template<int N, int M, typename T>
+class MatrixNxM
+{
+public:
+    MatrixNxM();
+    explicit MatrixNxM(const float *values);
+    
+
+private:
+    float m[4][4];
+};
+
+}// namespace m2
+
+#endif//M2_MATRIXNXM_H_

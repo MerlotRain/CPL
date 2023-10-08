@@ -29,3 +29,16 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_WAITCONDITION_H_
+#define M2_WAITCONDITION_H_
+
+namespace m2 {
+
+class WaitCondition
+{
+};
+
+}// namespace m2
+
+#endif//M2_WAITCONDITION_H_

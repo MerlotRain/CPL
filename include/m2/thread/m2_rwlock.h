@@ -29,3 +29,12 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_RWLOCK_H_
+#define M2_RWLOCK_H_
+
+namespace m2 {
+
+}// namespace m2
+
+#endif//M2_RWLOCK_H_

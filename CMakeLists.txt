@@ -10,6 +10,7 @@ set(m2_include_files
     ./include/m2.h
     ./include/m2/m2_allocator.h
     ./include/m2/m2_logger.h
+    ./include/m2/m2_object.h
     ./include/m2/text/m2_ascii.h
     ./include/m2/text/m2_regularexpression.h
     ./include/m2/text/m2_string.h
@@ -29,9 +30,11 @@ set(m2_include_files
     ./include/m2/math/m2_vector.h
     ./include/m2/image/m2_color.h
     ./include/m2/image/m2_image.h
+    ./include/m2/image/m2_line.h
     ./include/m2/image/m2_margins.h
     ./include/m2/image/m2_pagesize.h
     ./include/m2/image/m2_point.h
+    ./include/m2/image/m2_polygon.h
     ./include/m2/image/m2_rect.h
     ./include/m2/image/m2_size.h
     )

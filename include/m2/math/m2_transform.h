@@ -35,7 +35,44 @@
 
 namespace m2 {
 
-    
+class Transform
+{
+public:
+    Transform();
+    Transform(double h11, double h12, double h13,
+              double h21, double h22, double h23,
+              double h31, double h32, double h33);
+    Transform(double h11, double h12,
+              double h21, double h22,
+              double dx, double dy);
+
+    Transform(const Transform &) noexcept = default;
+    Transform(Transform &&) noexcept = default;
+    Transform &operator=(const Transform &) noexcept = default;
+    Transform &operator=(Transform &&) noexcept = default;
+
+    bool isAffine() const;
+    bool isIdentity() const;
+    bool isInvertible() const;
+    bool isScaling() const;
+    bool isRotating() const;
+    bool isTranslating() const;
+
+    double m11() const;
+    double m12() const;
+    double m13() const;
+    double m21() const;
+    double m22() const;
+    double m23() const;
+    double m31() const;
+    double m32() const;
+    double m33() const;
+
+private:
+    double m[3][3];
+    mutable unsigned int m_type;
+    mutable unsigned int m_dirty;
+};
 
 }// namespace m2
 

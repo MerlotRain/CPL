@@ -29,3 +29,16 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_MUTEX_H_
+#define M2_MUTEX_H_
+
+namespace m2 {
+
+class Mutex
+{
+};
+
+}// namespace m2
+
+#endif//M2_MUTEX_H_
