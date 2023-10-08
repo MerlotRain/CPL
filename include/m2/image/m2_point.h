@@ -39,7 +39,7 @@
 namespace m2 {
 
 class PointF;
-class Point
+class M2_API Point
 {
 public:
     constexpr Point() noexcept;
@@ -133,7 +133,7 @@ private:
     int yp;
 };
 
-class PointF
+class M2_API PointF
 {
 public:
     constexpr PointF() noexcept;

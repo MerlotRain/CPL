@@ -39,7 +39,7 @@
 namespace m2 {
 
 class MarginsF;
-class Margins
+class M2_API Margins
 {
 public:
     constexpr Margins() noexcept;
@@ -88,7 +88,7 @@ private:
     }
 };
 
-class MarginsF
+class M2_API MarginsF
 {
 public:
     constexpr MarginsF() noexcept;
