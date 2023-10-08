@@ -1,14 +1,22 @@
 
 cmake_minimum_required(VERSION 3.0..3.24)
-project(libm2)
+project(libm2 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(m2_include_files 
     ./include/preconfig.h
     ./include/m2.h
     ./include/m2/memory/m2_allocator.h
+    ./include/m2/text/m2_ascii.h
+    ./include/m2/text/m2_regularexpression.h
     ./include/m2/text/m2_string.h
+    ./include/m2/text/m2_stringlist.h
+    ./include/m2/text/m2_stringtokenizer.h
+    ./include/m2/text/m2_textconvertor.h
+    ./include/m2/text/m2_utf8.h
+    ./include/m2/text/m2_wstring.h
     )
 
 set(m2_source_files 

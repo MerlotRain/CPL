@@ -29,3 +29,18 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_ASCII_H
+#define M2_ASCII_H
+
+#include <preconfig.h>
+
+namespace m2 {
+
+class Ascii
+{
+};
+
+}// namespace m2
+
+#endif//M2_ASCII_H
