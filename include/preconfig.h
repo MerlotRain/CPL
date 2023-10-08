@@ -32,110 +32,82 @@
 
 #pragma once
 
-/// @brief 平台
 #if defined(_WIN32)
-#define GS_OS_WIN 1
-#define GS_OS_STRING "windows"
+#define M2_OS_WIN 1
+#define M2_OS_STRING "windows"
 #elif defined(__ANDROID__)
-#define GS_OS_ANDROID 1
-#define GS_OS_LINUX 1
-#define GS_OS_POSIX 1
-#define GS_OS_STRING "android"
+#define M2_OS_ANDROID 1
+#define M2_OS_LINUX 1
+#define M2_OS_POSIX 1
+#define M2_OS_STRING "android"
 #elif defined(__APPLE__)
-#define GS_OS_POSIX 1
-#define GS_OS_BSD 1
-#define GS_OS_DARWIN 1
+#define M2_OS_POSIX 1
+#define M2_OS_BSD 1
+#define M2_OS_DARWIN 1
 #if defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE
-#define GS_OS_IOS 1
-#define GS_OS_STRING "ios"
+#define M2_OS_IOS 1
+#define M2_OS_STRING "ios"
 #else
-#define GS_OS_MACOS 1
-#define GS_OS_STRING "macos"
+#define M2_OS_MACOS 1
+#define M2_OS_STRING "macos"
 #endif
 #elif defined(__CYGWIN__)
-#define GS_OS_CYGWIN 1
-#define GS_OS_POSIX 1
-#define GS_OS_STRING "cygwin"
+#define M2_OS_CYGWIN 1
+#define M2_OS_POSIX 1
+#define M2_OS_STRING "cygwin"
 #elif defined(__linux__)
-#define GS_OS_LINUX 1
-#define GS_OS_POSIX 1
-#define GS_OS_STRING "linux"
+#define M2_OS_LINUX 1
+#define M2_OS_POSIX 1
+#define M2_OS_STRING "linux"
 #endif
 
 
-// 定义导出头
-#ifdef GS_OS_WIN
-#define GS_DECL_EXPORT __declspec(dllexport)
-#define GS_DECL_IMPORT __declspec(dllimport)
+#ifdef M2_OS_WIN
+#define M2_DECL_EXPORT __declspec(dllexport)
+#define M2_DECL_IMPORT __declspec(dllimport)
 #else
-#define GS_DECL_EXPORT __attribute__((visibility("default")))
-#define GS_DECL_IMPORT __attribute__((visibility("default")))
+#define M2_DECL_EXPORT __attribute__((visibility("default")))
+#define M2_DECL_IMPORT __attribute__((visibility("default")))
 #endif
 
-// utility模块
-#if defined(UTILITY_LIBRARY)
-#define M2_API GS_DECL_EXPORT
-#else
-#define M2_API GS_DECL_IMPORT
-#endif
 
-// kernel模块
-#if defined(KERNEL_LIBRARY)
-#define KERNEL_EXPORT GS_DECL_EXPORT
+#if defined(M2_LIBRARY)
+#define M2_API M2_DECL_EXPORT
 #else
-#define KERNEL_EXPORT GS_DECL_IMPORT
-#endif
-
-// carto模块
-#if defined(CARTO_LIBRARY)
-#define CARTO_EXPORT GS_DECL_EXPORT
-#else
-#define CARTO_EXPORT GS_DECL_IMPORT
+#define M2_API M2_DECL_IMPORT
 #endif
 
 
 #ifdef __GNUC__
-#define GS_DEPRECATED(id) id __attribute__((deprecated))
+#define M2_DEPRECATED(id) id __attribute__((deprecated))
 #elif defined(_MSC_VER)
-#define GS_DEPRECATED(id) __declspec(deprecated) id
+#define M2_DEPRECATED(id) __declspec(deprecated) id
 #else
-#define GS_DEPRECATED(id) id
+#define M2_DEPRECATED(id) id
 #endif
 
 
 #if defined(__GNUC__)
-#define GS_DEBUG_PACKED __attribute__((__packed__))
-#define GS_DEBUG_BEGIN_PACKED
-#define GS_DEBUG_PACKED_ALIGN_N(N) __attribute__((packed, aligned(N)))
-#define GS_DEBUG_BEGIN_PACKED_ALIGN_N(N)
-#define GS_DEBUG_END_PACKED
+#define M2_DEBUG_PACKED __attribute__((__packed__))
+#define M2_DEBUG_BEGIN_PACKED
+#define M2_DEBUG_PACKED_ALIGN_N(N) __attribute__((packed, aligned(N)))
+#define M2_DEBUG_BEGIN_PACKED_ALIGN_N(N)
+#define M2_DEBUG_END_PACKED
 #else
-#define GS_DEBUG_PACKED
-#define GS_DEBUG_BEGIN_PACKED __pragma(pack(push, 1))
-#define GS_DEBUG_BEGIN_PACKED_ALIGN_N(N) __pragma(pack(push, N))
-#define GS_DEBUG_END_PACKED __pragma(pack(pop))
-#define GS_DEBUG_PACKED_ALIGN_N(N)
+#define M2_DEBUG_PACKED
+#define M2_DEBUG_BEGIN_PACKED __pragma(pack(push, 1))
+#define M2_DEBUG_BEGIN_PACKED_ALIGN_N(N) __pragma(pack(push, N))
+#define M2_DEBUG_END_PACKED __pragma(pack(pop))
+#define M2_DEBUG_PACKED_ALIGN_N(N)
 #endif
 
 
-#define GS_ENUM_STRING(x)
 
-
-#if __has_cpp_attribute(nodiscard) >= 201603L
-#undef GS_REQUIRED_RESULT
-#define GS_REQUIRED_RESULT [[nodiscard]]
-#else
-#define GS_REQUIRED_RESULT
-#endif
-
-
-/// @brief 处理器和字节序
 #if defined(__ORDER_BIG_ENDIAN__)
 #define BIG_ENDIAN __ORDER_BIG_ENDIAN__
 #else
 #define BIG_ENDIAN 4321
 #endif
-
 #if defined(__ORDER_LITTLE_ENDIAN__)
 #define LITTLE_ENDIAN __ORDER_LITTLE_ENDIAN__
 #else
@@ -145,7 +117,7 @@
 #if defined(__x86_64) || defined(__x86_64__) || defined(__amd64) || defined(_M_X64)
 #define __CPP_LIB_ENDIAN LITTLE_ENDIAN
 #elif defined(__arm64__) || defined(__arm64) || defined(_M_ARM64)
-#define GS_ARCH GS_ARCH_ARM64
+#define M2_ARCH M2_ARCH_ARM64
 #if defined(__ARMEB__)
 #define __CPP_LIB_ENDIAN BIG_ENDIAN
 #elif defined(__BYTE_ORDER__) && defined(__ORDER_BIG_ENDIAN__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
@@ -159,44 +131,34 @@
 #define __FLOAT_WORD_ORDER __CPP_LIB_ENDIAN
 #endif
 
+
 // clang-format off
-#if defined(GS_OS_WIN) && !defined(__GNU__)
-#define GS_INT64_C(c) c ## i64
-#define GS_UINT64_C(c) c ## ui64
+#if defined(M2_OS_WIN) && !defined(__GNU__)
+#define M2_INT64_C(c) c ## i64
+#define M2_UINT64_C(c) c ## ui64
 #else
 #ifdef __cplusplus
-#  define GS_INT64_C(c) static_cast<long long>(c ## LL)     /* signed 64 bit constant */
-#  define GS_UINT64_C(c) static_cast<unsigned long long>(c ## ULL) /* unsigned 64 bit constant */
+#  define M2_INT64_C(c) static_cast<long long>(c ## LL)     /* signed 64 bit constant */
+#  define M2_UINT64_C(c) static_cast<unsigned long long>(c ## ULL) /* unsigned 64 bit constant */
 #else
-#define GS_INT64_C (c)      ((long long)(c ## LL))
-#define GS_UINT64_C (c)     ((unsigned long long)(c ## LL))
+#define M2_INT64_C (c)      ((long long)(c ## LL))
+#define M2_UINT64_C (c)     ((unsigned long long)(c ## LL))
 #endif
 #endif
 // clang-format on
 
 
-
-
 #ifdef _MSC_VER
-#define GS_NEVER_INLINE __declspec(noinline)
-#define GS_ALWAYS_INLINE __forceinline
+#define M2_NEVER_INLINE __declspec(noinline)
+#define M2_ALWAYS_INLINE __forceinline
 #elif __GNUC__
-#define GS_NEVER_INLINE __attribute__((noinline))
-#define GS_ALWAYS_INLINE inline __attribute__((always_inline))
+#define M2_NEVER_INLINE __attribute__((noinline))
+#define M2_ALWAYS_INLINE inline __attribute__((always_inline))
 #else
-#define GS_NEVER_INLINE
-#define GS_ALWAYS_INLINE inline
+#define M2_NEVER_INLINE
+#define M2_ALWAYS_INLINE inline
 #endif
 
-
-#define GS_DISABLE_COPY(Class)     \
-    Class(const Class &) = delete; \
-    Class &operator=(const Class &) = delete;
-
-#define GS_DISABLE_COPY_MOVE(Class) \
-    GS_DISABLE_COPY(Class)          \
-    Class(Class &&) = delete;       \
-    Class &operator=(Class &&) = delete;
 
 
 #ifdef _MSC_VER

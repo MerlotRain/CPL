@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(m2_include_files 
+    ./include/preconfig.h
+    ./include/m2.h
     ./include/m2/memory/m2_allocator.h
     ./include/m2/text/m2_string.h
     )
@@ -16,7 +18,7 @@ set(m2_source_files
 add_library(libm2 SHARED ${m2_include_files} ${m2_source_files})
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    target_compile_definitions(libm2 PRIVATE UTILITY_LIBRARY)
+    target_compile_definitions(libm2 PRIVATE M2_LIBRARY)
     target_compile_definitions(libm2 PRIVATE XPCORE_EXPORTS)
     target_compile_definitions(libm2 PRIVATE JSON_DLL_BUILD)
     target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_COLUMN_METADATA)
@@ -28,7 +30,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     target_compile_definitions(libm2 PRIVATE SQLITE_OMIT_COMPLETE)
     target_compile_definitions(libm2 PRIVATE _NO_CVCONST_H)
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_definitions(libm2 PRIVATE -UTILITY_LIBRARY)
+    target_compile_definitions(libm2 PRIVATE -M2_LIBRARY)
     target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_COLUMN_METADATA)
     target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_FTS3)
     target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_FTS3_PARENTHESIS)
@@ -37,7 +39,7 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_RTREE)
     target_compile_definitions(libm2 PRIVATE -SQLITE_OMIT_COMPLETE)
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    target_compile_definitions(libm2 PRIVATE UTILITY_LIBRARY)
+    target_compile_definitions(libm2 PRIVATE M2_LIBRARY)
     target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_COLUMN_METADATA)
     target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_FTS3)
     target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_FTS3_PARENTHESIS)
@@ -48,6 +50,7 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif ()
 
 target_include_directories(libm2 PRIVATE
+    ./include
     ./include/m2
     ./include/m2/memory
     ./include/m2/text

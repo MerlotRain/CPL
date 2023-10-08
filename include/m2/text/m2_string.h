@@ -34,12 +34,11 @@
 #define M2_STRING_H
 
 #include <m2_allocator.h>
-#include <string>
 
 namespace m2 {
 
 class StringList;
-class String : public StlString
+class M2_API String : public StlString
 {
 public:
     String() noexcept;
@@ -159,29 +158,29 @@ public:
     static String toString(float value, char format = 'g', int precision = 6);
     static String toString(double value, char format = 'g', int precision = 6);
 
-    String &append(const String &str, int width = -1, char fill = ' ');
-    String &append(String &&str, int width = -1, char fill = ' ');
-    String &append(short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &append(unsigned short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &append(int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &append(unsigned int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &append(long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &append(unsigned long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &append(long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &append(unsigned long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &append(float value, char format = 'g', int precision = 6);
-    String &append(double value, char format = 'g', int precision = 6);
+    String &appendTo(const String &str, int width = -1, char fill = ' ');
+    String &appendTo(String &&str, int width = -1, char fill = ' ');
+    String &appendTo(short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &appendTo(unsigned short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &appendTo(int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &appendTo(unsigned int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &appendTo(long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &appendTo(unsigned long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &appendTo(long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &appendTo(unsigned long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &appendTo(float value, char format = 'g', int precision = 6);
+    String &appendTo(double value, char format = 'g', int precision = 6);
 
 public:
-    short ToShort(bool *ok = nullptr, int base = 10) const noexcept;
-    unsigned short ToUShort(bool *ok = nullptr, int base = 10) const noexcept;
-    int ToInt(bool *ok = nullptr, int base = 10) const noexcept;
-    unsigned int ToUInt(bool *ok = nullptr, int base = 10) const noexcept;
-    bool ToBoolean(bool *ok = nullptr) const noexcept;
-    long long ToLongLong(bool *ok = nullptr, int base = 10) const noexcept;
-    unsigned long long ToULongLong(bool *ok = nullptr, int base = 10) const noexcept;
-    float ToFloat(bool *ok = nullptr) const noexcept;
-    double ToDouble(bool *ok = nullptr) const noexcept;
+    short toShort(bool *ok = nullptr, int base = 10) const noexcept;
+    unsigned short toUShort(bool *ok = nullptr, int base = 10) const noexcept;
+    int toInt(bool *ok = nullptr, int base = 10) const noexcept;
+    unsigned int toUInt(bool *ok = nullptr, int base = 10) const noexcept;
+    bool toBoolean(bool *ok = nullptr) const noexcept;
+    long long toLongLong(bool *ok = nullptr, int base = 10) const noexcept;
+    unsigned long long toULongLong(bool *ok = nullptr, int base = 10) const noexcept;
+    float toFloat(bool *ok = nullptr) const noexcept;
+    double toDouble(bool *ok = nullptr) const noexcept;
 };
 
 inline bool String::isNullOrEmpty() const
