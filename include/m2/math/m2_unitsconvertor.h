@@ -37,7 +37,6 @@
 
 namespace m2 {
 
-
 class M2_API Length
 {
 public:
@@ -93,9 +92,8 @@ public:
 
 private:
     double length = 0.0;
-    LengthUnits unit = LengthUnits::eMeter;
+    LengthUnits unit;
 };
-
 
 class M2_API Area
 {
@@ -155,9 +153,8 @@ public:
 
 private:
     double area = 0.0;
-    AreaUnits unit = AreaUnits::eMeter2;
+    AreaUnits unit;
 };
-
 
 class M2_API Volume
 {
@@ -212,7 +209,7 @@ public:
 
 private:
     double volume = 0.0;
-    VolumeUnits unit = VolumeUnits::eCubicMeters;
+    VolumeUnits unit;
 };
 
 /*****************************************************************************

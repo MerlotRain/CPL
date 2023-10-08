@@ -29,3 +29,90 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_WSTRING_H_
+#define M2_WSTRING_H_
+
+#include <m2_allocator.h>
+
+namespace m2 {
+
+class M2_API WString : public StlWString
+{
+public:
+    WString() noexcept;
+    WString(const WString &str);
+    WString(const StlWString &str);
+    template<class STD>
+    WString(const STD &str)
+    {
+        operator=(str.c_str());
+    }
+    WString(const wchar_t *str);
+    WString(wchar_t *str);
+    WString(const wchar_t *str, int off, int count) noexcept;
+    WString(const wchar_t *str, int count) noexcept;
+    WString(const wchar_t *start, const wchar_t *end) noexcept;
+    WString(int count, wchar_t e) noexcept;
+    WString(WString::iterator first, WString::iterator last) noexcept;
+    WString(WString::const_iterator first, WString::const_iterator last) noexcept;
+    WString(WString::reverse_iterator first, WString::reverse_iterator last) noexcept;
+    WString(WString::const_reverse_iterator first, WString::const_reverse_iterator last) noexcept;
+    ~WString();
+
+    WString &operator=(const wchar_t *str);
+    WString &operator=(const StlWString &str);
+    WString &operator=(const WString &str);
+
+    template<class STD>
+    operator STD() const
+    {
+        return STD(c_str());
+    }
+
+    operator bool() const;
+
+    using StlWString::operator+=;
+    template<class STD>
+    WString &operator+=(const STD &str)
+    {
+        StlWString::operator+=(str.c_str());
+        return *this;
+    }
+
+    inline bool isNullOrEmpty() const
+    {
+        return WString::isNullOrEmpty(this->data());
+    }
+
+    WString &operator+=(const WString &str);
+    WString &operator+=(const wchar_t *str);
+    WString operator+(const wchar_t *str) const;
+    WString operator+(const StlWString &str) const;
+    WString operator+(const WString &str) const;
+
+    static bool isNullOrEmpty(const wchar_t *str);
+    template<typename... Args>
+    static WString format(const wchar_t *f, Args &&...args)
+    {
+        auto size_buf = std::snprintf(nullptr, 0, f, std::forward<Args>(args)...) + 1;
+        std::unique_ptr<char[]> buf(new (std::nothrow) char[size_buf]);
+
+        if (!buf)
+        {
+            return {};
+        }
+
+        std::snprintf(buf.get(), size_buf, f, std::forward<Args>(args)...);
+        return WString(buf.get(), buf.get() + size_buf - 1);
+    }
+};
+
+inline WString operator+(const WString &a, const std::wstring &b)
+{
+    return a.operator+(b.c_str());
+}
+
+}// namespace m2
+
+#endif//M2_WSTRING_H_

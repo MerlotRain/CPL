@@ -29,3 +29,49 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_SAFEOBJECT_H_
+#define M2_SAFEOBJECT_H_
+
+#include <m2_rwlock.h>
+
+namespace m2 {
+
+template<class T, class L = RWLock>
+class GsSafeObject : public T, public L
+{
+public:
+    using T::operator=;
+
+    template<class FUN>
+    void LockOn(FUN f)
+    {
+        this->writeLock();
+        f(this);
+        this->unlock();
+    }
+};
+
+template<class T, class L = RWLock>
+class GsSafeType : public L
+{
+public:
+    GsSafeType()
+    {
+    }
+    GsSafeType(T v) : Value(v)
+    {
+    }
+    template<class FUN>
+    void LockOn(FUN f)
+    {
+        this->writeLock();
+        f(Value);
+        this->unlock();
+    }
+    T Value;
+};
+
+}// namespace m2
+
+#endif//M2_SAFEOBJECT_H_

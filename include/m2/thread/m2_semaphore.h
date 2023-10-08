@@ -29,3 +29,34 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_SEMAPHORE_H_
+#define M2_SEMAPHORE_H_
+
+#include <preconfig.h>
+
+namespace m2 {
+
+/// @brief 信号量
+class M2_API Semaphore
+{
+public:
+    Semaphore(int n);
+    Semaphore(int n, int max);
+    ~Semaphore();
+
+    void acquire();
+    void wait();
+    void wait(int milliseconds);
+    bool tryWait(int milliseconds);
+
+private:
+    Semaphore(const Semaphore &) = delete;
+    Semaphore &operator=(const Semaphore &) = delete;
+
+    void *m_Handle;
+};
+
+}// namespace m2
+
+#endif//M2_SEMAPHORE_H_

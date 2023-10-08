@@ -33,10 +33,120 @@
 #ifndef M2_MUTEX_H_
 #define M2_MUTEX_H_
 
+#include <preconfig.h>
+
 namespace m2 {
 
-class Mutex
+class M2_API Mutex
 {
+public:
+    Mutex();
+    ~Mutex();
+    Mutex(const Mutex &) noexcept;
+    Mutex &operator=(const Mutex &) noexcept;
+    Mutex(Mutex &&) noexcept;
+    Mutex &operator=(Mutex &&) noexcept;
+
+    void lock();
+    void lock(long milliseconds);
+    void unlock();
+    bool trylock();
+    bool trylock(long milliseconds);
+
+protected:
+    void *m_Handle;
+};
+
+class M2_API RecursiveMutex
+{
+public:
+    RecursiveMutex();
+    ~RecursiveMutex();
+    RecursiveMutex(const RecursiveMutex &) noexcept;
+    RecursiveMutex &operator=(const RecursiveMutex &) noexcept;
+    RecursiveMutex(RecursiveMutex &&) noexcept;
+    RecursiveMutex &operator=(RecursiveMutex &&) noexcept;
+
+    void lock();
+    void lock(long milliseconds);
+    void unlock();
+    bool trylock();
+    bool trylock(long milliseconds);
+
+protected:
+    void *m_Handle;
+};
+
+template<class M>
+class ScopedLock
+{
+private:
+    M *m_lock;
+    ScopedLock(const ScopedLock &) = delete;
+    ScopedLock &operator=(const ScopedLock &) = delete;
+    ScopedLock(ScopedLock &&) = delete;
+    ScopedLock &operator=(ScopedLock &&) = delete;
+
+public:
+    explicit ScopedLock(M &m) : m_lock(&m)
+    {
+        if (m_lock)
+            m_lock->lock();
+    }
+    explicit ScopedLock(M *m) : m_lock(m)
+    {
+        if (m_lock)
+            m_lock->lock();
+    }
+    ScopedLock(M &m, int milliseconds) : m_lock(&m)
+    {
+        if (m_lock)
+            m_lock->lock(milliseconds);
+    }
+    ScopedLock(M *m, int milliseconds) : m_lock(m)
+    {
+        if (m_lock)
+            m_lock->lock(milliseconds);
+    }
+    ~ScopedLock()
+    {
+        unlock();
+    }
+    void unlock()
+    {
+        if (m_lock)
+            m_lock->unlock();
+        m_lock = NULL;
+    }
+};
+
+template<class M>
+class ReverseScopedLock
+{
+private:
+    M *m_lock;
+    ReverseScopedLock(const ReverseScopedLock &) = delete;
+    ReverseScopedLock &operator=(const ReverseScopedLock &) = delete;
+    ReverseScopedLock(ReverseScopedLock &&) = delete;
+    ReverseScopedLock &operator=(ReverseScopedLock &&) = delete;
+
+public:
+    explicit ReverseScopedLock(M &m) : m_lock(&m)
+    {
+        if (m_lock)
+            m_lock->unlock();
+    }
+    explicit ReverseScopedLock(M *m) : m_lock(m)
+    {
+        if (m_lock)
+            m_lock->unlock();
+    }
+    ~ReverseScopedLock()
+    {
+        if (m_lock)
+            m_lock->lock();
+        m_lock = NULL;
+    }
 };
 
 }// namespace m2

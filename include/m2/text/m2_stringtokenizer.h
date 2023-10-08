@@ -29,3 +29,51 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_STRINGTOKENIZER_H_
+#define M2_STRINGTOKENIZER_H_
+
+#include <m2_string.h>
+
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4251)// warning C4251: needs to have dll-interface to be used by clients of class
+#endif
+
+namespace m2 {
+
+class M2_API StringTokenizer
+{
+public:
+    enum TokenizerFlag : int
+    {
+        TT_EOF,
+        TT_EOL,
+        TT_NUMBER,
+        TT_WORD
+    };
+    explicit StringTokenizer(const String &txt);
+    ~StringTokenizer() {}
+    int nextToken();
+    int peekNextToken();
+    double numberValue() const;
+    String stringVal() const;
+
+private:
+    StringTokenizer(const StringTokenizer &) = delete;
+    StringTokenizer &operator=(const StringTokenizer &) = delete;
+
+private:
+    const String &str;
+    String stok;
+    double ntok;
+    String::const_iterator iter;
+};
+
+}// namespace m2
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+
+#endif//M2_STRINGTOKENIZER_H_

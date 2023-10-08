@@ -33,11 +33,73 @@
 #ifndef M2_WAITCONDITION_H_
 #define M2_WAITCONDITION_H_
 
+#include <m2_mutex.h>
+
 namespace m2 {
 
-class WaitCondition
+class WaitEvent;
+class M2_API WaitCondition
 {
+public:
+    WaitCondition();
+    ~WaitCondition();
+    WaitCondition(const WaitCondition &) noexcept;
+    WaitCondition &operator=(const WaitCondition &) noexcept;
+    WaitCondition(WaitCondition &&) noexcept;
+    WaitCondition &operator=(WaitCondition &&) noexcept;
+
+    template<class M>
+    void wait(M &mtx)
+    {
+        ScopedLock<M> l(mtx);
+        WaitEvent event;
+        {
+            ScopedLock<RecursiveMutex> l(m_mutex);
+            mtx.unlock();
+            enqueue(event);
+        }
+        event.wait();
+    };
+
+    template<class M>
+    void waitUntil(M &mtx, int milliseconds)
+    {
+        if (!tryWaitUntil(mtx, milliseconds))
+            throw std::runtime_error("wait for condition failed");
+    }
+
+    template<class M>
+    bool tryWaitUntil(M &mtx, int milliseconds)
+    {
+        ScopedLock<M> l(mtx);
+        WaitEvent event;
+        {
+            ScopedLock<RecursiveMutex> l(m_mutex);
+            mtx.unlock();
+            Enqueue(event);
+        }
+        if (!event.TryWait(milliseconds))
+        {
+            ScopedLock<RecursiveMutex> l(m_mutex);
+            dequeue(event);
+            return false;
+        }
+        return true;
+    }
+
+    void notify();
+    void notifyAll();
+
+protected:
+    void enqueue(WaitEvent &event);
+    void dequeue();
+    void dequeue(WaitEvent &event);
+
+private:
+    RecursiveMutex m_mutex;
+    std::deque<WaitEvent *> m_waits;
 };
+
 
 }// namespace m2
 

@@ -69,7 +69,7 @@ public:
     double m33() const;
 
 private:
-    double m[3][3];
+    double m_matrix[3][3];
     mutable unsigned int m_type;
     mutable unsigned int m_dirty;
 };

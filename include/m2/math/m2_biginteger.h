@@ -29,3 +29,104 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_BIGINTEGER_H_
+#define M2_BIGINTEGER_H_
+
+#include <m2_string.h>
+
+namespace m2 {
+
+class M2_API GsBigInteger
+{
+public:
+    explicit GsBigInteger(String number);
+    explicit GsBigInteger(long long v);
+    explicit GsBigInteger(int v) noexcept;
+    explicit GsBigInteger(long long v) noexcept;
+    explicit GsBigInteger(unsigned int v) noexcept;
+    explicit GsBigInteger(unsigned long long v) noexcept;
+
+    GsBigInteger &operator=(const GsBigInteger &rhs);
+    GsBigInteger &operator=(const long long &rhs);
+    GsBigInteger &operator=(const String &rhs);
+    GsBigInteger &operator+=(const GsBigInteger &rhs);
+    GsBigInteger &operator+=(const long long &rhs);
+    GsBigInteger &operator+=(const String &rhs);
+    GsBigInteger &operator-=(const GsBigInteger &rhs);
+    GsBigInteger &operator-=(const long long &rhs);
+    GsBigInteger &operator-=(const String &rhs);
+    GsBigInteger &operator*=(const GsBigInteger &rhs);
+    GsBigInteger &operator*=(const long long &rhs);
+    GsBigInteger &operator*=(const String &rhs);
+    GsBigInteger &operator/=(const GsBigInteger &rhs);
+    GsBigInteger &operator/=(const long long &rhs);
+    GsBigInteger &operator/=(const String &rhs);
+
+    GsBigInteger &operator++();
+    const GsBigInteger operator++(int);
+    GsBigInteger &operator--();
+    const GsBigInteger operator--(int);
+
+    unsigned int operator[](int index);
+
+    friend GsBigInteger operator+(GsBigInteger b1, const GsBigInteger &b2);
+    friend GsBigInteger operator+(GsBigInteger b1, const long long &b2);
+    friend GsBigInteger operator+(GsBigInteger b1, const String &b2);
+    friend GsBigInteger operator-(GsBigInteger b1, const GsBigInteger &b2);
+    friend GsBigInteger operator-(GsBigInteger b1, const long long &b2);
+    friend GsBigInteger operator-(GsBigInteger b1, const String &b2);
+    friend GsBigInteger operator*(GsBigInteger b1, const GsBigInteger &b2);
+    friend GsBigInteger operator*(GsBigInteger b1, const long long &b2);
+    friend GsBigInteger operator*(GsBigInteger b1, const String &b2);
+    friend GsBigInteger operator/(GsBigInteger b1, const GsBigInteger &b2);
+    friend GsBigInteger operator/(GsBigInteger b1, const long long &b2);
+    friend GsBigInteger operator/(GsBigInteger b1, const String &b2);
+    friend GsBigInteger operator^(GsBigInteger b1, const int &b2);
+    friend bool operator==(GsBigInteger b1, const GsBigInteger &b2);
+    friend bool operator==(GsBigInteger b1, const long long &b2);
+    friend bool operator==(GsBigInteger b1, const String &b2);
+    friend bool operator>(GsBigInteger b1, const GsBigInteger &b2);
+    friend bool operator<(GsBigInteger b1, const GsBigInteger &b2);
+    friend bool operator>=(GsBigInteger b1, const GsBigInteger &b2);
+    friend bool operator<=(GsBigInteger b1, const GsBigInteger &b2);
+
+    GsBigInteger add(GsBigInteger rhs);
+    GsBigInteger subtract(GsBigInteger rhs);
+    GsBigInteger multiply(GsBigInteger rhs);
+    GsBigInteger divide(GsBigInteger rhs);
+    GsBigInteger pow(int exponent);
+
+    String toString();
+    GsBigInteger setString(const String &newStr);
+    GsBigInteger negate();
+    GsBigInteger trimLeadingZeros();
+
+    bool equals(const GsBigInteger &rhs) const;
+    bool equals(const long long &rhs) const;
+    bool equals(const String &rhs) const;
+    unsigned int digits();
+    bool isNegative() const;
+    bool isPositive() const;
+    bool IsEven() const;
+    bool IsOdd() const;
+    GsBigInteger abs() const;
+
+
+private:
+    GsBigInteger addll(const long long &rhs);
+    GsBigInteger addstr(const String &rhs);
+    GsBigInteger subtractll(const long long &rhs);
+    GsBigInteger subtractstr(const String &rhs);
+    GsBigInteger multiplyll(const long long &rhs);
+    GsBigInteger multiplystr(const String &rhs);
+    GsBigInteger dividell(const long long &rhs);
+    GsBigInteger dividestr(const String &rhs);
+
+private:
+    String value;
+};
+
+}// namespace m2
+
+#endif//M2_BIGINTEGER_H_

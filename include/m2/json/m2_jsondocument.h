@@ -29,3 +29,26 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+/// @brief Json文档
+class M2_API GsJsonDocument
+{
+public:
+    GsJsonDocument();
+    ~GsJsonDocument();
+    GsJsonDocument(const GsJsonDocument &other);
+    GsJsonDocument &operator=(const GsJsonDocument &other);
+    GsJsonDocument(GsJsonDocument &&other) noexcept;
+    GsJsonDocument &operator=(GsJsonDocument &&other) noexcept;
+
+    bool Save(const GsString &path) const;
+    GsString ToString() const;
+
+    GsJsonObject Root();
+    const GsJsonObject Root() const;
+    void Root(const GsJsonObject &oRoot);
+    bool Load(const GsString &path);
+
+private:
+    mutable void *m_pRootJsonObject;
+};

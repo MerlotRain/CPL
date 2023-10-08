@@ -38,7 +38,6 @@
 
 namespace m2 {
 
-
 /// @brief Variant对象的数据类型
 enum GsVarType
 {

@@ -57,7 +57,6 @@ public:
     Polygon(int nPoints, const int *points);
     void swap(Polygon &other) noexcept { std::vector<Point>::swap(other); }
 
-
     void translate(int dx, int dy);
     void translate(const Point &offset);
 
@@ -120,7 +119,6 @@ public:
     PolygonF(const Polygon &a);
     inline void swap(PolygonF &other) { std::vector<PointF>::swap(other); }
 
-
     inline void translate(double dx, double dy);
     void translate(const PointF &offset);
 
@@ -130,9 +128,7 @@ public:
     Polygon toPolygon() const;
 
     bool isClosed() const { return !empty() && front() == back(); }
-
     QRectF boundingRect() const;
-
     bool containsPoint(const PointF &pt, FillRule fillRule) const;
 
     [[nodiscard]] PolygonF united(const PolygonF &r) const;

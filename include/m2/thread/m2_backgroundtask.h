@@ -29,3 +29,44 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+class M2_API GsBackgroundTask : public GsRefObject
+{
+public:
+    virtual ~GsBackgroundTask() {}
+
+    virtual void ExecuteTask() = 0;
+
+    virtual void Cancel();
+
+    static GsSharedPointer<GsBackgroundTask> Create(std::function<void()> funcationTask);
+
+protected:
+    GsBackgroundTask();
+    volatile bool m_bCancel;
+};
+GS_SMARTER_PTR(GsBackgroundTask)
+
+
+enum GsDispatchOption
+{
+    eDummy,
+    eRoundRobin,
+};
+
+class GsDispatchOp;
+class M2_API GsPackagedTack : public GsRefObject
+{
+    std::queue<GsBackgroundTaskPtr> m_Tasks;
+    std::unique_ptr<GsDispatchOp> m_Option;
+
+public:
+    GsPackagedTack(GsDispatchOption option = eDummy);
+
+    ~GsPackagedTack();
+
+    void AddTask(GsBackgroundTask *pTask);
+
+    void Shutdown();
+};
+GS_SMARTER_PTR(GsPackagedTack)

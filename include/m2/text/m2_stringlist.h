@@ -29,3 +29,32 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_STRINGLIST_H_
+#define M2_STRINGLIST_H_
+
+#include <m2_string.h>
+
+namespace m2 {
+
+class StringList : public std::list<String>
+{
+public:
+    StringList() noexcept;
+    StringList(const String &str);
+    StringList(const std::list<String> &l);
+    explicit StringList(std::list<String> &&l) noexcept;
+    StringList(std::initializer_list<String> args) noexcept;
+
+    StringList &operator=(const std::list<String> &rhs);
+    StringList &operator=(std::list<String> &&rhs) noexcept;
+
+    bool contains(const String &str);
+
+    String operator[](size_t i);
+    const String &operator[](size_t i) const;
+};
+
+}// namespace m2
+
+#endif//M2_STRINGLIST_H_

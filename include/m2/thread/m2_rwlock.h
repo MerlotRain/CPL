@@ -33,8 +33,61 @@
 #ifndef M2_RWLOCK_H_
 #define M2_RWLOCK_H_
 
+#include <preconfig.h>
+
 namespace m2 {
 
+class M2_API RWLock
+{
+public:
+    RWLock();
+    ~RWLock();
+    RWLock(const RWLock &) noexcept;
+    RWLock &operator=(const RWLock &) noexcept;
+    RWLock(RWLock &&) noexcept;
+    RWLock &operator=(RWLock &&) noexcept;
+
+    void ReadLock();
+    bool TryReadLock();
+    void WriteLock();
+    bool TryWriteLock();
+    void Unlock();
+
+private:
+    void *m_Handle;
+};
+
+class M2_API ScopedRWLock
+{
+public:
+    explicit ScopedRWLock(RWLock &l, bool write = false);
+    ~ScopedRWLock();
+
+private:
+    ScopedRWLock(const ScopedRWLock &) = delete;
+    ScopedRWLock &operator=(const ScopedRWLock &) = delete;
+    ScopedRWLock(ScopedRWLock &&) = delete;
+    ScopedRWLock &operator=(ScopedRWLock &&) = delete;
+
+    RWLock &m_lock;
+};
+
+class M2_API ScopedReadRWLock : public ScopedRWLock
+{
+public:
+    explicit ScopedReadRWLock(RWLock &l);
+    ~ScopedReadRWLock();
+};
+
+class M2_API ScopedWriteRWLock : public ScopedRWLock
+{
+public:
+    explicit ScopedWriteRWLock(RWLock &l);
+    ~ScopedWriteRWLock();
+};
+
+
 }// namespace m2
+
 
 #endif//M2_RWLOCK_H_

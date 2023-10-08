@@ -29,3 +29,78 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_BIGDECIMAL_H_
+#define M2_BIGDECIMAL_H_
+
+#include <m2_string.h>
+
+namespace m2 {
+
+class M2_API GsBigDecimal
+{
+public:
+    GsBigDecimal() noexcept;
+    explicit GsBigDecimal(const GsBigDecimal &rhs) noexcept;
+    explicit GsBigDecimal(const char *v);
+    explicit GsBigDecimal(String v);
+    explicit GsBigDecimal(int v) noexcept;
+    explicit GsBigDecimal(long long v) noexcept;
+    explicit GsBigDecimal(unsigned int v) noexcept;
+    explicit GsBigDecimal(unsigned long long v) noexcept;
+    explicit GsBigDecimal(float v) noexcept;
+    explicit GsBigDecimal(double v) noexcept;
+    explicit GsBigDecimal(long double v) noexcept;
+
+    GsBigDecimal operator+(const GsBigDecimal &rhs);
+    GsBigDecimal operator-(const GsBigDecimal &rhs);
+    GsBigDecimal operator*(const GsBigDecimal &rhs);
+    GsBigDecimal operator/(const GsBigDecimal &rhs);
+    GsBigDecimal operator%(const GsBigDecimal &rhs);
+    GsBigDecimal operator^(const GsBigDecimal &rhs);
+
+    void operator+=(const GsBigDecimal &rhs);
+    void operator-=(const GsBigDecimal &rhs);
+    void operator*=(const GsBigDecimal &rhs);
+    void operator/=(const GsBigDecimal &rhs);
+    void operator^=(const GsBigDecimal &rhs);
+    bool operator>(const GsBigDecimal &rhs);
+    bool operator>=(const GsBigDecimal &rhs);
+    bool operator==(const GsBigDecimal &rhs);
+    bool operator<(const GsBigDecimal &rhs);
+    bool operator<=(const GsBigDecimal &rhs);
+
+    int toInt();
+    unsigned int toUInt();
+    long long toLongLong();
+    unsigned long long toULongLong();
+    long double toLongDouble();
+    double toDouble();
+    float toFloat();
+    String toString();
+    void round(int scale);
+    String integerPart();
+    String decimalPart();
+
+    static void scale(int scale);
+    static String divide(const String &lhs, const String &rhs, int scale = INT_MIN);
+    static String modulus(const String &lhs, const String &rhs, int scale = INT_MIN);
+    static String pow(const String &lhs, const String &rhs, int scale = INT_MIN);
+    static String add(const String &lhs, const String &rhs, int scale = INT_MIN);
+    static String subtract(const String &lhs, const String &rhs, int scale = INT_MIN);
+    static String multiply(const String &lhs, const String &rhs, int scale = INT_MIN);
+    static String round(const String &lhs, int scale = INT_MIN);
+    static int compareTo(const String &lhs, const String &rhs, int scale = INT_MIN);
+    static String log2(const String &lhs, int scale = INT_MIN);
+    static String ln(const String &lhs, int scale = INT_MIN);
+    static String log(const String &lhs, int scale = INT_MIN);
+    static String sin(const String &lhs, int scale = INT_MIN);
+    static String stringToHex(String &lhs, int caps = 0);
+
+private:
+    String value;
+};
+
+}// namespace m2
+
+#endif//M2_BIGDECIMAL_H_
