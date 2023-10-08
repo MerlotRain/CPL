@@ -34,6 +34,7 @@
 #define M2_STRING_H
 
 #include <m2_allocator.h>
+#include <string>
 
 namespace m2 {
 
@@ -87,48 +88,47 @@ public:
     String operator+(const String &str) const;
     String operator+(const StlString &str) const;
 
-    String &ToUpper();
-    String &ToLower();
-    String &Reverse();
-    String &TrimRight();
-    String &TrimLeft();
-    String &Trimmed();
-    StringList Split(const char *strSep);
-    void Split(const char *strSep, StringList &vecStr);
+    String &toUpper();
+    String &toLower();
+    String &reverse();
+    String &trimRight();
+    String &trimLeft();
+    String &trimmed();
+    StringList split(const char *strSep);
+    void split(const char *strSep, StringList &vecStr);
+    String &replace(char from, char to, size_type start = 0);
+    String &replace(const char *from, const char *to, size_type start = 0);
+    String &replace(const String &from, const String &to, size_type start = 0);
 
-    String &Replace(char from, char to, size_type start = 0);
-    String &Replace(const char *from, const char *to, size_type start = 0);
-    String &Replace(const String &from, const String &to, size_type start = 0);
+    inline bool isNullOrEmpty() const;
+    inline bool startsWith(const char *strHead, bool bIgnoringCase = false) const;
+    inline bool endsWith(const char *strEnd, bool bIgnoringCase = false) const;
+    inline bool contains(char c, bool bIgnoringCase = false) const;
+    inline bool contains(const char *c, bool bIgnoringCase = false) const;
 
-    inline bool IsNullOrEmpty() const;
-    inline bool StartWith(const char *strHead, bool bIgnoringCase = false) const;
-    inline bool EndWith(const char *strEnd, bool bIgnoringCase = false) const;
-    inline bool Contains(char c, bool bIgnoringCase = false) const;
-    inline bool Contains(const char *c, bool bIgnoringCase = false) const;
+    String &remove(char ch);
+    String &remove(const char *src);
 
-    String &Remove(char ch);
-    String &Remove(const char *src);
-
-    static bool IsNullOrEmpty(const char *str);
-    static bool StartWith(const char *str, const char *strHead, bool bIgnoringCase = false);
-    static bool EndWith(const char *str, const char *strTail, bool bIgnoringCase = false);
-    static bool Contains(const char *str, char c, bool bIgnoringCase = false);
-    static bool Contains(const char *str, const char *c, bool bIgnoringCase = false);
-    static String Remove(const char *str, const char *c);
-    static int Compare(const char *strA, const char *strB);
-    static String Escape(const char *str, bool strictJSON = false);
-    static String Unescape(const char *str);
+    static bool isNullOrEmpty(const char *str);
+    static bool startsWith(const char *str, const char *strHead, bool bIgnoringCase = false);
+    static bool endsWith(const char *str, const char *strTail, bool bIgnoringCase = false);
+    static bool contains(const char *str, char c, bool bIgnoringCase = false);
+    static bool contains(const char *str, const char *c, bool bIgnoringCase = false);
+    static String remove(const char *str, const char *c);
+    static int compare(const char *strA, const char *strB);
+    static String escape(const char *str, bool strictJSON = false);
+    static String unescape(const char *str);
 
     template<typename T, typename... Args>
-    inline String Format(T &&t, Args &&...args)
+    inline String format(T &&t, Args &&...args)
     {
-        return String::Format(this->data(), t, std::forward<Args>(args)...);
+        return String::format(this->data(), t, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
-    static String Format(const char *format, Args &&...args)
+    static String format(const char *f, Args &&...args)
     {
-        auto size_buf = std::snprintf(nullptr, 0, format, std::forward<Args>(args)...) + 1;
+        auto size_buf = std::snprintf(nullptr, 0, f, std::forward<Args>(args)...) + 1;
         std::unique_ptr<char[]> buf(new (std::nothrow) char[size_buf]);
 
         if (!buf)
@@ -136,7 +136,7 @@ public:
             return {};
         }
 
-        std::snprintf(buf.get(), size_buf, format, std::forward<Args>(args)...);
+        std::snprintf(buf.get(), size_buf, f, std::forward<Args>(args)...);
         return String(buf.get(), buf.get() + size_buf - 1);
     }
 
@@ -147,30 +147,30 @@ public:
         eYesAndNo,
         eOnAndOff,
     };
-    static String ToString(bool value, BoolFormat format = eFalseAndTrue);
-    static String ToString(short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    static String ToString(unsigned short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    static String ToString(int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    static String ToString(unsigned int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    static String ToString(long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    static String ToString(unsigned long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    static String ToString(long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    static String ToString(unsigned long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    static String ToString(float value, char format = 'g', int precision = 6);
-    static String ToString(double value, char format = 'g', int precision = 6);
+    static String toString(bool value, BoolFormat format = eFalseAndTrue);
+    static String toString(short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    static String toString(unsigned short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    static String toString(int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    static String toString(unsigned int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    static String toString(long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    static String toString(unsigned long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    static String toString(long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    static String toString(unsigned long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    static String toString(float value, char format = 'g', int precision = 6);
+    static String toString(double value, char format = 'g', int precision = 6);
 
-    String &Append(const String &str, int width = -1, char fill = ' ');
-    String &Append(String &&str, int width = -1, char fill = ' ');
-    String &Append(short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &Append(unsigned short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &Append(int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &Append(unsigned int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &Append(long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &Append(unsigned long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &Append(long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &Append(unsigned long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
-    String &Append(float value, char format = 'g', int precision = 6);
-    String &Append(double value, char format = 'g', int precision = 6);
+    String &append(const String &str, int width = -1, char fill = ' ');
+    String &append(String &&str, int width = -1, char fill = ' ');
+    String &append(short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &append(unsigned short value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &append(int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &append(unsigned int value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &append(long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &append(unsigned long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &append(long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &append(unsigned long long value, int base = 10, int width = -1, char fill = '0', bool prefix = false);
+    String &append(float value, char format = 'g', int precision = 6);
+    String &append(double value, char format = 'g', int precision = 6);
 
 public:
     short ToShort(bool *ok = nullptr, int base = 10) const noexcept;
@@ -184,25 +184,26 @@ public:
     double ToDouble(bool *ok = nullptr) const noexcept;
 };
 
-inline bool String::IsNullOrEmpty() const
+inline bool String::isNullOrEmpty() const
 {
-    return String::IsNullOrEmpty(this->data());
+    return String::isNullOrEmpty(this->data());
+    std::string s;
 }
-inline bool String::StartWith(const char *strHead, bool bIgnoringCase = false) const
+inline bool String::startsWith(const char *strHead, bool bIgnoringCase = false) const
 {
-    return String::StartWith(this->data(), strHead, bIgnoringCase);
+    return String::startsWith(this->data(), strHead, bIgnoringCase);
 }
-inline bool String::EndWith(const char *strEnd, bool bIgnoringCase = false) const
+inline bool String::endsWith(const char *strEnd, bool bIgnoringCase = false) const
 {
-    return String::EndWith(this->data(), strEnd, bIgnoringCase);
+    return String::endsWith(this->data(), strEnd, bIgnoringCase);
 }
-inline bool String::Contains(char c, bool bIgnoringCase = false) const
+inline bool String::contains(char c, bool bIgnoringCase = false) const
 {
-    return String::Contains(this->data(), c, bIgnoringCase);
+    return String::contains(this->data(), c, bIgnoringCase);
 }
-inline bool String::Contains(const char *c, bool bIgnoringCase = false) const
+inline bool String::contains(const char *c, bool bIgnoringCase = false) const
 {
-    return String::Contains(this->data(), c, bIgnoringCase);
+    return String::contains(this->data(), c, bIgnoringCase);
 }
 
 inline String operator+(const String &a, const std::string &b)
@@ -211,23 +212,23 @@ inline String operator+(const String &a, const std::string &b)
 }
 inline bool operator==(const String &a, const String &b)
 {
-    return String::Compare(a.c_str(), b.c_str());
+    return String::compare(a.c_str(), b.c_str());
 }
 inline bool operator==(const String &a, const std::string &b)
 {
-    return String::Compare(a.c_str(), b.c_str());
+    return String::compare(a.c_str(), b.c_str());
 }
 inline bool operator==(const String &a, const char *b)
 {
-    return String::Compare(a.c_str(), b);
+    return String::compare(a.c_str(), b);
 }
 inline bool operator==(const std::string &a, const String &b)
 {
-    return String::Compare(a.c_str(), b.c_str());
+    return String::compare(a.c_str(), b.c_str());
 }
 inline bool operator==(const char *a, const String &b)
 {
-    return String::Compare(a, b.c_str());
+    return String::compare(a, b.c_str());
 }
 
 }// namespace m2
