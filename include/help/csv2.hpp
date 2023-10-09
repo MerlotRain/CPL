@@ -146,7 +146,7 @@ private:
   // Points to the first requested byte, and not to the actual start of the mapping.
   pointer data_ = nullptr;
 
-  // GsLength--in bytes--requested by user (which may not be the length of the
+  // Length--in bytes--requested by user (which may not be the length of the
   // full mapping) and the length of the full mapping.
   size_type length_ = 0;
   size_type mapped_length_ = 0;
@@ -183,8 +183,8 @@ public:
    * while establishing the mapping is wrapped in a `std::system_error` and is
    * thrown.
    */
-  template <typename GsString>
-  basic_mmap(const GsString &path, const size_type offset = 0,
+  template <typename String>
+  basic_mmap(const String &path, const size_type offset = 0,
              const size_type length = map_entire_file) {
     std::error_code error;
     map(path, offset, length, error);
@@ -345,8 +345,8 @@ public:
    * `length` is the number of bytes to map. It may be `map_entire_file`, in which
    * case a mapping of the entire file is created.
    */
-  template <typename GsString>
-  void map(const GsString &path, const size_type offset, const size_type length,
+  template <typename String>
+  void map(const String &path, const size_type offset, const size_type length,
            std::error_code &error);
 
   /**
@@ -361,7 +361,7 @@ public:
    *
    * The entire file is mapped.
    */
-  template <typename GsString> void map(const GsString &path, std::error_code &error) {
+  template <typename String> void map(const String &path, std::error_code &error) {
     map(path, 0, map_entire_file, error);
   }
 
@@ -500,7 +500,7 @@ MMap make_mmap(const MappingToken &token, int64_t offset, int64_t length, std::e
 /**
  * Convenience factory method.
  *
- * MappingToken may be a GsString (`std::string`, `std::string_view`, `const char*`,
+ * MappingToken may be a String (`std::string`, `std::string_view`, `const char*`,
  * `std::filesystem::path`, `std::vector<char>`, or similar), or a
  * `mmap_source::handle_type`.
  */
@@ -518,7 +518,7 @@ mmap_source make_mmap_source(const MappingToken &token, std::error_code &error) 
 /**
  * Convenience factory method.
  *
- * MappingToken may be a GsString (`std::string`, `std::string_view`, `const char*`,
+ * MappingToken may be a String (`std::string`, `std::string_view`, `const char*`,
  * `std::filesystem::path`, `std::vector<char>`, or similar), or a
  * `mmap_sink::handle_type`.
  */
@@ -668,27 +668,27 @@ template <typename S> struct is_c_str_or_c_wstr {
       ;
 };
 
-template <typename GsString, typename = decltype(std::declval<GsString>().data()),
-          typename = typename std::enable_if<!is_c_str_or_c_wstr<GsString>::value>::type>
-const typename char_type<GsString>::type *c_str(const GsString &path) {
+template <typename String, typename = decltype(std::declval<String>().data()),
+          typename = typename std::enable_if<!is_c_str_or_c_wstr<String>::value>::type>
+const typename char_type<String>::type *c_str(const String &path) {
   return path.data();
 }
 
-template <typename GsString, typename = decltype(std::declval<GsString>().empty()),
-          typename = typename std::enable_if<!is_c_str_or_c_wstr<GsString>::value>::type>
-bool empty(const GsString &path) {
+template <typename String, typename = decltype(std::declval<String>().empty()),
+          typename = typename std::enable_if<!is_c_str_or_c_wstr<String>::value>::type>
+bool empty(const String &path) {
   return path.empty();
 }
 
-template <typename GsString,
-          typename = typename std::enable_if<is_c_str_or_c_wstr<GsString>::value>::type>
-const typename char_type<GsString>::type *c_str(GsString path) {
+template <typename String,
+          typename = typename std::enable_if<is_c_str_or_c_wstr<String>::value>::type>
+const typename char_type<String>::type *c_str(String path) {
   return path;
 }
 
-template <typename GsString,
-          typename = typename std::enable_if<is_c_str_or_c_wstr<GsString>::value>::type>
-bool empty(GsString path) {
+template <typename String,
+          typename = typename std::enable_if<is_c_str_or_c_wstr<String>::value>::type>
+bool empty(String path) {
   return !path || (*path == 0);
 }
 
@@ -718,18 +718,18 @@ inline DWORD int64_high(int64_t n) noexcept { return n >> 32; }
 /** Returns the 4 lower bytes of an 8-byte integer. */
 inline DWORD int64_low(int64_t n) noexcept { return n & 0xffffffff; }
 
-template <typename GsString, typename = typename std::enable_if<
-                               std::is_same<typename char_type<GsString>::type, char>::value>::type>
-file_handle_type open_file_helper(const GsString &path, const access_mode mode) {
+template <typename String, typename = typename std::enable_if<
+                               std::is_same<typename char_type<String>::type, char>::value>::type>
+file_handle_type open_file_helper(const String &path, const access_mode mode) {
   return ::CreateFileA(
       c_str(path), mode == access_mode::read ? GENERIC_READ : GENERIC_READ | GENERIC_WRITE,
       FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 }
 
-template <typename GsString>
-typename std::enable_if<std::is_same<typename char_type<GsString>::type, wchar_t>::value,
+template <typename String>
+typename std::enable_if<std::is_same<typename char_type<String>::type, wchar_t>::value,
                         file_handle_type>::type
-open_file_helper(const GsString &path, const access_mode mode) {
+open_file_helper(const String &path, const access_mode mode) {
   return ::CreateFileW(
       c_str(path), mode == access_mode::read ? GENERIC_READ : GENERIC_READ | GENERIC_WRITE,
       FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
@@ -752,8 +752,8 @@ inline std::error_code last_error() noexcept {
   return error;
 }
 
-template <typename GsString>
-file_handle_type open_file(const GsString &path, const access_mode mode, std::error_code &error) {
+template <typename String>
+file_handle_type open_file(const String &path, const access_mode mode, std::error_code &error) {
   error.clear();
   if (detail::empty(path)) {
     error = std::make_error_code(std::errc::invalid_argument);
@@ -907,8 +907,8 @@ basic_mmap<AccessMode, ByteT>::mapping_handle() const noexcept {
 }
 
 template <access_mode AccessMode, typename ByteT>
-template <typename GsString>
-void basic_mmap<AccessMode, ByteT>::map(const GsString &path, const size_type offset,
+template <typename String>
+void basic_mmap<AccessMode, ByteT>::map(const String &path, const size_type offset,
                                         const size_type length, std::error_code &error) {
   error.clear();
   if (detail::empty(path)) {
@@ -1272,8 +1272,8 @@ public:
    * while establishing the mapping is wrapped in a `std::system_error` and is
    * thrown.
    */
-  template <typename GsString>
-  basic_shared_mmap(const GsString &path, const size_type offset = 0,
+  template <typename String>
+  basic_shared_mmap(const String &path, const size_type offset = 0,
                     const size_type length = map_entire_file) {
     std::error_code error;
     map(path, offset, length, error);
@@ -1424,8 +1424,8 @@ public:
    * `length` is the number of bytes to map. It may be `map_entire_file`, in which
    * case a mapping of the entire file is created.
    */
-  template <typename GsString>
-  void map(const GsString &path, const size_type offset, const size_type length,
+  template <typename String>
+  void map(const String &path, const size_type offset, const size_type length,
            std::error_code &error) {
     map_impl(path, offset, length, error);
   }
@@ -1442,7 +1442,7 @@ public:
    *
    * The entire file is mapped.
    */
-  template <typename GsString> void map(const GsString &path, std::error_code &error) {
+  template <typename String> void map(const String &path, std::error_code &error) {
     map_impl(path, 0, map_entire_file, error);
   }
 
@@ -1901,13 +1901,29 @@ public:
     return result;
   }
 
-  size_t rows() const {
+  /**
+   * @returns The number of rows (excluding the header)
+  */
+  size_t rows(bool ignore_empty_lines = false) const {
     size_t result{0};
     if (!buffer_ || buffer_size_ == 0)
       return result;
-    for (const char *p = buffer_;
-         (p = static_cast<const char *>(memchr(p, '\n', (buffer_ + buffer_size_) - p))); ++p)
+    
+    // Count the first row if not header
+    if (not first_row_is_header::value
+        and (not ignore_empty_lines
+        or *(static_cast<const char*>(buffer_)) != '\r'))
       ++result;
+
+    for (const char *p = buffer_
+        ; (p = static_cast<const char *>(memchr(p, '\n', (buffer_ + buffer_size_) - p)))
+        ; ++p) {
+      if (ignore_empty_lines
+          and (p >= buffer_ + buffer_size_ - 1
+          or *(p + 1) == '\r'))
+        continue;
+      ++result;
+    }
     return result;
   }
 
