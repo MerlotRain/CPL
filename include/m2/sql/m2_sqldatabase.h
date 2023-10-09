@@ -42,7 +42,7 @@ namespace Data {
 
 
 /// @brief 数据库字段类型
-enum GsSqlFieldType
+enum SqlFieldType
 {
     /// @brief 错误字段类型
     eErrorType,
@@ -76,14 +76,14 @@ enum GsSqlFieldType
 
 
 /// @brief 字段结构
-struct M2_API GsSqlField
+struct M2_API SqlField
 {
     /// @brief 字段名称
-    GsString Name;
+    String Name;
     /// @brief 字段别名
-    GsString AliasName;
+    String AliasName;
     /// @brief 字段类型
-    GsSqlFieldType Type;
+    SqlFieldType Type;
     /// @brief 字段长度
     int Length;
     /// @brief 小数字段精度，整型或字符串字段该值无效
@@ -91,21 +91,21 @@ struct M2_API GsSqlField
     /// @brief 字段是否允许为空
     bool IsNullable;
     /// @brief 字段默认值
-    GsVariant DefaultValue;
+    Variant DefaultValue;
 
     /// @brief 默认构造
-    GsSqlField();
+    SqlField();
     /// @brief 拷贝构造函数
     /// @param rhs
-    GsSqlField(const GsSqlField &rhs);
+    SqlField(const SqlField &rhs);
 
     /// @brief 从名称和类型构造
     /// @param strName 字段名称
     /// @param eType 字段类型
     /// @param strAliasName 字段别名
     /// @param defaultVal 字段默认值
-    GsSqlField(const char *strName, GsSqlFieldType eType, const char *strAliasName = 0,
-               const GsVariant &defaultVal = GsVariant());
+    SqlField(const char *strName, SqlFieldType eType, const char *strAliasName = 0,
+               const Variant &defaultVal = Variant());
 
     /// @brief 从名称和类型、精度和小数L位构造
     /// @param strName 字段名称
@@ -114,27 +114,27 @@ struct M2_API GsSqlField
     /// @param nScale 字段小数位长度
     /// @param strAliasName 字段别名
     /// @param defaultVal 字段默认值，类型需要与字段类型匹配
-    GsSqlField(const char *strName, GsSqlFieldType eType, int nPrecision, int nScale = 0,
-               const char *strAliasName = 0, const GsVariant &defaultVal = GsVariant());
+    SqlField(const char *strName, SqlFieldType eType, int nPrecision, int nScale = 0,
+               const char *strAliasName = 0, const Variant &defaultVal = Variant());
 
     /// @brief 将字段信息序列化为xml字符串
     /// @return
-    GsString ToXml() const;
+    String ToXml() const;
 
     /// @brief 将字段信息序列化为json字符串
     /// @return
-    GsString ToJson() const;
+    String ToJson() const;
     /// @brief 相等操作符
-    bool operator==(const GsSqlField &field) const;
+    bool operator==(const SqlField &field) const;
     /// @brief 不等操作符
-    bool operator!=(const GsSqlField &field) const;
+    bool operator!=(const SqlField &field) const;
 };
 
 
 /// @brief 字段集合
-struct M2_API GsSqlFields
+struct M2_API SqlFields
 {
-    std::vector<GsSqlField> Fields;
+    std::vector<SqlField> Fields;
 
     /// @brief 寻找字段的索引
     /// @param strFieldName
@@ -143,7 +143,7 @@ struct M2_API GsSqlFields
 
     /// @brief 将字段信息序列化为xml字符串
     /// @return
-    GsString ToXml() const;
+    String ToXml() const;
 
     /// @brief 将xml字符串序列化为Fields信息
     /// @param strInfo
@@ -151,29 +151,29 @@ struct M2_API GsSqlFields
 
     /// @brief 将字段信息序列化为json字符串
     /// @return
-    GsString ToJson() const;
+    String ToJson() const;
 
     /// @brief 将json字符串序列化为Fields信息
     /// @param strInfo
     bool FromJson(const char *strInfo);
 
     /// @brief 空字段
-    static const GsSqlFields &Empty();
+    static const SqlFields &Empty();
 };
 
 
-class GsSqlStatement;
-class GsSqlTransaction;
+class SqlStatement;
+class SqlTransaction;
 
 /// @brief 可直接执行sql语句的普通数据库对象
-/// @details 不使用智能指针封装，对GsGeoDatabase模块，GsSqlDatabase指针由内部管理
+/// @details 不使用智能指针封装，对GeoDatabase模块，SqlDatabase指针由内部管理
 /// @details 目前仅对外暴露sqlite数据库的封装
 /// @details 当应用层获取该指针执行sql时，无需析构
-class M2_API GsSqlDatabase : private GsNonCopyable
+class M2_API SqlDatabase : private NonCopyable
 {
 public:
     /// @brief 默认析构
-    virtual ~GsSqlDatabase() = default;
+    virtual ~SqlDatabase() = default;
     /// @brief 打开数据库
     /// @return
     virtual bool Open() = 0;
@@ -185,16 +185,16 @@ public:
     virtual bool Close() = 0;
     /// @brief 开启事务
     /// @return
-    virtual GsSqlTransaction *Transaction() = 0;
+    virtual SqlTransaction *Transaction() = 0;
     /// @brief 最后一条错误信息
     /// @return
-    virtual GsString ErrorMessage();
+    virtual String ErrorMessage();
     /// @brief 错误代码
     /// @return
     virtual long long ErrorCode() = 0;
     /// @brief 创建Statement对象用于复杂执行
     /// @return
-    virtual GsSqlStatement *CreateStatement() = 0;
+    virtual SqlStatement *CreateStatement() = 0;
     /// @brief 执行sql语句
     /// @return
     virtual int Execute(const char *sql) = 0;
@@ -206,26 +206,26 @@ protected:
 protected:
     bool m_isOpen = false;
     bool m_isOpenError = false;
-    GsString m_strErrMsg;
+    String m_strErrMsg;
 };
 
 
 /// @brief 数据库执行Statement对象
-class M2_API GsSqlStatement : private GsNonCopyable
+class M2_API SqlStatement : private NonCopyable
 {
 protected:
-    GsSqlDatabase *m_pDB;
-    GsString m_strSQL;
+    SqlDatabase *m_pDB;
+    String m_strSQL;
 
 public:
     /// @brief 缺省构造函数
-    GsSqlStatement();
+    SqlStatement();
     /// @brief 重载构造函数，创建数据库指针
-    GsSqlStatement(GsSqlDatabase *db, const char *strSQL);
-    virtual ~GsSqlStatement();
-    virtual bool Prepare(GsSqlDatabase *db, const char *sql) = 0;
+    SqlStatement(SqlDatabase *db, const char *strSQL);
+    virtual ~SqlStatement();
+    virtual bool Prepare(SqlDatabase *db, const char *sql) = 0;
     /// @brief 将本地字符串转化为数据库字符串
-    virtual GsString SQLString();
+    virtual String SQLString();
     /// @brief 返回-1
     virtual long long RecordCount();
     /// @brief 读取32位，nCol从0开始，下同
@@ -233,9 +233,9 @@ public:
     /// @brief 读取64位
     virtual long long Int64Value(int nCol);
     /// @brief 读取字符串
-    virtual GsString StringValue(int nCol);
+    virtual String StringValue(int nCol);
     /// @brief 读取日期
-    virtual GsDateTime DataTimeValue(int nCol);
+    virtual DateTime DataTimeValue(int nCol);
     /// @brief 读取无符号字符常量
     virtual const char *StringValuePtr(int nCol);
     /// @brief 读取double类型数据
@@ -270,24 +270,24 @@ public:
     /// @brief 返回当前列的值
     virtual int ValueLength(int nCol) = 0;
     /// @brief 绑定索引,nIndex 从0开始
-    virtual int BindValue(int nIndex, const unsigned char *pBlob, int nLen, GsSqlFieldType eType) = 0;
+    virtual int BindValue(int nIndex, const unsigned char *pBlob, int nLen, SqlFieldType eType) = 0;
     /// @brief 释放内存
     virtual int Reset() = 0;
     /// @brief 获取查询结果的列数
     virtual int ColumnCount() = 0;
     /// @brief 获取列的类型
-    virtual GsSqlFieldType ColunmType(int n) = 0;
+    virtual SqlFieldType ColunmType(int n) = 0;
     /// @brief 获取列的名称
-    virtual GsString ColunmName(int n) = 0;
+    virtual String ColunmName(int n) = 0;
 };
 
 
 /// @brief 数据库事务对象
-class M2_API GsSqlTransaction : public GsRefObject
+class M2_API SqlTransaction : public RefObject
 {
 public:
     /// @brief 默认析构
-    virtual ~GsSqlTransaction() {}
+    virtual ~SqlTransaction() {}
     /// @brief 是否处于事务中
     /// @return 返回是否处于事务中
     virtual bool IsTransaction() = 0;
@@ -303,9 +303,9 @@ public:
 
 protected:
     /// @brief 默认构造
-    GsSqlTransaction() {}
+    SqlTransaction() {}
 };
-GS_SMARTER_PTR(GsSqlTransaction)
+GS_SMARTER_PTR(SqlTransaction)
 
 
 }// namespace Data

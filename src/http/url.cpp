@@ -2,315 +2,315 @@
 
 namespace m2 {
 
-GsUrl::GsUrl()
+Url::Url()
 {
 }
 
-GsUrl::GsUrl(const GsString &url)
+Url::Url(const String &url)
 {
 }
 
-GsUrl::GsUrl(const char *url)
+Url::Url(const char *url)
 {
 }
 
-GsUrl::GsUrl(const GsString &scheme, const GsString &pathEtc)
+Url::Url(const String &scheme, const String &pathEtc)
 {
 }
 
-GsUrl::GsUrl(const GsString &scheme, const GsString &authority, const GsString &pathEtc)
+Url::Url(const String &scheme, const String &authority, const String &pathEtc)
 {
 }
 
-GsUrl::GsUrl(const GsString &scheme, const GsString &authority, const GsString &path, const GsString &query)
+Url::Url(const String &scheme, const String &authority, const String &path, const String &query)
 {
 }
 
-GsUrl::GsUrl(const GsString &scheme, const GsString &authority, const GsString &path, const GsString &query, const GsString &fragment)
+Url::Url(const String &scheme, const String &authority, const String &path, const String &query, const String &fragment)
 {
 }
 
-GsUrl::GsUrl(const GsUrl &url)
+Url::Url(const Url &url)
 {
 }
 
-GsUrl::GsUrl(GsUrl &&url) noexcept
+Url::Url(Url &&url) noexcept
 {
 }
 
-GsUrl::GsUrl(const GsUrl &baseURL, const GsString &relativeURL)
+Url::Url(const Url &baseURL, const String &relativeURL)
 {
 }
 
-GsUrl::~GsUrl()
+Url::~Url()
 {
 }
 
-GsUrl &GsUrl::operator=(const GsUrl &url)
-{
-    // TODO: insert return statement here
-}
-
-GsUrl &GsUrl::operator=(GsUrl &&url) noexcept
+Url &Url::operator=(const Url &url)
 {
     // TODO: insert return statement here
 }
 
-GsUrl &GsUrl::operator=(const GsString &url)
+Url &Url::operator=(Url &&url) noexcept
 {
     // TODO: insert return statement here
 }
 
-GsUrl &GsUrl::operator=(const char *url)
+Url &Url::operator=(const String &url)
 {
     // TODO: insert return statement here
 }
 
-void GsUrl::Swap(GsUrl &url) noexcept
-{
-}
-
-void GsUrl::Clear()
-{
-}
-
-GsString GsUrl::ToString() const
-{
-    return GsString();
-}
-
-const GsString &GsUrl::Scheme() const
+Url &Url::operator=(const char *url)
 {
     // TODO: insert return statement here
 }
 
-void GsUrl::Scheme(const char *scheme)
+void Url::Swap(Url &url) noexcept
 {
 }
 
-const GsString &GsUrl::UserInfo() const
+void Url::Clear()
+{
+}
+
+String Url::ToString() const
+{
+    return String();
+}
+
+const String &Url::Scheme() const
 {
     // TODO: insert return statement here
 }
 
-void GsUrl::UserInfo(const char *userInfo)
+void Url::Scheme(const char *scheme)
 {
 }
 
-const GsString &GsUrl::Host() const
+const String &Url::UserInfo() const
 {
     // TODO: insert return statement here
 }
 
-void GsUrl::Host(const char *host)
+void Url::UserInfo(const char *userInfo)
 {
 }
 
-unsigned short GsUrl::Port() const
+const String &Url::Host() const
+{
+    // TODO: insert return statement here
+}
+
+void Url::Host(const char *host)
+{
+}
+
+unsigned short Url::Port() const
 {
     return 0;
 }
 
-void GsUrl::Port(unsigned short port)
+void Url::Port(unsigned short port)
 {
 }
 
-unsigned short GsUrl::SpecifiedPort() const
-{
-    return 0;
-}
-
-GsString GsUrl::Authority() const
-{
-    return GsString();
-}
-
-void GsUrl::Authority(const char *authority)
-{
-}
-
-const GsString &GsUrl::Path() const
-{
-    // TODO: insert return statement here
-}
-
-void GsUrl::Path(const char *path)
-{
-}
-
-GsString GsUrl::Query() const
-{
-    return GsString();
-}
-
-void GsUrl::Query(const char *query)
-{
-}
-
-void GsUrl::AddQueryParameter(const GsString &param, const GsString &val)
-{
-}
-
-const GsString &GsUrl::RawQuery() const
-{
-    // TODO: insert return statement here
-}
-
-void GsUrl::RawQuery(const char *query)
-{
-}
-
-GsUrl::GsQueryParameters GsUrl::QueryParameters(bool plusIsSpace) const
-{
-    return GsQueryParameters();
-}
-
-void GsUrl::QueryParameters(const GsQueryParameters &params)
-{
-}
-
-GsString GsUrl::Fragment() const
-{
-    return GsString();
-}
-
-void GsUrl::Fragment(const char *fragment)
-{
-}
-
-GsString GsUrl::RawFragment() const
-{
-    return GsString();
-}
-
-void GsUrl::RawFragment(const char *fragment)
-{
-}
-
-GsString GsUrl::PathEtc() const
-{
-    return GsString();
-}
-
-void GsUrl::PathEtc(const char *pathEtc)
-{
-}
-
-GsString GsUrl::PathAndQuery() const
-{
-    return GsString();
-}
-
-void GsUrl::Resolve(const char *relativeURL)
-{
-}
-
-void GsUrl::Resolve(const GsUrl &relativeURL)
-{
-}
-
-bool GsUrl::IsRelative() const
-{
-    return false;
-}
-
-bool GsUrl::Empty() const
-{
-    return false;
-}
-
-bool GsUrl::operator==(const GsUrl &url) const
-{
-    return false;
-}
-
-bool GsUrl::operator==(const GsString &url) const
-{
-    return false;
-}
-
-bool GsUrl::operator!=(const GsUrl &url) const
-{
-    return false;
-}
-
-bool GsUrl::operator!=(const GsString &url) const
-{
-    return false;
-}
-
-void GsUrl::Normalize()
-{
-}
-
-void GsUrl::PathSegments(std::vector<GsString> &segments) const
-{
-}
-
-void GsUrl::Encode(const GsString &str, const GsString &reserved, GsString &encodedStr)
-{
-}
-
-void GsUrl::Decode(const GsString &str, GsString &decodedStr, bool plusAsSpace)
-{
-}
-
-bool GsUrl::Equals(const GsUrl &url) const
-{
-    return false;
-}
-
-bool GsUrl::IsWellKnownPort() const
-{
-    return false;
-}
-
-unsigned short GsUrl::WellKnownPort() const
+unsigned short Url::SpecifiedPort() const
 {
     return 0;
 }
 
-void GsUrl::Parse(const GsString &url)
+String Url::Authority() const
+{
+    return String();
+}
+
+void Url::Authority(const char *authority)
 {
 }
 
-void GsUrl::ParseAuthority(GsString::const_iterator &begin, const GsString::const_iterator &end)
+const String &Url::Path() const
+{
+    // TODO: insert return statement here
+}
+
+void Url::Path(const char *path)
 {
 }
 
-void GsUrl::ParseHostAndPort(GsString::const_iterator &begin, const GsString::const_iterator &end)
+String Url::Query() const
+{
+    return String();
+}
+
+void Url::Query(const char *query)
 {
 }
 
-void GsUrl::ParsePath(GsString::const_iterator &begin, const GsString::const_iterator &end)
+void Url::AddQueryParameter(const String &param, const String &val)
 {
 }
 
-void GsUrl::ParsePathEtc(GsString::const_iterator &begin, const GsString::const_iterator &end)
+const String &Url::RawQuery() const
+{
+    // TODO: insert return statement here
+}
+
+void Url::RawQuery(const char *query)
 {
 }
 
-void GsUrl::ParseQuery(GsString::const_iterator &begin, const GsString::const_iterator &end)
+Url::QueryParameters Url::QueryParameters(bool plusIsSpace) const
+{
+    return QueryParameters();
+}
+
+void Url::QueryParameters(const QueryParameters &params)
 {
 }
 
-void GsUrl::ParseFragment(GsString::const_iterator &begin, const GsString::const_iterator &end)
+String Url::Fragment() const
+{
+    return String();
+}
+
+void Url::Fragment(const char *fragment)
 {
 }
 
-void GsUrl::MergePath(const GsString &path)
+String Url::RawFragment() const
+{
+    return String();
+}
+
+void Url::RawFragment(const char *fragment)
 {
 }
 
-void GsUrl::RemoveDotSegments(bool removeLeading)
+String Url::PathEtc() const
+{
+    return String();
+}
+
+void Url::PathEtc(const char *pathEtc)
 {
 }
 
-void GsUrl::PathSegments(const GsString &path, std::vector<GsString> &segments)
+String Url::PathAndQuery() const
+{
+    return String();
+}
+
+void Url::Resolve(const char *relativeURL)
 {
 }
 
-void GsUrl::BuildPath(const std::vector<GsString> &segments, bool leadingSlash, bool trailingSlash)
+void Url::Resolve(const Url &relativeURL)
+{
+}
+
+bool Url::IsRelative() const
+{
+    return false;
+}
+
+bool Url::Empty() const
+{
+    return false;
+}
+
+bool Url::operator==(const Url &url) const
+{
+    return false;
+}
+
+bool Url::operator==(const String &url) const
+{
+    return false;
+}
+
+bool Url::operator!=(const Url &url) const
+{
+    return false;
+}
+
+bool Url::operator!=(const String &url) const
+{
+    return false;
+}
+
+void Url::Normalize()
+{
+}
+
+void Url::PathSegments(std::vector<String> &segments) const
+{
+}
+
+void Url::Encode(const String &str, const String &reserved, String &encodedStr)
+{
+}
+
+void Url::Decode(const String &str, String &decodedStr, bool plusAsSpace)
+{
+}
+
+bool Url::Equals(const Url &url) const
+{
+    return false;
+}
+
+bool Url::IsWellKnownPort() const
+{
+    return false;
+}
+
+unsigned short Url::WellKnownPort() const
+{
+    return 0;
+}
+
+void Url::Parse(const String &url)
+{
+}
+
+void Url::ParseAuthority(String::const_iterator &begin, const String::const_iterator &end)
+{
+}
+
+void Url::ParseHostAndPort(String::const_iterator &begin, const String::const_iterator &end)
+{
+}
+
+void Url::ParsePath(String::const_iterator &begin, const String::const_iterator &end)
+{
+}
+
+void Url::ParsePathEtc(String::const_iterator &begin, const String::const_iterator &end)
+{
+}
+
+void Url::ParseQuery(String::const_iterator &begin, const String::const_iterator &end)
+{
+}
+
+void Url::ParseFragment(String::const_iterator &begin, const String::const_iterator &end)
+{
+}
+
+void Url::MergePath(const String &path)
+{
+}
+
+void Url::RemoveDotSegments(bool removeLeading)
+{
+}
+
+void Url::PathSegments(const String &path, std::vector<String> &segments)
+{
+}
+
+void Url::BuildPath(const std::vector<String> &segments, bool leadingSlash, bool trailingSlash)
 {
 }
 

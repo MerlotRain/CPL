@@ -7,65 +7,65 @@
 namespace m2 {
 
 
-GsString::GsString() noexcept
+String::String() noexcept
 {
 }
 
-GsString::GsString(const GsString &str) noexcept : GsStlString(str.data())
+String::String(const String &str) noexcept : StlString(str.data())
 {
 }
 
-GsString::GsString(const GsStlString &str) : GsStlString(str)
+String::String(const StlString &str) : StlString(str)
 {
 }
 
-GsString::GsString(const char *str) : GsStlString(str)
+String::String(const char *str) : StlString(str)
 {
 }
 
-GsString::GsString(char *str) : GsStlString(str)
+String::String(char *str) : StlString(str)
 {
 }
 
-GsString::GsString(const char *str, int off, int count) noexcept : GsStlString(str, off, count)
+String::String(const char *str, int off, int count) noexcept : StlString(str, off, count)
 {
 }
 
-GsString::GsString(const char *str, int count) noexcept : GsStlString(str, count)
+String::String(const char *str, int count) noexcept : StlString(str, count)
 {
 }
 
-GsString::GsString(const char *start, const char *end) noexcept : GsStlString(start, end)
+String::String(const char *start, const char *end) noexcept : StlString(start, end)
 {
 }
 
-GsString::GsString(const unsigned char *start, const unsigned char *end) noexcept
-    : GsStlString(start, end)
+String::String(const unsigned char *start, const unsigned char *end) noexcept
+    : StlString(start, end)
 {
 }
 
-GsString::GsString(int count, char e) noexcept : GsStlString(count, e)
+String::String(int count, char e) noexcept : StlString(count, e)
 {
 }
 
-GsString::GsString(const_iterator first, const_iterator last) noexcept : GsStlString(first, last)
+String::String(const_iterator first, const_iterator last) noexcept : StlString(first, last)
 {
 }
 
-GsString::GsString(iterator first, iterator last) noexcept : GsStlString(first, last)
+String::String(iterator first, iterator last) noexcept : StlString(first, last)
 {
 }
 
-GsString::GsString(reverse_iterator first, reverse_iterator last) noexcept : GsStlString(first, last)
+String::String(reverse_iterator first, reverse_iterator last) noexcept : StlString(first, last)
 {
 }
 
-GsString::GsString(const_reverse_iterator first, const_reverse_iterator last) noexcept
-    : GsStlString(first, last)
+String::String(const_reverse_iterator first, const_reverse_iterator last) noexcept
+    : StlString(first, last)
 {
 }
 
-GsString::GsString(GsString *str)
+String::String(String *str)
 {
     if (str)
     {
@@ -73,59 +73,59 @@ GsString::GsString(GsString *str)
     }
 }
 
-GsString::~GsString()
+String::~String()
 {
 }
 
-GsString &GsString::operator=(const char *str)
-{
-    this->assign(str);
-    return *this;
-}
-
-GsString &GsString::operator=(const GsStlString &str)
+String &String::operator=(const char *str)
 {
     this->assign(str);
     return *this;
 }
 
-GsString &GsString::operator=(const GsString &str)
+String &String::operator=(const StlString &str)
 {
     this->assign(str);
     return *this;
 }
 
-GsString::reference GsString::operator[](int _Off)
+String &String::operator=(const String &str)
+{
+    this->assign(str);
+    return *this;
+}
+
+String::reference String::operator[](int _Off)
 {
     return this->at(_Off);
 }
 
-GsString::const_reference GsString::operator[](int _Off) const
+String::const_reference String::operator[](int _Off) const
 {
     return this->at(_Off);
 }
 
-GsString::operator bool() const
+String::operator bool() const
 {
     return this->IsNullOrEmpty();
 }
 
-GsString::operator const char *() const
+String::operator const char *() const
 {
     return this->data();
 }
 
-GsString &GsString::Remove(char ch)
+String &String::Remove(char ch)
 {
     return *this;
 }
 
-GsString &GsString::Remove(const char *src)
+String &String::Remove(const char *src)
 {
     return *this;
 }
 
-bool GsString::IsNullOrEmpty(const char *str)
+bool String::IsNullOrEmpty(const char *str)
 {
     if (!str)
     {
@@ -146,55 +146,55 @@ bool GsString::IsNullOrEmpty(const char *str)
     return false;
 }
 
-GsString &GsString::operator+=(const char *str)
+String &String::operator+=(const char *str)
 {
     this->append(str);
     return *this;
 }
 
-GsString &GsString::operator+=(int ch)
+String &String::operator+=(int ch)
 {
     this->push_back(char(ch));
     return *this;
 }
 
-GsString &GsString::operator+=(char ch)
+String &String::operator+=(char ch)
 {
     this->push_back(ch);
     return *this;
 }
 
-GsString &GsString::operator+=(const GsString &str)
+String &String::operator+=(const String &str)
 {
     this->append(str);
     return *this;
 }
 
-GsString GsString::operator+(const char *str) const
+String String::operator+(const char *str) const
 {
-    GsString s;
+    String s;
     s.assign(this->data());
     s.append(str);
     return s;
 }
 
-GsString GsString::operator+(const GsString &str) const
+String String::operator+(const String &str) const
 {
-    GsString s;
+    String s;
     s.assign(this->data());
     s.append(str);
     return s;
 }
 
-GsString GsString::operator+(const GsStlString &str) const
+String String::operator+(const StlString &str) const
 {
-    GsString s;
+    String s;
     s.assign(this->data());
     s.append(str);
     return s;
 }
 
-int GsString::Length() const
+int String::Length() const
 {
     int nCharacterCount = 0;
     for (int i = 0; operator[](i) != '\0'; ++i)
@@ -207,25 +207,25 @@ int GsString::Length() const
     return nCharacterCount;
 }
 
-GsString &GsString::ToUpper()
+String &String::ToUpper()
 {
     std::transform(this->begin(), this->end(), this->begin(), ::toupper);
     return *this;
 }
 
-GsString &GsString::ToLower()
+String &String::ToLower()
 {
     std::transform(this->begin(), this->end(), this->begin(), ::tolower);
     return *this;
 }
 
-GsString &GsString::Reverse()
+String &String::Reverse()
 {
     std::reverse(this->begin(), this->end());
     return *this;
 }
 
-GsString &GsString::TrimRight()
+String &String::TrimRight()
 {
     size_type index = this->find_first_not_of(" \n\r\t");
     if (index != npos)
@@ -235,7 +235,7 @@ GsString &GsString::TrimRight()
     return *this;
 }
 
-GsString &GsString::TrimLeft()
+String &String::TrimLeft()
 {
     size_type index = this->find_first_not_of(" \n\r\t");
     if (index != npos)
@@ -245,16 +245,16 @@ GsString &GsString::TrimLeft()
     return *this;
 }
 
-GsString &GsString::Trimmed()
+String &String::Trimmed()
 {
     TrimLeft();
     TrimRight();
     return *this;
 }
 
-GsStringList GsString::Split(const char *strSep)
+StringList String::Split(const char *strSep)
 {
-    GsStringList list;
+    StringList list;
     std::regex reg(strSep);
     std::sregex_token_iterator pos(this->begin(), this->end(), reg, -1);
     decltype(pos) end;
@@ -265,7 +265,7 @@ GsStringList GsString::Split(const char *strSep)
     return list;
 }
 
-void GsString::Split(const char *strSep, GsStringList &vecStr)
+void String::Split(const char *strSep, StringList &vecStr)
 {
     std::regex reg(strSep);
     std::sregex_token_iterator pos(this->begin(), this->end(), reg, -1);
@@ -276,18 +276,18 @@ void GsString::Split(const char *strSep, GsStringList &vecStr)
     }
 }
 
-GsString &GsString::Replace(const char from, const char to, size_type start)
+String &String::Replace(const char from, const char to, size_type start)
 {
     if (from == to)
     {
         return *this;
     }
 
-    typename GsString::size_type pos = 0;
+    typename String::size_type pos = 0;
     do
     {
         pos = this->find(from, start);
-        if (pos != GsString::npos)
+        if (pos != String::npos)
         {
             if (to)
             {
@@ -298,21 +298,21 @@ GsString &GsString::Replace(const char from, const char to, size_type start)
                 erase(pos, 1);
             }
         }
-    } while (pos != GsString::npos);
+    } while (pos != String::npos);
 }
 
-GsString &GsString::Replace(const char *from, const char *to, size_type start)
+String &String::Replace(const char *from, const char *to, size_type start)
 {
     assert(from);
-    GsString result;
+    String result;
 
-    typename GsString::size_type pos = 0;
-    typename GsString::size_type fromlen = std::strlen(from);
+    typename String::size_type pos = 0;
+    typename String::size_type fromlen = std::strlen(from);
     result.append(this->data(), 0, start);
     do
     {
         pos = this->find(from);
-        if (pos != GsString::npos)
+        if (pos != String::npos)
         {
             result.append(this->data(), start, pos - start);
             result.append(to);
@@ -322,24 +322,24 @@ GsString &GsString::Replace(const char *from, const char *to, size_type start)
         {
             result.append(this->data(), start, length() - start);
         }
-    } while (pos != GsString::npos);
+    } while (pos != String::npos);
 
     this->swap(result);
     return *this;
 }
 
-GsString &GsString::Replace(const GsString &from, const GsString &to, size_type start)
+String &String::Replace(const String &from, const String &to, size_type start)
 {
     if (from == to)
     {
         return *this;
     }
 
-    typename GsString::size_type pos = 0;
+    typename String::size_type pos = 0;
     do
     {
         pos = find(from, start);
-        if (pos != GsString::npos)
+        if (pos != String::npos)
         {
             if (to)
             {
@@ -350,10 +350,10 @@ GsString &GsString::Replace(const GsString &from, const GsString &to, size_type 
                 erase(pos, 1);
             }
         }
-    } while (pos != GsString::npos);
+    } while (pos != String::npos);
 }
 
-bool GsString::StartWith(const char *str, const char *strHead, bool bIgnoringCase)
+bool String::StartWith(const char *str, const char *strHead, bool bIgnoringCase)
 {
     if (strlen(str) >= strlen(strHead))
     {
@@ -371,7 +371,7 @@ bool GsString::StartWith(const char *str, const char *strHead, bool bIgnoringCas
     return false;
 }
 
-bool GsString::EndWith(const char *str, const char *strTail, bool bIgnoringCase)
+bool String::EndWith(const char *str, const char *strTail, bool bIgnoringCase)
 {
     if (strlen(str) >= strlen(strTail))
     {
@@ -383,7 +383,7 @@ bool GsString::EndWith(const char *str, const char *strTail, bool bIgnoringCase)
     return false;
 }
 
-bool GsString::Contains(const char *str, char c, bool bIgnoringCase)
+bool String::Contains(const char *str, char c, bool bIgnoringCase)
 {
     while (0 != *str)
     {
@@ -397,104 +397,104 @@ bool GsString::Contains(const char *str, char c, bool bIgnoringCase)
     return false;
 }
 
-bool GsString::Contains(const char *src, const char *str, bool bIgnoringCase)
+bool String::Contains(const char *src, const char *str, bool bIgnoringCase)
 {
     return false;
 }
 
 
-GsString GsString::Remove(const char *str, const char *c)
+String String::Remove(const char *str, const char *c)
 {
-    return GsString();
+    return String();
 }
 
-int GsString::Compare(const char *strA, const char *strB)
+int String::Compare(const char *strA, const char *strB)
 {
     return 0;
 }
 
-GsString GsString::Escape(const char *str, bool strictJSON)
+String String::Escape(const char *str, bool strictJSON)
 {
-    return GsString();
+    return String();
 }
 
-GsString GsString::Unescape(const char *str)
+String String::Unescape(const char *str)
 {
-    return GsString();
+    return String();
 }
 
-GsString GsString::ToString(bool value, GsBoolFormat format)
+String String::ToString(bool value, BoolFormat format)
 {
     switch (format)
     {
-        case GsBoolFormat::eFalseAndTrue:
+        case BoolFormat::eFalseAndTrue:
             return value ? "false" : "true";
-        case GsBoolFormat::eOnAndOff:
+        case BoolFormat::eOnAndOff:
             return value ? "on" : "off";
-        case GsBoolFormat::eYesAndNo:
+        case BoolFormat::eYesAndNo:
             return value ? "yes" : "no";
         default:
             break;
     }
 }
 
-GsString GsString::ToString(short value, int base, int width, char fill, bool prefix)
+String String::ToString(short value, int base, int width, char fill, bool prefix)
 {
-    GsString result;
+    String result;
     intToString<short>(value, base, result, false, width, fill);
     return result;
 }
 
-GsString GsString::ToString(unsigned short value, int base, int width, char fill, bool prefix)
+String String::ToString(unsigned short value, int base, int width, char fill, bool prefix)
 {
-    GsString result;
+    String result;
     unsignedIntToString<unsigned short>(value, base, result, false, width, fill);
     return result;
 }
 
-GsString GsString::ToString(int value, int base, int width, char fill, bool prefix)
+String String::ToString(int value, int base, int width, char fill, bool prefix)
 {
-    GsString result;
+    String result;
     intToString<int>(value, base, result, false, width, fill);
     return result;
 }
 
-GsString GsString::ToString(unsigned int value, int base, int width, char fill, bool prefix)
+String String::ToString(unsigned int value, int base, int width, char fill, bool prefix)
 {
-    GsString result;
+    String result;
     unsignedIntToString<unsigned int>(value, base, result, false, width, fill);
     return result;
 }
 
-GsString GsString::ToString(long value, int base, int width, char fill, bool prefix)
+String String::ToString(long value, int base, int width, char fill, bool prefix)
 {
-    GsString result;
+    String result;
     intToString<long>(value, base, result, false, width, fill);
     return result;
 }
 
-GsString GsString::ToString(unsigned long value, int base, int width, char fill, bool prefix)
+String String::ToString(unsigned long value, int base, int width, char fill, bool prefix)
 {
-    GsString result;
+    String result;
     unsignedIntToString<unsigned long>(value, base, result, false, width, fill);
     return result;
 }
 
-GsString GsString::ToString(long long value, int base, int width, char fill, bool prefix)
+String String::ToString(long long value, int base, int width, char fill, bool prefix)
 {
-    GsString result;
+    String result;
     intToString<long long>(value, base, result, false, width, fill);
     return result;
 }
 
-GsString GsString::ToString(unsigned long long value, int base, int width, char fill, bool prefix)
+String String::ToString(unsigned long long value, int base, int width, char fill, bool prefix)
 {
-    GsString result;
+    String result;
     unsignedIntToString<unsigned long long>(value, base, result, false, width, fill);
     return result;
 }
 
-GsString GsString::ToString(float value, char format, int precision)
+String String::ToString(float value, char format, int precision)
 {
     if (precision < 0)
     {
@@ -502,10 +502,10 @@ GsString GsString::ToString(float value, char format, int precision)
     }
     char buffer[MAX_FLOAT_STRING_LENGTH];
     floatToString(buffer, MAX_FLOAT_STRING_LENGTH, value, precision);
-    return GsString(buffer);
+    return String(buffer);
 }
 
-GsString GsString::ToString(double value, char format, int precision)
+String String::ToString(double value, char format, int precision)
 {
     if (precision < 0)
     {
@@ -513,39 +513,21 @@ GsString GsString::ToString(double value, char format, int precision)
     }
     char buffer[MAX_FLOAT_STRING_LENGTH];
     doubleToString(buffer, MAX_FLOAT_STRING_LENGTH, value, precision);
-    return GsString(buffer);
+    return String(buffer);
 }
 
-GsString &GsString::Append(const GsString &str, int width, char fill)
+String &String::Append(const String &str, int width, char fill)
 {
     return *this;
 }
 
-GsString &GsString::Append(GsString &&str, int width, char fill)
+String &String::Append(String &&str, int width, char fill)
 {
     return *this;
 }
 
 
-GsString &GsString::Append(short value, int base, int width, char fill, bool prefix)
-{
-    char result[MAX_INT_STRING_LENGHT];
-    std::size_t sz = MAX_INT_STRING_LENGHT;
-    intToString(value, base, result, sz, prefix, width, fill);
-    this->append(result, sz);
-    return *this;
-}
-
-GsString &GsString::Append(unsigned short value, int base, int width, char fill, bool prefix)
-{
-    char result[MAX_INT_STRING_LENGHT];
-    std::size_t sz = MAX_INT_STRING_LENGHT;
-    unsignedIntToString(value, base, result, sz, prefix, width, fill);
-    this->append(result, sz);
-    return *this;
-}
-
-GsString &GsString::Append(int value, int base, int width, char fill, bool prefix)
+String &String::Append(short value, int base, int width, char fill, bool prefix)
 {
     char result[MAX_INT_STRING_LENGHT];
     std::size_t sz = MAX_INT_STRING_LENGHT;
@@ -554,7 +536,7 @@ GsString &GsString::Append(int value, int base, int width, char fill, bool prefi
     return *this;
 }
 
-GsString &GsString::Append(unsigned int value, int base, int width, char fill, bool prefix)
+String &String::Append(unsigned short value, int base, int width, char fill, bool prefix)
 {
     char result[MAX_INT_STRING_LENGHT];
     std::size_t sz = MAX_INT_STRING_LENGHT;
@@ -563,7 +545,7 @@ GsString &GsString::Append(unsigned int value, int base, int width, char fill, b
     return *this;
 }
 
-GsString &GsString::Append(long value, int base, int width, char fill, bool prefix)
+String &String::Append(int value, int base, int width, char fill, bool prefix)
 {
     char result[MAX_INT_STRING_LENGHT];
     std::size_t sz = MAX_INT_STRING_LENGHT;
@@ -572,7 +554,7 @@ GsString &GsString::Append(long value, int base, int width, char fill, bool pref
     return *this;
 }
 
-GsString &GsString::Append(unsigned long value, int base, int width, char fill, bool prefix)
+String &String::Append(unsigned int value, int base, int width, char fill, bool prefix)
 {
     char result[MAX_INT_STRING_LENGHT];
     std::size_t sz = MAX_INT_STRING_LENGHT;
@@ -581,7 +563,7 @@ GsString &GsString::Append(unsigned long value, int base, int width, char fill, 
     return *this;
 }
 
-GsString &GsString::Append(long long value, int base, int width, char fill, bool prefix)
+String &String::Append(long value, int base, int width, char fill, bool prefix)
 {
     char result[MAX_INT_STRING_LENGHT];
     std::size_t sz = MAX_INT_STRING_LENGHT;
@@ -590,7 +572,7 @@ GsString &GsString::Append(long long value, int base, int width, char fill, bool
     return *this;
 }
 
-GsString &GsString::Append(unsigned long long value, int base, int width, char fill, bool prefix)
+String &String::Append(unsigned long value, int base, int width, char fill, bool prefix)
 {
     char result[MAX_INT_STRING_LENGHT];
     std::size_t sz = MAX_INT_STRING_LENGHT;
@@ -599,7 +581,25 @@ GsString &GsString::Append(unsigned long long value, int base, int width, char f
     return *this;
 }
 
-GsString &GsString::Append(float value, char format, int precision)
+String &String::Append(long long value, int base, int width, char fill, bool prefix)
+{
+    char result[MAX_INT_STRING_LENGHT];
+    std::size_t sz = MAX_INT_STRING_LENGHT;
+    intToString(value, base, result, sz, prefix, width, fill);
+    this->append(result, sz);
+    return *this;
+}
+
+String &String::Append(unsigned long long value, int base, int width, char fill, bool prefix)
+{
+    char result[MAX_INT_STRING_LENGHT];
+    std::size_t sz = MAX_INT_STRING_LENGHT;
+    unsignedIntToString(value, base, result, sz, prefix, width, fill);
+    this->append(result, sz);
+    return *this;
+}
+
+String &String::Append(float value, char format, int precision)
 {
     char buffer[MAX_FLOAT_STRING_LENGTH];
     floatToString(buffer, MAX_FLOAT_STRING_LENGTH, value, precision);
@@ -607,7 +607,7 @@ GsString &GsString::Append(float value, char format, int precision)
     return *this;
 }
 
-GsString &GsString::Append(double value, char format, int precision)
+String &String::Append(double value, char format, int precision)
 {
     char buffer[MAX_FLOAT_STRING_LENGTH];
     doubleToString(buffer, MAX_FLOAT_STRING_LENGTH, value, precision);
@@ -615,47 +615,47 @@ GsString &GsString::Append(double value, char format, int precision)
     return *this;
 }
 
-short GsString::ToShort(bool *ok, int base) const noexcept
+short String::ToShort(bool *ok, int base) const noexcept
 {
     return 0;
 }
 
-unsigned short GsString::ToUShort(bool *ok, int base) const noexcept
+unsigned short String::ToUShort(bool *ok, int base) const noexcept
 {
     return 0;
 }
 
-int GsString::ToInt(bool *ok, int base) const noexcept
+int String::ToInt(bool *ok, int base) const noexcept
 {
     return 0;
 }
 
-unsigned int GsString::ToUInt(bool *ok, int base) const noexcept
+unsigned int String::ToUInt(bool *ok, int base) const noexcept
 {
     return 0;
 }
 
-bool GsString::ToBoolean(bool *ok) const noexcept
+bool String::ToBoolean(bool *ok) const noexcept
 {
     return false;
 }
 
-long long GsString::ToLongLong(bool *ok, int base) const noexcept
+long long String::ToLongLong(bool *ok, int base) const noexcept
 {
     return 0;
 }
 
-unsigned long long GsString::ToULongLong(bool *ok, int base) const noexcept
+unsigned long long String::ToULongLong(bool *ok, int base) const noexcept
 {
     return 0;
 }
 
-float GsString::ToFloat(bool *ok) const noexcept
+float String::ToFloat(bool *ok) const noexcept
 {
     return 0.0f;
 }
 
-double GsString::ToDouble(bool *ok) const noexcept
+double String::ToDouble(bool *ok) const noexcept
 {
     return 0.0;
 }

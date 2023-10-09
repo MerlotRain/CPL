@@ -2,151 +2,151 @@
 
 namespace m2 {
 
-GsDir::GsDir()
+Dir::Dir()
 {
 }
 
-GsDir::GsDir(const GsDir &pDir)
+Dir::Dir(const Dir &pDir)
 {
 }
 
-GsDir::GsDir(const char *strDirPath)
+Dir::Dir(const char *strDirPath)
 {
 }
 
-GsDir::~GsDir()
+Dir::~Dir()
 {
 }
 
-GsString GsDir::Path() const
+String Dir::Path() const
 {
-    return GsString();
+    return String();
 }
 
-bool GsDir::Create()
-{
-    return false;
-}
-
-GsString GsDir::Name() const
-{
-    return GsString();
-}
-
-GsString GsDir::FullPath() const
-{
-    return GsString();
-}
-
-bool GsDir::Exists() const
+bool Dir::Create()
 {
     return false;
 }
 
-bool GsDir::IsRoot() const
+String Dir::Name() const
+{
+    return String();
+}
+
+String Dir::FullPath() const
+{
+    return String();
+}
+
+bool Dir::Exists() const
 {
     return false;
 }
 
-GsDir GsDir::Parent() const
+bool Dir::IsRoot() const
 {
-    return GsDir();
+    return false;
 }
 
-void GsDir::ForEachFiles(GsDelegate<bool(const char *, void *)> &onFileCallBack, void *context,
+Dir Dir::Parent() const
+{
+    return Dir();
+}
+
+void Dir::ForEachFiles(Delegate<bool(const char *, void *)> &onFileCallBack, void *context,
                          const char *searchPattern)
 {
 }
 
-std::vector<GsFile> GsDir::Files(const char *searchPattern) const
+std::vector<File> Dir::Files(const char *searchPattern) const
 {
-    return std::vector<GsFile>();
+    return std::vector<File>();
 }
 
-std::vector<GsFile> *GsDir::Files(std::vector<GsFile> &files) const
-{
-    return nullptr;
-}
-
-GsDir GsDir::SubDir(const char *subName) const
-{
-    return GsDir();
-}
-
-GsFile GsDir::File(const char *fileName) const
-{
-    return GsFile();
-}
-
-void GsDir::ForEachDirs(GsDelegate<bool(const char *, void *)> &onFileCallBack, void *context)
-{
-}
-
-std::vector<GsDir> GsDir::Dirs() const
-{
-    return std::vector<GsDir>();
-}
-
-std::vector<GsDir> *GsDir::Dirs(std::vector<GsDir> &files) const
+std::vector<File> *Dir::Files(std::vector<File> &files) const
 {
     return nullptr;
 }
 
-bool GsDir::operator==(const GsDir &rhs) const
+Dir Dir::SubDir(const char *subName) const
+{
+    return Dir();
+}
+
+File Dir::File(const char *fileName) const
+{
+    return File();
+}
+
+void Dir::ForEachDirs(Delegate<bool(const char *, void *)> &onFileCallBack, void *context)
+{
+}
+
+std::vector<Dir> Dir::Dirs() const
+{
+    return std::vector<Dir>();
+}
+
+std::vector<Dir> *Dir::Dirs(std::vector<Dir> &files) const
+{
+    return nullptr;
+}
+
+bool Dir::operator==(const Dir &rhs) const
 {
     return false;
 }
 
-GsDir &GsDir::operator=(const GsDir &rhs)
+Dir &Dir::operator=(const Dir &rhs)
 {
     // TODO: insert return statement here
 }
 
-GsDir &GsDir::operator=(const char *strDirPath)
+Dir &Dir::operator=(const char *strDirPath)
 {
     // TODO: insert return statement here
 }
 
-GsDir &GsDir::operator=(const GsString &strDirPath)
+Dir &Dir::operator=(const String &strDirPath)
 {
     // TODO: insert return statement here
 }
 
-GsDir::operator bool()
+Dir::operator bool()
 {
 }
 
-bool GsDir::Rename(const char *name)
-{
-    return false;
-}
-
-bool GsDir::Remove(bool recursive)
+bool Dir::Rename(const char *name)
 {
     return false;
 }
 
-bool GsDir::Remove(const char *path, bool recursive)
+bool Dir::Remove(bool recursive)
 {
     return false;
 }
 
-std::vector<GsString> GsDir::Drives()
+bool Dir::Remove(const char *path, bool recursive)
 {
-    return std::vector<GsString>();
+    return false;
 }
 
-unsigned long long GsDir::TotalSpace() const
+std::vector<String> Dir::Drives()
+{
+    return std::vector<String>();
+}
+
+unsigned long long Dir::TotalSpace() const
 {
     return 0;
 }
 
-unsigned long long GsDir::UsableSpace() const
+unsigned long long Dir::UsableSpace() const
 {
     return 0;
 }
 
-unsigned long long GsDir::FreeSpace() const
+unsigned long long Dir::FreeSpace() const
 {
     return 0;
 }

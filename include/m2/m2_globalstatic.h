@@ -84,7 +84,7 @@ union Holder
 }// namespace GlobalStatic
 
 template<typename Holder>
-struct GsGlobalStatic
+struct GlobalStatic
 {
     using Type = typename Holder::Type;
 
@@ -146,7 +146,7 @@ protected:
         }                                                                                           \
     };                                                                                              \
     }                                                                                               \
-    Q_CONSTINIT static GsGlobalStatic<GlobalStatic::Holder<GS_##NAME>> NAME;
+    Q_CONSTINIT static GlobalStatic<GlobalStatic::Holder<GS_##NAME>> NAME;
 
 
 #define GS_GLOBAL_STATIC(TYPE, NAME, ...) GS_GLOBAL_STATIC_WITH_ARGS(TYPE, NAME, (__VA_ARGS__))

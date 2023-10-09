@@ -2,10 +2,10 @@
 
 namespace m2 {
 
-class GsXMLSerializeStream : public GsSerializeStream
+class XMLSerializeStream : public SerializeStream
 {
 public:
 };
-GS_SMARTER_PTR(GsXMLSerializeStream)
+GS_SMARTER_PTR(XMLSerializeStream)
 
 }// namespace m2

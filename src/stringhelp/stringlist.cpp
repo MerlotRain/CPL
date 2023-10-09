@@ -2,40 +2,40 @@
 
 namespace m2 {
 
-GsStringList::GsStringList() noexcept
+StringList::StringList() noexcept
 {
 }
 
-GsStringList::GsStringList(const GsString &str) noexcept
+StringList::StringList(const String &str) noexcept
 {
     emplace_back(str);
 }
 
-GsStringList::GsStringList(const std::list<GsString> &l) noexcept : std::list<GsString>(l)
+StringList::StringList(const std::list<String> &l) noexcept : std::list<String>(l)
 {
 }
 
-GsStringList::GsStringList(std::list<GsString> &&l) noexcept : std::list<GsString>(l)
+StringList::StringList(std::list<String> &&l) noexcept : std::list<String>(l)
 {
 }
 
-GsStringList::GsStringList(std::initializer_list<GsString> args) noexcept : std::list<GsString>(args)
+StringList::StringList(std::initializer_list<String> args) noexcept : std::list<String>(args)
 {
 }
 
-GsStringList &GsStringList::operator=(const std::list<GsString> &rhs)
+StringList &StringList::operator=(const std::list<String> &rhs)
 {
-    std::list<GsString>::operator=(rhs);
+    std::list<String>::operator=(rhs);
     return *this;
 }
 
-GsStringList &GsStringList::operator=(std::list<GsString> &&rhs) noexcept
+StringList &StringList::operator=(std::list<String> &&rhs) noexcept
 {
-    std::list<GsString>::operator=(rhs);
+    std::list<String>::operator=(rhs);
     return *this;
 }
 
-bool GsStringList::Contains(const GsString &str)
+bool StringList::Contains(const String &str)
 {
     for (auto it = this->cbegin(); it != this->cend(); ++it)
     {
@@ -47,20 +47,20 @@ bool GsStringList::Contains(const GsString &str)
     return false;
 }
 
-GsString GsStringList::operator[](size_t i)
+String StringList::operator[](size_t i)
 {
     if (i >= size())
         throw std::out_of_range("out off stringlist max size");
-    std::list<GsString>::iterator it = this->begin();
+    std::list<String>::iterator it = this->begin();
     std::advance(it, i);
     return *it;
 }
 
-const GsString &GsStringList::operator[](size_t i) const
+const String &StringList::operator[](size_t i) const
 {
     if (i >= size())
         throw std::out_of_range("out off stringlist max size");
-    std::list<GsString>::const_iterator it = this->cbegin();
+    std::list<String>::const_iterator it = this->cbegin();
     std::advance(it, i);
     return *it;
 }

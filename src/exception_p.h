@@ -5,18 +5,18 @@ namespace m2 {
 
 
 /// @brief Utility模块通用的Exception，错误抛出时使用该类型
-class GsUtilityException : public GsException
+class UtilityException : public Exception
 {
 public:
-    GsUtilityException() : GsException("Utility", "")
+    UtilityException() : Exception("Utility", "")
     {
     }
 
-    GsUtilityException(const GsString &msg) : GsException("Utility", msg)
+    UtilityException(const String &msg) : Exception("Utility", msg)
     {
     }
 
-    ~GsUtilityException() noexcept override
+    ~UtilityException() noexcept override
     {
     }
 };

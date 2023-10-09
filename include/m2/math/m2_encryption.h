@@ -37,13 +37,12 @@
 
 namespace m2 {
 
-
 /// @brief hash算法库
-class GsCryptographicHashData;
-class GsCryptographicHash
+class CryptographicHashData;
+class CryptographicHash
 {
 public:
-    enum GsHashAlgorithm
+    enum HashAlgorithm
     {
         eMD4,
         eMD5,
@@ -72,10 +71,10 @@ public:
 public:
     /// @brief 根据算法类型构造hash函数
     /// @param algorithm
-    explicit GsCryptographicHash(GsHashAlgorithm algorithm);
+    explicit CryptographicHash(HashAlgorithm algorithm);
 
     /// @brief 默认析构
-    ~GsCryptographicHash();
+    ~CryptographicHash();
 
     /// @brief 重置hash结果
     void Reset();
@@ -84,42 +83,25 @@ public:
     /// @param data
     /// @param length
     void AddData(const char *data, int length);
-    void AddData(const GsByteBuffer &data);
-    void AddData(const GsString &str);
+    void AddData(const ByteBuffer &data);
+    void AddData(const String &str);
 
     /// @brief 求hash结果
     /// @return
-    GsByteBuffer Result() const;
+    ByteBuffer Result() const;
 
     /// @brief 求hash结果
     /// @param data
     /// @param algorithm
     /// @return
-    static GsByteBuffer Hash(const GsByteBuffer &data, GsHashAlgorithm algorithm);
+    static ByteBuffer Hash(const ByteBuffer &data, HashAlgorithm algorithm);
 
     /// @brief 获取hash长度
     /// @param algorithm 算法
-    static int HashLength(GsHashAlgorithm algorithm);
+    static int HashLength(HashAlgorithm algorithm);
 
 private:
-    GsCryptographicHashData *m_Data;
-};
-
-
-// 考虑调用openssl实现
-
-/// @brief 加密解密对象
-class GsEncryption : public GsRefObject
-{
-protected:
-    GsEncryption();
-
-public:
-    virtual ~GsEncryption();
-
-    virtual int Encrypt(const unsigned char *pBlob, int nLen, GsByteBuffer *pOutBuff) = 0;
-
-    virtual int Decrypt(const unsigned char *pBlob, int nLen, GsByteBuffer *pOutBuff) = 0;
+    CryptographicHashData *m_Data;
 };
 
 }// namespace m2

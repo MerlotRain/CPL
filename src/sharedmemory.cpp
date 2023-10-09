@@ -4,65 +4,65 @@
 namespace m2 {
 
 
-GsSharedMemory::GsSharedMemory() : m_Handle(0)
+SharedMemory::SharedMemory() : m_Handle(0)
 {
 }
 
-GsSharedMemory::GsSharedMemory(const char *name, std::size_t size, AccessMode mode, const void *addrHint,
+SharedMemory::SharedMemory(const char *name, std::size_t size, AccessMode mode, const void *addrHint,
                                bool server)
-    : m_Handle(new GsSharedMemeoryHandle(name, size, mode, addrHint, server))
+    : m_Handle(new SharedMemeoryHandle(name, size, mode, addrHint, server))
 {
-    (static_cast<GsSharedMemeoryHandle *>(m_Handle))->AddRef();
+    (static_cast<SharedMemeoryHandle *>(m_Handle))->AddRef();
 }
 
-GsSharedMemory::GsSharedMemory(const GsFile &file, AccessMode mode, const void *addrHint)
-    : m_Handle(new GsSharedMemeoryHandle(file, mode, addrHint))
+SharedMemory::SharedMemory(const File &file, AccessMode mode, const void *addrHint)
+    : m_Handle(new SharedMemeoryHandle(file, mode, addrHint))
 {
-    (static_cast<GsSharedMemeoryHandle *>(m_Handle))->AddRef();
+    (static_cast<SharedMemeoryHandle *>(m_Handle))->AddRef();
 }
 
-GsSharedMemory::GsSharedMemory(const GsSharedMemory &rhs) : m_Handle(rhs.m_Handle)
+SharedMemory::SharedMemory(const SharedMemory &rhs) : m_Handle(rhs.m_Handle)
 {
     if (m_Handle)
-        (static_cast<GsSharedMemeoryHandle *>(m_Handle))->AddRef();
+        (static_cast<SharedMemeoryHandle *>(m_Handle))->AddRef();
 }
 
-GsSharedMemory::~GsSharedMemory()
+SharedMemory::~SharedMemory()
 {
     if (m_Handle)
-        (static_cast<GsSharedMemeoryHandle *>(m_Handle))->Release();
+        (static_cast<SharedMemeoryHandle *>(m_Handle))->Release();
 }
 
-GsSharedMemory &GsSharedMemory::operator=(const GsSharedMemory &rhs)
+SharedMemory &SharedMemory::operator=(const SharedMemory &rhs)
 {
-    GsSharedMemory tmp(rhs);
+    SharedMemory tmp(rhs);
     Swap(tmp);
     return *this;
 }
 
-void GsSharedMemory::Swap(GsSharedMemory &rhs) noexcept
+void SharedMemory::Swap(SharedMemory &rhs) noexcept
 {
     std::swap(m_Handle, rhs.m_Handle);
 }
 
-char *GsSharedMemory::Begin() const
+char *SharedMemory::Begin() const
 {
     if (m_Handle)
-        return (static_cast<GsSharedMemeoryHandle *>(m_Handle))->Begin();
+        return (static_cast<SharedMemeoryHandle *>(m_Handle))->Begin();
     return nullptr;
 }
 
-char *GsSharedMemory::End() const
+char *SharedMemory::End() const
 {
     if (m_Handle)
-        return (static_cast<GsSharedMemeoryHandle *>(m_Handle))->End();
+        return (static_cast<SharedMemeoryHandle *>(m_Handle))->End();
     return nullptr;
 }
 
-unsigned long long GsSharedMemory::Size() const
+unsigned long long SharedMemory::Size() const
 {
     if (m_Handle)
-        return (static_cast<GsSharedMemeoryHandle *>(m_Handle))->Size();
+        return (static_cast<SharedMemeoryHandle *>(m_Handle))->Size();
     return 0;
 }
 

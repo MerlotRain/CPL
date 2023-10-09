@@ -2,7 +2,7 @@
 
 namespace m2 {
 
-class GsWorkThreadImpl
+class WorkThreadImpl
 {
 };
 

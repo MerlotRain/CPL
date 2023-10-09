@@ -37,72 +37,72 @@
 
 namespace m2 {
 
-class M2_API GsBigInteger
+class M2_API BigInteger
 {
 public:
-    explicit GsBigInteger(String number);
-    explicit GsBigInteger(long long v);
-    explicit GsBigInteger(int v) noexcept;
-    explicit GsBigInteger(long long v) noexcept;
-    explicit GsBigInteger(unsigned int v) noexcept;
-    explicit GsBigInteger(unsigned long long v) noexcept;
+    explicit BigInteger(String number);
+    explicit BigInteger(long long v);
+    explicit BigInteger(int v) noexcept;
+    explicit BigInteger(long long v) noexcept;
+    explicit BigInteger(unsigned int v) noexcept;
+    explicit BigInteger(unsigned long long v) noexcept;
 
-    GsBigInteger &operator=(const GsBigInteger &rhs);
-    GsBigInteger &operator=(const long long &rhs);
-    GsBigInteger &operator=(const String &rhs);
-    GsBigInteger &operator+=(const GsBigInteger &rhs);
-    GsBigInteger &operator+=(const long long &rhs);
-    GsBigInteger &operator+=(const String &rhs);
-    GsBigInteger &operator-=(const GsBigInteger &rhs);
-    GsBigInteger &operator-=(const long long &rhs);
-    GsBigInteger &operator-=(const String &rhs);
-    GsBigInteger &operator*=(const GsBigInteger &rhs);
-    GsBigInteger &operator*=(const long long &rhs);
-    GsBigInteger &operator*=(const String &rhs);
-    GsBigInteger &operator/=(const GsBigInteger &rhs);
-    GsBigInteger &operator/=(const long long &rhs);
-    GsBigInteger &operator/=(const String &rhs);
+    BigInteger &operator=(const BigInteger &rhs);
+    BigInteger &operator=(const long long &rhs);
+    BigInteger &operator=(const String &rhs);
+    BigInteger &operator+=(const BigInteger &rhs);
+    BigInteger &operator+=(const long long &rhs);
+    BigInteger &operator+=(const String &rhs);
+    BigInteger &operator-=(const BigInteger &rhs);
+    BigInteger &operator-=(const long long &rhs);
+    BigInteger &operator-=(const String &rhs);
+    BigInteger &operator*=(const BigInteger &rhs);
+    BigInteger &operator*=(const long long &rhs);
+    BigInteger &operator*=(const String &rhs);
+    BigInteger &operator/=(const BigInteger &rhs);
+    BigInteger &operator/=(const long long &rhs);
+    BigInteger &operator/=(const String &rhs);
 
-    GsBigInteger &operator++();
-    const GsBigInteger operator++(int);
-    GsBigInteger &operator--();
-    const GsBigInteger operator--(int);
+    BigInteger &operator++();
+    const BigInteger operator++(int);
+    BigInteger &operator--();
+    const BigInteger operator--(int);
 
     unsigned int operator[](int index);
 
-    friend GsBigInteger operator+(GsBigInteger b1, const GsBigInteger &b2);
-    friend GsBigInteger operator+(GsBigInteger b1, const long long &b2);
-    friend GsBigInteger operator+(GsBigInteger b1, const String &b2);
-    friend GsBigInteger operator-(GsBigInteger b1, const GsBigInteger &b2);
-    friend GsBigInteger operator-(GsBigInteger b1, const long long &b2);
-    friend GsBigInteger operator-(GsBigInteger b1, const String &b2);
-    friend GsBigInteger operator*(GsBigInteger b1, const GsBigInteger &b2);
-    friend GsBigInteger operator*(GsBigInteger b1, const long long &b2);
-    friend GsBigInteger operator*(GsBigInteger b1, const String &b2);
-    friend GsBigInteger operator/(GsBigInteger b1, const GsBigInteger &b2);
-    friend GsBigInteger operator/(GsBigInteger b1, const long long &b2);
-    friend GsBigInteger operator/(GsBigInteger b1, const String &b2);
-    friend GsBigInteger operator^(GsBigInteger b1, const int &b2);
-    friend bool operator==(GsBigInteger b1, const GsBigInteger &b2);
-    friend bool operator==(GsBigInteger b1, const long long &b2);
-    friend bool operator==(GsBigInteger b1, const String &b2);
-    friend bool operator>(GsBigInteger b1, const GsBigInteger &b2);
-    friend bool operator<(GsBigInteger b1, const GsBigInteger &b2);
-    friend bool operator>=(GsBigInteger b1, const GsBigInteger &b2);
-    friend bool operator<=(GsBigInteger b1, const GsBigInteger &b2);
+    friend BigInteger operator+(BigInteger b1, const BigInteger &b2);
+    friend BigInteger operator+(BigInteger b1, const long long &b2);
+    friend BigInteger operator+(BigInteger b1, const String &b2);
+    friend BigInteger operator-(BigInteger b1, const BigInteger &b2);
+    friend BigInteger operator-(BigInteger b1, const long long &b2);
+    friend BigInteger operator-(BigInteger b1, const String &b2);
+    friend BigInteger operator*(BigInteger b1, const BigInteger &b2);
+    friend BigInteger operator*(BigInteger b1, const long long &b2);
+    friend BigInteger operator*(BigInteger b1, const String &b2);
+    friend BigInteger operator/(BigInteger b1, const BigInteger &b2);
+    friend BigInteger operator/(BigInteger b1, const long long &b2);
+    friend BigInteger operator/(BigInteger b1, const String &b2);
+    friend BigInteger operator^(BigInteger b1, const int &b2);
+    friend bool operator==(BigInteger b1, const BigInteger &b2);
+    friend bool operator==(BigInteger b1, const long long &b2);
+    friend bool operator==(BigInteger b1, const String &b2);
+    friend bool operator>(BigInteger b1, const BigInteger &b2);
+    friend bool operator<(BigInteger b1, const BigInteger &b2);
+    friend bool operator>=(BigInteger b1, const BigInteger &b2);
+    friend bool operator<=(BigInteger b1, const BigInteger &b2);
 
-    GsBigInteger add(GsBigInteger rhs);
-    GsBigInteger subtract(GsBigInteger rhs);
-    GsBigInteger multiply(GsBigInteger rhs);
-    GsBigInteger divide(GsBigInteger rhs);
-    GsBigInteger pow(int exponent);
+    BigInteger add(BigInteger rhs);
+    BigInteger subtract(BigInteger rhs);
+    BigInteger multiply(BigInteger rhs);
+    BigInteger divide(BigInteger rhs);
+    BigInteger pow(int exponent);
 
     String toString();
-    GsBigInteger setString(const String &newStr);
-    GsBigInteger negate();
-    GsBigInteger trimLeadingZeros();
+    BigInteger setString(const String &newStr);
+    BigInteger negate();
+    BigInteger trimLeadingZeros();
 
-    bool equals(const GsBigInteger &rhs) const;
+    bool equals(const BigInteger &rhs) const;
     bool equals(const long long &rhs) const;
     bool equals(const String &rhs) const;
     unsigned int digits();
@@ -110,18 +110,18 @@ public:
     bool isPositive() const;
     bool IsEven() const;
     bool IsOdd() const;
-    GsBigInteger abs() const;
+    BigInteger abs() const;
 
 
 private:
-    GsBigInteger addll(const long long &rhs);
-    GsBigInteger addstr(const String &rhs);
-    GsBigInteger subtractll(const long long &rhs);
-    GsBigInteger subtractstr(const String &rhs);
-    GsBigInteger multiplyll(const long long &rhs);
-    GsBigInteger multiplystr(const String &rhs);
-    GsBigInteger dividell(const long long &rhs);
-    GsBigInteger dividestr(const String &rhs);
+    BigInteger addll(const long long &rhs);
+    BigInteger addstr(const String &rhs);
+    BigInteger subtractll(const long long &rhs);
+    BigInteger subtractstr(const String &rhs);
+    BigInteger multiplyll(const long long &rhs);
+    BigInteger multiplystr(const String &rhs);
+    BigInteger dividell(const long long &rhs);
+    BigInteger dividestr(const String &rhs);
 
 private:
     String value;

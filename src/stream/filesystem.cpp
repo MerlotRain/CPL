@@ -1,113 +1,113 @@
 #include <filesystem.h>
 
 namespace m2 {
-long long GsFileSystem::MaxStdio()
+long long FileSystem::MaxStdio()
 {
     return 0;
 }
 
-long long GsFileSystem::MaxStdio(long long maxIOCount)
+long long FileSystem::MaxStdio(long long maxIOCount)
 {
     return 0;
 }
 
-GsString GsFileSystem::AppDataFolder()
+String FileSystem::AppDataFolder()
 {
-    return GsString();
+    return String();
 }
 
-GsString GsFileSystem::PathFolder()
+String FileSystem::PathFolder()
 {
-    return GsString();
+    return String();
 }
 
-void GsFileSystem::AddSearchPath(const char *path)
+void FileSystem::AddSearchPath(const char *path)
 {
 }
 
-GsString GsFileSystem::Combine(const char *path1, const char *path2)
+String FileSystem::Combine(const char *path1, const char *path2)
 {
-    return GsString();
+    return String();
 }
 
-int GsFileSystem::ComparePath(const char *path1, const char *path2)
-{
-    return 0;
-}
-
-GsBOMType GsFileSystem::TestBOM(const char *str, int nLen)
-{
-    return GsBOMType();
-}
-
-int GsFileSystem::BOMLength(GsBOMType eType)
+int FileSystem::ComparePath(const char *path1, const char *path2)
 {
     return 0;
 }
 
-bool GsFileSystem::IsUtf8Path()
+BOMType FileSystem::TestBOM(const char *str, int nLen)
+{
+    return BOMType();
+}
+
+int FileSystem::BOMLength(BOMType eType)
+{
+    return 0;
+}
+
+bool FileSystem::IsUtf8Path()
 {
     return false;
 }
 
-bool GsFileSystem::IsPathCaseSensitivity()
+bool FileSystem::IsPathCaseSensitivity()
 {
     return false;
 }
 
-char GsFileSystem::PathSeparator()
+char FileSystem::PathSeparator()
 {
     return 0;
 }
 
-bool GsFileSystem::Exists(const char *strPath)
+bool FileSystem::Exists(const char *strPath)
 {
     return false;
 }
 
-GsString GsFileSystem::TemporaryFolder()
+String FileSystem::TemporaryFolder()
 {
-    return GsString();
+    return String();
 }
 
-GsString GsFileSystem::CurrentFolder()
+String FileSystem::CurrentFolder()
 {
-    return GsString();
+    return String();
 }
 
-GsString GsFileSystem::HomeFolder()
+String FileSystem::HomeFolder()
 {
-    return GsString();
+    return String();
 }
 
-GsString GsFileSystem::ConfigHomeFolder()
+String FileSystem::ConfigHomeFolder()
 {
-    return GsString();
+    return String();
 }
 
-GsString GsFileSystem::DataHomeFolder()
+String FileSystem::DataHomeFolder()
 {
-    return GsString();
+    return String();
 }
 
-GsString GsFileSystem::TempHomeFolder()
+String FileSystem::TempHomeFolder()
 {
-    return GsString();
+    return String();
 }
 
-GsString GsFileSystem::CacheHomeFolder()
+String FileSystem::CacheHomeFolder()
 {
-    return GsString();
+    return String();
 }
 
-GsString GsFileSystem::TempFolder()
+String FileSystem::TempFolder()
 {
-    return GsString();
+    return String();
 }
 
-GsString GsFileSystem::ConfigFolder()
+String FileSystem::ConfigFolder()
 {
-    return GsString();
+    return String();
 }
 
 

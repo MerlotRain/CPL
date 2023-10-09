@@ -5,18 +5,18 @@
 
 namespace m2 {
 
-GsBigInteger::GsBigInteger(GsString number) : m_Value(number)
+BigInteger::BigInteger(String number) : m_Value(number)
 {
 }
 
-GsBigInteger::GsBigInteger(long long number) : m_Value(std::to_string(number))
+BigInteger::BigInteger(long long number) : m_Value(std::to_string(number))
 {
 }
 
-GsBigInteger GsBigInteger::Add(GsBigInteger other)
+BigInteger BigInteger::Add(BigInteger other)
 {
-    GsBigInteger b1 = other > *this ? other : *this;
-    GsBigInteger b2 = other > *this ? *this : other;
+    BigInteger b1 = other > *this ? other : *this;
+    BigInteger b2 = other > *this ? *this : other;
     if (b1.IsNegative() || b2.IsNegative())
     {
         if (b1.IsNegative() && b2.IsNegative())
@@ -32,7 +32,7 @@ GsBigInteger GsBigInteger::Add(GsBigInteger other)
             return b2.Negate().Subtract(b1).Negate();
         }
     }
-    GsString results;
+    String results;
     int carry = 0;
     int diff = int(b1.m_Value.size() - b2.m_Value.size());
     for (int i = 0; i < diff; ++i)
@@ -53,23 +53,23 @@ GsBigInteger GsBigInteger::Add(GsBigInteger other)
             carry = 1;
         }
     }
-    return GsBigInteger(results);
+    return BigInteger(results);
 }
 
-GsBigInteger GsBigInteger::Addll(const long long &other)
+BigInteger BigInteger::Addll(const long long &other)
 {
-    return this->Add(GsBigInteger(other));
+    return this->Add(BigInteger(other));
 }
 
-GsBigInteger GsBigInteger::Addstr(const GsString &other)
+BigInteger BigInteger::Addstr(const String &other)
 {
-    return this->Add(GsBigInteger(other));
+    return this->Add(BigInteger(other));
 }
 
 
-GsBigInteger GsBigInteger::Subtract(GsBigInteger other)
+BigInteger BigInteger::Subtract(BigInteger other)
 {
-    GsBigInteger b1 = *this, b2 = other;
+    BigInteger b1 = *this, b2 = other;
     if (b1.IsNegative() || b2.IsNegative())
     {
         if (b1.IsNegative() && b2.IsNegative())
@@ -85,7 +85,7 @@ GsBigInteger GsBigInteger::Subtract(GsBigInteger other)
             return b2.Negate().Add(b1);
         }
     }
-    GsString results;
+    String results;
     int n = 0, p = 0;
     bool takeOffOne = false;
     bool shouldBeTen = false;
@@ -93,14 +93,14 @@ GsBigInteger GsBigInteger::Subtract(GsBigInteger other)
     if (b1 < b2)
     {
         //Negative answer
-        GsString t = b2.Subtract(*this).Negate().ToString();
+        String t = b2.Subtract(*this).Negate().ToString();
         for (unsigned int i = 1; i < t.length(); ++i)
         {
             if (t[i] != '0')
                 break;
             t.erase(1, 1);
         }
-        return GsBigInteger(t);
+        return BigInteger(t);
     }
 
     //This next if-block fixes the case where the digit difference is greater than 1
@@ -144,7 +144,7 @@ GsBigInteger GsBigInteger::Subtract(GsBigInteger other)
             b1.m_Value[i - 1] = static_cast<char>(p + '0');
             shouldBeTen = false;
         }
-        GsStringStream ss;
+        StringStream ss;
         if (((b1.m_Value[i] - '0') == (b2.m_Value[j] - '0')))
         {
             ss << "0";
@@ -167,7 +167,7 @@ GsBigInteger GsBigInteger::Subtract(GsBigInteger other)
     }
     if (takeOffOne)
     {
-        GsString number = "";
+        String number = "";
         for (int j = b1.m_Value.length() - b2.m_Value.length() - 1; j >= 0; --j)
         {
             if (b1.m_Value[j] == '0')
@@ -187,7 +187,7 @@ GsBigInteger GsBigInteger::Subtract(GsBigInteger other)
     }
     while (i >= 0)
     {
-        GsStringStream ss;
+        StringStream ss;
         if (i == 0)
         {
             if (b1.m_Value[i] - '0' != 0)
@@ -205,7 +205,7 @@ GsBigInteger GsBigInteger::Subtract(GsBigInteger other)
         --i;
     }
     //In the case of all 0's, we only want to return one of them
-    if (results.find_first_not_of('0') == GsString::npos)
+    if (results.find_first_not_of('0') == String::npos)
     {
         results = "0";
     }
@@ -214,23 +214,23 @@ GsBigInteger GsBigInteger::Subtract(GsBigInteger other)
         int index = results.find_first_not_of('0');
         results = results.substr(index, results.length() - 1);
     }
-    return GsBigInteger(results);
+    return BigInteger(results);
 }
 
-GsBigInteger GsBigInteger::Subtractll(const long long &other)
+BigInteger BigInteger::Subtractll(const long long &other)
 {
-    return this->Subtract(GsBigInteger(other));
+    return this->Subtract(BigInteger(other));
 }
 
-GsBigInteger GsBigInteger::Subtractstr(const GsString &other)
+BigInteger BigInteger::Subtractstr(const String &other)
 {
-    return this->Subtract(GsBigInteger(other));
+    return this->Subtract(BigInteger(other));
 }
 
-GsBigInteger GsBigInteger::Multiply(GsBigInteger other)
+BigInteger BigInteger::Multiply(BigInteger other)
 {
-    GsBigInteger b1 = other > *this ? other : *this;
-    GsBigInteger b2 = other > *this ? *this : other;
+    BigInteger b1 = other > *this ? other : *this;
+    BigInteger b2 = other > *this ? *this : other;
     if (b1.IsNegative() || b2.IsNegative())
     {
         if (b1.IsNegative() && b2.IsNegative())
@@ -250,7 +250,7 @@ GsBigInteger GsBigInteger::Multiply(GsBigInteger other)
         return 0;
     int carry = 0;
     int zeroCounter = 0;
-    GsBigInteger b = 0;
+    BigInteger b = 0;
 
     for (unsigned int i = 0; i < b1.m_Value.size() - b2.m_Value.size(); ++i)
     {
@@ -258,7 +258,7 @@ GsBigInteger GsBigInteger::Multiply(GsBigInteger other)
     }
     for (int i = (b2.m_Value.size() - 1); i >= 0; --i)
     {
-        GsString rr;
+        String rr;
         for (int j = int(b1.m_Value.size() - 1); j >= 0; --j)
         {
             int val = ((b2.m_Value[i] - '0') * (b1.m_Value[j] - '0')) + carry;
@@ -281,9 +281,9 @@ GsBigInteger GsBigInteger::Multiply(GsBigInteger other)
             }
         }
         ++zeroCounter;
-        b += GsBigInteger(rr);
+        b += BigInteger(rr);
     }
-    if (b.m_Value.find_first_not_of('0') != GsString::npos)
+    if (b.m_Value.find_first_not_of('0') != String::npos)
     {
         b.SetString(b.m_Value.erase(0, b.m_Value.find_first_not_of('0')));
     }
@@ -295,7 +295,7 @@ GsBigInteger GsBigInteger::Multiply(GsBigInteger other)
     return b;
 }
 
-GsBigInteger GsBigInteger::Multiplyll(const long long &other)
+BigInteger BigInteger::Multiplyll(const long long &other)
 {
     if (other == 0)
         return 0;
@@ -309,18 +309,18 @@ GsBigInteger GsBigInteger::Multiplyll(const long long &other)
     return *this;
 }
 
-GsBigInteger GsBigInteger::Multiplystr(const GsString &other)
+BigInteger BigInteger::Multiplystr(const String &other)
 {
-    return this->Multiply(GsBigInteger(other));
+    return this->Multiply(BigInteger(other));
 }
 
-GsBigInteger GsBigInteger::Divide(GsBigInteger other)
+BigInteger BigInteger::Divide(BigInteger other)
 {
     if (other == 0)
     {
         std::cerr << "You cannot divide by 0!" << std::endl;
     }
-    GsBigInteger b1 = *this, b2 = other;
+    BigInteger b1 = *this, b2 = other;
     bool sign = false;
     if (b1.IsNegative() && b2.IsNegative())
     {
@@ -337,7 +337,7 @@ GsBigInteger GsBigInteger::Divide(GsBigInteger other)
         b2.Negate();
         sign = true;
     }
-    GsBigInteger quotient = 0;
+    BigInteger quotient = 0;
     while (b1 >= b2)
     {
         b1 -= b2;
@@ -348,25 +348,25 @@ GsBigInteger GsBigInteger::Divide(GsBigInteger other)
     return quotient;
 }
 
-GsBigInteger GsBigInteger::Dividell(const long long &other)
+BigInteger BigInteger::Dividell(const long long &other)
 {
-    return this->Divide(GsBigInteger(other));
+    return this->Divide(BigInteger(other));
 }
 
-GsBigInteger GsBigInteger::Dividestr(const GsString &other)
+BigInteger BigInteger::Dividestr(const String &other)
 {
-    return this->Divide(GsBigInteger(other));
+    return this->Divide(BigInteger(other));
 }
 
-GsBigInteger GsBigInteger::Pow(int exponent)
+BigInteger BigInteger::Pow(int exponent)
 {
     if (exponent < 0)
         std::cerr << "Powers less than 0 are not supported" << std::endl;
     if (exponent == 0)
-        return GsBigInteger("1");
+        return BigInteger("1");
     if (exponent == 1)
         return *this;
-    GsBigInteger result = 1, base = *this;
+    BigInteger result = 1, base = *this;
     while (exponent)
     {
         if (exponent & 1)
@@ -379,18 +379,18 @@ GsBigInteger GsBigInteger::Pow(int exponent)
     return result;
 }
 
-GsString GsBigInteger::ToString()
+String BigInteger::ToString()
 {
     return this->m_Value;
 }
 
-GsBigInteger GsBigInteger::SetString(const GsString &newStr)
+BigInteger BigInteger::SetString(const String &newStr)
 {
     this->m_Value = newStr;
     return *this;
 }
 
-GsBigInteger GsBigInteger::Negate()
+BigInteger BigInteger::Negate()
 {
     if (this->m_Value[0] == '-')
     {
@@ -403,148 +403,148 @@ GsBigInteger GsBigInteger::Negate()
     return *this;
 }
 
-GsBigInteger GsBigInteger::TrimLeadingZeros()
+BigInteger BigInteger::TrimLeadingZeros()
 {
-    GsBigInteger b = *this;
-    if (b.m_Value.find_first_not_of('0') != GsString::npos)
+    BigInteger b = *this;
+    if (b.m_Value.find_first_not_of('0') != String::npos)
     {
         b.SetString(b.m_Value.erase(0, b.m_Value.find_first_not_of('0')));
     }
     return b;
 }
 
-bool GsBigInteger::Equals(const GsBigInteger &other)
+bool BigInteger::Equals(const BigInteger &other)
 {
     return this->m_Value == other.m_Value;
 }
 
-bool GsBigInteger::Equals(const long long &other)
+bool BigInteger::Equals(const long long &other)
 {
     return this->ToString() == std::to_string(other);
 }
 
-bool GsBigInteger::Equals(const GsString &other)
+bool BigInteger::Equals(const String &other)
 {
     return this->ToString() == other;
 }
 
-unsigned int GsBigInteger::Digits()
+unsigned int BigInteger::Digits()
 {
     return this->m_Value.length() - static_cast<int>(this->IsNegative());
 }
 
-bool GsBigInteger::IsNegative() const
+bool BigInteger::IsNegative() const
 {
     return this->m_Value[0] == '-';
 }
 
-bool GsBigInteger::isPositive()
+bool BigInteger::isPositive()
 {
     return !this->IsNegative();
 }
 
-bool GsBigInteger::IsEven()
+bool BigInteger::IsEven()
 {
     return this->m_Value[this->m_Value.length() - 1] % 2 == 0;
 }
 
-bool GsBigInteger::IsOdd()
+bool BigInteger::IsOdd()
 {
     return !this->IsEven();
 }
 
-GsBigInteger GsBigInteger::Abs() const
+BigInteger BigInteger::Abs() const
 {
-    return GsBigInteger(this->m_Value.substr(static_cast<unsigned int>(this->IsNegative())));
+    return BigInteger(this->m_Value.substr(static_cast<unsigned int>(this->IsNegative())));
 }
 
-GsBigInteger operator+(GsBigInteger b1, const GsBigInteger &b2)
+BigInteger operator+(BigInteger b1, const BigInteger &b2)
 {
     return b1.Add(b2);
 }
 
-GsBigInteger operator+(GsBigInteger b1, const long long &b2)
+BigInteger operator+(BigInteger b1, const long long &b2)
 {
     return b1.Addll(b2);
 }
 
-GsBigInteger operator+(GsBigInteger b1, const GsString &b2)
+BigInteger operator+(BigInteger b1, const String &b2)
 {
     return b1.Addstr(b2);
 }
 
-GsBigInteger operator-(GsBigInteger b1, const GsBigInteger &b2)
+BigInteger operator-(BigInteger b1, const BigInteger &b2)
 {
     return b1.Subtract(b2);
 }
 
-GsBigInteger operator-(GsBigInteger b1, const long long &b2)
+BigInteger operator-(BigInteger b1, const long long &b2)
 {
     return b1.Subtractll(b2);
 }
 
-GsBigInteger operator-(GsBigInteger b1, const GsString &b2)
+BigInteger operator-(BigInteger b1, const String &b2)
 {
     return b1.Subtractstr(b2);
 }
 
-GsBigInteger operator*(GsBigInteger b1, const GsBigInteger &b2)
+BigInteger operator*(BigInteger b1, const BigInteger &b2)
 {
     return b1.Multiply(b2);
 }
 
-GsBigInteger operator*(GsBigInteger b1, const long long &b2)
+BigInteger operator*(BigInteger b1, const long long &b2)
 {
     return b1.Multiplyll(b2);
 }
 
-GsBigInteger operator*(GsBigInteger b1, const GsString &b2)
+BigInteger operator*(BigInteger b1, const String &b2)
 {
     return b1.Multiplystr(b2);
 }
 
-GsBigInteger operator/(GsBigInteger b1, const GsBigInteger &b2)
+BigInteger operator/(BigInteger b1, const BigInteger &b2)
 {
     return b1.Divide(b2);
 }
 
-GsBigInteger operator/(GsBigInteger b1, const long long &b2)
+BigInteger operator/(BigInteger b1, const long long &b2)
 {
     return b1.Dividell(b2);
 }
 
-GsBigInteger operator/(GsBigInteger b1, const GsString &b2)
+BigInteger operator/(BigInteger b1, const String &b2)
 {
     return b1.Dividestr(b2);
 }
 
-GsBigInteger operator^(GsBigInteger b1, const int &b2)
+BigInteger operator^(BigInteger b1, const int &b2)
 {
     return b1.Pow(b2);
 }
 
-bool operator==(GsBigInteger b1, const GsBigInteger &b2)
+bool operator==(BigInteger b1, const BigInteger &b2)
 {
     return b1.Equals(b2);
 }
 
-bool operator==(GsBigInteger b1, const long long &b2)
+bool operator==(BigInteger b1, const long long &b2)
 {
     return b1.Equals(b2);
 }
 
-bool operator==(GsBigInteger b1, const GsString &b2)
+bool operator==(BigInteger b1, const String &b2)
 {
     return b1.Equals(b2);
 }
 
-bool operator>(GsBigInteger b1, const GsBigInteger &b2)
+bool operator>(BigInteger b1, const BigInteger &b2)
 {
     if (b1.IsNegative() || b2.IsNegative())
     {
         if (b1.IsNegative() && b2.IsNegative())
         {
-            GsBigInteger bt = b2;
+            BigInteger bt = b2;
             b1.m_Value.erase(0, 1);
             bt.m_Value.erase(0, 1);
             return b1 < bt;
@@ -555,7 +555,7 @@ bool operator>(GsBigInteger b1, const GsBigInteger &b2)
         }
     }
     b1 = b1.TrimLeadingZeros();
-    auto c = GsBigInteger(b2);
+    auto c = BigInteger(b2);
     c = c.TrimLeadingZeros();
     if (b1 == c)
     {
@@ -583,22 +583,22 @@ bool operator>(GsBigInteger b1, const GsBigInteger &b2)
     return false;
 }
 
-bool operator<(GsBigInteger b1, const GsBigInteger &b2)
+bool operator<(BigInteger b1, const BigInteger &b2)
 {
     return !(b1 == b2) && !(b1 > b2);
 }
 
-bool operator>=(GsBigInteger b1, const GsBigInteger &b2)
+bool operator>=(BigInteger b1, const BigInteger &b2)
 {
     return b1 > b2 || b1 == b2;
 }
 
-bool operator<=(GsBigInteger b1, const GsBigInteger &b2)
+bool operator<=(BigInteger b1, const BigInteger &b2)
 {
     return b1 < b2 || b1 == b2;
 }
 
-unsigned int GsBigInteger::operator[](int index)
+unsigned int BigInteger::operator[](int index)
 {
     if (this->m_Value[index] == '-')
     {
@@ -607,118 +607,118 @@ unsigned int GsBigInteger::operator[](int index)
     return static_cast<unsigned int>(this->m_Value[index] - '0');
 }
 
-GsBigInteger &GsBigInteger::operator=(const GsBigInteger &other)
+BigInteger &BigInteger::operator=(const BigInteger &other)
 {
     this->m_Value = other.m_Value;
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator=(const long long &other)
+BigInteger &BigInteger::operator=(const long long &other)
 {
     this->m_Value = std::to_string(other);
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator=(const GsString &other)
+BigInteger &BigInteger::operator=(const String &other)
 {
     this->m_Value = other;
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator+=(const GsBigInteger &other)
+BigInteger &BigInteger::operator+=(const BigInteger &other)
 {
     *this = *this + other;
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator+=(const long long &other)
+BigInteger &BigInteger::operator+=(const long long &other)
 {
     *this = *this + other;
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator+=(const GsString &other)
+BigInteger &BigInteger::operator+=(const String &other)
 {
     *this = *this + other;
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator-=(const GsBigInteger &other)
+BigInteger &BigInteger::operator-=(const BigInteger &other)
 {
     *this = *this - other;
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator-=(const long long &other)
+BigInteger &BigInteger::operator-=(const long long &other)
 {
     *this = *this - other;
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator-=(const GsString &other)
+BigInteger &BigInteger::operator-=(const String &other)
 {
     *this = *this - other;
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator*=(const GsBigInteger &other)
+BigInteger &BigInteger::operator*=(const BigInteger &other)
 {
     *this = *this * other;
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator*=(const long long &other)
+BigInteger &BigInteger::operator*=(const long long &other)
 {
     *this = *this * other;
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator*=(const GsString &other)
+BigInteger &BigInteger::operator*=(const String &other)
 {
     *this = *this * other;
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator/=(const GsBigInteger &other)
+BigInteger &BigInteger::operator/=(const BigInteger &other)
 {
     *this = *this / other;
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator/=(const long long &other)
+BigInteger &BigInteger::operator/=(const long long &other)
 {
     *this = *this / other;
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator/=(const GsString &other)
+BigInteger &BigInteger::operator/=(const String &other)
 {
     *this = *this / other;
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator++()
+BigInteger &BigInteger::operator++()
 {
-    *this += GsBigInteger("1");
+    *this += BigInteger("1");
     return *this;
 }
 
-GsBigInteger &GsBigInteger::operator--()
+BigInteger &BigInteger::operator--()
 {
-    *this -= GsBigInteger("1");
+    *this -= BigInteger("1");
     return *this;
 }
 
-const GsBigInteger GsBigInteger::operator++(int)
+const BigInteger BigInteger::operator++(int)
 {
-    GsBigInteger t(this->ToString());
+    BigInteger t(this->ToString());
     ++(*this);
     return t;
 }
 
-const GsBigInteger GsBigInteger::operator--(int)
+const BigInteger BigInteger::operator--(int)
 {
-    GsBigInteger t(this->ToString());
+    BigInteger t(this->ToString());
     --(*this);
     return t;
 }

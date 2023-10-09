@@ -39,7 +39,7 @@
 namespace m2 {
 
 /// @brief Variant对象的数据类型
-enum GsVarType
+enum VarType
 {
     /// @brief 未知数据
     eUnknownVarType = -2,
@@ -69,7 +69,7 @@ enum GsVarType
     eString,
     /// @brief bool
     eBool,
-    /// @brief GsRefObject*
+    /// @brief RefObject*
     eObject,
     /// @brief 二进制数据
     eBlob,
@@ -79,10 +79,10 @@ enum GsVarType
 };
 
 
-class GsVariant
+class Variant
 {
 public:
-    GsVarType Type;
+    VarType Type;
     union
     {
         char cVal;
@@ -96,114 +96,114 @@ public:
         float fltVal;
         double dblVal;
         bool boolVal;
-        GsRefObject *objVal;
+        RefObject *objVal;
         char *strVal;
         unsigned char *blbVal;
         long long dateVal;
     };
 
-    virtual ~GsVariant();
+    virtual ~Variant();
 
     /// @brief 构造函数重载
-    GsVariant();
+    Variant();
     /// @brief 单字符构造函数
     /// @param v
-    GsVariant(char v);
+    Variant(char v);
     /// @brief 无符号字符构造函数
     /// @param v
-    GsVariant(unsigned char v);
+    Variant(unsigned char v);
     /// @brief 16位的构造函数
     /// @param v
-    GsVariant(short v);
+    Variant(short v);
     /// @brief 无符号16位的构造函数
     /// @param v
-    GsVariant(unsigned short v);
+    Variant(unsigned short v);
     /// @brief 32位的构造函数
     /// @param v
-    GsVariant(int v);
+    Variant(int v);
     /// @brief 无符号32位的构造函数
     /// @param v
-    GsVariant(unsigned int v);
+    Variant(unsigned int v);
     /// @brief 64位的构造函数
     /// @param v
     /// @param bDateTime
-    GsVariant(long long v, bool bDateTime = false);
+    Variant(long long v, bool bDateTime = false);
     /// @brief 无符号64位的构造函数
     /// @param v
-    GsVariant(unsigned long long v);
+    Variant(unsigned long long v);
     /// @brief 32位浮点构造函数
     /// @param v
-    GsVariant(float v);
+    Variant(float v);
     /// @brief 64位浮点构造函数
     /// @param v
-    GsVariant(double v);
+    Variant(double v);
     /// @brief bool类型构造函数
     /// @param v
-    GsVariant(bool v);
-    /// @brief GsRefObject类指针的构造函数
+    Variant(bool v);
+    /// @brief RefObject类指针的构造函数
     /// @param v
-    GsVariant(GsRefObject *v);
+    Variant(RefObject *v);
     /// @brief 字符常量构造函数
     /// @param v
-    GsVariant(const char *v);
+    Variant(const char *v);
     /// @brief 字符常量构造函数
     /// @param str
-    GsVariant(const GsString &str);
+    Variant(const String &str);
 
     /// @brief 无符号字符常量构造函数
     /// @param v
     /// @param nLen
-    GsVariant(const unsigned char *v, int nLen);
+    Variant(const unsigned char *v, int nLen);
     /// @brief 类引用构造函数
     /// @param rhs
-    GsVariant(const GsVariant &rhs);
+    Variant(const Variant &rhs);
     /// @brief 移动构造
     /// @param rhs
-    GsVariant(GsVariant &&rhs);
+    Variant(Variant &&rhs);
 
     /// @brief 构造指定类型的空数据
     /// @param rhs
-    GsVariant(GsVarType type);
+    Variant(VarType type);
 
     /// @brief 符号重载，返回引用类型
-    GsVariant &operator=(const GsVariant &rhs);
+    Variant &operator=(const Variant &rhs);
     /// @brief 符号重载，返回引用类型
-    GsVariant &operator=(char v);
+    Variant &operator=(char v);
     /// @brief 符号重载，返回引用类型
-    GsVariant &operator=(unsigned char v);
+    Variant &operator=(unsigned char v);
     /// @brief 符号重载，返回引用类型
-    GsVariant &operator=(short v);
+    Variant &operator=(short v);
     /// @brief 符号重载，返回引用类型
-    GsVariant &operator=(unsigned short v);
+    Variant &operator=(unsigned short v);
     /// @brief 符号重载，返回引用类型
-    GsVariant &operator=(int v);
+    Variant &operator=(int v);
     /// @brief 符号重载，返回引用类型
-    GsVariant &operator=(unsigned int v);
+    Variant &operator=(unsigned int v);
     /// @brief 符号重载，返回引用类型
-    GsVariant &operator=(long long v);
+    Variant &operator=(long long v);
     /// @brief 符号重载，返回引用类型
-    GsVariant &operator=(unsigned long long v);
+    Variant &operator=(unsigned long long v);
     /// @brief 符号重载，返回引用类型
-    GsVariant &operator=(float v);
+    Variant &operator=(float v);
     /// @brief 符号重载，返回引用类型
-    GsVariant &operator=(double v);
+    Variant &operator=(double v);
     /// @brief 符号重载，返回引用类型
-    GsVariant &operator=(bool v);
+    Variant &operator=(bool v);
     /// @brief 符号重载，返回引用类型
-    GsVariant &operator=(const char *v);
+    Variant &operator=(const char *v);
     /// @brief 符号重载，返回引用类型
-    GsVariant &operator=(const GsString &str);
+    Variant &operator=(const String &str);
 
     /// @brief 符号重载，返回引用类型
-    GsVariant &operator=(GsRefObject *v);
+    Variant &operator=(RefObject *v);
 
     /// @brief 移动赋值
-    GsVariant &operator=(GsVariant &&v);
+    Variant &operator=(Variant &&v);
 
     /// @brief 是否相等
-    bool operator==(const GsVariant &o) const;
+    bool operator==(const Variant &o) const;
     /// @brief 是否相等
-    bool operator!=(const GsVariant &o) const;
+    bool operator!=(const Variant &o) const;
 
     /// \brief
     void Clear();
@@ -230,8 +230,8 @@ public:
     double AsDouble() const;
     /// @brief 获取bool的值
     bool AsBool() const;
-    /// @brief 获取GsRefObject类
-    GsRefObject *AsObject() const;
+    /// @brief 获取RefObject类
+    RefObject *AsObject() const;
     /// @brief 获取字符串
     char *AsString() const;
     /// @brief 获取二进制数据块
@@ -263,7 +263,7 @@ public:
     /// @brief 类型转换
     operator const char *() const;
     /// @brief 类型转换
-    operator GsRefObject *();
+    operator RefObject *();
 
     /// @brief 设置blob数据
     /// @param bBlob
@@ -293,13 +293,13 @@ public:
 
     /// @brief 数据的文本
     /// @return 返回数据的文本内容
-    GsString ToString() const;
+    String ToString() const;
 
     /// @brief 交换数据
-    void Swap(GsVariant &rhs);
+    void Swap(Variant &rhs);
 
     /// @brief 空对象
-    static const GsVariant &Empty();
+    static const Variant &Empty();
 };
 
 

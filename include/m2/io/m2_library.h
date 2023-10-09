@@ -35,7 +35,7 @@
 
 namespace m2 {
 
-class GsLibrary
+class Library
 {
 public:
     /// @brief linux动态库加载标识
@@ -48,19 +48,19 @@ public:
     };
 
     /// @brief 默认构造
-    GsLibrary() = default;
+    Library() = default;
 
     /// @brief 根据路径打开动态库
     /// @param path
-    explicit GsLibrary(const char *path);
+    explicit Library(const char *path);
 
     /// @brief 根据路径和标识打开动态库
     /// @param path
     /// @param flags
-    GsLibrary(const char *path, int flags);
+    Library(const char *path, int flags);
     /// @brief 默认析构
     /// @details 析构时不会主动释放动态库句柄，需要手动管理
-    virtual ~GsLibrary();
+    virtual ~Library();
 
     /// @brief 加载动态库
     /// @details 加载失败时会抛出异常
@@ -90,22 +90,22 @@ public:
 
     /// @brief 动态库路径
     /// @return
-    const GsString &Path() const;
+    const String &Path() const;
 
     /// @brief 获取当前平台下库文件后缀
     /// @return
-    static GsString Suffix();
+    static String Suffix();
     /// @brief 动态库搜索路径，设置后可仅通过名称加载动态库
     /// @param path
     /// @return
-    static bool SearchPath(const GsString &path);
+    static bool SearchPath(const String &path);
 
 private:
-    GS_DISABLE_COPY(GsLibrary)
+    GS_DISABLE_COPY(Library)
 
-    GsString m_strPath;
+    String m_strPath;
     void *m_Handle;
-    static GsRecursiveMutex m_mutex;
+    static RecursiveMutex m_mutex;
 };
 
 }// namespace m2

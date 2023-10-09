@@ -81,41 +81,41 @@ void GetSystemTimeAsFileTimeWithMillisecondResolution(FILETIME *pFT)
 #endif
 
 
-GsTimestamp::GsTimestamp()
+Timestamp::Timestamp()
 {
     Update();
 }
 
-GsTimestamp::GsTimestamp(long long tv) : Timestamp(tv)
+Timestamp::Timestamp(long long tv) : Timestamp(tv)
 {
 }
 
-GsTimestamp::GsTimestamp(const GsTimestamp &rhs) : Timestamp(rhs.Timestamp)
+Timestamp::Timestamp(const Timestamp &rhs) : Timestamp(rhs.Timestamp)
 {
 }
 
-GsTimestamp::~GsTimestamp()
+Timestamp::~Timestamp()
 {
 }
 
-GsTimestamp &GsTimestamp::operator=(const GsTimestamp &rhs)
+Timestamp &Timestamp::operator=(const Timestamp &rhs)
 {
     Timestamp = rhs.Timestamp;
     return *this;
 }
 
-GsTimestamp &GsTimestamp::operator=(long long tv)
+Timestamp &Timestamp::operator=(long long tv)
 {
     Timestamp = tv;
     return *this;
 }
 
-void GsTimestamp::Swap(GsTimestamp &ths) noexcept
+void Timestamp::Swap(Timestamp &ths) noexcept
 {
     std::swap(Timestamp, ths.Timestamp);
 }
 
-void GsTimestamp::Update()
+void Timestamp::Update()
 {
 #ifdef _WIN32
     FILETIME ft;
@@ -138,129 +138,129 @@ void GsTimestamp::Update()
 #endif
 }
 
-bool GsTimestamp::operator==(const GsTimestamp &rhs) const
+bool Timestamp::operator==(const Timestamp &rhs) const
 {
     return Timestamp == rhs.Timestamp;
 }
 
-bool GsTimestamp::operator!=(const GsTimestamp &rhs) const
+bool Timestamp::operator!=(const Timestamp &rhs) const
 {
     return Timestamp != rhs.Timestamp;
 }
 
-bool GsTimestamp::operator>(const GsTimestamp &rhs) const
+bool Timestamp::operator>(const Timestamp &rhs) const
 {
     return Timestamp > rhs.Timestamp;
 }
 
-bool GsTimestamp::operator>=(const GsTimestamp &rhs) const
+bool Timestamp::operator>=(const Timestamp &rhs) const
 {
     return Timestamp >= rhs.Timestamp;
 }
 
-bool GsTimestamp::operator<(const GsTimestamp &rhs) const
+bool Timestamp::operator<(const Timestamp &rhs) const
 {
     return Timestamp < rhs.Timestamp;
 }
 
-bool GsTimestamp::operator<=(const GsTimestamp &rhs) const
+bool Timestamp::operator<=(const Timestamp &rhs) const
 {
     return Timestamp <= rhs.Timestamp;
 }
 
-GsTimestamp GsTimestamp::operator+(long long duration) const
+Timestamp Timestamp::operator+(long long duration) const
 {
-    return GsTimestamp(Timestamp + duration);
+    return Timestamp(Timestamp + duration);
 }
 
-GsTimestamp GsTimestamp::operator+(const GsTimeSpan &span) const
+Timestamp Timestamp::operator+(const TimeSpan &span) const
 {
     return *this + span.TotalMicroseconds();
 }
 
-GsTimestamp GsTimestamp::operator-(long long duration) const
+Timestamp Timestamp::operator-(long long duration) const
 {
-    return GsTimestamp(Timestamp - duration);
+    return Timestamp(Timestamp - duration);
 }
 
-GsTimestamp GsTimestamp::operator-(const GsTimeSpan &span) const
+Timestamp Timestamp::operator-(const TimeSpan &span) const
 {
-    return GsTimestamp();
+    return Timestamp();
 }
 
-long long GsTimestamp::operator-(const GsTimestamp &rhs) const
+long long Timestamp::operator-(const Timestamp &rhs) const
 {
     return Timestamp - rhs.Timestamp;
 }
 
-GsTimestamp &GsTimestamp::operator+=(long long duration)
+Timestamp &Timestamp::operator+=(long long duration)
 {
     Timestamp += duration;
     return *this;
 }
 
-GsTimestamp &GsTimestamp::operator+=(const GsTimeSpan &span)
+Timestamp &Timestamp::operator+=(const TimeSpan &span)
 {
     return *this += span.TotalMicroseconds();
 }
 
-GsTimestamp &GsTimestamp::operator-=(long long duration)
+Timestamp &Timestamp::operator-=(long long duration)
 {
     Timestamp -= duration;
     return *this;
 }
 
-GsTimestamp &GsTimestamp::operator-=(const GsTimeSpan &span)
+Timestamp &Timestamp::operator-=(const TimeSpan &span)
 {
     return *this -= span.TotalMicroseconds();
 }
 
-std::time_t GsTimestamp::EpochTime() const
+std::time_t Timestamp::EpochTime() const
 {
     return std::time_t(Timestamp / Resolution());
 }
 
-long long GsTimestamp::UTCTime() const
+long long Timestamp::UTCTime() const
 {
     return Timestamp * 10 + (long long(0x01b21dd2) << 32) + 0x13814000;
 }
 
-long long GsTimestamp::EpochMicroseconds() const
+long long Timestamp::EpochMicroseconds() const
 {
     return Timestamp;
 }
 
-long long GsTimestamp::Elapsed() const
+long long Timestamp::Elapsed() const
 {
-    GsTimestamp now;
+    Timestamp now;
     return now - *this;
 }
 
-bool GsTimestamp::IsElapsed(long long interval) const
+bool Timestamp::IsElapsed(long long interval) const
 {
-    GsTimestamp now;
+    Timestamp now;
     long long diff = now - *this;
     return diff >= interval;
 }
 
-long long GsTimestamp::Raw() const
+long long Timestamp::Raw() const
 {
     return 1000000;
 }
 
-GsTimestamp GsTimestamp::FromEpochTime(std::time_t t)
+Timestamp Timestamp::FromEpochTime(std::time_t t)
 {
-    return GsTimestamp(long long(t) * Resolution());
+    return Timestamp(long long(t) * Resolution());
 }
 
-GsTimestamp GsTimestamp::FromUTCTime(long long utc)
+Timestamp Timestamp::FromUTCTime(long long utc)
 {
     utc -= (long long(0x01b21dd2) << 32) + 0x13814000;
     utc /= 10;
-    return GsTimestamp(utc);
+    return Timestamp(utc);
 }
 
-long long GsTimestamp::Resolution()
+long long Timestamp::Resolution()
 {
     return 0;
 }

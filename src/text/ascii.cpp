@@ -2,7 +2,7 @@
 
 namespace m2 {
 
-enum GsCharacterProperties
+enum CharacterProperties
 {
     eACP_CONTROL = 0x0001,
     eACP_SPACE = 0x0002,
@@ -147,7 +147,7 @@ static constexpr int CHARACTER_PROPERTIES[128] = {
         /* 7f . */ eACP_LOWER};
 
 
-int GsAscii::Properties(int ch)
+int Ascii::Properties(int ch)
 {
     if (IsAscii(ch))
     {
@@ -159,67 +159,67 @@ int GsAscii::Properties(int ch)
     }
 }
 
-bool GsAscii::HasSomeProperties(int ch, int properties)
+bool Ascii::HasSomeProperties(int ch, int properties)
 {
     return (Properties(ch) & properties) != 0;
 }
 
-bool GsAscii::HasProperties(int ch, int properties)
+bool Ascii::HasProperties(int ch, int properties)
 {
     return (Properties(ch) & properties) == properties;
 }
 
-bool GsAscii::IsAscii(int ch)
+bool Ascii::IsAscii(int ch)
 {
     return (static_cast<uint32_t>(ch) & 0xFFFFFF80) == 0;
 }
 
-bool GsAscii::IsSpace(int ch)
+bool Ascii::IsSpace(int ch)
 {
     return HasProperties(ch, eACP_SPACE);
 }
 
-bool GsAscii::IsDigit(int ch)
+bool Ascii::IsDigit(int ch)
 {
     return HasProperties(ch, eACP_DIGIT);
 }
 
-bool GsAscii::IsHexDigit(int ch)
+bool Ascii::IsHexDigit(int ch)
 {
     return HasProperties(ch, eACP_HEXDIGIT);
 }
 
-bool GsAscii::IsPunctuation(int ch)
+bool Ascii::IsPunctuation(int ch)
 {
     return HasProperties(ch, eACP_PUNCT);
 }
 
-bool GsAscii::IsAlpha(int ch)
+bool Ascii::IsAlpha(int ch)
 {
     return HasProperties(ch, eACP_ALPHA);
 }
 
-bool GsAscii::IsAlphaNumeric(int ch)
+bool Ascii::IsAlphaNumeric(int ch)
 {
     return HasSomeProperties(ch, eACP_ALPHA | eACP_DIGIT);
 }
 
-bool GsAscii::IsLower(int ch)
+bool Ascii::IsLower(int ch)
 {
     return HasProperties(ch, eACP_LOWER);
 }
 
-bool GsAscii::IsUpper(int ch)
+bool Ascii::IsUpper(int ch)
 {
     return HasProperties(ch, eACP_UPPER);
 }
 
-bool GsAscii::IsPrintable(int ch)
+bool Ascii::IsPrintable(int ch)
 {
     return HasProperties(ch, eACP_PRINT);
 }
 
-int GsAscii::ToLower(int ch)
+int Ascii::ToLower(int ch)
 {
     if (IsUpper(ch))
     {
@@ -231,7 +231,7 @@ int GsAscii::ToLower(int ch)
     }
 }
 
-int GsAscii::ToUpper(int ch)
+int Ascii::ToUpper(int ch)
 {
     if (IsLower(ch))
     {

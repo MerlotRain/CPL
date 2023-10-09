@@ -3,39 +3,39 @@
 namespace m2 {
 
 
-GsStringStream::GsStringStream()
+StringStream::StringStream()
 {
 }
 
-GsStringStream::GsStringStream(const GsString &str)
-    : GsStlSStream(str.c_str(), std::ios_base::in | std::ios_base::out)
+StringStream::StringStream(const String &str)
+    : StlSStream(str.c_str(), std::ios_base::in | std::ios_base::out)
 {
 }
 
-GsStringStream::~GsStringStream()
+StringStream::~StringStream()
 {
 }
 
-GsString GsStringStream::Str()
-{
-    m_str = str();
-    return m_str;
-}
-
-const char *GsStringStream::CStr()
-{
-    m_str = str();
-    return m_str.c_str();
-}
-
-GsStringStream::operator GsString()
+String StringStream::Str()
 {
     m_str = str();
     return m_str;
 }
 
+const char *StringStream::CStr()
+{
+    m_str = str();
+    return m_str.c_str();
+}
 
-GsStringStream::operator const char *()
+StringStream::operator String()
+{
+    m_str = str();
+    return m_str;
+}
+
+
+StringStream::operator const char *()
 {
     m_str = str();
     return m_str.c_str();
@@ -45,30 +45,30 @@ GsStringStream::operator const char *()
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
-GsOStringStream::GsOStringStream()
+OStringStream::OStringStream()
 {
 }
 
-GsOStringStream::~GsOStringStream()
+OStringStream::~OStringStream()
 {
 }
 
-GsString GsOStringStream::Str()
+String OStringStream::Str()
 {
     return m_str;
 }
 
-const char *GsOStringStream::CStr()
+const char *OStringStream::CStr()
 {
     return m_str.c_str();
 }
 
-GsOStringStream::operator GsString()
+OStringStream::operator String()
 {
     return m_str;
 }
 
-GsOStringStream::operator const char *()
+OStringStream::operator const char *()
 {
     return m_str.c_str();
 }
@@ -77,35 +77,35 @@ GsOStringStream::operator const char *()
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
-GsIStringStream::GsIStringStream()
+IStringStream::IStringStream()
 {
 }
 
-GsIStringStream::GsIStringStream(const GsString &str)
+IStringStream::IStringStream(const String &str)
 {
 }
 
-GsIStringStream::~GsIStringStream()
+IStringStream::~IStringStream()
 {
 }
 
-GsString GsIStringStream::Str()
+String IStringStream::Str()
 {
     return m_str;
 }
 
-const char *GsIStringStream::CStr()
+const char *IStringStream::CStr()
 {
 
     return m_str.c_str();
 }
 
-GsIStringStream::operator GsString()
+IStringStream::operator String()
 {
     return m_str;
 }
 
-GsIStringStream::operator const char *()
+IStringStream::operator const char *()
 {
     return m_str.c_str();
 }

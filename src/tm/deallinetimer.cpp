@@ -227,7 +227,7 @@ inline bool TimeReference::toNanoseconds(int64_t *result) const
 #endif
 
 
-GsDeadlineTimer::GsDeadlineTimer(bool forever) noexcept : t2(0)
+DeadlineTimer::DeadlineTimer(bool forever) noexcept : t2(0)
 {
     if (forever)
         t1 = std::numeric_limits<int64_t>::max();
@@ -235,35 +235,35 @@ GsDeadlineTimer::GsDeadlineTimer(bool forever) noexcept : t2(0)
         t1 = 0;
 }
 
-GsDeadlineTimer::GsDeadlineTimer(int64_t msecs) noexcept : t2(0)
+DeadlineTimer::DeadlineTimer(int64_t msecs) noexcept : t2(0)
 {
     RemainingTime(msecs);
 }
 
-void GsDeadlineTimer::Swap(GsDeadlineTimer &other) noexcept
+void DeadlineTimer::Swap(DeadlineTimer &other) noexcept
 {
     std::swap(t1, other.t1);
     std::swap(t2, other.t2);
 }
 
-constexpr bool GsDeadlineTimer::IsForever() const noexcept
+constexpr bool DeadlineTimer::IsForever() const noexcept
 {
     return t1 == (std::numeric_limits<int64_t>::max)();
 }
 
-bool GsDeadlineTimer::Expired() const noexcept
+bool DeadlineTimer::Expired() const noexcept
 {
     if (IsForever())
         return false;
     return *this <= Current();
 }
 
-int64_t GsDeadlineTimer::RemainingTime() const noexcept
+int64_t DeadlineTimer::RemainingTime() const noexcept
 {
     if (IsForever())
         return -1;
 
-    GsDeadlineTimer now = Current();
+    DeadlineTimer now = Current();
     TimeReference ref(t1, t2);
 
     int64_t msecs;
@@ -278,7 +278,7 @@ int64_t GsDeadlineTimer::RemainingTime() const noexcept
     return msecs < 0 ? 0 : msecs;
 }
 
-int64_t GsDeadlineTimer::RemainingTimeNSecs() const noexcept
+int64_t DeadlineTimer::RemainingTimeNSecs() const noexcept
 {
     if (IsForever())
         return -1;
@@ -286,11 +286,11 @@ int64_t GsDeadlineTimer::RemainingTimeNSecs() const noexcept
     return raw < 0 ? 0 : raw;
 }
 
-void GsDeadlineTimer::RemainingTime(int64_t msecs) noexcept
+void DeadlineTimer::RemainingTime(int64_t msecs) noexcept
 {
     if (msecs == -1)
     {
-        *this = GsDeadlineTimer();
+        *this = DeadlineTimer();
         return;
     }
 
@@ -302,11 +302,11 @@ void GsDeadlineTimer::RemainingTime(int64_t msecs) noexcept
     ref.updateTimer(t1, t2);
 }
 
-void GsDeadlineTimer::PreciseRemainingTime(int64_t secs, int64_t nsecs) noexcept
+void DeadlineTimer::PreciseRemainingTime(int64_t secs, int64_t nsecs) noexcept
 {
     if (secs == -1)
     {
-        *this = GsDeadlineTimer();
+        *this = DeadlineTimer();
         return;
     }
 
@@ -317,7 +317,7 @@ void GsDeadlineTimer::PreciseRemainingTime(int64_t secs, int64_t nsecs) noexcept
     ref.updateTimer(t1, t2);
 }
 
-int64_t GsDeadlineTimer::Deadline() const noexcept
+int64_t DeadlineTimer::Deadline() const noexcept
 {
     if (IsForever())
         return TimeReference::Max;
@@ -329,7 +329,7 @@ int64_t GsDeadlineTimer::Deadline() const noexcept
     return result;
 }
 
-int64_t GsDeadlineTimer::DeadlineNSecs() const noexcept
+int64_t DeadlineTimer::DeadlineNSecs() const noexcept
 {
     if (IsForever())
         return TimeReference::Max;
@@ -341,11 +341,11 @@ int64_t GsDeadlineTimer::DeadlineNSecs() const noexcept
     return result;
 }
 
-void GsDeadlineTimer::Deadline(int64_t msecs) noexcept
+void DeadlineTimer::Deadline(int64_t msecs) noexcept
 {
     if (msecs == TimeReference::Max)
     {
-        *this = GsDeadlineTimer();
+        *this = DeadlineTimer();
         return;
     }
 
@@ -355,7 +355,7 @@ void GsDeadlineTimer::Deadline(int64_t msecs) noexcept
     ref.updateTimer(t1, t2);
 }
 
-void GsDeadlineTimer::PreciseDeadline(int64_t secs, int64_t nsecs) noexcept
+void DeadlineTimer::PreciseDeadline(int64_t secs, int64_t nsecs) noexcept
 {
     // We don't pass the seconds to the constructor, because we don't know
     // at this point if t1 holds the seconds or nanoseconds; it's platform specific.
@@ -365,7 +365,7 @@ void GsDeadlineTimer::PreciseDeadline(int64_t secs, int64_t nsecs) noexcept
     ref.updateTimer(t1, t2);
 }
 
-GsDeadlineTimer GsDeadlineTimer::AddNSecs(GsDeadlineTimer dt, int64_t nsecs) noexcept
+DeadlineTimer DeadlineTimer::AddNSecs(DeadlineTimer dt, int64_t nsecs) noexcept
 {
     if (dt.IsForever())
         return dt;
@@ -378,29 +378,29 @@ GsDeadlineTimer GsDeadlineTimer::AddNSecs(GsDeadlineTimer dt, int64_t nsecs) noe
     return dt;
 }
 
-GsDeadlineTimer GsDeadlineTimer::Current() noexcept
+DeadlineTimer DeadlineTimer::Current() noexcept
 {
     static_assert(bool(!DeadlineTimerNanosecondsInT2), "!DeadlineTimerNanosecondsInT2");
-    GsDeadlineTimer result;
+    DeadlineTimer result;
     result.t1 = std::chrono::duration_cast<std::chrono::nanoseconds>(
                         std::chrono::system_clock::now().time_since_epoch())
                         .count();
     return result;
 }
 
-GsDeadlineTimer &GsDeadlineTimer::operator+=(int64_t msecs)
+DeadlineTimer &DeadlineTimer::operator+=(int64_t msecs)
 {
     *this = *this + msecs;
     return *this;
 }
 
-GsDeadlineTimer &GsDeadlineTimer::operator-=(int64_t msecs)
+DeadlineTimer &DeadlineTimer::operator-=(int64_t msecs)
 {
     *this = *this + (-msecs);
     return *this;
 }
 
-std::chrono::nanoseconds GsDeadlineTimer::RemainingTimeAsDuration() const noexcept
+std::chrono::nanoseconds DeadlineTimer::RemainingTimeAsDuration() const noexcept
 {
     if (IsForever())
         return std::chrono::nanoseconds::max();
@@ -410,9 +410,9 @@ std::chrono::nanoseconds GsDeadlineTimer::RemainingTimeAsDuration() const noexce
     return std::chrono::nanoseconds(nsecs);
 }
 
-int64_t GsDeadlineTimer::RawRemainingTimeNSecs() const noexcept
+int64_t DeadlineTimer::RawRemainingTimeNSecs() const noexcept
 {
-    GsDeadlineTimer now = Current();
+    DeadlineTimer now = Current();
     TimeReference ref(t1, t2);
 
     int64_t nsecs;
@@ -426,31 +426,31 @@ int64_t GsDeadlineTimer::RawRemainingTimeNSecs() const noexcept
     return nsecs;
 }
 
-bool operator==(GsDeadlineTimer d1, GsDeadlineTimer d2) noexcept
+bool operator==(DeadlineTimer d1, DeadlineTimer d2) noexcept
 {
     return d1.t1 == d2.t1 && d1.t2 == d2.t2;
 }
-bool operator!=(GsDeadlineTimer d1, GsDeadlineTimer d2) noexcept
+bool operator!=(DeadlineTimer d1, DeadlineTimer d2) noexcept
 {
     return !(d1 == d2);
 }
-bool operator<(GsDeadlineTimer d1, GsDeadlineTimer d2) noexcept
+bool operator<(DeadlineTimer d1, DeadlineTimer d2) noexcept
 {
     return d1.t1 < d2.t1 || (d1.t1 == d2.t1 && d1.t2 < d2.t2);
 }
-bool operator<=(GsDeadlineTimer d1, GsDeadlineTimer d2) noexcept
+bool operator<=(DeadlineTimer d1, DeadlineTimer d2) noexcept
 {
     return d1 == d2 || d1 < d2;
 }
-bool operator>(GsDeadlineTimer d1, GsDeadlineTimer d2) noexcept
+bool operator>(DeadlineTimer d1, DeadlineTimer d2) noexcept
 {
     return d2 < d1;
 }
-bool operator>=(GsDeadlineTimer d1, GsDeadlineTimer d2) noexcept
+bool operator>=(DeadlineTimer d1, DeadlineTimer d2) noexcept
 {
     return !(d1 < d2);
 }
-GsDeadlineTimer operator+(GsDeadlineTimer dt, int64_t msecs)
+DeadlineTimer operator+(DeadlineTimer dt, int64_t msecs)
 {
     if (dt.Forever())
         return dt;
@@ -462,15 +462,15 @@ GsDeadlineTimer operator+(GsDeadlineTimer dt, int64_t msecs)
 
     return dt;
 }
-GsDeadlineTimer operator+(int64_t msecs, GsDeadlineTimer dt)
+DeadlineTimer operator+(int64_t msecs, DeadlineTimer dt)
 {
     return dt + (-msecs);
 }
-GsDeadlineTimer operator-(GsDeadlineTimer dt, int64_t msecs)
+DeadlineTimer operator-(DeadlineTimer dt, int64_t msecs)
 {
     return dt + (-msecs);
 }
-int64_t operator-(GsDeadlineTimer dt1, GsDeadlineTimer dt2)
+int64_t operator-(DeadlineTimer dt1, DeadlineTimer dt2)
 {
     return (dt1.DeadlineNSecs() - dt2.DeadlineNSecs()) / (1000 * 1000);
 }

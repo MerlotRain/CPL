@@ -13,11 +13,11 @@
 
 namespace m2 {
 
-class GsMutexImpl
+class MutexImpl
 {
 public:
-    GsMutexImpl(bool bRecursive = false);
-    ~GsMutexImpl();
+    MutexImpl(bool bRecursive = false);
+    ~MutexImpl();
     void Lock();
     bool TryLock();
     bool TryLock(int milliseconds);
@@ -32,21 +32,21 @@ private:
 };
 
 
-/************************* GsMutexImpl *************************/
+/************************* MutexImpl *************************/
 
 #if GS_OS_WIN
 
-GsMutexImpl::GsMutexImpl(bool bRecursive)
+MutexImpl::MutexImpl(bool bRecursive)
 {
     InitializeCriticalSectionAndSpinCount(&_cs, 4000);
 }
 
-GsMutexImpl::~GsMutexImpl()
+MutexImpl::~MutexImpl()
 {
     DeleteCriticalSection(&_cs);
 }
 
-void GsMutexImpl::Lock()
+void MutexImpl::Lock()
 {
     try
     {
@@ -58,7 +58,7 @@ void GsMutexImpl::Lock()
     }
 }
 
-bool GsMutexImpl::TryLock()
+bool MutexImpl::TryLock()
 {
     try
     {
@@ -72,10 +72,10 @@ bool GsMutexImpl::TryLock()
     return false;
 }
 
-bool GsMutexImpl::TryLock(int milliseconds)
+bool MutexImpl::TryLock(int milliseconds)
 {
     static constexpr auto sleepMillis = 5;
-    GsTimestamp now;
+    Timestamp now;
     long long diff = milliseconds * 1000;
     do
     {
@@ -93,82 +93,82 @@ bool GsMutexImpl::TryLock(int milliseconds)
     return false;
 }
 
-void GsMutexImpl::Unlock()
+void MutexImpl::Unlock()
 {
     LeaveCriticalSection(&_cs);
 }
 
 #else
 
-GsMutexImpl::GsMutexImpl()
+MutexImpl::MutexImpl()
 {
 }
 
-GsMutexImpl::~GsMutexImpl()
+MutexImpl::~MutexImpl()
 {
 }
 
-void GsMutexImpl::Lock()
+void MutexImpl::Lock()
 {
 }
 
-bool GsMutexImpl::TryLock()
+bool MutexImpl::TryLock()
 {
 }
 
-bool GsMutexImpl::TryLock(int milliseconds)
+bool MutexImpl::TryLock(int milliseconds)
 {
 }
 
-void GsMutexImpl::Unlock()
+void MutexImpl::Unlock()
 {
 }
 
 #endif
 
 
-/************************* GsMutex *************************/
+/************************* Mutex *************************/
 
-GsMutex::GsMutex()
-    : m_Handle(new GsMutexImpl())
+Mutex::Mutex()
+    : m_Handle(new MutexImpl())
 {
 }
 
-GsMutex::~GsMutex()
+Mutex::~Mutex()
 {
     delete m_Handle;
     m_Handle = nullptr;
 }
 
-void GsMutex::Lock()
+void Mutex::Lock()
 {
     if (m_Handle)
-        (static_cast<GsMutexImpl *>(m_Handle))->Lock();
+        (static_cast<MutexImpl *>(m_Handle))->Lock();
 }
 
-void GsMutex::Lock(long milliseconds)
+void Mutex::Lock(long milliseconds)
 {
     if (m_Handle)
-        (static_cast<GsMutexImpl *>(m_Handle))->TryLock(milliseconds);
+        (static_cast<MutexImpl *>(m_Handle))->TryLock(milliseconds);
 }
 
-void GsMutex::Unlock()
+void Mutex::Unlock()
 {
     if (m_Handle)
-        (static_cast<GsMutexImpl *>(m_Handle))->Unlock();
+        (static_cast<MutexImpl *>(m_Handle))->Unlock();
 }
 
-bool GsMutex::Trylock()
+bool Mutex::Trylock()
 {
     if (m_Handle)
-        return (static_cast<GsMutexImpl *>(m_Handle))->TryLock();
+        return (static_cast<MutexImpl *>(m_Handle))->TryLock();
     return false;
 }
 
-bool GsMutex::Trylock(long milliseconds)
+bool Mutex::Trylock(long milliseconds)
 {
     if (m_Handle)
-        return (static_cast<GsMutexImpl *>(m_Handle))->TryLock(milliseconds);
+        return (static_cast<MutexImpl *>(m_Handle))->TryLock(milliseconds);
     return false;
 }
 

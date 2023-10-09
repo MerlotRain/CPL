@@ -3,174 +3,174 @@
 namespace m2 {
 
 
-GsFile::GsFile()
+File::File()
 {
 }
 
-GsFile::GsFile(const char *path)
+File::File(const char *path)
 {
 }
 
 
-GsFile::GsFile(const GsFile &file)
+File::File(const File &file)
 {
 }
 
-GsFile::~GsFile()
+File::~File()
 {
 }
 
-GsFile &GsFile::operator=(const GsFile &file)
-{
-    return *this;
-}
-
-GsFile &GsFile::operator=(const GsString &path)
+File &File::operator=(const File &file)
 {
     return *this;
 }
 
-GsFile &GsFile::operator=(const char *path)
+File &File::operator=(const String &path)
 {
     return *this;
 }
 
-const GsString &GsFile::Path() const
+File &File::operator=(const char *path)
+{
+    return *this;
+}
+
+const String &File::Path() const
 {
     return "";
 }
 
-const GsString &GsFile::Name(bool bHasExtension) const
+const String &File::Name(bool bHasExtension) const
 {
     // TODO: insert return statement here
 }
 
-GsDir GsFile::Parent() const
+Dir File::Parent() const
 {
-    return GsDir();
+    return Dir();
 }
 
-bool GsFile::Exists() const
-{
-    return false;
-}
-
-GsString GsFile::Extension() const
-{
-    return GsString();
-}
-
-GsString GsFile::ChangeExtension(const char *strExt)
-{
-    return GsString();
-}
-
-bool GsFile::CanRead() const
+bool File::Exists() const
 {
     return false;
 }
 
-bool GsFile::CanWrite() const
+String File::Extension() const
+{
+    return String();
+}
+
+String File::ChangeExtension(const char *strExt)
+{
+    return String();
+}
+
+bool File::CanRead() const
 {
     return false;
 }
 
-bool GsFile::CanExecute() const
+bool File::CanWrite() const
 {
     return false;
 }
 
-bool GsFile::IsLink() const
+bool File::CanExecute() const
+{
+    return false;
+}
+
+bool File::IsLink() const
 {
     return false;
 }
 
 
-bool GsFile::IsHidden() const
+bool File::IsHidden() const
 {
     return false;
 }
 
-GsTimestamp GsFile::Created() const
+Timestamp File::Created() const
 {
-    return GsTimestamp();
+    return Timestamp();
 }
 
-GsTimestamp GsFile::LastModified() const
+Timestamp File::LastModified() const
 {
-    return GsTimestamp();
+    return Timestamp();
 }
 
-GsFile &GsFile::LastModified(const GsTimestamp &ts)
+File &File::LastModified(const Timestamp &ts)
 {
     return *this;
 }
 
-unsigned long long GsFile::Size() const
+unsigned long long File::Size() const
 {
     return 0;
 }
 
-GsFile &GsFile::Size(unsigned long long size)
+File &File::Size(unsigned long long size)
 {
     return *this;
 }
 
-GsFile &GsFile::Writeable(bool flag)
+File &File::Writeable(bool flag)
 {
     return *this;
 }
 
-GsFile &GsFile::ReadOnly(bool flag)
+File &File::ReadOnly(bool flag)
 {
     return *this;
 }
 
-GsFile &GsFile::Executable(bool flag)
+File &File::Executable(bool flag)
 {
     return *this;
 }
 
-bool GsFile::CopyTo(const char *path, bool overwrite) const
+bool File::CopyTo(const char *path, bool overwrite) const
 {
     return false;
 }
 
 
-bool GsFile::MoveTo(const char *path, bool overwrite)
+bool File::MoveTo(const char *path, bool overwrite)
 {
     return false;
 }
 
-bool GsFile::RenameTo(const char *path, bool overwrite)
+bool File::RenameTo(const char *path, bool overwrite)
 {
     return false;
 }
 
-void GsFile::LinkTo(const char *path) const
+void File::LinkTo(const char *path) const
 {
 }
 
-void GsFile::Remove()
+void File::Remove()
 {
 }
 
-unsigned long long GsFile::TotalSpace() const
-{
-    return 0;
-}
-
-unsigned long long GsFile::UsableSpace() const
+unsigned long long File::TotalSpace() const
 {
     return 0;
 }
 
-unsigned long long GsFile::FreeSpace() const
+unsigned long long File::UsableSpace() const
 {
     return 0;
 }
 
-void GsFile::copyDirectory(const GsString &path, int options) const
+unsigned long long File::FreeSpace() const
+{
+    return 0;
+}
+
+void File::copyDirectory(const String &path, int options) const
 {
 }
 

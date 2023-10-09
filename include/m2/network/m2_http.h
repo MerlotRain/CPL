@@ -40,97 +40,97 @@ namespace m2 {
 
 
 /// @brief Url解析类
-class M2_API GsUrl
+class M2_API Url
 {
 public:
-    using GsQueryParameters = std::vector<std::pair<GsString, GsString>>;
+    using QueryParameters = std::vector<std::pair<String, String>>;
 
     /// @brief 默认构造
-    GsUrl();
+    Url();
     /// @brief 根据字符串构造
     /// @param url
-    GsUrl(const GsString &url);
+    Url(const String &url);
     /// @brief 根据字符串构造
     /// @param url
-    GsUrl(const char *url);
+    Url(const char *url);
     /// @brief
     /// @param scheme
     /// @param pathEtc
-    GsUrl(const GsString &scheme, const GsString &pathEtc);
+    Url(const String &scheme, const String &pathEtc);
     /// @brief
     /// @param scheme
     /// @param authority
     /// @param pathEtc
-    GsUrl(const GsString &scheme, const GsString &authority, const GsString &pathEtc);
+    Url(const String &scheme, const String &authority, const String &pathEtc);
     /// @brief
     /// @param scheme
     /// @param authority
     /// @param path
     /// @param query
-    GsUrl(const GsString &scheme, const GsString &authority, const GsString &path, const GsString &query);
+    Url(const String &scheme, const String &authority, const String &path, const String &query);
     /// @brief
     /// @param scheme
     /// @param authority
     /// @param path
     /// @param query
     /// @param fragment
-    GsUrl(const GsString &scheme, const GsString &authority, const GsString &path, const GsString &query, const GsString &fragment);
+    Url(const String &scheme, const String &authority, const String &path, const String &query, const String &fragment);
     /// @brief 拷贝构造
     /// @param url
-    GsUrl(const GsUrl &url);
+    Url(const Url &url);
     /// @brief 移动构造
     /// @param url
-    GsUrl(GsUrl &&url) noexcept;
+    Url(Url &&url) noexcept;
     /// @brief
     /// @param baseURL
     /// @param relativeURL
-    GsUrl(const GsUrl &baseURL, const GsString &relativeURL);
+    Url(const Url &baseURL, const String &relativeURL);
     /// @brief 默认析构
-    ~GsUrl();
+    ~Url();
 
     /// @brief
     /// @param url
     /// @return
-    GsUrl &operator=(const GsUrl &url);
+    Url &operator=(const Url &url);
     /// @brief
     /// @param url
     /// @return
-    GsUrl &operator=(GsUrl &&url) noexcept;
+    Url &operator=(Url &&url) noexcept;
     /// @brief
     /// @param url
     /// @return
-    GsUrl &operator=(const GsString &url);
+    Url &operator=(const String &url);
     /// @brief
     /// @param url
     /// @return
-    GsUrl &operator=(const char *url);
+    Url &operator=(const char *url);
     /// @brief
     /// @param url
-    void Swap(GsUrl &url) noexcept;
+    void Swap(Url &url) noexcept;
     /// @brief
     void Clear();
 
     /// @brief
     /// @return
-    GsString ToString() const;
+    String ToString() const;
 
     /// @brief
     /// @return
-    const GsString &Scheme() const;
+    const String &Scheme() const;
     /// @brief
     /// @param scheme
     void Scheme(const char *scheme);
 
     /// @brief
     /// @return
-    const GsString &UserInfo() const;
+    const String &UserInfo() const;
     /// @brief
     /// @param userInfo
     void UserInfo(const char *userInfo);
 
     /// @brief
     /// @return
-    const GsString &Host() const;
+    const String &Host() const;
     /// @brief
     /// @param host
     void Host(const char *host);
@@ -148,21 +148,21 @@ public:
 
     /// @brief
     /// @return
-    GsString Authority() const;
+    String Authority() const;
     /// @brief
     /// @param authority
     void Authority(const char *authority);
 
     /// @brief
     /// @return
-    const GsString &Path() const;
+    const String &Path() const;
     /// @brief
     /// @param path
     void Path(const char *path);
 
     /// @brief
     /// @return
-    GsString Query() const;
+    String Query() const;
     /// @brief
     /// @param query
     void Query(const char *query);
@@ -170,11 +170,11 @@ public:
     /// @brief
     /// @param param
     /// @param val
-    void AddQueryParameter(const GsString &param, const GsString &val = "");
+    void AddQueryParameter(const String &param, const String &val = "");
 
     /// @brief
     /// @return
-    const GsString &RawQuery() const;
+    const String &RawQuery() const;
     /// @brief
     /// @param query
     void RawQuery(const char *query);
@@ -182,41 +182,41 @@ public:
     /// @brief
     /// @param plusIsSpace
     /// @return
-    GsQueryParameters QueryParameters(bool plusIsSpace = true) const;
+    QueryParameters QueryParameters(bool plusIsSpace = true) const;
     /// @brief
     /// @param params
-    void QueryParameters(const GsQueryParameters &params);
+    void QueryParameters(const QueryParameters &params);
 
     /// @brief
     /// @return
-    GsString Fragment() const;
+    String Fragment() const;
     /// @brief
     /// @param fragment
     void Fragment(const char *fragment);
 
     /// @brief
     /// @return
-    GsString RawFragment() const;
+    String RawFragment() const;
     /// @brief
     /// @param fragment
     void RawFragment(const char *fragment);
 
     /// @brief
     /// @return
-    GsString PathEtc() const;
+    String PathEtc() const;
     /// @brief
     /// @param pathEtc
     void PathEtc(const char *pathEtc);
 
     /// @brief
     /// @return
-    GsString PathAndQuery() const;
+    String PathAndQuery() const;
     /// @brief
     /// @param relativeURL
     void Resolve(const char *relativeURL);
     /// @brief
     /// @param relativeURL
-    void Resolve(const GsUrl &relativeURL);
+    void Resolve(const Url &relativeURL);
     /// @brief
     /// @return
     bool IsRelative() const;
@@ -228,43 +228,43 @@ public:
     /// @brief
     /// @param url
     /// @return
-    bool operator==(const GsUrl &url) const;
+    bool operator==(const Url &url) const;
     /// @brief
     /// @param url
     /// @return
-    bool operator==(const GsString &url) const;
+    bool operator==(const String &url) const;
     /// @brief
     /// @param url
     /// @return
-    bool operator!=(const GsUrl &url) const;
+    bool operator!=(const Url &url) const;
     /// @brief
     /// @param url
     /// @return
-    bool operator!=(const GsString &url) const;
+    bool operator!=(const String &url) const;
 
     /// @brief
     void Normalize();
 
     /// @brief
     /// @param segments
-    void PathSegments(std::vector<GsString> &segments) const;
+    void PathSegments(std::vector<String> &segments) const;
 
     /// @brief
     /// @param str
     /// @param reserved
     /// @param encodedStr
-    static void Encode(const GsString &str, const GsString &reserved, GsString &encodedStr);
+    static void Encode(const String &str, const String &reserved, String &encodedStr);
     /// @brief
     /// @param str
     /// @param decodedStr
     /// @param plusAsSpace
-    static void Decode(const GsString &str, GsString &decodedStr, bool plusAsSpace = false);
+    static void Decode(const String &str, String &decodedStr, bool plusAsSpace = false);
 
 protected:
     /// @brief
     /// @param url
     /// @return
-    bool Equals(const GsUrl &url) const;
+    bool Equals(const Url &url) const;
     /// @brief
     /// @return
     bool IsWellKnownPort() const;
@@ -273,68 +273,68 @@ protected:
     unsigned short WellKnownPort() const;
     /// @brief
     /// @param url
-    void Parse(const GsString &url);
+    void Parse(const String &url);
     /// @brief
     /// @param begin
     /// @param end
-    void ParseAuthority(GsString::const_iterator &begin, const GsString::const_iterator &end);
+    void ParseAuthority(String::const_iterator &begin, const String::const_iterator &end);
     /// @brief
     /// @param begin
     /// @param end
-    void ParseHostAndPort(GsString::const_iterator &begin, const GsString::const_iterator &end);
+    void ParseHostAndPort(String::const_iterator &begin, const String::const_iterator &end);
     /// @brief
     /// @param begin
     /// @param end
-    void ParsePath(GsString::const_iterator &begin, const GsString::const_iterator &end);
+    void ParsePath(String::const_iterator &begin, const String::const_iterator &end);
     /// @brief
     /// @param begin
     /// @param end
-    void ParsePathEtc(GsString::const_iterator &begin, const GsString::const_iterator &end);
+    void ParsePathEtc(String::const_iterator &begin, const String::const_iterator &end);
     /// @brief
     /// @param begin
     /// @param end
-    void ParseQuery(GsString::const_iterator &begin, const GsString::const_iterator &end);
+    void ParseQuery(String::const_iterator &begin, const String::const_iterator &end);
     /// @brief
     /// @param begin
     /// @param end
-    void ParseFragment(GsString::const_iterator &begin, const GsString::const_iterator &end);
+    void ParseFragment(String::const_iterator &begin, const String::const_iterator &end);
     /// @brief
     /// @param path
-    void MergePath(const GsString &path);
+    void MergePath(const String &path);
     /// @brief
     /// @param removeLeading
     void RemoveDotSegments(bool removeLeading = true);
     /// @brief
     /// @param path
     /// @param segments
-    static void PathSegments(const GsString &path, std::vector<GsString> &segments);
+    static void PathSegments(const String &path, std::vector<String> &segments);
     /// @brief
     /// @param segments
     /// @param leadingSlash
     /// @param trailingSlash
-    void BuildPath(const std::vector<GsString> &segments, bool leadingSlash, bool trailingSlash);
+    void BuildPath(const std::vector<String> &segments, bool leadingSlash, bool trailingSlash);
 
 private:
     /// @brief
-    GsString m_strScheme;
+    String m_strScheme;
     /// @brief
-    GsString m_strUserInfo;
+    String m_strUserInfo;
     /// @brief
-    GsString m_strHost;
+    String m_strHost;
     /// @brief
     unsigned short m_nPort;
     /// @brief
-    GsString m_strPath;
+    String m_strPath;
     /// @brief
-    GsString m_strQuery;
+    String m_strQuery;
     /// @brief
-    GsString m_strFragment;
+    String m_strFragment;
 };
 
 
 /// @brief HTTP 响应状态码
 /// @details https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status
-enum class GsHttpStatus
+enum class HttpStatus
 {
     /// @brief 这个临时响应表明，迄今为止的所有内容都是可行的，客户端应该继续请求，如果已经完成，则忽略它。
     eCONTINUE = 100,
@@ -451,7 +451,7 @@ enum class GsHttpStatus
 };
 
 /// @brief  http状态码分类
-enum class GsHttpStatusClasses
+enum class HttpStatusClasses
 {
     /// @brief 无效分类
     eUnknown = 0,
@@ -474,7 +474,7 @@ enum class GsHttpStatusClasses
 
 
 /// @brief HTTP请求的的方法
-enum GsHttpMethod
+enum HttpMethod
 {
     /// @brief 未知方法或自定义方法。
     eUNKNOWNMETHOD = -1,
@@ -511,7 +511,7 @@ enum GsHttpMethod
 
 /// @brief Http Cookie 属性
 /// @details 防止 Web 应用程序遭受跨站点请求伪造 (CSRF) 攻击
-enum class GsHttpSameSite
+enum class HttpSameSite
 {
     /// @brief 默认
     eDefault,
@@ -524,48 +524,48 @@ enum class GsHttpSameSite
 };
 
 
-struct GsCookie;
-struct GsMediaType;
+struct Cookie;
+struct MediaType;
 
 
-class GsCookieContainer;
-class GsHttpRequest;
-class GsHttpResponse;
-class GsHttpServer;
-class GsHttpSession;
-class GsHttpMessage;
-class GsDNS;
-class GsFTPClientSession;
+class CookieContainer;
+class HttpRequest;
+class HttpResponse;
+class HttpServer;
+class HttpSession;
+class HttpMessage;
+class DNS;
+class FTPClientSession;
 
 
 /// @brief Cookie 对象
-struct M2_API GsCookie
+struct M2_API Cookie
 {
     int Version;
-    GsString Name;
-    GsString Value;
-    GsString Comment;
-    GsString Domain;
-    GsString Path;
-    GsString Priority;
+    String Name;
+    String Value;
+    String Comment;
+    String Domain;
+    String Path;
+    String Priority;
     bool Secure;
     int MaxAge;
     bool HttpOnly;
-    GsHttpSameSite SameSite;
+    HttpSameSite SameSite;
 
 
-    GsCookie();
-    GsCookie(const char *cookieHeader);
-    GsCookie(const char *name, const char *value, const char *path = NULL, const char *domain = NULL);
-    GsCookie(const GsCookie &cookie);
-    GsCookie(GsCookie &&cookie) noexcept;
+    Cookie();
+    Cookie(const char *cookieHeader);
+    Cookie(const char *name, const char *value, const char *path = NULL, const char *domain = NULL);
+    Cookie(const Cookie &cookie);
+    Cookie(Cookie &&cookie) noexcept;
     operator bool() const;
-    GsCookie &operator=(const GsCookie &cookie);
-    GsCookie &operator=(GsCookie &&cookie) noexcept;
-    bool operator==(const GsCookie &cookie) const;
-    void Swap(GsCookie &cookie);
+    Cookie &operator=(const Cookie &cookie);
+    Cookie &operator=(Cookie &&cookie) noexcept;
+    bool operator==(const Cookie &cookie) const;
+    void Swap(Cookie &cookie);
 
-    GsString ToString() const;
+    String ToString() const;
 
     static std::string Escape(const std::string &str);
     static std::string Unescape(const std::string &str);
@@ -574,34 +574,34 @@ struct M2_API GsCookie
 
 /// @brief Media Type 对象
 /// @details https://www.iana.org/assignments/media-types/media-types.xhtml
-struct M2_API GsMediaType
+struct M2_API MediaType
 {
-    GsString Type;
-    GsString SubType;
+    String Type;
+    String SubType;
 };
 
 
-class M2_API GsCookiesContainer
+class M2_API CookiesContainer
 {
 };
 
-class M2_API GsHttpRequest
+class M2_API HttpRequest
 {
 };
 
-class M2_API GsHttpResponse
+class M2_API HttpResponse
 {
 };
 
-class GsHttpServer
+class HttpServer
 {
 };
 
-class GsHttpMessage
+class HttpMessage
 {
 };
 
-class GsDNS
+class DNS
 {
 };
 

@@ -49,21 +49,21 @@ static constexpr long long TM_HOURS = 60 * TM_MINUTES;
 static constexpr long long TM_DAYS = 24 * TM_HOURS;
 
 /// @brief 高精度的微秒级别的时间间隔
-struct M2_API GsTimeSpan
+struct M2_API TimeSpan
 {
     /// @brief 时间跨度，单位（微秒）
     long long TimeSpan;
 
-    GsTimeSpan();
+    TimeSpan();
 
     /// @brief 构造
     /// @param microseconds 间隔总的微秒数
-    explicit GsTimeSpan(long long microseconds);
+    explicit TimeSpan(long long microseconds);
 
     /// @brief 构造
     /// @param seconds 间隔的总秒数
     /// @param microseconds 间隔额外的毫秒数
-    GsTimeSpan(long seconds, long microseconds);
+    TimeSpan(long seconds, long microseconds);
 
     /// @brief 构造
     /// @param days 间隔的天数
@@ -71,34 +71,34 @@ struct M2_API GsTimeSpan
     /// @param minutes 额外的分钟数
     /// @param seconds 额外的秒数
     /// @param microSeconds 额外的毫秒数
-    GsTimeSpan(int days, int hours, int minutes, int seconds, int microSeconds);
+    TimeSpan(int days, int hours, int minutes, int seconds, int microSeconds);
 
     /// @brief 拷贝构造
     /// @param timespan
-    GsTimeSpan(const GsTimeSpan &rhs);
+    TimeSpan(const TimeSpan &rhs);
 
     /// @brief 由C++11 chrono 库函数构造
     /// @tparam T
     /// @tparam Period
     /// @param time
     template<class T, class Period>
-    explicit GsTimeSpan(const std::chrono::duration<T, Period> &time)
+    explicit TimeSpan(const std::chrono::duration<T, Period> &time)
         : TimeSpan(std::chrono::duration_cast<std::chrono::microseconds(time).count()>)
     {
     }
 
     /// @brief 默认析构
-    ~GsTimeSpan();
+    ~TimeSpan();
 
     /// @brief 赋值复制构造
     /// @param timespan
     /// @return
-    GsTimeSpan &operator=(const GsTimeSpan &rhs);
+    TimeSpan &operator=(const TimeSpan &rhs);
 
     /// @brief 赋值复制构造
     /// @param microseconds
     /// @return
-    GsTimeSpan &operator=(long long microseconds);
+    TimeSpan &operator=(long long microseconds);
 
     /// @brief
     /// @param days
@@ -107,19 +107,19 @@ struct M2_API GsTimeSpan
     /// @param seconds
     /// @param microSeconds
     /// @return
-    GsTimeSpan &Assign(int days, int hours, int minutes, int seconds, int microSeconds);
+    TimeSpan &Assign(int days, int hours, int minutes, int seconds, int microSeconds);
     /// @brief
     /// @param seconds
     /// @param microseconds
     /// @return
-    GsTimeSpan &Assign(long seconds, long microseconds);
+    TimeSpan &Assign(long seconds, long microseconds);
     /// @brief
     /// @tparam T
     /// @tparam Period
     /// @param timr
     /// @return
     template<class T, class Period>
-    GsTimeSpan &Assign(const std::chrono::duration<T, Period> &time)
+    TimeSpan &Assign(const std::chrono::duration<T, Period> &time)
     {
         TimeSpan = std::chrono::duration_cast<std::chrono::microseconds>(time).count();
         return *this;
@@ -127,32 +127,32 @@ struct M2_API GsTimeSpan
 
     /// @brief 交换
     /// @param timespan
-    void Swap(GsTimeSpan &timespan) noexcept;
+    void Swap(TimeSpan &timespan) noexcept;
 
     /// @brief 重载==运算符
     /// @param timespan
     /// @return
-    bool operator==(const GsTimeSpan &rhs) const;
+    bool operator==(const TimeSpan &rhs) const;
     /// @brief 重载!=运算符
     /// @param timespan
     /// @return
-    bool operator!=(const GsTimeSpan &rhs) const;
+    bool operator!=(const TimeSpan &rhs) const;
     /// @brief 重载>运算符
     /// @param timespan
     /// @return
-    bool operator>(const GsTimeSpan &rhs) const;
+    bool operator>(const TimeSpan &rhs) const;
     /// @brief 重载>=运算符
     /// @param timespan
     /// @return
-    bool operator>=(const GsTimeSpan &rhs) const;
+    bool operator>=(const TimeSpan &rhs) const;
     /// @brief 重载<运算符
     /// @param timespan
     /// @return
-    bool operator<(const GsTimeSpan &rhs) const;
+    bool operator<(const TimeSpan &rhs) const;
     /// @brief 重载<=运算符
     /// @param timespan
     /// @return
-    bool operator<=(const GsTimeSpan &rhs) const;
+    bool operator<=(const TimeSpan &rhs) const;
 
     /// @brief 重载==运算符
     /// @param microSeconds
@@ -182,36 +182,36 @@ struct M2_API GsTimeSpan
     /// @brief 重载+运算符
     /// @param timespan
     /// @return
-    GsTimeSpan operator+(const GsTimeSpan &rhs) const;
+    TimeSpan operator+(const TimeSpan &rhs) const;
     /// @brief 重载-运算符
     /// @param timespan
     /// @return
-    GsTimeSpan operator-(const GsTimeSpan &rhs) const;
+    TimeSpan operator-(const TimeSpan &rhs) const;
     /// @brief 重载+=运算符
     /// @param timespan
     /// @return
-    GsTimeSpan &operator+=(const GsTimeSpan &rhs);
+    TimeSpan &operator+=(const TimeSpan &rhs);
     /// @brief 重载-=运算符
     /// @param timespan
     /// @return
-    GsTimeSpan &operator-=(const GsTimeSpan &rhs);
+    TimeSpan &operator-=(const TimeSpan &rhs);
 
     /// @brief 重载+运算符
     /// @param microSeconds
     /// @return
-    GsTimeSpan operator+(long long microSeconds) const;
+    TimeSpan operator+(long long microSeconds) const;
     /// @brief 重载-运算符
     /// @param microSeconds
     /// @return
-    GsTimeSpan operator-(long long microSeconds) const;
+    TimeSpan operator-(long long microSeconds) const;
     /// @brief 重载+=运算符
     /// @param microSeconds
     /// @return
-    GsTimeSpan &operator+=(long long microSeconds);
+    TimeSpan &operator+=(long long microSeconds);
     /// @brief 重载-=运算符
     /// @param microSeconds
     /// @return
-    GsTimeSpan &operator-=(long long microSeconds);
+    TimeSpan &operator-=(long long microSeconds);
 
     /// @brief 返回天数
     /// @return
@@ -263,7 +263,7 @@ struct M2_API GsTimeSpan
  * This is very useful to computer systems for tracking and sorting dated information in dynamic
  * and distributed applications both online and client side.
 */
-struct M2_API GsTimestamp
+struct M2_API Timestamp
 {
     /// @brief 时间戳
     long long Timestamp;
@@ -274,25 +274,25 @@ struct M2_API GsTimestamp
     constexpr static long long TimestampMaximumValue = LLONG_MAX;
 
     /// @brief 默认构造
-    GsTimestamp();
+    Timestamp();
     /// @brief
     /// @param tv
-    explicit GsTimestamp(long long tv);
+    explicit Timestamp(long long tv);
     /// @brief 拷贝构造
     /// @param rhs
-    GsTimestamp(const GsTimestamp &rhs);
-    ~GsTimestamp();
+    Timestamp(const Timestamp &rhs);
+    ~Timestamp();
     /// @brief 赋值复制构造
     /// @param rhs
     /// @return
-    GsTimestamp &operator=(const GsTimestamp &rhs);
+    Timestamp &operator=(const Timestamp &rhs);
     /// @brief 赋值复制构造
     /// @param timestamp
     /// @return
-    GsTimestamp &operator=(long long timestamp);
+    Timestamp &operator=(long long timestamp);
     /// @brief 交换时间戳
     /// @param timestamp
-    void Swap(GsTimestamp &timestamp) noexcept;
+    void Swap(Timestamp &timestamp) noexcept;
 
     /// @brief 使用当前时间更新时间戳
     void Update();
@@ -300,49 +300,49 @@ struct M2_API GsTimestamp
     /// @brief 重载==运算符
     /// @param timestamp
     /// @return
-    bool operator==(const GsTimestamp &timestamp) const;
+    bool operator==(const Timestamp &timestamp) const;
     /// @brief 重载!=运算符
     /// @param timestamp
     /// @return
-    bool operator!=(const GsTimestamp &timestamp) const;
+    bool operator!=(const Timestamp &timestamp) const;
     /// @brief 重载>运算符
     /// @param timestamp
     /// @return
-    bool operator>(const GsTimestamp &timestamp) const;
+    bool operator>(const Timestamp &timestamp) const;
     /// @brief 重载>=运算符
     /// @param timestamp
     /// @return
-    bool operator>=(const GsTimestamp &timestamp) const;
+    bool operator>=(const Timestamp &timestamp) const;
     /// @brief 重载<运算符
     /// @param timestamp
     /// @return
-    bool operator<(const GsTimestamp &timestamp) const;
+    bool operator<(const Timestamp &timestamp) const;
     /// @brief 重载<=运算符
     /// @param timestamp
     /// @return
-    bool operator<=(const GsTimestamp &timestamp) const;
+    bool operator<=(const Timestamp &timestamp) const;
 
     /// @brief 重载+运算符
     /// @param duration
     /// @return
-    GsTimestamp operator+(long long duration) const;
-    GsTimestamp operator+(const GsTimeSpan &rhs) const;
+    Timestamp operator+(long long duration) const;
+    Timestamp operator+(const TimeSpan &rhs) const;
     /// @brief 重载-运算符
     /// @param duration
     /// @return
-    GsTimestamp operator-(long long duration) const;
-    GsTimestamp operator-(const GsTimeSpan &rhs) const;
-    long long operator-(const GsTimestamp &timestamp) const;
+    Timestamp operator-(long long duration) const;
+    Timestamp operator-(const TimeSpan &rhs) const;
+    long long operator-(const Timestamp &timestamp) const;
     /// @brief 重载+=运算符
     /// @param duration
     /// @return
-    GsTimestamp &operator+=(long long duration);
-    GsTimestamp &operator+=(const GsTimeSpan &rhs);
+    Timestamp &operator+=(long long duration);
+    Timestamp &operator+=(const TimeSpan &rhs);
     /// @brief 重载-=运算符
     /// @param duration
     /// @return
-    GsTimestamp &operator-=(long long duration);
-    GsTimestamp &operator-=(const GsTimeSpan &rhs);
+    Timestamp &operator-=(long long duration);
+    Timestamp &operator-=(const TimeSpan &rhs);
 
     /// @brief 返回以time_t表示的时间戳
     /// @details time_t基准时间是从1970.1.1，单位是秒
@@ -366,11 +366,11 @@ struct M2_API GsTimestamp
     /// @brief 从time_t构造
     /// @param t
     /// @return
-    static GsTimestamp FromEpochTime(std::time_t t);
+    static Timestamp FromEpochTime(std::time_t t);
     /// @brief 从UTC时间构造
     /// @param utc
     /// @return
-    static GsTimestamp FromUTCTime(long long utc);
+    static Timestamp FromUTCTime(long long utc);
 
     /// @brief 返回以每秒为单位的分辨率。
     /// @details 由于时间戳具有微秒分辨率，返回的值总是1000000。
@@ -380,7 +380,7 @@ struct M2_API GsTimestamp
 
 
 /// @brief 月份
-enum GsMonth
+enum Month
 {
     /// @brief 一月
     eJanuary = 1,
@@ -410,7 +410,7 @@ enum GsMonth
 
 
 /// @brief 星期
-enum GsWeekDay
+enum WeekDay
 {
     /// @brief 星期天
     eSunday,
@@ -430,7 +430,7 @@ enum GsWeekDay
 
 
 /// @brief 默认的标准化的日期格式化样式
-enum GsDateTimeFormat
+enum DateTimeFormat
 {
     /// @brief ISO8601标准
     /// @details https://www.ionos.com/digitalguide/websites/web-development/iso-8601/
@@ -486,7 +486,7 @@ enum GsDateTimeFormat
  * http://en.wikipedia.org/wiki/UTC
  * http://en.wikipedia.org/wiki/ISO_8601
  */
-class M2_API GsDateTime
+class M2_API DateTime
 {
 public:
     enum
@@ -497,13 +497,13 @@ public:
 public:
     /// @brief 默认构造
     /// @return
-    GsDateTime();
+    DateTime();
     /// @brief 根据tm结构体构造
     /// @param _tm
-    explicit GsDateTime(const tm &_tm);
+    explicit DateTime(const tm &_tm);
     /// @brief 根据时间戳构造
     /// @param timestamp
-    explicit GsDateTime(const GsTimestamp &timestamp);
+    explicit DateTime(const Timestamp &timestamp);
     /// @brief 根据传入的时间构造
     /// @param year [0,9999]
     /// @param month [1,12]
@@ -513,21 +513,21 @@ public:
     /// @param second [0,60]
     /// @param millisecond [0,999]
     /// @param microsecond [0,999]
-    GsDateTime(int year, int month, int day, int hour = 0, int minute = 0, int second = 0, int millisecond = 0, int microsecond = 0);
+    DateTime(int year, int month, int day, int hour = 0, int minute = 0, int second = 0, int millisecond = 0, int microsecond = 0);
 
     /// @brief 根据一个UTC时间和相对这个时间的偏移量构造
     /// @param utcTime
     /// @param diff
-    GsDateTime(long long utcTime, long long diff);
+    DateTime(long long utcTime, long long diff);
     /// @brief 移动构造
     /// @param dateTime
-    GsDateTime(const GsDateTime &dateTime);
-    ~GsDateTime();
+    DateTime(const DateTime &dateTime);
+    ~DateTime();
 
-    GsDateTime &operator=(const GsDateTime &dateTime);
-    GsDateTime &operator=(const GsTimestamp &timestamp);
-    GsDateTime &Assign(int year, int month, int day, int hour = 0, int minute = 0, int second = 0, int millisecond = 0, int microseconds = 0);
-    void Swap(GsDateTime &dateTime) noexcept;
+    DateTime &operator=(const DateTime &dateTime);
+    DateTime &operator=(const Timestamp &timestamp);
+    DateTime &Assign(int year, int month, int day, int hour = 0, int minute = 0, int second = 0, int millisecond = 0, int microseconds = 0);
+    void Swap(DateTime &dateTime) noexcept;
 
     /// @brief 返回年
     /// @return
@@ -577,26 +577,26 @@ public:
     double JulianDay() const;
     /// @brief 获取当前时间的时间戳
     /// @return
-    GsTimestamp Timestamp() const;
+    Timestamp Timestamp() const;
     /// @brief 获取UTC时间
     /// @return
     long long UTCTime() const;
     /// @brief 根据时区，将UTC时间转换为本地时间
     /// @return
-    GsDateTime ToLocal() const;
+    DateTime ToLocal() const;
 
-    bool operator==(const GsDateTime &dateTime) const;
-    bool operator!=(const GsDateTime &dateTime) const;
-    bool operator<(const GsDateTime &dateTime) const;
-    bool operator<=(const GsDateTime &dateTime) const;
-    bool operator>(const GsDateTime &dateTime) const;
-    bool operator>=(const GsDateTime &dateTime) const;
+    bool operator==(const DateTime &dateTime) const;
+    bool operator!=(const DateTime &dateTime) const;
+    bool operator<(const DateTime &dateTime) const;
+    bool operator<=(const DateTime &dateTime) const;
+    bool operator>(const DateTime &dateTime) const;
+    bool operator>=(const DateTime &dateTime) const;
 
-    GsDateTime operator+(const GsTimeSpan &span) const;
-    GsDateTime operator-(const GsTimeSpan &span) const;
-    GsTimeSpan operator-(const GsDateTime &dateTime) const;
-    GsDateTime &operator+=(const GsTimeSpan &span);
-    GsDateTime &operator-=(const GsTimeSpan &span);
+    DateTime operator+(const TimeSpan &span) const;
+    DateTime operator-(const TimeSpan &span) const;
+    TimeSpan operator-(const DateTime &dateTime) const;
+    DateTime &operator+=(const TimeSpan &span);
+    DateTime &operator-=(const TimeSpan &span);
 
     /// @brief 通过应用给定的时区差，将本地时间转换为UTC
     /// @param tzd
@@ -654,28 +654,28 @@ public:
     /// @param fmt
     /// @param str
     /// @param timeZoneDifferential
-    static GsDateTime Parse(const GsString &fmt, const GsString &str, int &timeZoneDifferential);
-    static GsDateTime Parse(GsDateTimeFormat fmt, const GsString &str, int &timeZoneDifferential);
+    static DateTime Parse(const String &fmt, const String &str, int &timeZoneDifferential);
+    static DateTime Parse(DateTimeFormat fmt, const String &str, int &timeZoneDifferential);
 
     /// @brief 尝试从给定字符串中以给定格式分析日期和时间
     /// @param fmt
     /// @param str
     /// @param timeZoneDifferential
     /// @return
-    static bool TryParse(const GsString &fmt, const GsString &str, GsDateTime &dateTime, int &timeZoneDifferential);
-    static bool TryParse(GsDateTimeFormat fmt, const GsString &str, GsDateTime &dateTime, int &timeZoneDifferential);
+    static bool TryParse(const String &fmt, const String &str, DateTime &dateTime, int &timeZoneDifferential);
+    static bool TryParse(DateTimeFormat fmt, const String &str, DateTime &dateTime, int &timeZoneDifferential);
 
     /// @brief 从给定的字符串中分析日期和时间
     /// @param str
     /// @param dateTime
     /// @param timeZoneDifferential
-    static GsDateTime Parse(const GsString &str, int &timeZoneDifferential);
+    static DateTime Parse(const String &str, int &timeZoneDifferential);
 
     /// @brief 尝试从给定字符串中分析日期和时间
     /// @param str
     /// @param timeZoneDifferential
     /// @return
-    static bool TryParse(const GsString &str, GsDateTime &dateTime, int &timeZoneDifferential);
+    static bool TryParse(const String &str, DateTime &dateTime, int &timeZoneDifferential);
 
     /// @brief
     /// @details 参考strftime
@@ -720,20 +720,20 @@ public:
     /// @param fmt
     /// @param timeZoneDifferential
     /// @return
-    static GsString ToString(const GsDateTime &dateTime, const GsString &fmt, int timeZoneDifferential = UTC);
+    static String ToString(const DateTime &dateTime, const String &fmt, int timeZoneDifferential = UTC);
 
     /// @brief 根据给定的格式格式化给定的时间戳
     /// @param timestamp
     /// @param fmt
     /// @param timeZoneDifferential
     /// @return
-    static GsString ToString(const GsTimestamp &timestamp, const GsString &fmt, int timeZoneDifferential = UTC);
+    static String ToString(const Timestamp &timestamp, const String &fmt, int timeZoneDifferential = UTC);
 
     /// @brief
     /// @param rhs
     /// @param fmt
     /// @return
-    static GsString ToString(const GsTimeSpan &rhs, const GsString &fmt = "%dd %H:%M:%S.%i");
+    static String ToString(const TimeSpan &rhs, const String &fmt = "%dd %H:%M:%S.%i");
 
     /// @brief 当前cpu时钟周期
     static unsigned long long TickCount();
@@ -754,7 +754,7 @@ private:
 
 
 /// @brief 时区
-class M2_API GsTimeZone
+class M2_API TimeZone
 {
 public:
     /// @brief 返回本地时间到UTC的偏移量（以秒为单位）
@@ -768,13 +768,13 @@ public:
     /// @brief 如果给定时间正在使用夏令时，则返回夏令时偏移量（以秒为单位）
     /// @param timestamp
     /// @return
-    static int DST(const GsTimestamp &timestamp);
+    static int DST(const Timestamp &timestamp);
 
     /// @brief 如果夏令时在给定时间内有效，则返回true
     /// @details 根据操作系统平台的不同，这可能只适用于某些日期范围，因为使用了C库的localtime（）函数
     /// @param timestamp
     /// @return
-    static bool IsDST(const GsTimestamp &timestamp);
+    static bool IsDST(const Timestamp &timestamp);
 
     /// @brief 返回当前时区的时区差异
     /// @return
@@ -782,58 +782,58 @@ public:
 
     /// @brief 返回当前有效的时区名称
     /// @return
-    static GsString Name();
+    static String Name();
 
     /// @brief 如果夏令时未生效，则返回时区名称
     /// @return
-    static GsString StandardName();
+    static String StandardName();
 
     /// @brief 如果夏令时生效，则返回时区名称
     /// @return
-    static GsString DSTName();
+    static String DSTName();
 };
 
 
 /// @brief 时钟
-class M2_API GsClock
+class M2_API Clock
 {
 public:
     /// @brief 默认构造
-    GsClock();
+    Clock();
     /// @brief 根据毫秒构造
     /// @param c
-    explicit GsClock(long long c);
+    explicit Clock(long long c);
     /// @brief 拷贝构造
     /// @param other
-    GsClock(const GsClock &other);
+    Clock(const Clock &other);
     /// @brief 析构
-    ~GsClock();
+    ~Clock();
 
     /// @brief 赋值复制构造
     /// @param other
     /// @return
-    GsClock &operator=(const GsClock &other);
+    Clock &operator=(const Clock &other);
     /// @brief 根据毫秒赋值构造
     /// @param tv
     /// @return
-    GsClock &operator=(long long tv);
+    Clock &operator=(long long tv);
     /// @brief 交换两个时钟
     /// @param clock
-    void Swap(GsClock &clock) noexcept;
+    void Swap(Clock &clock) noexcept;
     /// @brief 更新时钟到当前系统时钟
     void Update();
 
-    bool operator==(const GsClock &rhs) const;
-    bool operator!=(const GsClock &rhs) const;
-    bool operator>(const GsClock &rhs) const;
-    bool operator>=(const GsClock &rhs) const;
-    bool operator<(const GsClock &rhs) const;
-    bool operator<=(const GsClock &rhs) const;
-    GsClock operator+(long long d) const;
-    GsClock operator-(long long d) const;
-    long long operator-(const GsClock &rhs) const;
-    GsClock &operator+=(long long d);
-    GsClock &operator-=(long long d);
+    bool operator==(const Clock &rhs) const;
+    bool operator!=(const Clock &rhs) const;
+    bool operator>(const Clock &rhs) const;
+    bool operator>=(const Clock &rhs) const;
+    bool operator<(const Clock &rhs) const;
+    bool operator<=(const Clock &rhs) const;
+    Clock operator+(long long d) const;
+    Clock operator-(long long d) const;
+    long long operator-(const Clock &rhs) const;
+    Clock &operator+=(long long d);
+    Clock &operator-=(long long d);
 
     /// @brief 返回自系统特定epoch时间
     /// @return

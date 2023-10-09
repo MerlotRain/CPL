@@ -10,7 +10,7 @@
 namespace m2 {
 
 
-int GsTimeZone::UTCOffset()
+int TimeZone::UTCOffset()
 {
 #ifdef _WIN32
     TIME_ZONE_INFORMATION tzInfo;
@@ -20,7 +20,7 @@ int GsTimeZone::UTCOffset()
 #endif
 }
 
-int GsTimeZone::DST()
+int TimeZone::DST()
 {
 #ifdef _WIN32
     TIME_ZONE_INFORMATION tzInfo;
@@ -30,7 +30,7 @@ int GsTimeZone::DST()
 #endif
 }
 
-int GsTimeZone::DST(const GsTimestamp &timestamp)
+int TimeZone::DST(const Timestamp &timestamp)
 {
 #ifdef _WIN32
     if (IsDST(timestamp))
@@ -44,57 +44,57 @@ int GsTimeZone::DST(const GsTimestamp &timestamp)
 #endif
 }
 
-bool GsTimeZone::IsDST(const GsTimestamp &timestamp)
+bool TimeZone::IsDST(const Timestamp &timestamp)
 {
 #ifdef _WIN32
     std::time_t time = timestamp.EpochTime();
     struct std::tm local;
     if (localtime_s(&local, &time))
-        throw GsUtilityException("cannot get local time DST flag");
+        throw UtilityException("cannot get local time DST flag");
     return local.tm_isdst > 0;
 #else
 #endif
 }
 
-int GsTimeZone::TimeZoneDifferential()
+int TimeZone::TimeZoneDifferential()
 {
     return UTCOffset() + DST();
 }
 
-GsString GsTimeZone::Name()
+String TimeZone::Name()
 {
 #ifdef _WIN32
     TIME_ZONE_INFORMATION tzInfo;
     DWORD dstFlag = GetTimeZoneInformation(&tzInfo);
     WCHAR *ptr = dstFlag == TIME_ZONE_ID_DAYLIGHT ? tzInfo.DaylightName : tzInfo.StandardName;
-    GsCW2A cw2a(ptr);
+    CW2A cw2a(ptr);
     return cw2a.m_Str;
 #else
 
 #endif
-    return GsString();
+    return String();
 }
 
-GsString GsTimeZone::StandardName()
+String TimeZone::StandardName()
 {
 #ifdef _WIN32
     TIME_ZONE_INFORMATION tzInfo;
     DWORD dstFlag = GetTimeZoneInformation(&tzInfo);
     WCHAR *ptr = tzInfo.StandardName;
-    GsCW2A cw2a(ptr);
+    CW2A cw2a(ptr);
     return cw2a.m_Str;
 #else
 
 #endif
 }
 
-GsString GsTimeZone::DSTName()
+String TimeZone::DSTName()
 {
 #ifdef _WIN32
     TIME_ZONE_INFORMATION tzInfo;
     DWORD dstFlag = GetTimeZoneInformation(&tzInfo);
     WCHAR *ptr = tzInfo.DaylightName;
-    GsCW2A cw2a(ptr);
+    CW2A cw2a(ptr);
     return cw2a.m_Str;
 #else
 

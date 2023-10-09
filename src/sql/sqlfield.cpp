@@ -4,40 +4,40 @@ namespace m2 {
 namespace Data {
 
 
-GsSqlField::GsSqlField()
+SqlField::SqlField()
 {
 }
 
-GsSqlField::GsSqlField(const GsSqlField &rhs)
+SqlField::SqlField(const SqlField &rhs)
 {
 }
 
-GsSqlField::GsSqlField(const char *strName, GsSqlFieldType eType, const char *strAliasName,
-                       const GsVariant &defaultVal)
+SqlField::SqlField(const char *strName, SqlFieldType eType, const char *strAliasName,
+                       const Variant &defaultVal)
 {
 }
 
-GsSqlField::GsSqlField(const char *strName, GsSqlFieldType eType, int nPrecision, int nScale,
-                       const char *strAliasName, const GsVariant &defaultVal)
+SqlField::SqlField(const char *strName, SqlFieldType eType, int nPrecision, int nScale,
+                       const char *strAliasName, const Variant &defaultVal)
 {
 }
 
-GsString GsSqlField::ToXml() const
+String SqlField::ToXml() const
 {
-    return GsString();
+    return String();
 }
 
-GsString GsSqlField::ToJson() const
+String SqlField::ToJson() const
 {
-    return GsString();
+    return String();
 }
 
-bool GsSqlField::operator==(const GsSqlField &field) const
+bool SqlField::operator==(const SqlField &field) const
 {
     return false;
 }
 
-bool GsSqlField::operator!=(const GsSqlField &field) const
+bool SqlField::operator!=(const SqlField &field) const
 {
     return false;
 }
@@ -46,31 +46,31 @@ bool GsSqlField::operator!=(const GsSqlField &field) const
 /*********************************************************************/
 
 
-int GsSqlFields::FindField(const char *strFieldName) const
+int SqlFields::FindField(const char *strFieldName) const
 {
 }
 
-GsString GsSqlFields::ToXml() const
+String SqlFields::ToXml() const
 {
-    return GsString();
+    return String();
 }
 
-bool GsSqlFields::FromXml(const char *strInfo)
-{
-    return false;
-}
-
-GsString GsSqlFields::ToJson() const
-{
-    return GsString();
-}
-
-bool GsSqlFields::FromJson(const char *strInfo)
+bool SqlFields::FromXml(const char *strInfo)
 {
     return false;
 }
 
-const GsSqlFields &GsSqlFields::Empty()
+String SqlFields::ToJson() const
+{
+    return String();
+}
+
+bool SqlFields::FromJson(const char *strInfo)
+{
+    return false;
+}
+
+const SqlFields &SqlFields::Empty()
 {
     // TODO: insert return statement here
 }

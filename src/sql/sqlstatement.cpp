@@ -3,104 +3,104 @@
 namespace m2 {
 namespace Data {
 
-GsSqlStatement::GsSqlStatement()
+SqlStatement::SqlStatement()
 {
 }
 
-GsSqlStatement::GsSqlStatement(GsSqlDatabase *db, const char *strSQL)
+SqlStatement::SqlStatement(SqlDatabase *db, const char *strSQL)
 {
 }
 
-GsSqlStatement::~GsSqlStatement()
+SqlStatement::~SqlStatement()
 {
 }
 
-GsString GsSqlStatement::SQLString()
+String SqlStatement::SQLString()
 {
-    return GsString();
+    return String();
 }
 
-long long GsSqlStatement::RecordCount()
-{
-    return 0;
-}
-
-int GsSqlStatement::IntValue(int nCol)
+long long SqlStatement::RecordCount()
 {
     return 0;
 }
 
-long long GsSqlStatement::Int64Value(int nCol)
+int SqlStatement::IntValue(int nCol)
 {
     return 0;
 }
 
-GsString GsSqlStatement::StringValue(int nCol)
+long long SqlStatement::Int64Value(int nCol)
 {
-    return GsString();
+    return 0;
 }
 
-GsDateTime GsSqlStatement::DataTimeValue(int nCol)
+String SqlStatement::StringValue(int nCol)
 {
-    return GsDateTime();
+    return String();
 }
 
-const char *GsSqlStatement::StringValuePtr(int nCol)
+DateTime SqlStatement::DataTimeValue(int nCol)
+{
+    return DateTime();
+}
+
+const char *SqlStatement::StringValuePtr(int nCol)
 {
     return nullptr;
 }
 
-double GsSqlStatement::DoubleValue(int nCol)
+double SqlStatement::DoubleValue(int nCol)
 {
     return 0.0;
 }
 
-bool GsSqlStatement::IsNullColunm(int n)
+bool SqlStatement::IsNullColunm(int n)
 {
     return false;
 }
 
-int GsSqlStatement::Bind(int nIndex, const unsigned char *pBlob, int nLen)
+int SqlStatement::Bind(int nIndex, const unsigned char *pBlob, int nLen)
 {
     return 0;
 }
 
-int GsSqlStatement::Bind(int nIndex, int nValue)
+int SqlStatement::Bind(int nIndex, int nValue)
 {
     return 0;
 }
 
-int GsSqlStatement::Bind(int nIndex, double nValue)
+int SqlStatement::Bind(int nIndex, double nValue)
 {
     return 0;
 }
 
-int GsSqlStatement::Bind(int nIndex, unsigned long long nValue)
+int SqlStatement::Bind(int nIndex, unsigned long long nValue)
 {
     return 0;
 }
 
-int GsSqlStatement::Bind(int nIndex)
+int SqlStatement::Bind(int nIndex)
 {
     return 0;
 }
 
-int GsSqlStatement::Bind(int nIndex, const char *pStr)
+int SqlStatement::Bind(int nIndex, const char *pStr)
 {
     return 0;
 }
 
-int GsSqlStatement::Bind(int nIndex, long long nValue, bool bIsDateTime)
+int SqlStatement::Bind(int nIndex, long long nValue, bool bIsDateTime)
 {
     return 0;
 }
 
-int GsSqlStatement::ExecuteQuery()
+int SqlStatement::ExecuteQuery()
 {
     return 0;
 }
 
-int GsSqlStatement::Execute()
+int SqlStatement::Execute()
 {
     return 0;
 }

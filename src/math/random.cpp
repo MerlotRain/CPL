@@ -80,7 +80,7 @@ static int __drand48_iterate(unsigned short int xsubi[3], unsigned short int buf
     return 0;
 }
 
-GsRandom::GsRandom()
+Random::Random()
 {
     memset(m_Seed, 0, 7);
     time_t t;
@@ -93,7 +93,7 @@ GsRandom::GsRandom()
     m_Seed[6] = 0xb;
 }
 
-GsRandom::GsRandom(int seed)
+Random::Random(int seed)
 {
     memset(m_Seed, 0, 7);
     m_Seed[2] = seed >> 16;
@@ -102,50 +102,50 @@ GsRandom::GsRandom(int seed)
     m_Seed[6] = 0xb;
 }
 
-GsRandom::GsRandom(unsigned short seed[7])
+Random::Random(unsigned short seed[7])
 {
     memset(m_Seed, 0, 7);
     memcpy(m_Seed, seed, 7);
 }
 
-GsRandom::GsRandom(const GsRandom &rhs)
+Random::Random(const Random &rhs)
 {
     memcpy(m_Seed, rhs.m_Seed, 7 * sizeof(unsigned short int));
 }
 
-GsRandom::GsRandom(GsRandom &&rhs)
+Random::Random(Random &&rhs)
 {
     std::swap(m_Seed, rhs.m_Seed);
 }
 
-GsRandom &GsRandom::operator=(GsRandom &&rhs)
+Random &Random::operator=(Random &&rhs)
 {
     std::swap(m_Seed, rhs.m_Seed);
     return *this;
 }
 
-GsRandom &GsRandom::operator=(const GsRandom &rhs)
+Random &Random::operator=(const Random &rhs)
 {
     memcpy(m_Seed, rhs.m_Seed, 7 * sizeof(unsigned short int));
     return *this;
 }
 
-GsRandom::~GsRandom()
+Random::~Random()
 {
     free(m_Seed);
 }
 
-void GsRandom::Swap(GsRandom &rhs)
+void Random::Swap(Random &rhs)
 {
     std::swap(m_Seed, rhs.m_Seed);
 }
 
-const unsigned short *GsRandom::Seed() const
+const unsigned short *Random::Seed() const
 {
     return reinterpret_cast<const unsigned short *>(m_Seed);
 }
 
-const unsigned short *GsRandom::XSeed() const
+const unsigned short *Random::XSeed() const
 {
     unsigned short xseed[3] = {0};
     xseed[0] = m_Seed[0];
@@ -154,7 +154,7 @@ const unsigned short *GsRandom::XSeed() const
     return xseed;
 }
 
-void GsRandom::XSeed(unsigned short seed[3])
+void Random::XSeed(unsigned short seed[3])
 {
     memcpy(m_Seed, m_Seed + 3 * sizeof(unsigned short int), 3 * sizeof(unsigned short int));
     m_Seed[2] = seed[2];
@@ -163,7 +163,7 @@ void GsRandom::XSeed(unsigned short seed[3])
     m_Seed[6] = 0xb;
 }
 
-int GsRandom::LRand48() noexcept
+int Random::LRand48() noexcept
 {
     if (!m_Seed)
         return -1;
@@ -171,7 +171,7 @@ int GsRandom::LRand48() noexcept
     return NRand48(xsubi);
 }
 
-int GsRandom::NRand48(unsigned short xseed[3]) noexcept
+int Random::NRand48(unsigned short xseed[3]) noexcept
 {
     long int result = 0;
     if (__drand48_iterate(xseed, m_Seed) < 0)
@@ -186,7 +186,7 @@ int GsRandom::NRand48(unsigned short xseed[3]) noexcept
 }
 
 
-int GsRandom::MRand48() noexcept
+int Random::MRand48() noexcept
 {
     unsigned short int xsubi[3] = {m_Seed[0], m_Seed[1], m_Seed[2]};
 
@@ -198,7 +198,7 @@ int GsRandom::MRand48() noexcept
     return result;
 }
 
-int GsRandom::JRand48(unsigned short xseed[3]) noexcept
+int Random::JRand48(unsigned short xseed[3]) noexcept
 {
     if (__drand48_iterate(xseed, m_Seed) < 0)
         return -1;
@@ -209,7 +209,7 @@ int GsRandom::JRand48(unsigned short xseed[3]) noexcept
     return result;
 }
 
-double GsRandom::DRand48() noexcept
+double Random::DRand48() noexcept
 {
     double result;
     union ieee754_double temp;
@@ -227,7 +227,7 @@ double GsRandom::DRand48() noexcept
     return result;
 }
 
-double GsRandom::ERand48(unsigned short xseed[3]) noexcept
+double Random::ERand48(unsigned short xseed[3]) noexcept
 {
     double result;
 
@@ -248,27 +248,27 @@ double GsRandom::ERand48(unsigned short xseed[3]) noexcept
 }
 
 
-int GsRandom::Next()
+int Random::Next()
 {
     return LRand48();
 }
 
-int GsRandom::Next(int minValue, int maxValue)
+int Random::Next(int minValue, int maxValue)
 {
     return (LRand48() % (maxValue - minValue)) + minValue;
 }
 
-double GsRandom::Next(double minValue, double maxValue)
+double Random::Next(double minValue, double maxValue)
 {
     return DRand48() * (maxValue - minValue) * 0.5;
 }
 
-double GsRandom::NextDouble()
+double Random::NextDouble()
 {
     return DRand48();
 }
 
-void GsRandom::NextBytes(unsigned char *bytes, int nLen)
+void Random::NextBytes(unsigned char *bytes, int nLen)
 {
     int num = LRand48();
     memset(bytes, num, nLen);

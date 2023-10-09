@@ -30,43 +30,43 @@
 **
 ****************************************************************************/
 
-class M2_API GsBackgroundTask : public GsRefObject
+class M2_API BackgroundTask : public RefObject
 {
 public:
-    virtual ~GsBackgroundTask() {}
+    virtual ~BackgroundTask() {}
 
     virtual void ExecuteTask() = 0;
 
     virtual void Cancel();
 
-    static GsSharedPointer<GsBackgroundTask> Create(std::function<void()> funcationTask);
+    static SharedPointer<BackgroundTask> Create(std::function<void()> funcationTask);
 
 protected:
-    GsBackgroundTask();
+    BackgroundTask();
     volatile bool m_bCancel;
 };
-GS_SMARTER_PTR(GsBackgroundTask)
+GS_SMARTER_PTR(BackgroundTask)
 
 
-enum GsDispatchOption
+enum DispatchOption
 {
     eDummy,
     eRoundRobin,
 };
 
-class GsDispatchOp;
-class M2_API GsPackagedTack : public GsRefObject
+class DispatchOp;
+class M2_API PackagedTack : public RefObject
 {
-    std::queue<GsBackgroundTaskPtr> m_Tasks;
-    std::unique_ptr<GsDispatchOp> m_Option;
+    std::queue<BackgroundTaskPtr> m_Tasks;
+    std::unique_ptr<DispatchOp> m_Option;
 
 public:
-    GsPackagedTack(GsDispatchOption option = eDummy);
+    PackagedTack(DispatchOption option = eDummy);
 
-    ~GsPackagedTack();
+    ~PackagedTack();
 
-    void AddTask(GsBackgroundTask *pTask);
+    void AddTask(BackgroundTask *pTask);
 
     void Shutdown();
 };
-GS_SMARTER_PTR(GsPackagedTack)
+GS_SMARTER_PTR(PackagedTack)

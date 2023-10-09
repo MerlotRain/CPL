@@ -12,14 +12,14 @@
 
 namespace m2 {
 
-class GsSharedMemeoryHandle : public GsRefObject
+class SharedMemeoryHandle : public RefObject
 {
 public:
-    GsSharedMemeoryHandle();
-    GsSharedMemeoryHandle(const char *name, std::size_t size, GsSharedMemory::AccessMode mode,
+    SharedMemeoryHandle();
+    SharedMemeoryHandle(const char *name, std::size_t size, SharedMemory::AccessMode mode,
                           const void *addrHint, bool server);
-    GsSharedMemeoryHandle(const GsFile &file, GsSharedMemory::AccessMode mode, const void *addrHint);
-    ~GsSharedMemeoryHandle();
+    SharedMemeoryHandle(const File &file, SharedMemory::AccessMode mode, const void *addrHint);
+    ~SharedMemeoryHandle();
     char *Begin() const;
     char *End() const;
     unsigned long long Size() const;
@@ -30,7 +30,7 @@ protected:
     void Close();
 
 
-    GsString m_strName;
+    String m_strName;
     unsigned long long m_Size;
     char *m_pAddress;
 #ifdef _WIN32
@@ -39,7 +39,7 @@ protected:
     DWORD _mode;
 #else
     int _fd;
-    GsSharedMemory::AccessMode _access;
+    SharedMemory::AccessMode _access;
     bool _fileMapped;
     bool _server;
 #endif

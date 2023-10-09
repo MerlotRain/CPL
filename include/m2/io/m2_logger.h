@@ -30,181 +30,114 @@
 **
 ****************************************************************************/
 
-#pragma once
+#ifndef M2_LOGGER_H_
+#define M2_LOGGER_H_
 
-#include "preconfig.h"
-#include "stringhelp.h"
 #include <fstream>
+#include <m2_string.h>
 
 namespace m2 {
 
-/// @brief 日志级别
-enum GsLogLevel
+enum LogLevel
 {
-    eLOGALL = -99999,//!< 所有日志全部记录
-    eLOGNONE = 99999,//!< 所有日志都不记录
-    eLOGTRACE = -100,//!< 记录追踪日志
-    eLOGDEBUG = 0,   //!< 记录调试日志
-    eLOGINFO = 100,  //!< 记录基本信息
-    eLOGWARN = 200,  //!< 记录警告
-    eLOGERROR = 300, //!< 记录普通错误
-    eLOGFATAL = 400, //!< 记录致命错误
+    eLOGALL = -99999,
+    eLOGNONE = 99999,
+    eLOGTRACE = -100,
+    eLOGDEBUG = 0,
+    eLOGINFO = 100,
+    eLOGWARN = 200,
+    eLOGERROR = 300,
+    eLOGFATAL = 400,
 
 };
 
-/// @brief 自定义的输出管道
-class M2_API GsCustomLogOutput
+class M2_API LogOutput
 {
 public:
-    ~GsCustomLogOutput() {}
-
-    /// @brief
-    /// @param log
-    /// @return
+    ~LogOutput() {}
     virtual bool OnLog(const char *log) = 0;
-    /// @brief
-    virtual void OnFlush(){};
+    virtual void OnFlush() {}
 };
 
-/// @brief 将日志输出到文件
-class M2_API GsFileCustomLogOutput : public GsCustomLogOutput
+class M2_API FileLogOutput : public LogOutput
 {
     std::ofstream m_file;
     bool m_ShowInConsole;
 
 public:
-    /// @brief
-    /// @param log
-    /// @return
     virtual bool OnLog(const char *log);
-    /// @brief
     virtual void OnFlush();
-    /// @brief
-    /// @param strFileName
-    /// @param bAppend
-    /// @param ShowInConsole
-    GsFileCustomLogOutput(const char *strFileName, bool bAppend = false, bool ShowInConsole = false);
+    FileLogOutput(const char *strFileName, bool bAppend = false, bool ShowInConsole = false);
 };
 
-/// @brief 创建日志
-class M2_API GsLogger
+class M2_API Logger
 {
-    GsString m_strName;
-    GsCustomLogOutput *m_pHook;
+    String m_strName;
+    LogOutput *m_pHook;
     volatile bool m_AutoFlush;
+    volatile LogLevel m_nLevel;
 
-    volatile GsLogLevel m_nLevel;
-    /// @brief 日志流操作
-    class M2_API GsLogStream : public Utility::GsStringStream
+    class M2_API LogStream : public std::stringstream
     {
-        GsLogger &m_Log;
+        Logger &m_Log;
         bool m_bEnable;
-        GsLogLevel m_nLevel;
+        LogLevel m_nLevel;
 
     public:
-        GsLogStream(const GsLogStream &rhs);
-        GsLogStream(GsLogger &log, GsLogLevel l, bool bEnable);
-        virtual ~GsLogStream();
+        LogStream(const LogStream &rhs);
+        LogStream(Logger &log, LogLevel l, bool bEnable);
+        virtual ~LogStream();
     };
 
-
 public:
-    /// @brief 构造函数
-    GsLogger();
-    /// @brief
-    /// @param strLogName
-    GsLogger(const char *strLogName);
+    Logger();
+    Logger(const char *strLogName);
+    static void addGlobalLogger(Logger *logger, unsigned long long nUniqueKey, bool bManagePointer = false);
+    static Logger &globalLogger(unsigned long long nUniqueKey);
+    static Logger *removeGlobalLogger(unsigned long long nUniqueKey);
+    static bool isDebuging();
 
-
-    /// @brief 以数字型的唯一Key添加一个全局日志
-    /// @param logger 要添加的日志指针
-    /// @param nUniqueKey 日志的唯一Key，用于获取日志的标识
-    /// @param bManagePointer 是否系统管理日志指针，如果为true,那么系统退出时会自动删除日志
-    static void AddGlobalLogger(GsLogger *logger, unsigned long long nUniqueKey, bool bManagePointer = false);
-
-    /// @brief 获取全局日志，如果根据key无法获取，那么返回缺省日志
-    /// @param nUniqueKey
-    /// @return
-    static GsLogger &GlobalLogger(unsigned long long nUniqueKey);
-
-    /// @brief 从全局换从移除日志，返回日志的指针
-    /// @param nUniqueKey
-    /// @return
-    static GsLogger *RemoveGlobalLogger(unsigned long long nUniqueKey);
-
-    /// @brief 判断当前程序是否运行在调试状态
-    /// @details 仅仅对于windows平台下Visual Studio中调试状态有效，其他情况下一律返回false
-    /// @return
-    static bool IsDebuging();
-
-    /// @brief 最后报告的错误
-    /// @return
-    GsString LastError();
-    /// @brief 设置日志级别
-    /// @param l
-    /// @return
-    GsLogLevel LogLevel(GsLogLevel l);
-    /// @brief 获得日志级别
-    /// @return
-    GsLogLevel LogLevel();
-    /// @brief 自定义输出
-    /// @param pOutput
-    /// @return
-    GsCustomLogOutput *CustomOutput(GsCustomLogOutput *pOutput);
-    /// @brief
-    /// @return
-    GsCustomLogOutput *CustomOutput();
-    /// @brief 获取日志名
-    /// @return
-    GsString Name() const;
-    /// @brief 虚析构函数
-    virtual ~GsLogger();
-    /// @brief 日志操作后输出流是否刷新
-    /// @return 返回true表示刷新，否则，不刷新
-    bool AutoFlush();
-
-    /// @brief 日志操作后输出流是否刷新
-    /// @return 返回true表示刷新，否则，不刷新
-    /// @param b
-    void AutoFlush(bool b);
-
-
-    /// @brief 报告一段日志
-    /// @param l
-    /// @param log
-    void Log(GsLogLevel l, const char *log);
-    /// @brief 缺省的日志对象
-    static GsLogger &Default();
-    /// @brief 输出日志
-    GsLogStream operator<<(const GsLogLevel &l) const;
+    String lastError();
+    LogLevel logLevel(LogLevel l);
+    LogLevel logLevel();
+    LogOutput *CustomOutput(LogOutput *pOutput);
+    LogOutput *CustomOutput();
+    String mame() const;
+    virtual ~Logger();
+    bool autoFlush();
+    void setAutoFlush(bool b);
+    void log(LogLevel l, const char *log);
+    static Logger &instance();
+    LogStream operator<<(const LogLevel &l) const;
 };
 
 // clang-format off
 
 /// @brief 全局日志对象各级别宏定义
-#define GSLOG				Lite::Utility::GsLogger::Default()
+#define GSLOG				m2::Logger::instance()
 #define GS_FILE_LINE_FUNCTION " [" << __FILE__ << ":" << __LINE__ << "](" << __FUNCTION__ << ") "
 
-#define GSLOG_ERROR			Lite::Utility::GsLogger::Default()<<Lite::Utility::eLOGERROR << GS_FILE_LINE_FUNCTION
-#define GS_E				Lite::Utility::GsLogger::Default()<<Lite::Utility::eLOGERROR << GS_FILE_LINE_FUNCTION
+#define GSLOG_ERROR			m2::Logger::instance() << m2::eLOGERROR << GS_FILE_LINE_FUNCTION
+#define GS_E				m2::Logger::instance() << m2::eLOGERROR << GS_FILE_LINE_FUNCTION
 
-#define GSLOG_TRACE			Lite::Utility::GsLogger::Default()<<Lite::Utility::eLOGTRACE << GS_FILE_LINE_FUNCTION
-#define GS_T				Lite::Utility::GsLogger::Default()<<Lite::Utility::eLOGTRACE << GS_FILE_LINE_FUNCTION
+#define GSLOG_TRACE			m2::Logger::instance() << m2::eLOGTRACE << GS_FILE_LINE_FUNCTION
+#define GS_T				m2::Logger::instance() << m2::eLOGTRACE << GS_FILE_LINE_FUNCTION
 
-#define GSLOG_DEBUG			Lite::Utility::GsLogger::Default()<<Lite::Utility::eLOGDEBUG << GS_FILE_LINE_FUNCTION
-#define GS_D				Lite::Utility::GsLogger::Default()<<Lite::Utility::eLOGDEBUG << GS_FILE_LINE_FUNCTION
+#define GSLOG_DEBUG			m2::Logger::instance() << m2::eLOGDEBUG << GS_FILE_LINE_FUNCTION
+#define GS_D				m2::Logger::instance() << m2::eLOGDEBUG << GS_FILE_LINE_FUNCTION
 
-#define GSLOG_INFO			Lite::Utility::GsLogger::Default()<<Lite::Utility::eLOGINFO
-#define GS_I				Lite::Utility::GsLogger::Default()<<Lite::Utility::eLOGINFO
+#define GSLOG_INFO			m2::Logger::instance() << m2::eLOGINFO
+#define GS_I				m2::Logger::instance() << m2::eLOGINFO
 
-#define GSLOG_WARN			Lite::Utility::GsLogger::Default()<<Lite::Utility::eLOGWARN
-#define GS_W				Lite::Utility::GsLogger::Default()<<Lite::Utility::eLOGWARN
+#define GSLOG_WARN			m2::Logger::instance() << m2::eLOGWARN
+#define GS_W				m2::Logger::instance() << m2::eLOGWARN
 
-#define GSLOG_FATAL			Lite::Utility::GsLogger::Default()<<Lite::Utility::eLOGFATAL
-#define GS_F				Lite::Utility::GsLogger::Default()<<Lite::Utility::eLOGFATAL
+#define GSLOG_FATAL			m2::Logger::instance() << m2::eLOGFATAL
+#define GS_F				m2::Logger::instance() << m2::eLOGFATAL
 
 
 // clang-format on
 
-
 }// namespace m2
+
+#endif//M2_LOGGER_H_

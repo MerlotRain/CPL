@@ -40,7 +40,7 @@ namespace m2 {
 
 
 /// @brief 操作系统
-enum class GsOperatorSystemType
+enum class OperatorSystemType
 {
     /// @brief 未知操作系统
     eUnknown,
@@ -56,7 +56,7 @@ enum class GsOperatorSystemType
 
 /// @brief BOM（Byte Order Mark）字节顺序标记
 /// @details Windows下的特殊情况，文件不建议使用BOM头。
-enum class GsBOMType
+enum class BOMType
 {
     /// @brief 未知或空的BOM标记
     eUnknow,
@@ -78,12 +78,12 @@ enum class GsBOMType
 
 
 /// @brief 操作系统环境变量相关
-class M2_API GsOperatorSystemEnvironment
+class M2_API OperatorSystemEnvironment
 {
 public:
     /// @brief 获取当前的操作系统
     /// @return
-    static GsOperatorSystemType CurrentOperatorSystemType();
+    static OperatorSystemType CurrentOperatorSystemType();
     /// @brief 环境变量分隔符
     /// @details 多个环境变量如PATH环境变量多个路径的分隔符。linux下为冒号（:）,windows下为分号（;）
     /// @return
@@ -92,7 +92,7 @@ public:
     /// @brief 获取环境变量的值
     /// @param name
     /// @return
-    static GsString EnvironmentVariable(const char *name);
+    static String EnvironmentVariable(const char *name);
 
     /// @brief 修改环境变量的值
     /// @param name
@@ -107,7 +107,7 @@ public:
     /// @param name
     /// @param content
     /// @return
-    static GsString RemoveEnvironmentVariable(const char *name, const char *content);
+    static String RemoveEnvironmentVariable(const char *name, const char *content);
 
 
     /// @brief 向环境变量中插入一段内容。如果存在此内容则不工作任何动作
@@ -115,7 +115,7 @@ public:
     /// @param content 要添加的内容
     /// @param bAddToTail 是否添加到尾部，否则就添加到头部
     /// @return 返回添加后的的环境变量内容
-    static GsString AppendEnvironmentVariable(const char *name, const char *content, bool bAddToTail = true);
+    static String AppendEnvironmentVariable(const char *name, const char *content, bool bAddToTail = true);
 
     /// @brief 添加动态链接库搜索的路径
     /// @details windows下通过AddDllDirectory添加动态库搜索路径，linux下添加LD_LIBRARY_PATH的环境变量
@@ -126,7 +126,7 @@ public:
 };
 
 
-class M2_API GsFileSystem
+class M2_API FileSystem
 {
 public:
     /// @brief 获取最大文件打开句柄数
@@ -140,11 +140,11 @@ public:
     static long long MaxStdio(long long maxIOCount);
 
     /// @brief 获取应用程序数据目录，Windows下将获取%AppData%目录,Linux下将获取HOME目录。
-    static GsString AppDataFolder();
+    static String AppDataFolder();
 
     /// @brief 系统PATH目录
     /// @return
-    static GsString PathFolder();
+    static String PathFolder();
 
     /// @brief 增加搜索路径到系统PATH环境变量中
     /// @param path
@@ -154,15 +154,15 @@ public:
     /// @param path1 第一个路径
     /// @param path2 第二个路径
     /// @return 包含合并的路径的字符串。如果指定的路径之一是零长度字符串，则该方法返回其他路径。如果path2是绝对路径，则该方法返回 path2
-    static GsString Combine(const char *path1, const char *path2);
+    static String Combine(const char *path1, const char *path2);
 
     /// @brief 比较两个路径是否相等，根据平台决定是否忽略大小写
     static int ComparePath(const char *path1, const char *path2);
 
     /// @brief 测试字符串头的BOM标记类型
-    static GsBOMType TestBOM(const char *str, int nLen);
+    static BOMType TestBOM(const char *str, int nLen);
     /// @brief 获取BOM标记的标记头长度
-    static int BOMLength(GsBOMType eType);
+    static int BOMLength(BOMType eType);
 
     /// @brief 路径是否使用utf8字符串
     /// @return
@@ -183,87 +183,87 @@ public:
 
     /// @brief 系统临时目录
     /// @return
-    static GsString TemporaryFolder();
+    static String TemporaryFolder();
 
     /// @brief 当前应用程序的运行路径
     /// @return
-    static GsString CurrentFolder();
+    static String CurrentFolder();
 
     /// @brief 获取当前用户的主目录
     /// @return
-    static GsString HomeFolder();
+    static String HomeFolder();
 
     /// @brief 获取当前用户目录下的Config目录
     /// @return
-    static GsString ConfigHomeFolder();
+    static String ConfigHomeFolder();
 
     /// @brief 获取当前用户目录下的数据陌路
     /// @return
-    static GsString DataHomeFolder();
+    static String DataHomeFolder();
 
     /// @brief 获取当前用户目录下的临时目录
     /// @return
-    static GsString TempHomeFolder();
+    static String TempHomeFolder();
 
     /// @brief 获取当前用户目录下的缓存目录
     /// @return
-    static GsString CacheHomeFolder();
+    static String CacheHomeFolder();
 
     /// @brief 获取临时目录
     /// @return
-    static GsString TempFolder();
+    static String TempFolder();
 
     /// @brief 获取配置文件目录
     /// @details UNIX /etc/
     /// @return
-    static GsString ConfigFolder();
+    static String ConfigFolder();
 };
 
 
-class GsDir;
+class Dir;
 
 /// @brief 文件
-class M2_API GsFile
+class M2_API File
 {
-    GsString m_strPath;
+    String m_strPath;
 
 public:
     /// @brief 默认构造
-    GsFile();
+    File();
     /// @brief 文件的完整路径构造对象
     /// @param path 文件完整路径
-    GsFile(const char *path);
+    File(const char *path);
     /// @brief 拷贝构造函数
     /// @param rhs
-    GsFile(const GsFile &rhs);
+    File(const File &rhs);
     /// @brief 默认析构
-    virtual ~GsFile();
+    virtual ~File();
 
     /// @brief 赋值复制构造
     /// @param file
     /// @return
-    GsFile &operator=(const GsFile &file);
+    File &operator=(const File &file);
     /// @brief 赋值
     /// @param file 其他文件
     /// @return 自身
-    GsFile &operator=(const char *file);
+    File &operator=(const char *file);
     /// @brief 赋值
     /// @param file 其他文件
     /// @return 自身
-    GsFile &operator=(const GsString &file);
+    File &operator=(const String &file);
 
     /// @brief 获取文件完整路径
     /// @return
-    const GsString &Path() const;
+    const String &Path() const;
 
     /// @brief 获取文件名称，不包含路径
     /// @param bHasExtension 是否包含后缀
     /// @return
-    const GsString &Name(bool bHasExtension = true) const;
+    const String &Name(bool bHasExtension = true) const;
 
     /// @brief 文件所在的目录
     /// @return 返回文件所在的目录
-    GsDir Parent() const;
+    Dir Parent() const;
 
     /// @brief 判断文件是否存在
     /// @return
@@ -271,13 +271,13 @@ public:
 
     /// @brief 文件的扩展名，(不带.)
     /// @return 返回文件的扩展名
-    GsString Extension() const;
+    String Extension() const;
 
     /// @brief 改变文件路径的扩展名
     /// @details 注意并非修改文件的扩展名。
     /// @param strExt 新的扩展名，(不带.)
     /// @return 返回文件的扩展名
-    GsString ChangeExtension(const char *strExt);
+    String ChangeExtension(const char *strExt);
 
     /// @brief 判断文件是否刻度
     /// @return
@@ -296,36 +296,36 @@ public:
     bool IsHidden() const;
     /// @brief 文件创建时间
     /// @return
-    GsTimestamp Created() const;
+    Timestamp Created() const;
     /// @brief 获取文件最后一次修改时间
     /// @return
-    GsTimestamp LastModified() const;
+    Timestamp LastModified() const;
     /// @brief 设置文件修改时间
     /// @param ts
     /// @return
-    GsFile &LastModified(const GsTimestamp &ts);
+    File &LastModified(const Timestamp &ts);
     /// @brief 获取文件的大小
     /// @return
     unsigned long long Size() const;
     /// @brief 设置文件的大小
     /// @param size
     /// @return
-    GsFile &Size(unsigned long long size);
+    File &Size(unsigned long long size);
 
     /// @brief 设置文件是否可写入
     /// @param flag
     /// @return
-    GsFile &Writeable(bool flag = true);
+    File &Writeable(bool flag = true);
 
     /// @brief 设置文件是否只读
     /// @param flag
     /// @return
-    GsFile &ReadOnly(bool flag = true);
+    File &ReadOnly(bool flag = true);
 
     /// @brief 设置文件是否可执行
     /// @param flag
     /// @return
-    GsFile &Executable(bool flag = true);
+    File &Executable(bool flag = true);
 
     /// @brief 将文件拷贝到指定位置
     /// @param path 目标文件路径
@@ -362,28 +362,28 @@ public:
     unsigned long long FreeSpace() const;
 
 protected:
-    void copyDirectory(const GsString &path, int options = 0) const;
+    void copyDirectory(const String &path, int options = 0) const;
 };
 
 
 /// @brief 文件系统的目录
-class M2_API GsDir
+class M2_API Dir
 {
-    GsString m_strPath;
+    String m_strPath;
 
 public:
     /// @brief  默认函数
-    GsDir();
+    Dir();
     /// @brief 拷贝构造函数
     /// @param pDir 拷贝的对象
-    GsDir(const GsDir &pDir);
+    Dir(const Dir &pDir);
     /// @brief 目录的完整路径构造对象
     /// @param strDirPath 目录完整路径
-    GsDir(const char *strDirPath);
-    virtual ~GsDir();
+    Dir(const char *strDirPath);
+    virtual ~Dir();
     /// @brief 获取目录的内部字符串路径
     /// @return 返回目录字符串指针
-    GsString Path() const;
+    String Path() const;
 
     /// @brief 如果文件夹不存在则创建文件夹
     /// @return
@@ -391,11 +391,11 @@ public:
 
     /// @brief 目录的名称
     /// @return 返回目录的名称
-    GsString Name() const;
+    String Name() const;
 
     /// @brief 目录的完整路径（UTF-8）
     /// @return 返回目录的完整路径
-    GsString FullPath() const;
+    String FullPath() const;
     /// @brief 目录是否存在
     /// @return 返回目录是否存在
     bool Exists() const;
@@ -406,62 +406,62 @@ public:
 
     /// @brief 返回父目录
     /// @return 返回父目录
-    GsDir Parent() const;
+    Dir Parent() const;
     /// @brief 以回调遍历所有的文件
-    void ForEachFiles(GsDelegate<bool(const char *, void *)> &onFileCallBack, void *context = NULL, const char *searchPattern = NULL);
+    void ForEachFiles(Delegate<bool(const char *, void *)> &onFileCallBack, void *context = NULL, const char *searchPattern = NULL);
 
     /// @brief 目录下所有的文件
     /// @param searchPattern 搜索条件，比如*.txt
     /// @return 返回目录下的所有文件对象
-    std::vector<GsFile> Files(const char *searchPattern = NULL) const;
+    std::vector<File> Files(const char *searchPattern = NULL) const;
 
     /// @brief 目录下所有的文件
     /// @param files 保存文件对象的集合
     /// @return 返回保存集合的指针
-    std::vector<GsFile> *Files(std::vector<GsFile> &files) const;
+    std::vector<File> *Files(std::vector<File> &files) const;
 
     /// @brief 获取子目录
     /// @return 返回子目录对象
     /// @param subName
-    GsDir SubDir(const char *subName) const;
+    Dir SubDir(const char *subName) const;
 
     /// @brief 获取目录下的文件
     /// @return 目录下的文件
     /// @param fileName
-    GsFile File(const char *fileName) const;
+    File File(const char *fileName) const;
 
     /// @brief 以回调遍历所有的目录
     /// @details 参数1
-    void ForEachDirs(GsDelegate<bool(const char *, void *)> &onFileCallBack, void *context = NULL);
+    void ForEachDirs(Delegate<bool(const char *, void *)> &onFileCallBack, void *context = NULL);
 
     /// @brief 目录下所有的子目录
     /// @return 返回目录下的所有子目录对象
-    std::vector<GsDir> Dirs() const;
+    std::vector<Dir> Dirs() const;
 
     /// @brief 目录下所有的子目录
     /// @param files
     /// @return 返回目录下的所有子目录对象
-    std::vector<GsDir> *Dirs(std::vector<GsDir> &files) const;
+    std::vector<Dir> *Dirs(std::vector<Dir> &files) const;
 
     /// @brief 判断目录是否为同一个目录
     /// @brief rhs 其他目录
     /// @return 传入目录是否和本目录为同一个文件
-    bool operator==(const GsDir &rhs) const;
+    bool operator==(const Dir &rhs) const;
 
     /// @brief 赋值
     /// @param rhs 对象
     /// @return 自身
-    GsDir &operator=(const GsDir &rhs);
+    Dir &operator=(const Dir &rhs);
 
     /// @brief 赋值
     /// @brief strDirPath 对象
     /// @return 自身
-    GsDir &operator=(const char *strDirPath);
+    Dir &operator=(const char *strDirPath);
 
     /// @brief 赋值
     /// @param strDirPath 对象
     /// @return 自身
-    GsDir &operator=(const GsString &strDirPath);
+    Dir &operator=(const String &strDirPath);
 
     /// @brief bool操作符
     operator bool();
@@ -480,7 +480,7 @@ public:
     static bool Remove(const char *path, bool recursive = true);
     /// @brief 获取本地所有盘符
     /// @return 返回盘符列表,非windows返回/
-    static std::vector<GsString> Drives();
+    static std::vector<String> Drives();
 
     /// @brief 返回当前文件所在盘符分区的总空间大小
     /// @return 字节值

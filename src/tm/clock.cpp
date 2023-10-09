@@ -9,43 +9,43 @@
 
 namespace m2 {
 
-GsClock::GsClock()
+Clock::Clock()
 {
     Update();
 }
 
-GsClock::GsClock(long long c)
+Clock::Clock(long long c)
 {
     m_nClock = c;
 }
 
-GsClock::GsClock(const GsClock &other)
+Clock::Clock(const Clock &other)
 {
     m_nClock = other.m_nClock;
 }
 
-GsClock::~GsClock()
+Clock::~Clock()
 {
 }
 
-GsClock &GsClock::operator=(const GsClock &other)
+Clock &Clock::operator=(const Clock &other)
 {
     m_nClock = other.m_nClock;
     return *this;
 }
 
-GsClock &GsClock::operator=(long long tv)
+Clock &Clock::operator=(long long tv)
 {
     m_nClock = tv;
     return *this;
 }
 
-void GsClock::Swap(GsClock &clock) noexcept
+void Clock::Swap(Clock &clock) noexcept
 {
     std::swap(m_nClock, clock.m_nClock);
 }
 
-void GsClock::Update()
+void Clock::Update()
 {
 #ifdef _WIN32
 
@@ -60,92 +60,92 @@ void GsClock::Update()
 #endif
 }
 
-bool GsClock::operator==(const GsClock &rhs) const
+bool Clock::operator==(const Clock &rhs) const
 {
     return m_nClock == rhs.m_nClock;
 }
 
-bool GsClock::operator!=(const GsClock &rhs) const
+bool Clock::operator!=(const Clock &rhs) const
 {
     return m_nClock != rhs.m_nClock;
 }
 
-bool GsClock::operator>(const GsClock &rhs) const
+bool Clock::operator>(const Clock &rhs) const
 {
     return m_nClock > rhs.m_nClock;
 }
 
-bool GsClock::operator>=(const GsClock &rhs) const
+bool Clock::operator>=(const Clock &rhs) const
 {
     return m_nClock >= rhs.m_nClock;
 }
 
-bool GsClock::operator<(const GsClock &rhs) const
+bool Clock::operator<(const Clock &rhs) const
 {
     return m_nClock < rhs.m_nClock;
 }
 
-bool GsClock::operator<=(const GsClock &rhs) const
+bool Clock::operator<=(const Clock &rhs) const
 {
     return m_nClock <= rhs.m_nClock;
 }
 
-GsClock GsClock::operator+(long long d) const
+Clock Clock::operator+(long long d) const
 {
-    return GsClock(m_nClock + d);
+    return Clock(m_nClock + d);
 }
 
-GsClock GsClock::operator-(long long d) const
+Clock Clock::operator-(long long d) const
 {
-    return GsClock(m_nClock - d);
+    return Clock(m_nClock - d);
 }
 
-long long GsClock::operator-(const GsClock &rhs) const
+long long Clock::operator-(const Clock &rhs) const
 {
     return m_nClock - rhs.m_nClock;
 }
 
-GsClock &GsClock::operator+=(long long d)
+Clock &Clock::operator+=(long long d)
 {
     m_nClock += d;
     return *this;
 }
 
-GsClock &GsClock::operator-=(long long d)
+Clock &Clock::operator-=(long long d)
 {
     m_nClock -= d;
     return *this;
 }
 
-long long GsClock::Microseconds() const
+long long Clock::Microseconds() const
 {
     return m_nClock;
 }
 
-long long GsClock::Raw() const
+long long Clock::Raw() const
 {
     return m_nClock;
 }
 
-long long GsClock::Elapsed() const
+long long Clock::Elapsed() const
 {
-    GsClock now;
+    Clock now;
     return now - *this;
 }
 
-bool GsClock::IsElapsed(long long interval) const
+bool Clock::IsElapsed(long long interval) const
 {
-    GsClock now;
+    Clock now;
     long long diff = now - *this;
     return diff >= interval;
 }
 
-long long GsClock::Resolution()
+long long Clock::Resolution()
 {
     return 1000000;
 }
 
-long long GsClock::Accuracy()
+long long Clock::Accuracy()
 {
 #ifdef _WIN32
     LARGE_INTEGER perfFreq;
@@ -159,7 +159,7 @@ long long GsClock::Accuracy()
     return 0;
 }
 
-bool GsClock::Monotonic()
+bool Clock::Monotonic()
 {
 #ifdef _WIN32
     return true;

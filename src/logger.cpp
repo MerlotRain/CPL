@@ -2,123 +2,123 @@
 
 namespace m2 {
 
-/************************************ GsFileCustomLogOutput ************************************/
+/************************************ FileCustomLogOutput ************************************/
 
-bool GsFileCustomLogOutput::OnLog(const char *log)
+bool FileCustomLogOutput::OnLog(const char *log)
 {
     return false;
 }
 
-void GsFileCustomLogOutput::OnFlush()
+void FileCustomLogOutput::OnFlush()
 {
 }
 
-GsFileCustomLogOutput::GsFileCustomLogOutput(const char *strFileName, bool bAppend,
+FileCustomLogOutput::FileCustomLogOutput(const char *strFileName, bool bAppend,
                                              bool ShowInConsole)
 {
 }
 
-/************************************ GsLogStream ************************************/
+/************************************ LogStream ************************************/
 
-GsLogger::GsLogStream::GsLogStream(const GsLogStream &rhs) : m_Log(rhs.m_Log)
+Logger::LogStream::LogStream(const LogStream &rhs) : m_Log(rhs.m_Log)
 {
 }
 
-GsLogger::GsLogStream::GsLogStream(GsLogger &log, GsLogLevel l, bool bEnable)
+Logger::LogStream::LogStream(Logger &log, LogLevel l, bool bEnable)
     : m_Log(log), m_nLevel(l), m_bEnable(bEnable)
 {
 }
 
-GsLogger::GsLogStream::~GsLogStream()
+Logger::LogStream::~LogStream()
 {
 }
 
 
-/************************************ GsLogger ************************************/
+/************************************ Logger ************************************/
 
 
-GsLogger::GsLogger()
+Logger::Logger()
 {
 }
 
-GsLogger::GsLogger(const char *strLogName)
+Logger::Logger(const char *strLogName)
 {
 }
 
-void GsLogger::AddGlobalLogger(GsLogger *logger, unsigned long long nUniqueKey, bool bManagePointer)
+void Logger::AddGlobalLogger(Logger *logger, unsigned long long nUniqueKey, bool bManagePointer)
 {
 }
 
-GsLogger &GsLogger::GlobalLogger(unsigned long long nUniqueKey)
+Logger &Logger::GlobalLogger(unsigned long long nUniqueKey)
 {
     // TODO: insert return statement here
 }
 
-GsLogger *GsLogger::RemoveGlobalLogger(unsigned long long nUniqueKey)
+Logger *Logger::RemoveGlobalLogger(unsigned long long nUniqueKey)
 {
     return nullptr;
 }
 
-bool GsLogger::IsDebuging()
+bool Logger::IsDebuging()
 {
     return false;
 }
 
-GsString GsLogger::LastError()
+String Logger::LastError()
 {
-    return GsString();
+    return String();
 }
 
-GsLogLevel GsLogger::LogLevel(GsLogLevel l)
+LogLevel Logger::LogLevel(LogLevel l)
 {
-    return GsLogLevel();
+    return LogLevel();
 }
 
-GsLogLevel GsLogger::LogLevel()
+LogLevel Logger::LogLevel()
 {
-    return GsLogLevel();
+    return LogLevel();
 }
 
-GsCustomLogOutput *GsLogger::CustomOutput(GsCustomLogOutput *pOutput)
-{
-    return nullptr;
-}
-
-GsCustomLogOutput *GsLogger::CustomOutput()
+CustomLogOutput *Logger::CustomOutput(CustomLogOutput *pOutput)
 {
     return nullptr;
 }
 
-GsString GsLogger::Name() const
+CustomLogOutput *Logger::CustomOutput()
 {
-    return GsString();
+    return nullptr;
 }
 
-GsLogger::~GsLogger()
+String Logger::Name() const
+{
+    return String();
+}
+
+Logger::~Logger()
 {
 }
 
-bool GsLogger::AutoFlush()
+bool Logger::AutoFlush()
 {
     return false;
 }
 
-void GsLogger::AutoFlush(bool b)
+void Logger::AutoFlush(bool b)
 {
 }
 
-void GsLogger::Log(GsLogLevel l, const char *log)
+void Logger::Log(LogLevel l, const char *log)
 {
 }
 
-GsLogger &GsLogger::Default()
+Logger &Logger::Default()
 {
     // TODO: insert return statement here
 }
 
-GsLogger::GsLogStream GsLogger::operator<<(const GsLogLevel &l) const
+Logger::LogStream Logger::operator<<(const LogLevel &l) const
 {
-    return GsLogStream(std::remove_cv_t<GsLogger &>(*this), l, true);
+    return LogStream(std::remove_cv_t<Logger &>(*this), l, true);
 }
 
 

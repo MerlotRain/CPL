@@ -768,7 +768,7 @@ void GetLastErrorAsString()
     LocalFree(messageBuffer);
 }
 
-void getStackTrace(StackTrace *stackTrace, GsString symbolPath, GsStackTrace *trace)
+void getStackTrace(StackTrace *stackTrace, String symbolPath, StackTrace *trace)
 {
     SymSetOptions(SYMOPT_DEFERRED_LOADS | SYMOPT_INCLUDE_32BIT_MODULES | SYMOPT_UNDNAME);
     if (!SymInitialize(stackTrace->process, symbolPath.c_str(), TRUE))
@@ -799,8 +799,8 @@ void getStackTrace(StackTrace *stackTrace, GsString symbolPath, GsStackTrace *tr
 
         if (SymFromAddrW(stackTrace->process, stackTrace->currentStackFrame.AddrPC.Offset, NULL, symbol))
         {
-            GsStackTrace::GsStackLine stackline;
-            GsCW2A cw2a(symbol->Name);
+            StackTrace::StackLine stackline;
+            CW2A cw2a(symbol->Name);
             stackline.Symbol = cw2a.m_Str;
 
             stackTrace->written +=
@@ -823,9 +823,9 @@ void getStackTrace(StackTrace *stackTrace, GsString symbolPath, GsStackTrace *tr
             if (SymGetLineFromAddrW64(stackTrace->process, stackTrace->currentStackFrame.AddrPC.Offset,
                                       &pos, &lineInfo))
             {
-                GsCW2A cw2a(lineInfo.FileName);
+                CW2A cw2a(lineInfo.FileName);
                 stackline.File = cw2a.m_Str;
-                stackline.Line = GsString::ToString(lineInfo.LineNumber);
+                stackline.Line = String::ToString(lineInfo.LineNumber);
 
                 stackTrace->written +=
                         swprintf_s(&stackTrace->message[stackTrace->written],
@@ -855,10 +855,10 @@ void getStackTrace(StackTrace *stackTrace, GsString symbolPath, GsStackTrace *tr
     SymCleanup(stackTrace->process);
 }
 
-GsStackTrace *GsStackTrace::Trace(DWORD processId, DWORD threadId, LPEXCEPTION_POINTERS exception,
-                                  GsString symbolPath)
+StackTrace *StackTrace::Trace(DWORD processId, DWORD threadId, LPEXCEPTION_POINTERS exception,
+                                  String symbolPath)
 {
-    GsStackTrace *trace = new GsStackTrace();
+    StackTrace *trace = new StackTrace();
     EXCEPTION_POINTERS remoteException = {0};
     CONTEXT remoteContextRecord = {0};
 
@@ -919,14 +919,14 @@ GsStackTrace *GsStackTrace::Trace(DWORD processId, DWORD threadId, LPEXCEPTION_P
             VirtualAllocEx(stackTrace->process, NULL, 128 / 8, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
 
     getStackTrace(stackTrace, symbolPath, trace);
-    GsCW2A cw2a(stackTrace->message);
+    CW2A cw2a(stackTrace->message);
     trace->strFullStack = cw2a.m_Str;
 
     return trace;
 }
 #elif defined(__linux__)
 
-std::vector<GsStackTrace::GsStackLine> GsStackTrace::Trace(unsigned int maxFrames)
+std::vector<StackTrace::StackLine> StackTrace::Trace(unsigned int maxFrames)
 {
     Q_UNUSED(maxFrames)
     QgsStackLines stack;

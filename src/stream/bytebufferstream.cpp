@@ -5,12 +5,12 @@
 
 namespace m2 {
 
-GsByteBufferStream::GsByteBufferStream(GsByteBuffer *buffer)
-    : std::iostream(new GsByteBufferStream::GsByteStreamBuf(buffer))
+ByteBufferStream::ByteBufferStream(ByteBuffer *buffer)
+    : std::iostream(new ByteBufferStream::ByteStreamBuf(buffer))
 {
 }
 
-GsByteBufferStream::GsByteStreamBuf::GsByteStreamBuf(GsByteBuffer *buffer) : m_Buffer(buffer)
+ByteBufferStream::ByteStreamBuf::ByteStreamBuf(ByteBuffer *buffer) : m_Buffer(buffer)
 {
     char *h = std::remove_cv_t<char *>(m_Buffer->BufferHead());
     char *e = std::remove_cv_t<char *>(m_Buffer->EndPtr());
@@ -18,7 +18,7 @@ GsByteBufferStream::GsByteStreamBuf::GsByteStreamBuf(GsByteBuffer *buffer) : m_B
     _Init(&h, &e, &l, &h, &e, &l);
 }
 
-std::streamsize GsByteBufferStream::GsByteStreamBuf::xsputn(const char *s, std::streamsize num)
+std::streamsize ByteBufferStream::ByteStreamBuf::xsputn(const char *s, std::streamsize num)
 {
     const std::streamsize start_count = num;
 
@@ -50,7 +50,7 @@ std::streamsize GsByteBufferStream::GsByteStreamBuf::xsputn(const char *s, std::
     return start_count - num;
 }
 
-std::streambuf::pos_type GsByteBufferStream::GsByteStreamBuf::seekpos(pos_type pos,
+std::streambuf::pos_type ByteBufferStream::ByteStreamBuf::seekpos(pos_type pos,
                                                                       ios_base::openmode mode)
 {
     std::streampos retVal = -1;
@@ -86,7 +86,7 @@ std::streambuf::pos_type GsByteBufferStream::GsByteStreamBuf::seekpos(pos_type p
     return retVal;
 }
 
-std::streambuf::pos_type GsByteBufferStream::GsByteStreamBuf::seekoff(off_type off,
+std::streambuf::pos_type ByteBufferStream::ByteStreamBuf::seekoff(off_type off,
                                                                       ios_base::seekdir way,
                                                                       ios_base::openmode mode)
 {

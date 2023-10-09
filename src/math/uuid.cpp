@@ -43,7 +43,7 @@ enum
 template<class Integral>
 void __toHex(char *&dst, Integral value)
 {
-    value = GsEndianConverter::Swap<Integral>(value);
+    value = EndianConverter::Swap<Integral>(value);
 
     const char *p = reinterpret_cast<const char *>(&value);
 
@@ -72,11 +72,11 @@ bool __fromHex(const char *&src, Integral &value)
     return true;
 }
 
-static char *__uuidToHex(const GsUUID &uuid, char *dst, GsUUID::StringFormat mode = GsUUID::eHyphens32)
+static char *__uuidToHex(const UUID &uuid, char *dst, UUID::StringFormat mode = UUID::eHyphens32)
 {
     switch (mode)
     {
-        case GsUUID::eHyphens32:
+        case UUID::eHyphens32:
             {
                 __toHex(dst, uuid.Data1);
                 *dst++ = '-';
@@ -89,7 +89,7 @@ static char *__uuidToHex(const GsUUID &uuid, char *dst, GsUUID::StringFormat mod
                 for (int i = 2; i < 8; i++) __toHex(dst, uuid.Data4[i]);
                 break;
             }
-        case GsUUID::eNumber32:
+        case UUID::eNumber32:
             {
                 __toHex(dst, uuid.Data1);
                 __toHex(dst, uuid.Data2);
@@ -98,7 +98,7 @@ static char *__uuidToHex(const GsUUID &uuid, char *dst, GsUUID::StringFormat mod
                 for (int i = 2; i < 8; i++) __toHex(dst, uuid.Data4[i]);
                 break;
             }
-        case GsUUID::eHyphensBraces:
+        case UUID::eHyphensBraces:
             {
                 *dst++ = '{';
                 __toHex(dst, uuid.Data1);
@@ -113,7 +113,7 @@ static char *__uuidToHex(const GsUUID &uuid, char *dst, GsUUID::StringFormat mod
                 *dst++ = '}';
                 break;
             }
-        case GsUUID::eHyphensParentheses:
+        case UUID::eHyphensParentheses:
             {
                 *dst++ = '(';
                 __toHex(dst, uuid.Data1);
@@ -134,7 +134,7 @@ static char *__uuidToHex(const GsUUID &uuid, char *dst, GsUUID::StringFormat mod
     return dst;
 }
 
-static GsUUID __uuidFromHex(const char *src)
+static UUID __uuidFromHex(const char *src)
 {
     unsigned int d1;
     unsigned short d2, d3;
@@ -149,27 +149,27 @@ static GsUUID __uuidFromHex(const char *src)
             *src++ == '-' && __fromHex(src, d4[2]) && __fromHex(src, d4[3]) && __fromHex(src, d4[4]) &&
             __fromHex(src, d4[5]) && __fromHex(src, d4[6]) && __fromHex(src, d4[7]))
         {
-            return GsUUID(d1, d2, d3, d4[0], d4[1], d4[2], d4[3], d4[4], d4[5], d4[6], d4[7]);
+            return UUID(d1, d2, d3, d4[0], d4[1], d4[2], d4[3], d4[4], d4[5], d4[6], d4[7]);
         }
     }
 
-    return GsUUID();
+    return UUID();
 }
 
-static GsUUID createFromName(const GsUUID &ns, const GsByteBuffer &baseData,
-                             GsCryptographicHash::GsHashAlgorithm algorithm, int version)
+static UUID createFromName(const UUID &ns, const ByteBuffer &baseData,
+                             CryptographicHash::HashAlgorithm algorithm, int version)
 {
-    GsByteBuffer hashResult;
+    ByteBuffer hashResult;
 
     {
-        GsCryptographicHash hash(algorithm);
+        CryptographicHash hash(algorithm);
         hash.AddData(ns.ToRfc4122());
         hash.AddData(baseData);
         hashResult = hash.Result();
     }
     hashResult.ReadSize(16);
 
-    GsUUID result = GsUUID::FromRfc4122(hashResult.ReadSize(16));
+    UUID result = UUID::FromRfc4122(hashResult.ReadSize(16));
 
     result.Data3 &= 0x0FFF;
     result.Data3 |= (version << 12);
@@ -184,23 +184,23 @@ static GsUUID createFromName(const GsUUID &ns, const GsByteBuffer &baseData,
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-GsUUID::GsUUID() noexcept : Data1(0), Data2(0), Data3(0), Data4{0, 0, 0, 0, 0, 0, 0, 0}
+UUID::UUID() noexcept : Data1(0), Data2(0), Data3(0), Data4{0, 0, 0, 0, 0, 0, 0, 0}
 {
 }
 
-GsUUID::GsUUID(unsigned int l, unsigned short w1, unsigned short w2, unsigned char b1, unsigned char b2,
+UUID::UUID(unsigned int l, unsigned short w1, unsigned short w2, unsigned char b1, unsigned char b2,
                unsigned char b3, unsigned char b4, unsigned char b5, unsigned char b6, unsigned char b7,
                unsigned char b8)
     : Data1(l), Data2(w1), Data3(w2), Data4{b1, b2, b3, b4, b5, b6, b7, b8}
 {
 }
 
-GsUUID::GsUUID(const GsUUID &rhs) noexcept : Data1(rhs.Data1), Data2(rhs.Data2), Data3(rhs.Data3)
+UUID::UUID(const UUID &rhs) noexcept : Data1(rhs.Data1), Data2(rhs.Data2), Data3(rhs.Data3)
 {
     std::memcpy(Data4, rhs.Data4, sizeof(Data4));
 }
 
-GsUUID &GsUUID::operator=(const GsUUID &rhs) noexcept
+UUID &UUID::operator=(const UUID &rhs) noexcept
 {
     if (&rhs != this)
     {
@@ -212,7 +212,7 @@ GsUUID &GsUUID::operator=(const GsUUID &rhs) noexcept
     return *this;
 }
 
-bool GsUUID::operator==(const GsUUID &orig) const noexcept
+bool UUID::operator==(const UUID &orig) const noexcept
 {
     if (Data1 != orig.Data1 || Data2 != orig.Data2 || Data3 != orig.Data3)
         return false;
@@ -224,12 +224,12 @@ bool GsUUID::operator==(const GsUUID &orig) const noexcept
     return true;
 }
 
-bool GsUUID::operator!=(const GsUUID &orig) const noexcept
+bool UUID::operator!=(const UUID &orig) const noexcept
 {
     return !(*this == orig);
 }
 
-bool GsUUID::operator<(const GsUUID &other) const noexcept
+bool UUID::operator<(const UUID &other) const noexcept
 {
     if (Variant() != other.Variant())
         return Variant() < other.Variant();
@@ -249,20 +249,20 @@ bool GsUUID::operator<(const GsUUID &other) const noexcept
     return false;
 }
 
-bool GsUUID::operator>(const GsUUID &other) const noexcept
+bool UUID::operator>(const UUID &other) const noexcept
 {
     return other < *this;
 }
 
-GsUUID GsUUID::CreateUuid()
+UUID UUID::CreateUuid()
 {
-    GsUUID result;
+    UUID result;
     unsigned int *data = &(result.Data1);
     enum
     {
         AmountToRead = 4
     };
-    GsRandom random;
+    Random random;
     result.Data1 = random.LRand48();
     result.Data4[0] = (result.Data4[0] & 0x3F) | 0x80;// UV_DCE
     result.Data3 = (result.Data3 & 0x0FFF) | 0x4000;  // UV_Random
@@ -270,31 +270,31 @@ GsUUID GsUUID::CreateUuid()
     return result;
 }
 
-GsUUID GsUUID::CreateUuidV3(const GsUUID &ns, const GsString &baseData)
+UUID UUID::CreateUuidV3(const UUID &ns, const String &baseData)
 {
-    return createFromName(ns, GsByteBuffer(baseData.c_str()), GsCryptographicHash::eMD5, 3);
+    return createFromName(ns, ByteBuffer(baseData.c_str()), CryptographicHash::eMD5, 3);
 }
 
-GsUUID GsUUID::CreateUuidV5(const GsUUID &ns, const GsString &baseData)
+UUID UUID::CreateUuidV5(const UUID &ns, const String &baseData)
 {
-    return createFromName(ns, GsByteBuffer(baseData.c_str()), GsCryptographicHash::eSHA1, 5);
+    return createFromName(ns, ByteBuffer(baseData.c_str()), CryptographicHash::eSHA1, 5);
 }
 
-GsString GsUUID::ToString(StringFormat format)
+String UUID::ToString(StringFormat format)
 {
     char latin1[MaxStringUuidLength];
     const auto end = __uuidToHex(*this, latin1);
     assert(end - latin1 == MaxStringUuidLength);
-    return GsString(latin1, MaxStringUuidLength);
+    return String(latin1, MaxStringUuidLength);
 }
 
-bool GsUUID::IsNull() const noexcept
+bool UUID::IsNull() const noexcept
 {
     return Data4[0] == 0 && Data4[1] == 0 && Data4[2] == 0 && Data4[3] == 0 && Data4[4] == 0 &&
            Data4[5] == 0 && Data4[6] == 0 && Data4[7] == 0 && Data1 == 0 && Data2 == 0 && Data3 == 0;
 }
 
-GsUUID::UUIDVariant GsUUID::Variant() const noexcept
+UUID::UUIDVariant UUID::Variant() const noexcept
 {
     if (IsNull())
         return VarUnknown;
@@ -309,7 +309,7 @@ GsUUID::UUIDVariant GsUUID::Variant() const noexcept
     return VarUnknown;
 }
 
-GsUUID::UUIDVersion GsUUID::Version() const noexcept
+UUID::UUIDVersion UUID::Version() const noexcept
 {
     UUIDVersion ver = (UUIDVersion) (Data3 >> 12);
     if (IsNull() || (Variant() != DCE) || ver < Time || ver > Sha1)
@@ -317,9 +317,9 @@ GsUUID::UUIDVersion GsUUID::Version() const noexcept
     return ver;
 }
 
-GsByteBuffer GsUUID::ToRfc4122() const
+ByteBuffer UUID::ToRfc4122() const
 {
-    GsByteBuffer buf(16);
+    ByteBuffer buf(16);
     unsigned char *data = reinterpret_cast<unsigned char *>(buf.BufferHead());
 
     EndianConverter::ToBigEndian(Data1, data);
@@ -339,10 +339,10 @@ GsByteBuffer GsUUID::ToRfc4122() const
     return buf;
 }
 
-GsUUID GsUUID::FromRfc4122(const GsByteBuffer &bytes)
+UUID UUID::FromRfc4122(const ByteBuffer &bytes)
 {
     if (bytes.IsEmpty() || bytes.BufferLength() != 16)
-        return GsUUID();
+        return UUID();
 
     unsigned int d1;
     unsigned short d2, d3;
@@ -363,7 +363,7 @@ GsUUID GsUUID::FromRfc4122(const GsByteBuffer &bytes)
         data++;
     }
 
-    return GsUUID(d1, d2, d3, d4[0], d4[1], d4[2], d4[3], d4[4], d4[5], d4[6], d4[7]);
+    return UUID(d1, d2, d3, d4[0], d4[1], d4[2], d4[3], d4[4], d4[5], d4[6], d4[7]);
 }
 
 

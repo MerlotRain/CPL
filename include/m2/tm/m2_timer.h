@@ -38,12 +38,12 @@ namespace m2 {
 
 
 /// @brief 计时器
-class GsTimer
+class Timer
 {
 public:
-    GsTimer();
+    Timer();
 
-    // 其他接口和QT一致，在内部调用GsWorkThread的start接口
+    // 其他接口和QT一致，在内部调用WorkThread的start接口
     //
 };
 
@@ -93,7 +93,7 @@ public:
     void Stop();
 
     /// @brief 计时结束的委托
-    GsDelegate<void()> OnTimeOut;
+    Delegate<void()> OnTimeOut;
 
     /// @brief 单词计时器
     /// @param msec
@@ -121,7 +121,7 @@ private:
 };
 
 
-class GsElapsedTimer
+class ElapsedTimer
 {
 public:
     enum ClockType
@@ -133,7 +133,7 @@ public:
         PerformanceCounter
     };
 
-    GsElapsedTimer();
+    ElapsedTimer();
     static ClockType ClockType() noexcept;
     static bool IsMonotonic() noexcept;
 
@@ -147,19 +147,19 @@ public:
     bool HasExpired(int64_t timeout) const noexcept;
 
     int64_t MsecsSinceReference() const noexcept;
-    int64_t MsecsTo(const GsElapsedTimer &other) const noexcept;
-    int64_t SecsTo(const GsElapsedTimer &other) const noexcept;
+    int64_t MsecsTo(const ElapsedTimer &other) const noexcept;
+    int64_t SecsTo(const ElapsedTimer &other) const noexcept;
 
-    bool operator==(const GsElapsedTimer &other) const noexcept
+    bool operator==(const ElapsedTimer &other) const noexcept
     {
         return t1 == other.t1 && t2 == other.t2;
     }
-    bool operator!=(const GsElapsedTimer &other) const noexcept
+    bool operator!=(const ElapsedTimer &other) const noexcept
     {
         return !(*this == other);
     }
 
-    friend bool operator<(const GsElapsedTimer &v1, const GsElapsedTimer &v2) noexcept;
+    friend bool operator<(const ElapsedTimer &v1, const ElapsedTimer &v2) noexcept;
 
 private:
     int64_t t1;
@@ -168,7 +168,7 @@ private:
 
 
 /// @brief 通常用于计算未来的截止日期并验证截止日期是否已过期
-class GsDeadlineTimer
+class DeadlineTimer
 {
 public:
     enum ForeverConstant
@@ -180,13 +180,13 @@ public:
     /// @brief 默认构造
     /// @param forever 是否永不过期
     /// @details \a forver true时，时间节点为long long最大值
-    GsDeadlineTimer(bool forever = false) noexcept;
+    DeadlineTimer(bool forever = false) noexcept;
     /// @brief 构造
     /// @param msecs
-    explicit GsDeadlineTimer(int64_t msecs) noexcept;
+    explicit DeadlineTimer(int64_t msecs) noexcept;
     /// @brief 交换
     /// @param other
-    void Swap(GsDeadlineTimer &other) noexcept;
+    void Swap(DeadlineTimer &other) noexcept;
     /// @brief 截止时间是否为永久
     /// @return
     constexpr bool IsForever() const noexcept;
@@ -226,37 +226,37 @@ public:
     /// @param dt
     /// @param nsecs
     /// @return
-    static GsDeadlineTimer AddNSecs(GsDeadlineTimer dt, int64_t nsecs) noexcept;
+    static DeadlineTimer AddNSecs(DeadlineTimer dt, int64_t nsecs) noexcept;
     /// @brief
     /// @return
-    static GsDeadlineTimer Current() noexcept;
+    static DeadlineTimer Current() noexcept;
 
-    friend bool operator==(GsDeadlineTimer d1, GsDeadlineTimer d2) noexcept;
-    friend bool operator!=(GsDeadlineTimer d1, GsDeadlineTimer d2) noexcept;
-    friend bool operator<(GsDeadlineTimer d1, GsDeadlineTimer d2) noexcept;
-    friend bool operator<=(GsDeadlineTimer d1, GsDeadlineTimer d2) noexcept;
-    friend bool operator>(GsDeadlineTimer d1, GsDeadlineTimer d2) noexcept;
-    friend bool operator>=(GsDeadlineTimer d1, GsDeadlineTimer d2) noexcept;
-    friend GsDeadlineTimer operator+(GsDeadlineTimer dt, int64_t msecs);
-    friend GsDeadlineTimer operator+(int64_t msecs, GsDeadlineTimer dt);
-    friend GsDeadlineTimer operator-(GsDeadlineTimer dt, int64_t msecs);
-    friend int64_t operator-(GsDeadlineTimer dt1, GsDeadlineTimer dt2);
+    friend bool operator==(DeadlineTimer d1, DeadlineTimer d2) noexcept;
+    friend bool operator!=(DeadlineTimer d1, DeadlineTimer d2) noexcept;
+    friend bool operator<(DeadlineTimer d1, DeadlineTimer d2) noexcept;
+    friend bool operator<=(DeadlineTimer d1, DeadlineTimer d2) noexcept;
+    friend bool operator>(DeadlineTimer d1, DeadlineTimer d2) noexcept;
+    friend bool operator>=(DeadlineTimer d1, DeadlineTimer d2) noexcept;
+    friend DeadlineTimer operator+(DeadlineTimer dt, int64_t msecs);
+    friend DeadlineTimer operator+(int64_t msecs, DeadlineTimer dt);
+    friend DeadlineTimer operator-(DeadlineTimer dt, int64_t msecs);
+    friend int64_t operator-(DeadlineTimer dt1, DeadlineTimer dt2);
 
     /// @brief 重载+=操作符
     /// @param msecs
     /// @return
-    GsDeadlineTimer &operator+=(int64_t msecs);
+    DeadlineTimer &operator+=(int64_t msecs);
     /// @brief 重载-=操作符
     /// @param msecs
     /// @return
-    GsDeadlineTimer &operator-=(int64_t msecs);
+    DeadlineTimer &operator-=(int64_t msecs);
 
     /// @brief
     /// @tparam Clock
     /// @tparam Duration
     /// @param deadline_
     template<class Clock, class Duration>
-    GsDeadlineTimer(std::chrono::time_point<Clock, Duration> deadline_) : t2(0)
+    DeadlineTimer(std::chrono::time_point<Clock, Duration> deadline_) : t2(0)
     {
         Deadline(deadline_);
     }
@@ -266,7 +266,7 @@ public:
     /// @param deadline_
     /// @return
     template<class Clock, class Duration>
-    GsDeadlineTimer &operator=(std::chrono::time_point<Clock, Duration> deadline_)
+    DeadlineTimer &operator=(std::chrono::time_point<Clock, Duration> deadline_)
     {
         Deadline(deadline_);
         return *this;
@@ -295,7 +295,7 @@ public:
     /// @tparam Period
     /// @param remaining
     template<class Rep, class Period>
-    GsDeadlineTimer(std::chrono::duration<Rep, Period> remaining)
+    DeadlineTimer(std::chrono::duration<Rep, Period> remaining)
         : t2(0)
     {
         RemainingTime(remaining);
@@ -306,7 +306,7 @@ public:
     /// @param remaining
     /// @return
     template<class Rep, class Period>
-    GsDeadlineTimer &operator=(std::chrono::duration<Rep, Period> remaining)
+    DeadlineTimer &operator=(std::chrono::duration<Rep, Period> remaining)
     {
         RemainingTime(remaining);
         return *this;
@@ -320,7 +320,7 @@ public:
     {
         if (remaining == remaining.max())
         {
-            *this = GsDeadlineTimer(Forever, 1);
+            *this = DeadlineTimer(Forever, 1);
         }
         else
         {
@@ -339,9 +339,9 @@ public:
     /// @param value
     /// @return
     template<class Rep, class Period>
-    friend GsDeadlineTimer operator+(GsDeadlineTimer dt, std::chrono::duration<Rep, Period> value)
+    friend DeadlineTimer operator+(DeadlineTimer dt, std::chrono::duration<Rep, Period> value)
     {
-        return GsDeadlineTimer::AddNSecs(dt, std::chrono::duration_cast<std::chrono::nanoseconds>(value).count());
+        return DeadlineTimer::AddNSecs(dt, std::chrono::duration_cast<std::chrono::nanoseconds>(value).count());
     }
     /// @brief
     /// @tparam Rep
@@ -350,7 +350,7 @@ public:
     /// @param dt
     /// @return
     template<class Rep, class Period>
-    friend GsDeadlineTimer operator+(std::chrono::duration<Rep, Period> value, GsDeadlineTimer dt)
+    friend DeadlineTimer operator+(std::chrono::duration<Rep, Period> value, DeadlineTimer dt)
     {
         return dt + value;
     }
@@ -361,7 +361,7 @@ public:
     /// @param value
     /// @return
     template<class Rep, class Period>
-    friend GsDeadlineTimer operator+=(GsDeadlineTimer &dt, std::chrono::duration<Rep, Period> value)
+    friend DeadlineTimer operator+=(DeadlineTimer &dt, std::chrono::duration<Rep, Period> value)
     {
         return dt = dt + value;
     }

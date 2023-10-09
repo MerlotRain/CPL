@@ -3,9 +3,9 @@
 
 namespace m2 {
 
-void GsWaitCondition::Notify()
+void WaitCondition::Notify()
 {
-    GsScopedLock<GsRecursiveMutex> l(m_mutex);
+    ScopedLock<RecursiveMutex> l(m_mutex);
     if (!m_waitDeque.empty())
     {
         m_waitDeque.front()->Set();
@@ -13,9 +13,9 @@ void GsWaitCondition::Notify()
     }
 }
 
-void GsWaitCondition::NotifyAll()
+void WaitCondition::NotifyAll()
 {
-    GsScopedLock<GsRecursiveMutex> l(m_mutex);
+    ScopedLock<RecursiveMutex> l(m_mutex);
     for (auto &p: m_waitDeque)
     {
         p->Set();
@@ -23,17 +23,17 @@ void GsWaitCondition::NotifyAll()
     m_waitDeque.clear();
 }
 
-void GsWaitCondition::Enqueue(GsWaitEvent &event)
+void WaitCondition::Enqueue(WaitEvent &event)
 {
     m_waitDeque.push_back(&event);
 }
 
-void GsWaitCondition::Dequeue()
+void WaitCondition::Dequeue()
 {
     m_waitDeque.pop_front();
 }
 
-void GsWaitCondition::Dequeue(GsWaitEvent &event)
+void WaitCondition::Dequeue(WaitEvent &event)
 {
     for (auto it = m_waitDeque.begin(); it != m_waitDeque.end(); ++it)
     {

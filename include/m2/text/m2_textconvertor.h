@@ -29,3 +29,49 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_TEXTCONVERTOR_H_
+#define M2_TEXTCONVERTOR_H_
+
+#include <preconfig.h>
+
+namespace m2 {
+
+class String;
+class WString;
+
+class M2_API TextConverter
+{
+public:
+    static constexpr auto ENCODING_LOCALE = "";
+    static constexpr auto ENCODING_UTF7 = "UTF-7";
+    static constexpr auto ENCODING_UTF8 = "UTF-8";
+    static constexpr auto ENCODING_UTF16 = "UTF-16";
+    static constexpr auto ENCODING_UTF32 = "UTF-32";
+    static constexpr auto ENCODING_UCS2 = "UCS-2";
+    static constexpr auto ENCODING_UCS4 = "UCS-4";
+    static constexpr auto ENCODING_ASCII = "ASCII";
+    static constexpr auto ENCODING_ISO8859_1 = "ISO-8859-1";
+    static constexpr auto ENCODING_GB2312 = "GBK";
+    static constexpr auto ENCODING_GB18030 = "GB18030";
+
+public:
+    static bool convert(const char *src, const char *srcEncoding, const char *dstEncoding, String &dst);
+    static bool convert(const String &src, const char *srcEncoding, const char *dstEncoding, String &dst);
+
+    static bool convert(const wchar_t *src, const char *srcEncoding, const char *dstEncoding, String &dst);
+    static bool convert(const WString &src, const char *srcEncoding, const char *dstEncoding, String &dst);
+
+    static bool convert(const char *src, const char *srcEncoding, const char *dstEncoding, WString &dst);
+    static bool convert(const String &src, const char *srcEncoding, const char *dstEncoding, WString &dst);
+
+    static bool convert(const String &utf8, WString &utf16);
+    static bool convert(const char *utf8, WString &utf16);
+
+    static bool convert(const WString &utf16, String &utf8);
+    static bool convert(const wchar_t *utf16, String &utf8);
+};
+
+}// namespace m2
+
+#endif//

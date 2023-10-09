@@ -34,13 +34,13 @@
 
 /// @brief 对平台线程的封装
 /// @details 封装一种可以继承的线程，使其使用风格类似QThread
-class M2_API GsWorkThread
+class M2_API WorkThread
 {
 public:
     /// @brief 线程优先权
     /// @details https://man7.org/linux/man-pages/man3/pthread_setschedprio.3.html
     /// @details https://learn.microsoft.com/en-us/windows/win32/procthread/scheduling-priorities
-    enum GsThreadPriority
+    enum ThreadPriority
     {
         eTHREAD_PRIORITY_HIGHEST,
         eTHREAD_PRIORITY_HIGH,
@@ -52,7 +52,7 @@ public:
 
     /// @brief 线程调度策略
     /// @details https://www.man7.org/linux/man-pages/man7/sched.7.html
-    enum GsThreadPolicy
+    enum ThreadPolicy
     {
         eTHREAD_SCHEDULE_FIFO,
         eTHREAD_SCHEDULE_ROUND_ROBIN,
@@ -79,7 +79,7 @@ public:
     static int LogicCPUCount();
     /// @brief 获取当前线程
     /// @return
-    static GsWorkThread *CurrentThread();
+    static WorkThread *CurrentThread();
 
     /// @brief 挂起当前线程
     /// @return
@@ -87,11 +87,11 @@ public:
 
     /// @brief 获取主线程策略
     /// @return
-    static GsThreadPriority MasterPriority();
+    static ThreadPriority MasterPriority();
 
 public:
-    explicit GsWorkThread();
-    virtual ~GsWorkThread();
+    explicit WorkThread();
+    virtual ~WorkThread();
 
     /// @brief 获取当前线程Id
     /// @return
@@ -111,7 +111,7 @@ public:
     /// @brief
     /// @param priority
     /// @return
-    int SchedulePriority(GsThreadPriority priority);
+    int SchedulePriority(ThreadPriority priority);
 
     /// @brief
     /// @return
@@ -120,7 +120,7 @@ public:
     /// @brief
     /// @param policy
     /// @return
-    int SchedulePolicy(GsThreadPolicy policy);
+    int SchedulePolicy(ThreadPolicy policy);
 
     /// @brief
     /// @return
@@ -173,8 +173,8 @@ protected:
     virtual void Run() = 0;
 
 private:
-    GsWorkThread(const GsWorkThread &) = delete;
-    GsWorkThread &operator=(const GsWorkThread &) = delete;
+    WorkThread(const WorkThread &) = delete;
+    WorkThread &operator=(const WorkThread &) = delete;
 
     void *m_Handle;
 };

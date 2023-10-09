@@ -7,9 +7,9 @@ namespace m2 {
 
 #define DEFAULT_CLASS_CATEGORY "Lite"
 
-static std::map<GsString, std::map<GsString, GsClassFactory::FactoryCreateFun>> g_RegisterClasses;
+static std::map<String, std::map<String, ClassFactory::FactoryCreateFun>> g_RegisterClasses;
 
-void GsClassFactory::RegisterFactoryCreate(FactoryCreateFun fun,
+void ClassFactory::RegisterFactoryCreate(FactoryCreateFun fun,
                                            const char *className,
                                            const char *category)
 {
@@ -30,7 +30,7 @@ void GsClassFactory::RegisterFactoryCreate(FactoryCreateFun fun,
     if (categoryFind == g_RegisterClasses.end())
     {
         g_RegisterClasses.insert(
-                {category, std::map<GsString, FactoryCreateFun>()});
+                {category, std::map<String, FactoryCreateFun>()});
     }
 
     auto &classFun = g_RegisterClasses[category];
@@ -42,7 +42,7 @@ void GsClassFactory::RegisterFactoryCreate(FactoryCreateFun fun,
 }
 
 std::vector<std::string>
-GsClassFactory::GetClassNamesByCategory(const char *category)
+ClassFactory::GetClassNamesByCategory(const char *category)
 {
     if (!category)
     {
@@ -63,7 +63,7 @@ GsClassFactory::GetClassNamesByCategory(const char *category)
     return classNames;
 }
 
-GsRefObject *GsClassFactory::CreateInstancePrivate(const char *className)
+RefObject *ClassFactory::CreateInstancePrivate(const char *className)
 {
     auto it = g_RegisterClasses.begin();
     while (it != g_RegisterClasses.end())
@@ -71,7 +71,7 @@ GsRefObject *GsClassFactory::CreateInstancePrivate(const char *className)
         auto itFind = it->second.find(className);
         if (itFind != it->second.end())
         {
-            GsRefObject *obj = itFind->second();
+            RefObject *obj = itFind->second();
             return obj;
         }
         ++it;

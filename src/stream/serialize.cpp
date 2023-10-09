@@ -7,9 +7,9 @@
 namespace m2 {
 
 
-GsSerializeStreamPtr GsSerializeStreamFactory::CreateStream(GsSerializeStreamType eType)
+SerializeStreamPtr SerializeStreamFactory::CreateStream(SerializeStreamType eType)
 {
-    return GsSerializeStreamPtr();
+    return SerializeStreamPtr();
 }
 
 }// namespace m2

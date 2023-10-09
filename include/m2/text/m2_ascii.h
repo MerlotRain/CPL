@@ -37,8 +37,24 @@
 
 namespace m2 {
 
-class Ascii
+class M2_API Ascii
 {
+public:
+    static int properties(int ch);
+    static bool hasSomeProperties(int ch, int properties);
+    static bool hasProperties(int ch, int properties);
+    static bool isAscii(int ch);
+    static bool isSpace(int ch);
+    static bool isDigit(int ch);
+    static bool isHexDigit(int ch);
+    static bool isPunctuation(int ch);
+    static bool isAlpha(int ch);
+    static bool isAlphaNumeric(int ch);
+    static bool isLower(int ch);
+    static bool isUpper(int ch);
+    static bool isPrintable(int ch);
+    static int toLower(int ch);
+    static int toUpper(int ch);
 };
 
 }// namespace m2

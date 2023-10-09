@@ -31,42 +31,42 @@
 ****************************************************************************/
 
 /// @brief Json数组对象
-class M2_API GsJsonArray : public GsJsonObject
+class M2_API JsonArray : public JsonObject
 {
-    friend class GsJsonObject;
-    friend class GsJsonDocument;
+    friend class JsonObject;
+    friend class JsonDocument;
 
-    GsJsonArray(const char *name, void *pJsonObject);
+    JsonArray(const char *name, void *pJsonObject);
     class const_iterator
     {
-        const GsJsonArray &m_Array;
+        const JsonArray &m_Array;
         int m_nIndex;
-        mutable GsJsonObject m_Object;
+        mutable JsonObject m_Object;
 
     public:
-        const_iterator(const GsJsonArray &array, bool bStart);
+        const_iterator(const JsonArray &array, bool bStart);
         ~const_iterator() = default;
-        GsJsonObject &operator*() const;
+        JsonObject &operator*() const;
         const_iterator &operator++();
         bool operator==(const const_iterator &it) const;
         bool operator!=(const const_iterator &it) const;
     };
 
 public:
-    GsJsonArray();
-    GsJsonArray(const char *name);
-    GsJsonArray(const GsJsonObject &other);
+    JsonArray();
+    JsonArray(const char *name);
+    JsonArray(const JsonObject &other);
 
     int Size() const;
-    void Add(const GsJsonObject &objValue);
-    void Add(const GsString &strValue);
+    void Add(const JsonObject &objValue);
+    void Add(const String &strValue);
     void Add(const char *pszValue);
     void Add(double dfValue);
     void Add(int nValue);
     void Add(long long nValue);
     void Add(bool bValue);
-    GsJsonObject operator[](int nIndex);
-    const GsJsonObject operator[](int nIndex) const;
+    JsonObject operator[](int nIndex);
+    const JsonObject operator[](int nIndex) const;
     const_iterator begin() const;
     const_iterator end() const;
 };

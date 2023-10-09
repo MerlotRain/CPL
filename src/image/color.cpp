@@ -2,7 +2,7 @@
 #include <mathhelp.h>
 
 namespace m2 {
-GsColor::GsColor() noexcept
+Color::Color() noexcept
 {
     A = 0xff;
     R = 00;
@@ -10,7 +10,7 @@ GsColor::GsColor() noexcept
     B = 00;
 }
 
-GsColor::GsColor(unsigned int c) noexcept
+Color::Color(unsigned int c) noexcept
 {
     A = 0xff;
     R = c >> 16;
@@ -18,7 +18,7 @@ GsColor::GsColor(unsigned int c) noexcept
     B = c & 0xff;
 }
 
-GsColor::GsColor(int c) noexcept
+Color::Color(int c) noexcept
 {
     A = c >> 24;
     R = c >> 16;
@@ -26,7 +26,7 @@ GsColor::GsColor(int c) noexcept
     B = c & 0xff;
 }
 
-GsColor::GsColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a) noexcept
+Color::Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a) noexcept
 {
     R = r;
     G = g;
@@ -34,35 +34,35 @@ GsColor::GsColor(unsigned char r, unsigned char g, unsigned char b, unsigned cha
     A = a;
 }
 
-GsColor::GsColor(const GsColor &color) noexcept
+Color::Color(const Color &color) noexcept
 {
     Argb = color.Argb;
 }
 
-GsColor &GsColor::operator=(const GsColor &color) noexcept
+Color &Color::operator=(const Color &color) noexcept
 {
     Argb = color.Argb;
     return *this;
 }
 
-GsColor GsColor::Random()
+Color Color::Random()
 {
-    return GsColor();
+    return Color();
 }
 
-GsColor GsColor::RandomHSV()
+Color Color::RandomHSV()
 {
-    return GsColor();
+    return Color();
 }
 
-GsColor GsColor::FromCSS(const char *css)
+Color Color::FromCSS(const char *css)
 {
-    return GsColor();
+    return Color();
 }
 
-GsColor GsColor::FromARGB(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+Color Color::FromARGB(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
-    GsColor col;
+    Color col;
     col.R = r;
     col.G = g;
     col.B = b;
@@ -70,12 +70,12 @@ GsColor GsColor::FromARGB(unsigned char r, unsigned char g, unsigned char b, uns
     return col;
 }
 
-GsColor GsColor::FromARGBF(double r, double g, double b, double a)
+Color Color::FromARGBF(double r, double g, double b, double a)
 {
-    GsColor color;
+    Color color;
     if (a < 0.0 || a > 1.0)
     {
-        return GsColor::White;
+        return Color::White;
     }
 
     color.R = Math::Round(r * 0xff);
@@ -86,11 +86,11 @@ GsColor GsColor::FromARGBF(double r, double g, double b, double a)
     return color;
 }
 
-GsColor GsColor::FromCMYK(unsigned char c, unsigned char m, unsigned char y, unsigned char k)
+Color Color::FromCMYK(unsigned char c, unsigned char m, unsigned char y, unsigned char k)
 {
     if (c < 0 || c > 255 || m < 0 || m > 255 || y < 0 || y > 255 || k < 0 || k > 255)
     {
-        return GsColor();
+        return Color();
     }
     // 换算成0-1.0
     const double cyan = c / double(0xff);
@@ -98,7 +98,7 @@ GsColor GsColor::FromCMYK(unsigned char c, unsigned char m, unsigned char y, uns
     const double yellow = y / double(0xff);
     const double black = k / double(0xff);
 
-    GsColor color;
+    Color color;
     color.R = Math::Round((double(1.0) - (cyan * (double(1.0) - black) + black)) * 0xff);
     color.G = Math::Round((double(1.0) - (magenta * (double(1.0) - black) + black)) * 0xff);
     color.B = Math::Round((double(1.0) - (yellow * (double(1.0) - black) + black)) * 0xff);
@@ -106,12 +106,12 @@ GsColor GsColor::FromCMYK(unsigned char c, unsigned char m, unsigned char y, uns
     return color;
 }
 
-GsColor GsColor::FromCMYKF(double c, double m, double y, double k)
+Color Color::FromCMYKF(double c, double m, double y, double k)
 {
     if (c < double(0.0) || c > double(1.0) || m < double(0.0) || m > double(1.0) || y < double(0.0) ||
         y > double(1.0) || k < double(0.0) || k > double(1.0))
     {
-        return GsColor();
+        return Color();
     }
 
     // 换算成255
@@ -126,7 +126,7 @@ GsColor GsColor::FromCMYKF(double c, double m, double y, double k)
     const double yellow = _yellow / double(0xff);
     const double black = _black / double(0xff);
 
-    GsColor color;
+    Color color;
     color.R = Math::Round((double(1.0) - (cyan * (double(1.0) - black) + black)) * 0xff);
     color.G = Math::Round((double(1.0) - (magenta * (double(1.0) - black) + black)) * 0xff);
     color.B = Math::Round((double(1.0) - (yellow * (double(1.0) - black) + black)) * 0xff);
@@ -134,11 +134,11 @@ GsColor GsColor::FromCMYKF(double c, double m, double y, double k)
     return color;
 }
 
-GsColor GsColor::FromHSV(int h, int s, int v, unsigned char a)
+Color Color::FromHSV(int h, int s, int v, unsigned char a)
 {
     if (((h < 0 || h >= 360) && h != -1) || s < 0 || s > 255 || v < 0 || v > 255 || a < 0 || a > 255)
     {
-        return GsColor();
+        return Color();
     }
 
     unsigned char _alpha = a;
@@ -147,13 +147,13 @@ GsColor GsColor::FromHSV(int h, int s, int v, unsigned char a)
     unsigned char _value = v;
 }
 
-GsColor GsColor::FromHSV(float h, float s, float v, float a)
+Color Color::FromHSV(float h, float s, float v, float a)
 {
     if (((h < double(0.0) || h > double(1.0)) && h != double(-1.0)) ||
         (s < double(0.0) || s > double(1.0)) || (v < double(0.0) || v > double(1.0)) ||
         (a < double(0.0) || a > double(1.0)))
     {
-        return GsColor();
+        return Color();
     }
 
     unsigned char _alpha = Math::Round(a * 0xff);
@@ -162,12 +162,12 @@ GsColor GsColor::FromHSV(float h, float s, float v, float a)
     unsigned char _value = Math::Round(v * 0xff);
 }
 
-int GsColor::ToGray(unsigned char r, unsigned char g, unsigned char b)
+int Color::ToGray(unsigned char r, unsigned char g, unsigned char b)
 {
     return (r * 11 + g * 16 + b * 5) / 32;
 }
 
-bool GsColor::ToHSV(float *h, float *s, float *v) const
+bool Color::ToHSV(float *h, float *s, float *v) const
 {
     const double r = R / double(0xff);
     const double g = G / double(0xff);
@@ -216,7 +216,7 @@ static unsigned int div_257(unsigned int x)
     return div_257_floor(x + 128);
 }
 
-bool GsColor::ToCMKY(unsigned int *c, unsigned int *m, unsigned int *y, unsigned int *k) const
+bool Color::ToCMKY(unsigned int *c, unsigned int *m, unsigned int *y, unsigned int *k) const
 {
     unsigned short cyan, magenta, yellow, black;
     if (!R && !G && !B)
@@ -255,41 +255,41 @@ bool GsColor::ToCMKY(unsigned int *c, unsigned int *m, unsigned int *y, unsigned
     return true;
 }
 
-bool GsColor::ToHSL(float *h, float *s, float *l, int *a) const
+bool Color::ToHSL(float *h, float *s, float *l, int *a) const
 {
     return true;
 }
 
-void GsColor::SetCOLORREF(unsigned int rgb, unsigned char a)
+void Color::SetCOLORREF(unsigned int rgb, unsigned char a)
 {
 }
 
-unsigned int GsColor::ToCOLORREF() const
+unsigned int Color::ToCOLORREF() const
 {
     return 0;
 }
 
-float GsColor::RedF() const noexcept
+float Color::RedF() const noexcept
 {
     return R / double(0xff);
 }
 
-float GsColor::GreenF() const noexcept
+float Color::GreenF() const noexcept
 {
     return G / double(0xff);
 }
 
-float GsColor::BlueF() const noexcept
+float Color::BlueF() const noexcept
 {
     return B / double(0xff);
 }
 
-float GsColor::AlphaF() const noexcept
+float Color::AlphaF() const noexcept
 {
     return A / double(0xff);
 }
 
-GsColor &GsColor::RedF(float r) noexcept
+Color &Color::RedF(float r) noexcept
 {
     if (r >= double(0.0) && r <= double(1.0))
     {
@@ -298,7 +298,7 @@ GsColor &GsColor::RedF(float r) noexcept
     return *this;
 }
 
-GsColor &GsColor::GreenF(float g) noexcept
+Color &Color::GreenF(float g) noexcept
 {
     if (g >= double(0.0) && g <= double(1.0))
     {
@@ -307,7 +307,7 @@ GsColor &GsColor::GreenF(float g) noexcept
     return *this;
 }
 
-GsColor &GsColor::BlueF(float b) noexcept
+Color &Color::BlueF(float b) noexcept
 {
     if (b >= double(0.0) && b <= double(1.0))
     {
@@ -316,7 +316,7 @@ GsColor &GsColor::BlueF(float b) noexcept
     return *this;
 }
 
-GsColor &GsColor::AlphaF(float a) noexcept
+Color &Color::AlphaF(float a) noexcept
 {
     if (a >= double(0.0) && a <= double(1.0))
     {
@@ -325,7 +325,7 @@ GsColor &GsColor::AlphaF(float a) noexcept
     return *this;
 }
 
-GsColor &GsColor::operator=(unsigned int &argb) noexcept
+Color &Color::operator=(unsigned int &argb) noexcept
 {
     A = 0xff;
     R = argb >> 16;
@@ -334,7 +334,7 @@ GsColor &GsColor::operator=(unsigned int &argb) noexcept
     return *this;
 }
 
-GsColor &GsColor::operator=(int &argb) noexcept
+Color &Color::operator=(int &argb) noexcept
 {
     A = argb >> 24;
     R = argb >> 16;
@@ -343,27 +343,27 @@ GsColor &GsColor::operator=(int &argb) noexcept
     return *this;
 }
 
-bool GsColor::operator==(const GsColor &color) const noexcept
+bool Color::operator==(const Color &color) const noexcept
 {
     return Argb == color.Argb;
 }
 
-bool GsColor::operator!=(const GsColor &color) const noexcept
+bool Color::operator!=(const Color &color) const noexcept
 {
     return Argb != color.Argb;
 }
 
-GsColor::operator unsigned int() const noexcept
+Color::operator unsigned int() const noexcept
 {
     return Argb;
 }
 
-GsColor::operator int() const noexcept
+Color::operator int() const noexcept
 {
     return int(Argb);
 }
 
-GsColor &GsColor::Blend(const GsColor &color, PorterDuffBlendMode mode)
+Color &Color::Blend(const Color &color, PorterDuffBlendMode mode)
 {
     switch (mode)
     {
@@ -437,7 +437,7 @@ GsColor &GsColor::Blend(const GsColor &color, PorterDuffBlendMode mode)
     }
     return *this;
 }
-GsColor &GsColor::Blend(const GsColor &color, PhotoShopColorBlendMode mode)
+Color &Color::Blend(const Color &color, PhotoShopColorBlendMode mode)
 {
     return *this;
 }

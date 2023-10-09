@@ -2,48 +2,48 @@
 
 namespace m2 {
 
-GsCrashReport::GsCrashReport()
+CrashReport::CrashReport()
 {
 }
 
-void GsCrashReport::StackTrace(GsStackTrace *value)
+void CrashReport::StackTrace(StackTrace *value)
 {
 }
 
-GsStackTrace *GsCrashReport::StackTrace() const
+StackTrace *CrashReport::StackTrace() const
 {
     return nullptr;
 }
 
-void GsCrashReport::Flags(GsCrashReport::CrashFlags flags)
+void CrashReport::Flags(CrashReport::CrashFlags flags)
 {
 }
 
-GsCrashReport::CrashFlags GsCrashReport::Flags() const
+CrashReport::CrashFlags CrashReport::Flags() const
 {
     return CrashFlags();
 }
 
-const GsString GsCrashReport::ToHtml() const
+const String CrashReport::ToHtml() const
 {
-    return GsString();
+    return String();
 }
 
-const GsString GsCrashReport::CrashID() const
+const String CrashReport::CrashID() const
 {
-    return GsString();
+    return String();
 }
 
-void GsCrashReport::ExportToCrashFolder()
+void CrashReport::ExportToCrashFolder()
 {
 }
 
-GsString GsCrashReport::CrashReportFolder()
+String CrashReport::CrashReportFolder()
 {
-    return GsString();
+    return String();
 }
 
-void GsCrashReport::VersionInfo(const GsStringList &versionInfo)
+void CrashReport::VersionInfo(const StringList &versionInfo)
 {
 }
 

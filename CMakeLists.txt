@@ -9,7 +9,26 @@ set(m2_include_files
     ./include/preconfig.h
     ./include/m2.h
     ./include/m2/m2_allocator.h
-    ./include/m2/m2_logger.h
+
+    ./include/m2/io/m2_bytebuffer.h
+    ./include/m2/io/m2_configuration.h
+    ./include/m2/io/m2_datastream.h
+    ./include/m2/io/m2_dir.h
+    ./include/m2/io/m2_file.h
+    ./include/m2/io/m2_filesystem.h
+    ./include/m2/io/m2_inputstream.h
+    ./include/m2/io/m2_iot.h
+    ./include/m2/io/m2_library.h
+    ./include/m2/io/m2_lockfile.h
+    ./include/m2/io/m2_logger.h
+    ./include/m2/io/m2_memorymanager.h
+    ./include/m2/io/m2_outputstream.h
+    ./include/m2/io/m2_process.h
+    ./include/m2/io/m2_qrcode.h
+    ./include/m2/io/m2_serialize.h
+    ./include/m2/io/m2_sharedmemory.h
+    ./include/m2/io/m2_urlparser.h
+
     ./include/m2/m2_object.h
     ./include/m2/text/m2_ascii.h
     ./include/m2/text/m2_regularexpression.h
@@ -17,10 +36,12 @@ set(m2_include_files
     ./include/m2/text/m2_stringlist.h
     ./include/m2/text/m2_stringtokenizer.h
     ./include/m2/text/m2_textconvertor.h
-    ./include/m2/text/m2_utf8.h
     ./include/m2/text/m2_wstring.h
+
     ./include/m2/math/m2_bigdecimal.h
     ./include/m2/math/m2_biginteger.h
+    ./include/m2/math/m2_cryptographichash.h
+    ./include/m2/math/m2_encryption.h
     ./include/m2/math/m2_math.h
     ./include/m2/math/m2_matrix4x4.h
     ./include/m2/math/m2_random.h
@@ -28,6 +49,7 @@ set(m2_include_files
     ./include/m2/math/m2_unitsconvertor.h
     ./include/m2/math/m2_uuid.h
     ./include/m2/math/m2_vector.h
+
     ./include/m2/image/m2_color.h
     ./include/m2/image/m2_image.h
     ./include/m2/image/m2_line.h
@@ -80,15 +102,16 @@ endif ()
 target_include_directories(libm2 PRIVATE
     ./include
     ./include/m2
-    ./include/m2/memory
+    ./include/m2/image
+    ./include/m2/io
+    ./include/m2/json
+    ./include/m2/math
+    ./include/m2/network
+    ./include/m2/sql
     ./include/m2/text
+    ./include/m2/thread
     ./include/m2/tm
     ./include/m2/xml
-    ./include/m2/thread
-    ./include/m2/image
-    ./include/m2/json
-    ./include/m2/network
-    ./include/m2/math
 )
 
 if(WIN32 AND NOT MINGW)

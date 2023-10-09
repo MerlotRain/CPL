@@ -42,7 +42,7 @@ namespace Sqlite {
 
 
 /// @brief sqlite数据库加密方式
-enum GsSqliteCodecType
+enum SqliteCodecType
 {
     /// @brief 未知加密方法
     eCodecUnknow = -1,
@@ -65,17 +65,17 @@ enum GsSqliteCodecType
 };
 
 /// @brief sqlite数据库封装
-class GsSqliteDatabase : public GsSqlDatabase
+class SqliteDatabase : public SqlDatabase
 {
-    GsSqliteCodecType m_eCodecType;
+    SqliteCodecType m_eCodecType;
     sqlite3 *m_pDB;
 
 public:
     /// @brief 默认构造
-    GsSqliteDatabase();
+    SqliteDatabase();
     /// @brief 构造
     /// @param filename
-    GsSqliteDatabase(const char *filename);
+    SqliteDatabase(const char *filename);
     /// @brief 使用密码和指定的加密技术打开或创建加密数据库
     /// @details 打开数据库时如果没有明确指定加密技术则会试探每种技术
     /// @details 创建数据库时如果没有明确指定加密技术则会使用eCodecSqlCipher4_0加密技术
@@ -83,19 +83,19 @@ public:
     /// @param filename
     /// @param pwd
     /// @param eCodeType
-    GsSqliteDatabase(const char *filename, const char *pwd, GsSqliteCodecType eCodeType);
+    SqliteDatabase(const char *filename, const char *pwd, SqliteCodecType eCodeType);
 
     /// @brief 获取加密方法
     /// @return
-    GsSqliteCodecType CodecType();
+    SqliteCodecType CodecType();
 
     /// @brief 探测sqlite的加密方法
     /// @param filename 文件名(包括文件路径)
     /// @param pwd 密码
     /// @return 返回探测到的加密方式
-    static GsSqliteCodecType DetectCodecType(const char *filename, const char *pwd);
+    static SqliteCodecType DetectCodecType(const char *filename, const char *pwd);
 
-    virtual ~GsSqliteDatabase();
+    virtual ~SqliteDatabase();
     /// @brief 转化成数据库指针
     operator sqlite3 *() const;
     /// @brief 返回指针地址
@@ -122,7 +122,7 @@ public:
     virtual bool Close();
     /// @brief 最后的消息
     /// @return
-    virtual GsString ErrorMessage();
+    virtual String ErrorMessage();
     /// @brief 错误编号
     /// @return
     virtual long long ErrorCode();
@@ -165,8 +165,8 @@ public:
     bool ExistIndex(const char *strIndexName);
 
     /// @brief 创建一个 Statement
-    /// @return GsStatement对象由各数据源实现
-    virtual GsSqlStatement *CreateStatement() override;
+    /// @return Statement对象由各数据源实现
+    virtual SqlStatement *CreateStatement() override;
 };
 
 

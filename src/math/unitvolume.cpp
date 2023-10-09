@@ -57,170 +57,170 @@ static constexpr auto BarrelToCubicMeter = 0;
 /// @brief 加仑转立方米
 static constexpr auto GallonUSToCubicMeter = 0;
 
-GsVolume::GsVolume() noexcept
+Volume::Volume() noexcept
 {
 }
 
-GsVolume::GsVolume(const GsVolume &rhs) noexcept : Volume(rhs.Volume), Unit(rhs.Unit)
+Volume::Volume(const Volume &rhs) noexcept : Volume(rhs.Volume), Unit(rhs.Unit)
 {
 }
 
-GsVolume &GsVolume::operator=(const GsVolume &rhs) noexcept
+Volume &Volume::operator=(const Volume &rhs) noexcept
 {
     Volume = rhs.Volume;
     Unit = rhs.Unit;
     return *this;
 }
 
-GsVolume::GsVolume(double vol, GsVolumeUnits uints) noexcept : Volume(vol), Unit(uints)
+Volume::Volume(double vol, VolumeUnits uints) noexcept : Volume(vol), Unit(uints)
 {
 }
 
-GsVolume::GsVolume(GsVolume &&rhs) noexcept
+Volume::Volume(Volume &&rhs) noexcept
 {
     Volume = std::move(rhs.Volume);
     Unit = std::move(rhs.Unit);
 }
 
-GsVolume &GsVolume::operator=(GsVolume &&rhs) noexcept
+Volume &Volume::operator=(Volume &&rhs) noexcept
 {
     Volume = std::move(rhs.Volume);
     Unit = std::move(rhs.Unit);
     return *this;
 }
 
-void GsVolume::Swap(GsVolume &rhs) noexcept
+void Volume::Swap(Volume &rhs) noexcept
 {
     std::swap(Volume, rhs.Volume);
     std::swap(Unit, rhs.Unit);
 }
 
-bool GsVolume::operator==(const GsVolume &rhs) const noexcept
+bool Volume::operator==(const Volume &rhs) const noexcept
 {
-    return Math::FuzzyCompare(Volume, rhs.Volume * GsVolume::ConvertScale(rhs.Unit, Unit));
+    return Math::FuzzyCompare(Volume, rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit));
 }
 
-bool GsVolume::operator!=(const GsVolume &rhs) const noexcept
+bool Volume::operator!=(const Volume &rhs) const noexcept
 {
     return !(*this == rhs);
 }
 
-bool GsVolume::operator<(const GsVolume &rhs) const noexcept
+bool Volume::operator<(const Volume &rhs) const noexcept
 {
-    return Volume < rhs.Volume * GsVolume::ConvertScale(rhs.Unit, Unit);
+    return Volume < rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
 }
 
-bool GsVolume::operator<=(const GsVolume &rhs) const noexcept
+bool Volume::operator<=(const Volume &rhs) const noexcept
 {
-    return Volume <= rhs.Volume * GsVolume::ConvertScale(rhs.Unit, Unit);
+    return Volume <= rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
 }
 
-bool GsVolume::operator>(const GsVolume &rhs) const noexcept
+bool Volume::operator>(const Volume &rhs) const noexcept
 {
-    return Volume > rhs.Volume * GsVolume::ConvertScale(rhs.Unit, Unit);
+    return Volume > rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
 }
 
-bool GsVolume::operator>=(const GsVolume &rhs) const noexcept
+bool Volume::operator>=(const Volume &rhs) const noexcept
 {
-    return Volume >= rhs.Volume * GsVolume::ConvertScale(rhs.Unit, Unit);
+    return Volume >= rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
 }
 
-GsVolume GsVolume::operator-(const GsVolume &rhs) const noexcept
+Volume Volume::operator-(const Volume &rhs) const noexcept
 {
-    GsVolume volume;
-    volume.Volume = Volume - rhs.Volume * GsVolume::ConvertScale(rhs.Unit, Unit);
+    Volume volume;
+    volume.Volume = Volume - rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
     volume.Unit = Unit;
     return volume;
 }
 
-GsVolume GsVolume::operator+(const GsVolume &rhs) const noexcept
+Volume Volume::operator+(const Volume &rhs) const noexcept
 {
-    GsVolume volume;
-    volume.Volume = Volume + rhs.Volume * GsVolume::ConvertScale(rhs.Unit, Unit);
+    Volume volume;
+    volume.Volume = Volume + rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
     volume.Unit = Unit;
     return volume;
 }
 
-GsVolume &GsVolume::operator+=(const GsVolume &rhs) noexcept
+Volume &Volume::operator+=(const Volume &rhs) noexcept
 {
-    Volume += rhs.Volume * GsVolume::ConvertScale(rhs.Unit, Unit);
+    Volume += rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
     return *this;
 }
 
-GsVolume &GsVolume::operator-=(const GsVolume &rhs) noexcept
+Volume &Volume::operator-=(const Volume &rhs) noexcept
 {
-    Volume -= rhs.Volume * GsVolume::ConvertScale(rhs.Unit, Unit);
+    Volume -= rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
     return *this;
 }
 
-GsVolume::operator double() const
+Volume::operator double() const
 {
     return Volume;
 }
 
-GsVolume GsVolume::ToCubicMeters(double vol, GsVolumeUnits units)
+Volume Volume::ToCubicMeters(double vol, VolumeUnits units)
 {
-    GsVolume volume;
-    volume.Volume = vol * GsVolume::ConvertScale(units, GsVolumeUnits::eCubicMeters);
-    volume.Unit = GsVolumeUnits::eCubicMeters;
+    Volume volume;
+    volume.Volume = vol * Volume::ConvertScale(units, VolumeUnits::eCubicMeters);
+    volume.Unit = VolumeUnits::eCubicMeters;
     return volume;
 }
 
-GsVolume GsVolume::ConvertTo(double vol, GsVolumeUnits srcUnit, GsVolumeUnits tagUnit)
+Volume Volume::ConvertTo(double vol, VolumeUnits srcUnit, VolumeUnits tagUnit)
 {
-    GsVolume volume;
-    volume.Volume = vol * GsVolume::ConvertScale(srcUnit, tagUnit);
+    Volume volume;
+    volume.Volume = vol * Volume::ConvertScale(srcUnit, tagUnit);
     volume.Unit = tagUnit;
     return volume;
 }
 
-double GsVolume::Meter3Volume(double a, GsVolumeUnits srcUnit, GsVolumeUnits tagUnit)
+double Volume::Meter3Volume(double a, VolumeUnits srcUnit, VolumeUnits tagUnit)
 {
     return ConvertTo(a, srcUnit, tagUnit).Volume;
 }
 
-double GsVolume::ConvertScale(GsVolumeUnits from, GsVolumeUnits to)
+double Volume::ConvertScale(VolumeUnits from, VolumeUnits to)
 {
     double factor1 = 1.0, factor2 = 1.0;
     switch (from)
     {
-        case GsVolumeUnits::eCubicKilometers:
+        case VolumeUnits::eCubicKilometers:
             factor1 = CubicKilometersToCubicMeter;
             break;
-        case GsVolumeUnits::eCubicDecimeter:
+        case VolumeUnits::eCubicDecimeter:
             factor1 = CubicDecimeterToCubicMeter;
             break;
-        case GsVolumeUnits::eCubicCentimeter:
+        case VolumeUnits::eCubicCentimeter:
             factor1 = CubicCentimeterToCubicMeter;
             break;
-        case GsVolumeUnits::eCubicMillimeter:
+        case VolumeUnits::eCubicMillimeter:
             factor1 = CubicMillimeterToCubicMeter;
             break;
-        case GsVolumeUnits::eLiter:
+        case VolumeUnits::eLiter:
             factor1 = LiterToCubicMeter;
             break;
-        case GsVolumeUnits::eDeciLiter:
+        case VolumeUnits::eDeciLiter:
             factor1 = DeciLiterToCubicMeter;
             break;
-        case GsVolumeUnits::eMillLiter:
+        case VolumeUnits::eMillLiter:
             factor1 = MillLiterToCubicMeter;
             break;
-        case GsVolumeUnits::eAcreFoot:
+        case VolumeUnits::eAcreFoot:
             factor1 = AcreFootToCubicMeter;
             break;
-        case GsVolumeUnits::eCubicYard:
+        case VolumeUnits::eCubicYard:
             factor1 = CubicYardToCubicMeter;
             break;
-        case GsVolumeUnits::eCubicFeet:
+        case VolumeUnits::eCubicFeet:
             factor1 = CubicFeetToCubicMeter;
             break;
-        case GsVolumeUnits::eCubicInch:
+        case VolumeUnits::eCubicInch:
             factor1 = CubicInchToCubicMeter;
             break;
-        case GsVolumeUnits::eBarrel:
+        case VolumeUnits::eBarrel:
             factor1 = BarrelToCubicMeter;
             break;
-        case GsVolumeUnits::eGallonUS:
+        case VolumeUnits::eGallonUS:
             factor1 = GallonUSToCubicMeter;
             break;
         default:
@@ -230,43 +230,43 @@ double GsVolume::ConvertScale(GsVolumeUnits from, GsVolumeUnits to)
 
     switch (to)
     {
-        case GsVolumeUnits::eCubicKilometers:
+        case VolumeUnits::eCubicKilometers:
             factor1 = CubicMeterToCubicKilometers;
             break;
-        case GsVolumeUnits::eCubicDecimeter:
+        case VolumeUnits::eCubicDecimeter:
             factor1 = CubicMeterToCubicDecimeter;
             break;
-        case GsVolumeUnits::eCubicCentimeter:
+        case VolumeUnits::eCubicCentimeter:
             factor1 = CubicMeterToCubicCentimeter;
             break;
-        case GsVolumeUnits::eCubicMillimeter:
+        case VolumeUnits::eCubicMillimeter:
             factor1 = CubicMeterToCubicMillimeter;
             break;
-        case GsVolumeUnits::eLiter:
+        case VolumeUnits::eLiter:
             factor1 = CubicMeterToLiter;
             break;
-        case GsVolumeUnits::eDeciLiter:
+        case VolumeUnits::eDeciLiter:
             factor1 = CubicMeterToDeciLiter;
             break;
-        case GsVolumeUnits::eMillLiter:
+        case VolumeUnits::eMillLiter:
             factor1 = CubicMeterToMillLiter;
             break;
-        case GsVolumeUnits::eAcreFoot:
+        case VolumeUnits::eAcreFoot:
             factor1 = CubicMeterToAcreFoot;
             break;
-        case GsVolumeUnits::eCubicYard:
+        case VolumeUnits::eCubicYard:
             factor1 = CubicMeterToCubicYard;
             break;
-        case GsVolumeUnits::eCubicFeet:
+        case VolumeUnits::eCubicFeet:
             factor1 = CubicMeterToCubicFeet;
             break;
-        case GsVolumeUnits::eCubicInch:
+        case VolumeUnits::eCubicInch:
             factor1 = CubicMeterToCubicInch;
             break;
-        case GsVolumeUnits::eBarrel:
+        case VolumeUnits::eBarrel:
             factor1 = CubicMeterToBarrel;
             break;
-        case GsVolumeUnits::eGallonUS:
+        case VolumeUnits::eGallonUS:
             factor1 = CubicMeterToGallonUS;
             break;
         default:

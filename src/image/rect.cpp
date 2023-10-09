@@ -2,9 +2,9 @@
 
 namespace m2 {
 
-GsRect GsRect::Normalized() const noexcept
+Rect Rect::Normalized() const noexcept
 {
-    GsRect r;
+    Rect r;
     if (Right < Left - 1)
     {// swap bad x values
         r.Left = Right;
@@ -28,7 +28,7 @@ GsRect GsRect::Normalized() const noexcept
     return r;
 }
 
-bool GsRect::Intersects(const GsRect &r) const noexcept
+bool Rect::Intersects(const Rect &r) const noexcept
 {
     if (IsNull() || r.IsNull())
         return false;
@@ -70,12 +70,12 @@ bool GsRect::Intersects(const GsRect &r) const noexcept
     return true;
 }
 
-bool GsRect::Contains(const GsRect &r, bool proper) const noexcept
+bool Rect::Contains(const Rect &r, bool proper) const noexcept
 {
     return Contains(r.TopLeft(), proper) && Contains(r.BottomRight(), proper);
 }
 
-bool GsRect::Contains(const GsPT &p, bool proper) const noexcept
+bool Rect::Contains(const PT &p, bool proper) const noexcept
 {
     int l, r;
     if (Right < Left - 1)
@@ -122,7 +122,7 @@ bool GsRect::Contains(const GsPT &p, bool proper) const noexcept
     return true;
 }
 
-GsRect GsRect::operator|(const GsRect &r) const noexcept
+Rect Rect::operator|(const Rect &r) const noexcept
 {
     if (IsNull())
         return r;
@@ -157,7 +157,7 @@ GsRect GsRect::operator|(const GsRect &r) const noexcept
     else
         b2 = r.Bottom;
 
-    GsRect tmp;
+    Rect tmp;
     tmp.Left = Math::Min(l1, l2);
     tmp.Right = Math::Max(r1, r2);
     tmp.Top = Math::Min(t1, t2);
@@ -165,10 +165,10 @@ GsRect GsRect::operator|(const GsRect &r) const noexcept
     return tmp;
 }
 
-GsRect GsRect::operator&(const GsRect &r) const noexcept
+Rect Rect::operator&(const Rect &r) const noexcept
 {
     if (IsNull() || r.IsNull())
-        return GsRect();
+        return Rect();
 
     int l1 = Left;
     int r1 = Left;
@@ -185,7 +185,7 @@ GsRect GsRect::operator&(const GsRect &r) const noexcept
         r2 = r.Right;
 
     if (l1 > r2 || l2 > r1)
-        return GsRect();
+        return Rect();
 
     int t1 = Top;
     int b1 = Top;
@@ -202,9 +202,9 @@ GsRect GsRect::operator&(const GsRect &r) const noexcept
         b2 = r.Bottom;
 
     if (t1 > b2 || t2 > b1)
-        return GsRect();
+        return Rect();
 
-    GsRect tmp;
+    Rect tmp;
     tmp.Left = Math::Max(l1, l2);
     tmp.Right = Math::Min(r1, r2);
     tmp.Top = Math::Max(t1, t2);
@@ -217,9 +217,9 @@ GsRect GsRect::operator&(const GsRect &r) const noexcept
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-GsRectF GsRectF::Normalized() const noexcept
+RectF RectF::Normalized() const noexcept
 {
-    GsRectF r;
+    RectF r;
     if (Right < Left - 1)
     {// swap bad x values
         r.Left = Right;
@@ -243,39 +243,39 @@ GsRectF GsRectF::Normalized() const noexcept
     return r;
 }
 
-bool GsRectF::Contains(const GsPTF &p) const noexcept
+bool RectF::Contains(const PTF &p) const noexcept
 {
     return true;
 }
 
-bool GsRectF::Contains(const GsRectF &r) const noexcept
+bool RectF::Contains(const RectF &r) const noexcept
 {
     return true;
 }
 
-GsRectF GsRectF::operator|(const GsRectF &r) const noexcept
+RectF RectF::operator|(const RectF &r) const noexcept
 {
-    return GsRectF();
+    return RectF();
 }
 
-GsRectF GsRectF::operator&(const GsRectF &r) const noexcept
+RectF RectF::operator&(const RectF &r) const noexcept
 {
 
-    return GsRectF();
+    return RectF();
 }
 
-bool GsRectF::Intersects(const GsRectF &r) const noexcept
+bool RectF::Intersects(const RectF &r) const noexcept
 {
     return true;
 }
 
-GsRect GsRectF::ToAlignedRect() const noexcept
+Rect RectF::ToAlignedRect() const noexcept
 {
     int xmin = int(floor(Left));
     int xmax = int(ceil(Right));
     int ymin = int(floor(Bottom));
     int ymax = int(ceil(Top));
-    return GsRect(xmin, ymin, xmax - xmin, ymax - ymin);
+    return Rect(xmin, ymin, xmax - xmin, ymax - ymin);
 }
 
 

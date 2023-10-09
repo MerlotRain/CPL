@@ -2,56 +2,56 @@
 
 namespace m2 {
 
-GsOperatorSystemType GsOperatorSystemEnvironment::CurrentOperatorSystemType()
+OperatorSystemType OperatorSystemEnvironment::CurrentOperatorSystemType()
 {
 #if defined(_WIN32) || defined(_WIN64)
-    return GsOperatorSystemType::eWindows;
+    return OperatorSystemType::eWindows;
 #elif defined(__APPLE__)
-    return GsOperatorSystemType::eMacOSX;
+    return OperatorSystemType::eMacOSX;
 #elif defined(ANDROID) || defined(_ANDROID_)
-    return GsOperatorSystemType::eAndroid;
+    return OperatorSystemType::eAndroid;
 #elif defined(__linux__)
-    return GsOperatorSystemType::eLinux;
+    return OperatorSystemType::eLinux;
 #else
-    return GsOperatorSystemType::eUnknown;
+    return OperatorSystemType::eUnknown;
 #endif
 }
 
-char GsOperatorSystemEnvironment::EnvironmentVariableSeparator()
+char OperatorSystemEnvironment::EnvironmentVariableSeparator()
 {
     return 0;
 }
 
-GsString GsOperatorSystemEnvironment::EnvironmentVariable(const char *name)
+String OperatorSystemEnvironment::EnvironmentVariable(const char *name)
 {
-    return GsString();
+    return String();
 }
 
-void GsOperatorSystemEnvironment::ChangeEnvironmentVariable(const char *name, const char *value)
-{
-}
-
-void GsOperatorSystemEnvironment::RemoveEnvironmentVariable(const char *name)
+void OperatorSystemEnvironment::ChangeEnvironmentVariable(const char *name, const char *value)
 {
 }
 
-GsString GsOperatorSystemEnvironment::RemoveEnvironmentVariable(const char *name, const char *content)
+void OperatorSystemEnvironment::RemoveEnvironmentVariable(const char *name)
 {
-    return GsString();
 }
 
-GsString GsOperatorSystemEnvironment::AppendEnvironmentVariable(const char *name, const char *content,
+String OperatorSystemEnvironment::RemoveEnvironmentVariable(const char *name, const char *content)
+{
+    return String();
+}
+
+String OperatorSystemEnvironment::AppendEnvironmentVariable(const char *name, const char *content,
                                                                 bool bAddToTail)
 {
-    return GsString();
+    return String();
 }
 
-bool GsOperatorSystemEnvironment::AppendDLLDirectory(const char *dir)
+bool OperatorSystemEnvironment::AppendDLLDirectory(const char *dir)
 {
     return false;
 }
 
-bool GsOperatorSystemEnvironment::RemoveDLLDirectory(const char *dir)
+bool OperatorSystemEnvironment::RemoveDLLDirectory(const char *dir)
 {
     return false;
 }

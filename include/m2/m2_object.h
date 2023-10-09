@@ -38,6 +38,8 @@
 
 namespace m2 {
 
+class StringList;
+
 class M2_API NonCopyable
 {
 public:
@@ -54,11 +56,11 @@ class M2_API RefObject : public NonCopyable
 public:
     RefObject();
     virtual ~RefObject();
-    void AddRef();
-    bool TryAddRef();
-    void Release();
-    int RefCount();
-    virtual long long HashCode() const;
+    void addRef();
+    bool tryAddRef();
+    void release();
+    int refCount();
+    virtual long long hashCode() const;
 
 public:
     void *operator new(size_t size);
@@ -76,9 +78,9 @@ class M2_API WeakRefObject : public RefObject
 public:
     WeakRefObject(RefObject *obj);
     virtual ~WeakRefObject() override;
-    RefObject *Lock();
+    RefObject *lock();
     void OnDestroy(RefObject *obj);
-    bool Expired() const noexcept;
+    bool expired() const noexcept;
     void Unlink() noexcept;
 
 private:
@@ -103,47 +105,47 @@ public:
     {
         p = dynamic_cast<T *>(point);
         if (p != nullptr && bAddRef)
-            p->AddRef();
+            p->addRef();
     }
     template<typename O>
     SmarterPointer(const SmarterPointer<O> &point) noexcept
     {
         p = dynamic_cast<T *>(point.p);
         if (p != nullptr)
-            p->AddRef();
+            p->addRef();
     }
     SmarterPointer(const SmarterPointer<T> &point) noexcept
     {
         p = point.p;
         if (p != nullptr)
-            p->AddRef();
+            p->addRef();
     }
     SmarterPointer(const RefObject *point, bool bAddRef = true) noexcept
     {
         p = dynamic_cast<T *>(point);
         if (p != nullptr && bAddRef)
-            p->AddRef();
+            p->addRef();
     }
     SmarterPointer(T *point, bool bAddRef = true) noexcept
     {
         p = point;
         if (p != nullptr && bAddRef)
-            p->AddRef();
+            p->addRef();
     }
     ~SmarterPointer() noexcept
     {
-        if (p) p->Release();
+        if (p) p->release();
     }
 
     template<typename Q>
-    SmarterPointer<Q> As()
+    SmarterPointer<Q> as()
     {
         if (!p) return 0;
         return dynamic_cast<Q *>(p);
     }
 
     template<typename Q>
-    bool Is()
+    bool is()
     {
         if (!p) return false;
         return dynamic_cast<Q *>(p) != 0;
@@ -157,20 +159,20 @@ public:
     bool operator!() const noexcept { return (p == 0); }
     bool operator<(T *point) const noexcept { return p < point; }
 
-    void AddRef() noexcept
+    void addRef() noexcept
     {
-        if (p) p->AddRef();
+        if (p) p->addRef();
     }
-    void Release() noexcept
+    void release() noexcept
     {
         T *temp = p;
         if (temp)
         {
             p = nullptr;
-            temp->Release();
+            temp->release();
         }
     }
-    bool IsEqual(RefObject *pOther) noexcept
+    bool isEqual(RefObject *pOther) noexcept
     {
         if (p == nullptr && pOther == nullptr)
             return true;
@@ -181,25 +183,25 @@ public:
         return p1 == pOther;
     }
 
-    void Attach(T *point) noexcept
+    void attach(T *point) noexcept
     {
-        if (p) p->Release();
+        if (p) p->release();
         p = point;
     }
-    T *Detach() noexcept
+    T *detach() noexcept
     {
         T *pt = p;
         p = nullptr;
         return pt;
     }
 
-    bool CopyTo(T **point) noexcept
+    bool copyTo(T **point) noexcept
     {
         if (point == nullptr)
             return false;
         *point = p;
         if (p)
-            p->AddRef();
+            p->addRef();
         return true;
     }
     T *operator=(T *point) noexcept
@@ -209,16 +211,16 @@ public:
                 return *this;
 
         if (point)
-            point->AddRef();
-        Attach(point);
+            point->addRef();
+        attach(point);
         return *this;
     }
     T *operator=(const SmarterPointer<T> &point) noexcept
     {
         if (this->p != point.p)
             if (point)
-                point->AddRef();
-        Attach(point);
+                point->addRef();
+        attach(point);
 
         return *this;
     }
@@ -280,81 +282,77 @@ public:
     {
         if (!obj) return;
         m_WeakRef = new WeakRefObject(obj);
-        m_WeakRef->AddRef();
+        m_WeakRef->addRef();
     }
     WeakPointer(const SmarterPointer<T> &obj) : m_WeakRef(nullptr)
     {
         if (!obj.p) return;
         m_WeakRef = new WeakRefObject(obj.p);
-        m_WeakRef->AddRef();
+        m_WeakRef->addRef();
     }
-    WeakPointer(const WeakPointer<T> &weak) : m_WeakRef(nullptr) { Reset(weak); }
-
-    /// @brief 析构
+    WeakPointer(const WeakPointer<T> &weak) : m_WeakRef(nullptr) { reset(weak); }
     ~WeakPointer()
     {
-        if (m_WeakRef) m_WeakRef->Release();
+        if (m_WeakRef) m_WeakRef->release();
     }
 
-    operator bool() { return !Expired(); }
-    bool Expired()
+    operator bool() { return !expired(); }
+
+    bool expired()
     {
         if (!m_WeakRef) return true;
-        return m_WeakRef->Expired();
+        return m_WeakRef->expired();
     }
-    void Reset()
+    void reset()
     {
-        if (m_WeakRef) m_WeakRef->Release();
+        if (m_WeakRef) m_WeakRef->release();
         m_WeakRef = nullptr;
     }
-    void Reset(const WeakPointer<T> &weak)
+    void reset(const WeakPointer<T> &weak)
     {
-        if (weak.m_WeakRef) weak.m_WeakRef->AddRef();
-        Reset();
+        if (weak.m_WeakRef) weak.m_WeakRef->addRef();
+        reset();
         m_WeakRef = weak.m_WeakRef;
     }
-    void Reset(const SmarterPointer<T> &obj) { Reset(obj.p); }
-    void Reset(T *obj)
+    void reset(const SmarterPointer<T> &obj) { reset(obj.p); }
+    void reset(T *obj)
     {
-        Reset();
+        reset();
         if (!obj)
         {
             return;
         }
         m_WeakRef = new WeakRefObject(obj);
-        m_WeakRef->AddRef();
+        m_WeakRef->addRef();
     }
-    SmarterPointer<T> Lock() const
+    SmarterPointer<T> lock() const
     {
         if (!m_WeakRef) return SmarterPointer<T>();
-        RefObject *ref = m_WeakRef->Lock();
+        RefObject *ref = m_WeakRef->lock();
         if (!ref) return SmarterPointer<T>();
         return SmarterPointer<T>(ref, false);
     }
-
     WeakPointer<T> &operator=(const WeakPointer<T> &right)
     {
-        Reset(right);
+        reset(right);
         return *this;
     }
-
     WeakPointer<T> &operator=(T *right)
     {
-        Reset(right);
+        reset(right);
         return *this;
     }
-
     WeakPointer<T> &operator=(const SmarterPointer<T> &right)
     {
-        Reset(right);
+        reset(right);
         return *this;
     }
 };
 
 
-#define GS_SMARTER_PTR(Class)                                \
-    typedef Lite::Utility::SmarterPointer<Class> Class##Ptr; \
-    typedef Lite::Utility::WeakPointer<Class> Class##WPtr;
+#define M2_SMARTER_PTR(Class)                     \
+    typedef m2::SmarterPointer<Class> Class##Ptr; \
+    typedef m2::WeakPointer<Class> Class##WPtr;
 
 #define STD_SHARED_POINTER(Class)              \
     typedef std::shared_ptr<Class> Class##Ptr; \
@@ -362,40 +360,27 @@ public:
 
 
 template<class T>
-class GsSingletonRef
+class SingletonRef
 {
 public:
-    GsSingletonRef()
+    SingletonRef()
     {
     }
 };
 
 
-/// @brief 类工厂模型
-class M2_API GsClassFactory
+class M2_API ClassFactory
 {
 public:
     typedef RefObject *(*FactoryCreateFun)();
-
-    /// @brief 注册类工厂
-    /// @param fun
-    /// @param className
-    /// @param category
-    static void RegisterFactoryCreate(FactoryCreateFun fun, const char *className,
+    static void registerFactoryCreate(FactoryCreateFun fun, const char *className,
                                       const char *category = nullptr);
 
-    /// @brief 根据名称创建类实例
-    /// @tparam T
-    /// @param classname
-    /// @return
     template<typename T>
-    static T *CreateInstance(const char *classname)
+    static T *createInstance(const char *classname)
     {
-        RefObject *obj = CreateInstancePrivate(classname);
-        if (!obj)
-        {
-            return 0;
-        }
+        RefObject *obj = createInstancePrivate(classname);
+        if (!obj) return 0;
 
         T *o = dynamic_cast<T *>(obj);
         if (!o)
@@ -405,20 +390,11 @@ public:
         }
         return o;
     }
-
-    /// @brief 根据名称创建类实例
-    /// @tparam T
-    /// @param classname
-    /// @return
     template<typename T>
-    static SmarterPointer<T> CreateInstanceT(const char *classname)
+    static SmarterPointer<T> createInstanceT(const char *classname)
     {
-        RefObject *obj = CreateInstancePrivate(classname);
-        if (!obj)
-        {
-            return 0;
-        }
-
+        RefObject *obj = createInstancePrivate(classname);
+        if (!obj) return 0;
         T *o = dynamic_cast<T *>(obj);
         if (!o)
         {
@@ -427,18 +403,14 @@ public:
         }
         return SmarterPointer<T>(o);
     }
-
-    /// @brief 获取一族类名称
-    /// @param category
-    /// @return
-    std::vector<std::string> GetClassNamesByCategory(const char *category);
+    StringList classNamesByCategory(const char *category);
 
 private:
-    static RefObject *CreateInstancePrivate(const char *className);
+    static RefObject *createInstancePrivate(const char *className);
 };
 
 
-class M2_API GsSingleton
+class M2_API Singleton
 {
 };
 
@@ -448,29 +420,28 @@ class M2_API GsSingleton
 #define GS_MODULE_EXPORT __attribute__((visibility("default")))
 #endif
 #define DECLARE_CLASS_CREATE(ClassName) \
-    extern "C" GS_MODULE_EXPORT Lite::Utility::RefObject *createClass##ClassName();
-#define DECLARE_CLASS_CREARE_IMPL(ClassName)                                       \
-    extern "C" GS_MODULE_EXPORT Lite::Utility::RefObject *createClass##ClassName() \
-    {                                                                              \
-        return new ClassName();                                                    \
+    extern "C" GS_MODULE_EXPORT m2::RefObject *createClass##ClassName();
+#define DECLARE_CLASS_CREARE_IMPL(ClassName)                            \
+    extern "C" GS_MODULE_EXPORT m2::RefObject *createClass##ClassName() \
+    {                                                                   \
+        return new ClassName();                                         \
     }
 
 #define REGISTER_CLASS_CREATE(ClassName) \
-    Lite::Utility::GsClassFactory::registerFactoryCreate(CreateClass##ClassName, #ClassName);
+    m2::ClassFactory::registerFactoryCreate(CreateClass##ClassName, #ClassName);
 #define REGISTER_CLASS_CREATE_NAMESPACE(ClassName, NS) \
-    Lite::Utility::GsClassFactory::registerFactoryCreate(NS::CreateClass##ClassName, #ClassName);
+    m2::ClassFactory::registerFactoryCreate(NS::CreateClass##ClassName, #ClassName);
 
 #define REGISTER_CLASS_CREATE_CATEGORY(ClassName, category) \
-    Lite::Utility::GsClassFactory::registerFactoryCreate(CreateClass##ClassName, #ClassName, #category);
-#define REGISTER_CLASS_CREATE_NAMESPACE_CATEGORY(ClassName, category, NS)                        \
-    Lite::Utility::GsClassFactory::registerFactoryCreate(NS::CreateClass##ClassName, #ClassName, \
-                                                         #category);
+    m2::ClassFactory::registerFactoryCreate(CreateClass##ClassName, #ClassName, #category);
+#define REGISTER_CLASS_CREATE_NAMESPACE_CATEGORY(ClassName, category, NS)           \
+    m2::ClassFactory::registerFactoryCreate(NS::CreateClass##ClassName, #ClassName, \
+                                            #category);
 
-
-#define DECLARE_CLASS_NAME(class_name)               \
-    virtual Lite::Utility::GsString FullClassName()  \
-    {                                                \
-        return Lite::Utility::GsString(#class_name); \
+#define DECLARE_CLASS_NAME(class_name)  \
+    virtual m2::String fullClassName()  \
+    {                                   \
+        return m2::String(#class_name); \
     }
 
 

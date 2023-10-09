@@ -87,10 +87,10 @@ namespace m2 {
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-class GsCryptographicHashData
+class CryptographicHashData
 {
 public:
-    GsCryptographicHash::GsHashAlgorithm method;
+    CryptographicHash::HashAlgorithm method;
     union
     {
         Sha1State sha1Context;
@@ -108,10 +108,10 @@ public:
         Keccak
     };
     void sha3Finish(int bitCount, Sha3Variant sha3Variant);
-    GsByteBuffer result;
+    ByteBuffer result;
 };
 
-void GsCryptographicHashData::sha3Finish(int bitCount, Sha3Variant sha3Variant)
+void CryptographicHashData::sha3Finish(int bitCount, Sha3Variant sha3Variant)
 {
     static const unsigned char sha3FinalSuffix = 0x80;
 
@@ -136,17 +136,17 @@ void GsCryptographicHashData::sha3Finish(int bitCount, Sha3Variant sha3Variant)
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-GsCryptographicHash::GsCryptographicHash(GsHashAlgorithm algorithm) : m_Data(new GsCryptographicHashData)
+CryptographicHash::CryptographicHash(HashAlgorithm algorithm) : m_Data(new CryptographicHashData)
 {
     m_Data->method = algorithm;
     Reset();
 }
 
-GsCryptographicHash::~GsCryptographicHash()
+CryptographicHash::~CryptographicHash()
 {
 }
 
-void GsCryptographicHash::Reset()
+void CryptographicHash::Reset()
 {
     switch (m_Data->method)
     {
@@ -191,7 +191,7 @@ void GsCryptographicHash::Reset()
     m_Data->result.Clear();
 }
 
-void GsCryptographicHash::AddData(const char *data, int length)
+void CryptographicHash::AddData(const char *data, int length)
 {
     switch (m_Data->method)
     {
@@ -240,17 +240,17 @@ void GsCryptographicHash::AddData(const char *data, int length)
     m_Data->result.Clear();
 }
 
-void GsCryptographicHash::AddData(const GsByteBuffer &data)
+void CryptographicHash::AddData(const ByteBuffer &data)
 {
     AddData(reinterpret_cast<const char *>(data.BufferHead()), data.BufferLength());
 }
 
-void GsCryptographicHash::AddData(const GsString &str)
+void CryptographicHash::AddData(const String &str)
 {
     AddData(str.data(), str.length());
 }
 
-GsByteBuffer GsCryptographicHash::Result() const
+ByteBuffer CryptographicHash::Result() const
 {
     if (!m_Data->result.IsEmpty())
         return m_Data->result;
@@ -309,84 +309,84 @@ GsByteBuffer GsCryptographicHash::Result() const
             }
         case eREALSHA3_224:
             {
-                m_Data->sha3Finish(224, GsCryptographicHashData::Sha3Variant::Sha3);
+                m_Data->sha3Finish(224, CryptographicHashData::Sha3Variant::Sha3);
                 break;
             }
         case eREALSHA3_256:
             {
-                m_Data->sha3Finish(256, GsCryptographicHashData::Sha3Variant::Sha3);
+                m_Data->sha3Finish(256, CryptographicHashData::Sha3Variant::Sha3);
                 break;
             }
         case eREALSHA3_384:
             {
-                m_Data->sha3Finish(384, GsCryptographicHashData::Sha3Variant::Sha3);
+                m_Data->sha3Finish(384, CryptographicHashData::Sha3Variant::Sha3);
                 break;
             }
         case eREALSHA3_512:
             {
-                m_Data->sha3Finish(512, GsCryptographicHashData::Sha3Variant::Sha3);
+                m_Data->sha3Finish(512, CryptographicHashData::Sha3Variant::Sha3);
                 break;
             }
         case eKECCAK_224:
             {
-                m_Data->sha3Finish(224, GsCryptographicHashData::Sha3Variant::Keccak);
+                m_Data->sha3Finish(224, CryptographicHashData::Sha3Variant::Keccak);
                 break;
             }
         case eKECCAK_256:
             {
-                m_Data->sha3Finish(256, GsCryptographicHashData::Sha3Variant::Keccak);
+                m_Data->sha3Finish(256, CryptographicHashData::Sha3Variant::Keccak);
                 break;
             }
         case eKECCAK_384:
             {
-                m_Data->sha3Finish(384, GsCryptographicHashData::Sha3Variant::Keccak);
+                m_Data->sha3Finish(384, CryptographicHashData::Sha3Variant::Keccak);
                 break;
             }
         case eKECCAK_512:
             {
-                m_Data->sha3Finish(512, GsCryptographicHashData::Sha3Variant::Keccak);
+                m_Data->sha3Finish(512, CryptographicHashData::Sha3Variant::Keccak);
                 break;
             }
     }
     return m_Data->result;
 }
 
-GsByteBuffer GsCryptographicHash::Hash(const GsByteBuffer &data, GsHashAlgorithm method)
+ByteBuffer CryptographicHash::Hash(const ByteBuffer &data, HashAlgorithm method)
 {
-    GsCryptographicHash hash(method);
+    CryptographicHash hash(method);
     hash.AddData(data);
     return hash.Result();
 }
 
-int GsCryptographicHash::HashLength(GsHashAlgorithm method)
+int CryptographicHash::HashLength(HashAlgorithm method)
 {
     switch (method)
     {
-        case GsCryptographicHash::eSHA1:
+        case CryptographicHash::eSHA1:
             return 20;
-        case GsCryptographicHash::eMD4:
+        case CryptographicHash::eMD4:
             return 16;
-        case GsCryptographicHash::eMD5:
+        case CryptographicHash::eMD5:
             return 16;
-        case GsCryptographicHash::eSHA224:
+        case CryptographicHash::eSHA224:
             return SHA224HashSize;
-        case GsCryptographicHash::eSHA256:
+        case CryptographicHash::eSHA256:
             return SHA256HashSize;
-        case GsCryptographicHash::eSHA384:
+        case CryptographicHash::eSHA384:
             return SHA384HashSize;
-        case GsCryptographicHash::eSHA512:
+        case CryptographicHash::eSHA512:
             return SHA512HashSize;
-        case GsCryptographicHash::eREALSHA3_224:
-        case GsCryptographicHash::eKECCAK_224:
+        case CryptographicHash::eREALSHA3_224:
+        case CryptographicHash::eKECCAK_224:
             return 224 / 8;
-        case GsCryptographicHash::eREALSHA3_256:
-        case GsCryptographicHash::eKECCAK_256:
+        case CryptographicHash::eREALSHA3_256:
+        case CryptographicHash::eKECCAK_256:
             return 256 / 8;
-        case GsCryptographicHash::eREALSHA3_384:
-        case GsCryptographicHash::eKECCAK_384:
+        case CryptographicHash::eREALSHA3_384:
+        case CryptographicHash::eKECCAK_384:
             return 384 / 8;
-        case GsCryptographicHash::eREALSHA3_512:
-        case GsCryptographicHash::eKECCAK_512:
+        case CryptographicHash::eREALSHA3_512:
+        case CryptographicHash::eKECCAK_512:
             return 512 / 8;
     }
     return 0;

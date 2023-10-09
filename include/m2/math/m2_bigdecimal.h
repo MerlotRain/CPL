@@ -37,38 +37,38 @@
 
 namespace m2 {
 
-class M2_API GsBigDecimal
+class M2_API BigDecimal
 {
 public:
-    GsBigDecimal() noexcept;
-    explicit GsBigDecimal(const GsBigDecimal &rhs) noexcept;
-    explicit GsBigDecimal(const char *v);
-    explicit GsBigDecimal(String v);
-    explicit GsBigDecimal(int v) noexcept;
-    explicit GsBigDecimal(long long v) noexcept;
-    explicit GsBigDecimal(unsigned int v) noexcept;
-    explicit GsBigDecimal(unsigned long long v) noexcept;
-    explicit GsBigDecimal(float v) noexcept;
-    explicit GsBigDecimal(double v) noexcept;
-    explicit GsBigDecimal(long double v) noexcept;
+    BigDecimal() noexcept;
+    explicit BigDecimal(const BigDecimal &rhs) noexcept;
+    explicit BigDecimal(const char *v);
+    explicit BigDecimal(String v);
+    explicit BigDecimal(int v) noexcept;
+    explicit BigDecimal(long long v) noexcept;
+    explicit BigDecimal(unsigned int v) noexcept;
+    explicit BigDecimal(unsigned long long v) noexcept;
+    explicit BigDecimal(float v) noexcept;
+    explicit BigDecimal(double v) noexcept;
+    explicit BigDecimal(long double v) noexcept;
 
-    GsBigDecimal operator+(const GsBigDecimal &rhs);
-    GsBigDecimal operator-(const GsBigDecimal &rhs);
-    GsBigDecimal operator*(const GsBigDecimal &rhs);
-    GsBigDecimal operator/(const GsBigDecimal &rhs);
-    GsBigDecimal operator%(const GsBigDecimal &rhs);
-    GsBigDecimal operator^(const GsBigDecimal &rhs);
+    BigDecimal operator+(const BigDecimal &rhs);
+    BigDecimal operator-(const BigDecimal &rhs);
+    BigDecimal operator*(const BigDecimal &rhs);
+    BigDecimal operator/(const BigDecimal &rhs);
+    BigDecimal operator%(const BigDecimal &rhs);
+    BigDecimal operator^(const BigDecimal &rhs);
 
-    void operator+=(const GsBigDecimal &rhs);
-    void operator-=(const GsBigDecimal &rhs);
-    void operator*=(const GsBigDecimal &rhs);
-    void operator/=(const GsBigDecimal &rhs);
-    void operator^=(const GsBigDecimal &rhs);
-    bool operator>(const GsBigDecimal &rhs);
-    bool operator>=(const GsBigDecimal &rhs);
-    bool operator==(const GsBigDecimal &rhs);
-    bool operator<(const GsBigDecimal &rhs);
-    bool operator<=(const GsBigDecimal &rhs);
+    void operator+=(const BigDecimal &rhs);
+    void operator-=(const BigDecimal &rhs);
+    void operator*=(const BigDecimal &rhs);
+    void operator/=(const BigDecimal &rhs);
+    void operator^=(const BigDecimal &rhs);
+    bool operator>(const BigDecimal &rhs);
+    bool operator>=(const BigDecimal &rhs);
+    bool operator==(const BigDecimal &rhs);
+    bool operator<(const BigDecimal &rhs);
+    bool operator<=(const BigDecimal &rhs);
 
     int toInt();
     unsigned int toUInt();

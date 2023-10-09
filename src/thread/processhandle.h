@@ -21,11 +21,11 @@ namespace m2 {
 
 #ifdef _WIN32
 
-class GsProcessHandleImpl : public GsRefObject
+class ProcessHandleImpl : public RefObject
 {
 public:
-    GsProcessHandleImpl(HANDLE handle, unsigned int pid);
-    virtual ~GsProcessHandleImpl();
+    ProcessHandleImpl(HANDLE handle, unsigned int pid);
+    virtual ~ProcessHandleImpl();
     HANDLE Process() const;
     void closeHandle();
 
@@ -40,35 +40,35 @@ protected:
 
 
 typedef unsigned int _PID;
-typedef std::vector<GsString> _Args;
-typedef std::map<GsString, GsString> _Env;
+typedef std::vector<String> _Args;
+typedef std::map<String, String> _Env;
 
-class GsProcessImpl
+class ProcessImpl
 {
 public:
     static _PID ID();
     static void Times(long &userTime, long &kernelTime);
-    static GsProcessHandleImpl *Launch(const GsString &command, const _Args &args,
-                                       const GsString &initialDirectory, GsPipe *inPipe,
-                                       GsPipe *outPipe, GsPipe *errPipe, const _Env &env);
-    static void Kill(GsProcessHandleImpl &handle);
+    static ProcessHandleImpl *Launch(const String &command, const _Args &args,
+                                       const String &initialDirectory, Pipe *inPipe,
+                                       Pipe *outPipe, Pipe *errPipe, const _Env &env);
+    static void Kill(ProcessHandleImpl &handle);
     static void Kill(_PID pid);
-    static bool IsRunning(const GsProcessHandleImpl &handle);
+    static bool IsRunning(const ProcessHandleImpl &handle);
     static bool IsRunning(_PID pid);
     static void RequestTermination(_PID pid);
-    static GsString TerminationEventName(_PID pid);
-    static bool MustEscapeArg(const GsString &arg);
-    static GsString EscapeArg(const GsString &arg);
+    static String TerminationEventName(_PID pid);
+    static bool MustEscapeArg(const String &arg);
+    static String EscapeArg(const String &arg);
 };
 
 
 #elif defined(__linux__) || defined(__linux)
 
-class GsProcessHandleImpl : public GsRefObject
+class ProcessHandleImpl : public RefObject
 {
 public:
-    GsProcessHandleImpl(pid_t pid);
-    virtual ~GsProcessHandleImpl();
+    ProcessHandleImpl(pid_t pid);
+    virtual ~ProcessHandleImpl();
     virtual unsigned int PID() const;
     virtual int Wait() const;
     virtual int TryWait() const;
@@ -78,27 +78,27 @@ protected:
 };
 
 typedef pid_t _PID;
-typedef std::vector<GsString> _Args;
-typedef std::map<GsString, GsString> _Env;
+typedef std::vector<String> _Args;
+typedef std::map<String, String> _Env;
 
-class GsProcessImpl
+class ProcessImpl
 {
 public:
     static _PID ID();
     static void Times(long &userTime, long &kernelTime);
-    static GsProcessHandleImpl *Launch(const GsString &command, const _Args &args,
-                                       const GsString &initialDirectory, GsPipe *inPipe,
-                                       GsPipe *outPipe, GsPipe *errPipe, const _Env &env);
-    static void Kill(GsProcessHandleImpl &handle);
+    static ProcessHandleImpl *Launch(const String &command, const _Args &args,
+                                       const String &initialDirectory, Pipe *inPipe,
+                                       Pipe *outPipe, Pipe *errPipe, const _Env &env);
+    static void Kill(ProcessHandleImpl &handle);
     static void Kill(_PID pid);
-    static bool IsRunning(const GsProcessHandleImpl &handle);
+    static bool IsRunning(const ProcessHandleImpl &handle);
     static bool IsRunning(_PID pid);
     static void RequestTermination(_PID pid);
 
 private:
-    static GsProcessHandleImpl *LaunchByForkExec(const GsString &command, const _Args &args,
-                                                 const GsString &initialDirectory, GsPipe *inPipe,
-                                                 GsPipe *outPipe, GsPipe *errPipe, const _Env &env);
+    static ProcessHandleImpl *LaunchByForkExec(const String &command, const _Args &args,
+                                                 const String &initialDirectory, Pipe *inPipe,
+                                                 Pipe *outPipe, Pipe *errPipe, const _Env &env);
 };
 
 #endif

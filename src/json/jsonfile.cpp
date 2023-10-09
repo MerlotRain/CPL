@@ -16,29 +16,29 @@ static const char *INVALID_OBJ_KEY = "__INVALID_OBJ_KEY__";
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-GsJsonArray::const_iterator::const_iterator(const GsJsonArray &array, bool bStart)
+JsonArray::const_iterator::const_iterator(const JsonArray &array, bool bStart)
     : m_Array(array), m_nIndex(bStart ? 0 : array.Size())
 {
 }
 
-GsJsonObject &GsJsonArray::const_iterator::operator*() const
+JsonObject &JsonArray::const_iterator::operator*() const
 {
     m_Object = m_Array[m_nIndex];
     return m_Object;
 }
 
-GsJsonArray::const_iterator &GsJsonArray::const_iterator::operator++()
+JsonArray::const_iterator &JsonArray::const_iterator::operator++()
 {
     m_nIndex++;
     return *this;
 }
 
-bool GsJsonArray::const_iterator::operator==(const const_iterator &it) const
+bool JsonArray::const_iterator::operator==(const const_iterator &it) const
 {
     m_nIndex == it.m_nIndex;
 }
 
-bool GsJsonArray::const_iterator::operator!=(const const_iterator &it) const
+bool JsonArray::const_iterator::operator!=(const const_iterator &it) const
 {
     m_nIndex != it.m_nIndex;
 }
@@ -47,51 +47,51 @@ bool GsJsonArray::const_iterator::operator!=(const const_iterator &it) const
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-GsJsonArray::GsJsonArray(const char *name, void *pJsonObject)
-    : GsJsonObject(name, pJsonObject)
+JsonArray::JsonArray(const char *name, void *pJsonObject)
+    : JsonObject(name, pJsonObject)
 {
 }
 
 
-GsJsonArray::GsJsonArray()
+JsonArray::JsonArray()
 {
     json_object_put(TO_JSONOBJ(m_pJsonObject));
     m_pJsonObject = json_object_new_array();
 }
 
-GsJsonArray::GsJsonArray(const char *name)
-    : GsJsonObject(name, json_object_new_array())
+JsonArray::JsonArray(const char *name)
+    : JsonObject(name, json_object_new_array())
 {
     json_object_put(TO_JSONOBJ(m_pJsonObject));
 }
 
-GsJsonArray::GsJsonArray(const GsJsonObject &other)
-    : GsJsonObject(other)
+JsonArray::JsonArray(const JsonObject &other)
+    : JsonObject(other)
 {
 }
 
-int GsJsonArray::Size() const
+int JsonArray::Size() const
 {
     if (m_pJsonObject)
         return static_cast<int>(json_object_array_length(TO_JSONOBJ(m_pJsonObject)));
     return 0;
 }
 
-void GsJsonArray::Add(const GsJsonObject &oValue)
+void JsonArray::Add(const JsonObject &oValue)
 {
     if (m_pJsonObject && oValue.m_pJsonObject)
         json_object_array_add(TO_JSONOBJ(m_pJsonObject),
                               json_object_get(TO_JSONOBJ(oValue.m_pJsonObject)));
 }
 
-void GsJsonArray::Add(const GsString &strValue)
+void JsonArray::Add(const String &strValue)
 {
     if (m_pJsonObject)
         json_object_array_add(TO_JSONOBJ(m_pJsonObject),
                               json_object_new_string(strValue.c_str()));
 }
 
-void GsJsonArray::Add(const char *pszValue)
+void JsonArray::Add(const char *pszValue)
 {
     if (nullptr == pszValue)
         return;
@@ -101,51 +101,51 @@ void GsJsonArray::Add(const char *pszValue)
                               json_object_new_string(pszValue));
 }
 
-void GsJsonArray::Add(double dfValue)
+void JsonArray::Add(double dfValue)
 {
     if (m_pJsonObject)
         json_object_array_add(TO_JSONOBJ(m_pJsonObject),
                               json_object_new_double(dfValue));
 }
 
-void GsJsonArray::Add(int nValue)
+void JsonArray::Add(int nValue)
 {
     if (m_pJsonObject)
         json_object_array_add(TO_JSONOBJ(m_pJsonObject), json_object_new_int(nValue));
 }
 
-void GsJsonArray::Add(long long nValue)
+void JsonArray::Add(long long nValue)
 {
     if (m_pJsonObject)
         json_object_array_add(TO_JSONOBJ(m_pJsonObject), json_object_new_int64(nValue));
 }
 
-void GsJsonArray::Add(bool bValue)
+void JsonArray::Add(bool bValue)
 {
     if (m_pJsonObject)
         json_object_array_add(TO_JSONOBJ(m_pJsonObject), json_object_new_boolean(bValue));
 }
 
-GsJsonObject GsJsonArray::operator[](int nIndex)
+JsonObject JsonArray::operator[](int nIndex)
 {
-    return GsJsonObject(GsString::Format("id:%d", nIndex).c_str(),
+    return JsonObject(String::Format("id:%d", nIndex).c_str(),
                         json_object_array_get_idx(TO_JSONOBJ(m_pJsonObject), nIndex));
 }
 
-const GsJsonObject GsJsonArray::operator[](int nIndex) const
+const JsonObject JsonArray::operator[](int nIndex) const
 {
-    return GsJsonObject(GsString::Format("id:%d", nIndex).c_str(),
+    return JsonObject(String::Format("id:%d", nIndex).c_str(),
                         json_object_array_get_idx(TO_JSONOBJ(m_pJsonObject), nIndex));
 }
 
-GsJsonArray::const_iterator GsJsonArray::begin() const
+JsonArray::const_iterator JsonArray::begin() const
 {
-    return GsJsonArray::const_iterator(*this, true);
+    return JsonArray::const_iterator(*this, true);
 }
 
-GsJsonArray::const_iterator GsJsonArray::end() const
+JsonArray::const_iterator JsonArray::end() const
 {
-    return GsJsonArray::const_iterator(*this, false);
+    return JsonArray::const_iterator(*this, false);
 }
 
 
@@ -154,18 +154,18 @@ GsJsonArray::const_iterator GsJsonArray::end() const
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-GsJsonObject::GsJsonObject()
+JsonObject::JsonObject()
     : m_pJsonObject(json_object_new_object())
 {
 }
 
-GsJsonObject::GsJsonObject(const char *name, const GsJsonObject &parent)
+JsonObject::JsonObject(const char *name, const JsonObject &parent)
     : m_pJsonObject(json_object_get(json_object_new_object())), m_strKey(name)
 {
     json_object_object_add(TO_JSONOBJ(parent.m_pJsonObject), name, TO_JSONOBJ(m_pJsonObject));
 }
 
-GsJsonObject::~GsJsonObject()
+JsonObject::~JsonObject()
 {
     if (m_pJsonObject)
     {
@@ -174,18 +174,18 @@ GsJsonObject::~GsJsonObject()
     }
 }
 
-GsJsonObject::GsJsonObject(const GsJsonObject &other)
+JsonObject::JsonObject(const JsonObject &other)
     : m_pJsonObject(json_object_get(TO_JSONOBJ(other.m_pJsonObject))), m_strKey(other.m_strKey)
 {
 }
 
-GsJsonObject::GsJsonObject(GsJsonObject &&other) noexcept
+JsonObject::JsonObject(JsonObject &&other) noexcept
     : m_pJsonObject(other.m_pJsonObject), m_strKey(std::move(other.m_strKey))
 {
     other.m_pJsonObject = nullptr;
 }
 
-GsJsonObject &GsJsonObject::operator=(const GsJsonObject &other)
+JsonObject &JsonObject::operator=(const JsonObject &other)
 {
     if (this == &other)
         return *this;
@@ -197,7 +197,7 @@ GsJsonObject &GsJsonObject::operator=(const GsJsonObject &other)
     return *this;
 }
 
-GsJsonObject &GsJsonObject::operator=(GsJsonObject &&other) noexcept
+JsonObject &JsonObject::operator=(JsonObject &&other) noexcept
 {
     if (this == &other)
         return *this;
@@ -210,69 +210,69 @@ GsJsonObject &GsJsonObject::operator=(GsJsonObject &&other) noexcept
     return *this;
 }
 
-GsJsonObject GsJsonObject::Clone() const
+JsonObject JsonObject::Clone() const
 {
-    GsJsonObject oRet;
+    JsonObject oRet;
     if (IsValid())
     {
-        GsJsonDocument oTmpDoc;
+        JsonDocument oTmpDoc;
         oTmpDoc.Root(*this);
-        GsString osStr = oTmpDoc.ToString();
+        String osStr = oTmpDoc.ToString();
         oTmpDoc.Load(osStr);
         oRet = oTmpDoc.Root();
     }
     return oRet;
 }
 
-GsJsonObject::ObjectType GsJsonObject::Type() const
+JsonObject::ObjectType JsonObject::Type() const
 {
     if (nullptr == m_pJsonObject)
     {
         if (m_strKey == INVALID_OBJ_KEY)
-            return GsJsonObject::ObjectType::Unknown;
-        return GsJsonObject::ObjectType::Null;
+            return JsonObject::ObjectType::Unknown;
+        return JsonObject::ObjectType::Null;
     }
     auto jsonObj(TO_JSONOBJ(m_pJsonObject));
     switch (json_object_get_type(jsonObj))
     {
         case json_type_boolean:
-            return GsJsonObject::ObjectType::Boolean;
+            return JsonObject::ObjectType::Boolean;
         case json_type_double:
-            return GsJsonObject::ObjectType::Double;
+            return JsonObject::ObjectType::Double;
         case json_type_int:
             {
                 if ((static_cast<long long>(static_cast<int>(json_object_get_int64(jsonObj))) ==
                      json_object_get_int64(jsonObj)))
-                    return GsJsonObject::ObjectType::Integer;
+                    return JsonObject::ObjectType::Integer;
                 else
-                    return GsJsonObject::ObjectType::Long;
+                    return JsonObject::ObjectType::Long;
             }
         case json_type_object:
-            return GsJsonObject::ObjectType::Object;
+            return JsonObject::ObjectType::Object;
         case json_type_array:
-            return GsJsonObject::ObjectType::Array;
+            return JsonObject::ObjectType::Array;
         case json_type_string:
-            return GsJsonObject::ObjectType::String;
+            return JsonObject::ObjectType::String;
         default:
             break;
     }
-    return GsJsonObject::ObjectType::Unknown;
+    return JsonObject::ObjectType::Unknown;
 }
 
-GsString GsJsonObject::Name() const
+String JsonObject::Name() const
 {
     return m_strKey;
 }
 
-void GsJsonObject::Add(const char *name, const GsString &strValue)
+void JsonObject::Add(const char *name, const String &strValue)
 {
     if (nullptr == name)
         return;
 
-    GsString objectName;
+    String objectName;
     if (m_strKey == INVALID_OBJ_KEY)
         m_strKey.clear();
-    GsJsonObject object = GetObjectByPath(name, objectName);
+    JsonObject object = GetObjectByPath(name, objectName);
     if (object.IsValid() && json_object_get_type(TO_JSONOBJ(object.m_pJsonObject)) == json_type_object)
     {
         json_object *pVal = json_object_new_string(strValue.c_str());
@@ -280,15 +280,15 @@ void GsJsonObject::Add(const char *name, const GsString &strValue)
     }
 }
 
-void GsJsonObject::Add(const char *name, const char *pszValue)
+void JsonObject::Add(const char *name, const char *pszValue)
 {
     if (nullptr == name || nullptr == pszValue)
         return;
 
-    GsString objectName;
+    String objectName;
     if (m_strKey == INVALID_OBJ_KEY)
         m_strKey.clear();
-    GsJsonObject object = GetObjectByPath(name, objectName);
+    JsonObject object = GetObjectByPath(name, objectName);
     if (object.IsValid() && json_object_get_type(TO_JSONOBJ(object.m_pJsonObject)) == json_type_object)
     {
         json_object *poVal = json_object_new_string(pszValue);
@@ -296,15 +296,15 @@ void GsJsonObject::Add(const char *name, const char *pszValue)
     }
 }
 
-void GsJsonObject::Add(const char *name, double dfValue)
+void JsonObject::Add(const char *name, double dfValue)
 {
     if (nullptr == name)
         return;
 
-    GsString objectName;
+    String objectName;
     if (m_strKey == INVALID_OBJ_KEY)
         m_strKey.clear();
-    GsJsonObject object = GetObjectByPath(name, objectName);
+    JsonObject object = GetObjectByPath(name, objectName);
     if (object.IsValid() && json_object_get_type(TO_JSONOBJ(object.m_pJsonObject)) == json_type_object)
     {
         json_object *poVal = json_object_new_double(dfValue);
@@ -312,15 +312,15 @@ void GsJsonObject::Add(const char *name, double dfValue)
     }
 }
 
-void GsJsonObject::Add(const char *name, int nValue)
+void JsonObject::Add(const char *name, int nValue)
 {
     if (nullptr == name)
         return;
 
-    GsString objectName;
+    String objectName;
     if (m_strKey == INVALID_OBJ_KEY)
         m_strKey.clear();
-    GsJsonObject object = GetObjectByPath(name, objectName);
+    JsonObject object = GetObjectByPath(name, objectName);
     if (object.IsValid() && json_object_get_type(TO_JSONOBJ(object.m_pJsonObject)) == json_type_object)
     {
         json_object *poVal = json_object_new_int(nValue);
@@ -328,15 +328,15 @@ void GsJsonObject::Add(const char *name, int nValue)
     }
 }
 
-void GsJsonObject::Add(const char *name, long long nValue)
+void JsonObject::Add(const char *name, long long nValue)
 {
     if (nullptr == name)
         return;
 
-    GsString objectName;
+    String objectName;
     if (m_strKey == INVALID_OBJ_KEY)
         m_strKey.clear();
-    GsJsonObject object = GetObjectByPath(name, objectName);
+    JsonObject object = GetObjectByPath(name, objectName);
     if (object.IsValid() && json_object_get_type(TO_JSONOBJ(object.m_pJsonObject)) == json_type_object)
     {
         json_object *poVal = json_object_new_int64(static_cast<int64_t>(nValue));
@@ -344,15 +344,15 @@ void GsJsonObject::Add(const char *name, long long nValue)
     }
 }
 
-void GsJsonObject::Add(const char *name, const GsJsonArray &objValue)
+void JsonObject::Add(const char *name, const JsonArray &objValue)
 {
     if (nullptr == name)
         return;
 
-    GsString objectName;
+    String objectName;
     if (m_strKey == INVALID_OBJ_KEY)
         m_strKey.clear();
-    GsJsonObject object = GetObjectByPath(name, objectName);
+    JsonObject object = GetObjectByPath(name, objectName);
     if (object.IsValid() && json_object_get_type(TO_JSONOBJ(object.m_pJsonObject)) == json_type_object)
     {
         json_object_object_add(TO_JSONOBJ(object.m_pJsonObject), objectName.c_str(),
@@ -360,9 +360,9 @@ void GsJsonObject::Add(const char *name, const GsJsonArray &objValue)
     }
 }
 
-void GsJsonObject::Add(const char *name, const GsJsonObject &objValue)
+void JsonObject::Add(const char *name, const JsonObject &objValue)
 {
-    GsString objectName;
+    String objectName;
     if (m_strKey == INVALID_OBJ_KEY)
         m_strKey.clear();
 
@@ -373,7 +373,7 @@ void GsJsonObject::Add(const char *name, const GsJsonObject &objValue)
         return;
     }
 
-    GsJsonObject object = GetObjectByPath(name, objectName);
+    JsonObject object = GetObjectByPath(name, objectName);
     if (object.IsValid() && json_object_get_type(TO_JSONOBJ(object.m_pJsonObject)) == json_type_object)
     {
         json_object_object_add(TO_JSONOBJ(object.m_pJsonObject), objectName.c_str(),
@@ -381,7 +381,7 @@ void GsJsonObject::Add(const char *name, const GsJsonObject &objValue)
     }
 }
 
-void GsJsonObject::AddNoSplitName(const char *name, const GsJsonObject &objValue)
+void JsonObject::AddNoSplitName(const char *name, const JsonObject &objValue)
 {
     if (nullptr == name)
         return;
@@ -395,14 +395,14 @@ void GsJsonObject::AddNoSplitName(const char *name, const GsJsonObject &objValue
     }
 }
 
-void GsJsonObject::Add(const char *name, bool bValue)
+void JsonObject::Add(const char *name, bool bValue)
 {
     if (nullptr == name)
         return;
     if (m_strKey == INVALID_OBJ_KEY)
         m_strKey.clear();
-    GsString objectName;
-    GsJsonObject object = GetObjectByPath(name, objectName);
+    String objectName;
+    JsonObject object = GetObjectByPath(name, objectName);
     if (object.IsValid() && json_object_get_type(TO_JSONOBJ(
                                     object.m_pJsonObject)) == json_type_object)
     {
@@ -412,14 +412,14 @@ void GsJsonObject::Add(const char *name, bool bValue)
     }
 }
 
-void GsJsonObject::AddNull(const char *name)
+void JsonObject::AddNull(const char *name)
 {
     if (nullptr == name)
         return;
     if (m_strKey == INVALID_OBJ_KEY)
         m_strKey.clear();
-    GsString objectName;
-    GsJsonObject object = GetObjectByPath(name, objectName);
+    String objectName;
+    JsonObject object = GetObjectByPath(name, objectName);
     if (object.IsValid() && json_object_get_type(TO_JSONOBJ(
                                     object.m_pJsonObject)) == json_type_object)
     {
@@ -428,13 +428,13 @@ void GsJsonObject::AddNull(const char *name)
     }
 }
 
-void GsJsonObject::Set(const char *name, const GsString &osValue)
+void JsonObject::Set(const char *name, const String &osValue)
 {
     Delete(name);
     Add(name, osValue);
 }
 
-void GsJsonObject::Set(const char *name, const char *pszValue)
+void JsonObject::Set(const char *name, const char *pszValue)
 {
     if (nullptr == pszValue)
         return;
@@ -442,66 +442,66 @@ void GsJsonObject::Set(const char *name, const char *pszValue)
     Add(name, pszValue);
 }
 
-void GsJsonObject::Set(const char *name, double dfValue)
+void JsonObject::Set(const char *name, double dfValue)
 {
     Delete(name);
     Add(name, dfValue);
 }
 
-void GsJsonObject::Set(const char *name, int nValue)
+void JsonObject::Set(const char *name, int nValue)
 {
     Delete(name);
     Add(name, nValue);
 }
 
-void GsJsonObject::Set(const char *name, long long nValue)
+void JsonObject::Set(const char *name, long long nValue)
 {
     Delete(name);
     Add(name, nValue);
 }
 
-void GsJsonObject::Set(const char *name, bool bValue)
+void JsonObject::Set(const char *name, bool bValue)
 {
     Delete(name);
     Add(name, bValue);
 }
 
-void GsJsonObject::SetNull(const char *name)
+void JsonObject::SetNull(const char *name)
 {
     Delete(name);
     AddNull(name);
 }
 
-GsString GsJsonObject::AsString(const char *name, const GsString &defValue) const
+String JsonObject::AsString(const char *name, const String &defValue) const
 {
-    GsJsonObject object = AsObject(name);
+    JsonObject object = AsObject(name);
     return object.ToString(defValue);
 }
 
-double GsJsonObject::AsDouble(const char *name, double defValue) const
+double JsonObject::AsDouble(const char *name, double defValue) const
 {
-    GsJsonObject object = AsObject(name);
+    JsonObject object = AsObject(name);
     return object.ToDouble(defValue);
 }
 
-int GsJsonObject::AsInteger(const char *name, int defValue) const
+int JsonObject::AsInteger(const char *name, int defValue) const
 {
-    GsJsonObject object = AsObject(name);
+    JsonObject object = AsObject(name);
     return object.ToInteger(defValue);
 }
 
-long long GsJsonObject::AsLongLong(const char *name, long long defValue) const
+long long JsonObject::AsLongLong(const char *name, long long defValue) const
 {
-    GsJsonObject object = AsObject(name);
+    JsonObject object = AsObject(name);
     return object.ToLongLong(defValue);
 }
 
-GsJsonArray GsJsonObject::AsArray(const char *name) const
+JsonArray JsonObject::AsArray(const char *name) const
 {
     if (nullptr == name)
         return;
-    GsString objectName;
-    GsJsonObject object = GetObjectByPath(name, objectName);
+    String objectName;
+    JsonObject object = GetObjectByPath(name, objectName);
     if (object.IsValid())
     {
         json_object *poVal = nullptr;
@@ -510,38 +510,38 @@ GsJsonArray GsJsonObject::AsArray(const char *name) const
         {
             if (poVal && json_object_get_type(poVal) == json_type_array)
             {
-                return GsJsonArray(objectName.c_str(), poVal);
+                return JsonArray(objectName.c_str(), poVal);
             }
         }
     }
-    return GsJsonArray(INVALID_OBJ_KEY, nullptr);
+    return JsonArray(INVALID_OBJ_KEY, nullptr);
 }
 
-GsJsonObject GsJsonObject::AsObject(const char *name) const
+JsonObject JsonObject::AsObject(const char *name) const
 {
     if (nullptr == name)
         return;
-    GsString objectName;
-    GsJsonObject object = GetObjectByPath(name, objectName);
+    String objectName;
+    JsonObject object = GetObjectByPath(name, objectName);
     if (object.IsValid())
     {
         json_object *poVal = nullptr;
         if (json_object_object_get_ex(TO_JSONOBJ(object.m_pJsonObject),
                                       objectName.c_str(), &poVal))
         {
-            return GsJsonObject(objectName, poVal);
+            return JsonObject(objectName, poVal);
         }
     }
-    return GsJsonObject(INVALID_OBJ_KEY, nullptr);
+    return JsonObject(INVALID_OBJ_KEY, nullptr);
 }
 
-bool GsJsonObject::AsBoolean(const char *name, bool defValue) const
+bool JsonObject::AsBoolean(const char *name, bool defValue) const
 {
-    GsJsonObject object = AsObject(name);
+    JsonObject object = AsObject(name);
     return object.ToBoolean(defValue);
 }
 
-GsString GsJsonObject::ToString(const GsString &defValue) const
+String JsonObject::ToString(const String &defValue) const
 {
     if (m_pJsonObject)
     {
@@ -554,43 +554,43 @@ GsString GsJsonObject::ToString(const GsString &defValue) const
     return defValue;
 }
 
-double GsJsonObject::ToDouble(double defValue) const
+double JsonObject::ToDouble(double defValue) const
 {
     if (m_pJsonObject)
         return json_object_get_double(TO_JSONOBJ(m_pJsonObject));
     return defValue;
 }
 
-int GsJsonObject::ToInteger(int defValue) const
+int JsonObject::ToInteger(int defValue) const
 {
     if (m_pJsonObject)
         return json_object_get_int(TO_JSONOBJ(m_pJsonObject));
     return defValue;
 }
 
-long long GsJsonObject::ToLongLong(long long defValue) const
+long long JsonObject::ToLongLong(long long defValue) const
 {
     if (m_pJsonObject)
         return json_object_get_int64(TO_JSONOBJ(m_pJsonObject));
     return defValue;
 }
 
-bool GsJsonObject::ToBoolean(bool defValue) const
+bool JsonObject::ToBoolean(bool defValue) const
 {
     if (m_pJsonObject)
         return json_object_get_boolean(TO_JSONOBJ(m_pJsonObject));
     return defValue;
 }
 
-GsJsonArray GsJsonObject::ToArray() const
+JsonArray JsonObject::ToArray() const
 {
     if (m_pJsonObject &&
         json_object_get_type(TO_JSONOBJ(m_pJsonObject)) == json_type_array)
-        return GsJsonArray("", TO_JSONOBJ(m_pJsonObject));
-    return GsJsonArray(INVALID_OBJ_KEY, nullptr);
+        return JsonArray("", TO_JSONOBJ(m_pJsonObject));
+    return JsonArray(INVALID_OBJ_KEY, nullptr);
 }
 
-GsString GsJsonObject::Format(PrettyFormat eFormat) const
+String JsonObject::Format(PrettyFormat eFormat) const
 {
     if (m_pJsonObject)
     {
@@ -617,12 +617,12 @@ GsString GsJsonObject::Format(PrettyFormat eFormat) const
     return "";
 }
 
-void GsJsonObject::Delete(const char *name)
+void JsonObject::Delete(const char *name)
 {
-    GsString objectName;
+    String objectName;
     if (m_strKey == INVALID_OBJ_KEY)
         m_strKey.clear();
-    GsJsonObject object = GetObjectByPath(name, objectName);
+    JsonObject object = GetObjectByPath(name, objectName);
     if (object.IsValid())
     {
         json_object_object_del(TO_JSONOBJ(object.m_pJsonObject),
@@ -630,7 +630,7 @@ void GsJsonObject::Delete(const char *name)
     }
 }
 
-void GsJsonObject::DeleteNoSplitName(const char *name)
+void JsonObject::DeleteNoSplitName(const char *name)
 {
     if (m_strKey == INVALID_OBJ_KEY)
         m_strKey.clear();
@@ -640,14 +640,14 @@ void GsJsonObject::DeleteNoSplitName(const char *name)
     }
 }
 
-GsJsonObject GsJsonObject::operator[](const char *name) const
+JsonObject JsonObject::operator[](const char *name) const
 {
     return AsObject(name);
 }
 
-std::vector<GsJsonObject> GsJsonObject::Children() const
+std::vector<JsonObject> JsonObject::Children() const
 {
-    std::vector<GsJsonObject> children;
+    std::vector<JsonObject> children;
     if (nullptr == m_pJsonObject ||
         json_object_get_type(TO_JSONOBJ(m_pJsonObject)) != json_type_object)
     {
@@ -660,18 +660,18 @@ std::vector<GsJsonObject> GsJsonObject::Children() const
     it.entry = nullptr;
     json_object_object_foreachC(TO_JSONOBJ(m_pJsonObject), it)
     {
-        children.push_back(GsJsonObject(it.key, it.val));
+        children.push_back(JsonObject(it.key, it.val));
     }
 
     return children;
 }
 
-bool GsJsonObject::IsValid() const
+bool JsonObject::IsValid() const
 {
     return m_strKey != INVALID_OBJ_KEY;
 }
 
-void GsJsonObject::Deinit()
+void JsonObject::Deinit()
 {
     if (m_pJsonObject)
     {
@@ -681,19 +681,19 @@ void GsJsonObject::Deinit()
     m_strKey = INVALID_OBJ_KEY;
 }
 
-GsJsonObject::GsJsonObject(const char *name, void *pJsonObject)
+JsonObject::JsonObject(const char *name, void *pJsonObject)
     : m_pJsonObject(json_object_get(TO_JSONOBJ(pJsonObject))), m_strKey(name)
 {
 }
 
 
-static GsStringList Tokenize(const char *pszString, const char *pszDelimiters,
+static StringList Tokenize(const char *pszString, const char *pszDelimiters,
                              int nCSLTFlags)
 {
     if (pszString == nullptr)
         return static_cast<char **>(calloc(sizeof(char *), 1));
 
-    GsStringList oRetList;
+    StringList oRetList;
     const bool bHonourStrings = (nCSLTFlags & 0x0001) != 0;
     const bool bAllowEmptyTokens = (nCSLTFlags & 0x0002) != 0;
     const bool bStripLeadSpaces = (nCSLTFlags & 0x0010) != 0;
@@ -789,7 +789,7 @@ static GsStringList Tokenize(const char *pszString, const char *pszDelimiters,
     return oRetList;
 }
 
-GsJsonObject GsJsonObject::GetObjectByPath(const GsString &path, GsString &name) const
+JsonObject JsonObject::GetObjectByPath(const String &path, String &name) const
 {
     json_object *poVal = nullptr;
 
@@ -800,30 +800,30 @@ GsJsonObject GsJsonObject::GetObjectByPath(const GsString &path, GsString &name)
         return *this;
     }
 
-    GsStringList pathPortions = Tokenize(path.c_str(), JSON_PATH_DELIMITER, 0);
+    StringList pathPortions = Tokenize(path.c_str(), JSON_PATH_DELIMITER, 0);
     int portionsCount = pathPortions.size();
     if (portionsCount > 100)
     {
-        return GsJsonObject(INVALID_OBJ_KEY, nullptr);
+        return JsonObject(INVALID_OBJ_KEY, nullptr);
     }
     if (0 == portionsCount)
-        return GsJsonObject(INVALID_OBJ_KEY, nullptr);
-    GsJsonObject object = *this;
+        return JsonObject(INVALID_OBJ_KEY, nullptr);
+    JsonObject object = *this;
     for (int i = 0; i < portionsCount - 1; ++i)
     {
         if (json_object_object_get_ex(TO_JSONOBJ(object.m_pJsonObject),
                                       pathPortions[i], &poVal))
         {
-            object = GsJsonObject(pathPortions[i], poVal);
+            object = JsonObject(pathPortions[i], poVal);
         }
         else
         {
             if (json_object_get_type(TO_JSONOBJ(object.m_pJsonObject)) !=
                 json_type_object)
             {
-                return GsJsonObject(INVALID_OBJ_KEY, nullptr);
+                return JsonObject(INVALID_OBJ_KEY, nullptr);
             }
-            object = GsJsonObject(pathPortions[i], object);
+            object = JsonObject(pathPortions[i], object);
         }
     }
 
@@ -836,23 +836,23 @@ GsJsonObject GsJsonObject::GetObjectByPath(const GsString &path, GsString &name)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-GsJsonDocument::GsJsonDocument()
+JsonDocument::JsonDocument()
     : m_pRootJsonObject(nullptr)
 {
 }
 
-GsJsonDocument::~GsJsonDocument()
+JsonDocument::~JsonDocument()
 {
     if (m_pRootJsonObject)
         json_object_put(TO_JSONOBJ(m_pRootJsonObject));
 }
 
-GsJsonDocument::GsJsonDocument(const GsJsonDocument &other)
+JsonDocument::JsonDocument(const JsonDocument &other)
     : m_pRootJsonObject(json_object_get(TO_JSONOBJ(other.m_pRootJsonObject)))
 {
 }
 
-GsJsonDocument &GsJsonDocument::operator=(const GsJsonDocument &other)
+JsonDocument &JsonDocument::operator=(const JsonDocument &other)
 {
     if (this == &other)
         return *this;
@@ -864,13 +864,13 @@ GsJsonDocument &GsJsonDocument::operator=(const GsJsonDocument &other)
     return *this;
 }
 
-GsJsonDocument::GsJsonDocument(GsJsonDocument &&other) noexcept
+JsonDocument::JsonDocument(JsonDocument &&other) noexcept
     : m_pRootJsonObject(other.m_pRootJsonObject)
 {
     other.m_pRootJsonObject = nullptr;
 }
 
-GsJsonDocument &GsJsonDocument::operator=(GsJsonDocument &&other) noexcept
+JsonDocument &JsonDocument::operator=(JsonDocument &&other) noexcept
 {
     if (this == &other)
         return *this;
@@ -883,12 +883,12 @@ GsJsonDocument &GsJsonDocument::operator=(GsJsonDocument &&other) noexcept
     return *this;
 }
 
-bool GsJsonDocument::Save(const GsString &path) const
+bool JsonDocument::Save(const String &path) const
 {
     FILE *fp = fopen(path.c_str(), "wt");
     if (nullptr == fp)
     {
-        GS_E << GsString::Format("Open file %s to write failed", path.c_str()).c_str();
+        GS_E << String::Format("Open file %s to write failed", path.c_str()).c_str();
         return false;
     }
 
@@ -898,18 +898,18 @@ bool GsJsonDocument::Save(const GsString &path) const
     return true;
 }
 
-GsString GsJsonDocument::ToString() const
+String JsonDocument::ToString() const
 {
     return json_object_to_json_string_ext(TO_JSONOBJ(m_pRootJsonObject),
                                           JSON_C_TO_STRING_PRETTY);
 }
 
-GsJsonObject GsJsonDocument::Root()
+JsonObject JsonDocument::Root()
 {
-    return const_cast<GsJsonDocument *>(this)->Root();
+    return const_cast<JsonDocument *>(this)->Root();
 }
 
-const GsJsonObject GsJsonDocument::Root() const
+const JsonObject JsonDocument::Root() const
 {
     if (nullptr == m_pRootJsonObject)
     {
@@ -918,22 +918,22 @@ const GsJsonObject GsJsonDocument::Root() const
 
     if (json_object_get_type(TO_JSONOBJ(m_pRootJsonObject)) == json_type_array)
     {
-        return GsJsonArray("", m_pRootJsonObject);
+        return JsonArray("", m_pRootJsonObject);
     }
     else
     {
-        return GsJsonObject("", m_pRootJsonObject);
+        return JsonObject("", m_pRootJsonObject);
     }
 }
 
-void GsJsonDocument::Root(const GsJsonObject &pRoot)
+void JsonDocument::Root(const JsonObject &pRoot)
 {
     if (m_pRootJsonObject)
         json_object_put(TO_JSONOBJ(m_pRootJsonObject));
     m_pRootJsonObject = json_object_get(TO_JSONOBJ(pRoot.m_pJsonObject));
 }
 
-bool GsJsonDocument::Load(const GsString &path)
+bool JsonDocument::Load(const String &path)
 {
     return false;
 }

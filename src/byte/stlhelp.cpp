@@ -3,7 +3,7 @@
 
 namespace m2 {
 
-void *GsByteAllocator::Allocate(size_t size)
+void *ByteAllocator::Allocate(size_t size)
 {
     if (size == 0)
         size = 1;
@@ -19,7 +19,7 @@ void *GsByteAllocator::Allocate(size_t size)
     return p;
 }
 
-void GsByteAllocator::Deallocate(void *p, size_t n)
+void ByteAllocator::Deallocate(void *p, size_t n)
 {
     std::free(p);
 }

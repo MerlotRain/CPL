@@ -31,23 +31,23 @@
 ****************************************************************************/
 
 /// @brief Json文档
-class M2_API GsJsonDocument
+class M2_API JsonDocument
 {
 public:
-    GsJsonDocument();
-    ~GsJsonDocument();
-    GsJsonDocument(const GsJsonDocument &other);
-    GsJsonDocument &operator=(const GsJsonDocument &other);
-    GsJsonDocument(GsJsonDocument &&other) noexcept;
-    GsJsonDocument &operator=(GsJsonDocument &&other) noexcept;
+    JsonDocument();
+    ~JsonDocument();
+    JsonDocument(const JsonDocument &other);
+    JsonDocument &operator=(const JsonDocument &other);
+    JsonDocument(JsonDocument &&other) noexcept;
+    JsonDocument &operator=(JsonDocument &&other) noexcept;
 
-    bool Save(const GsString &path) const;
-    GsString ToString() const;
+    bool Save(const String &path) const;
+    String ToString() const;
 
-    GsJsonObject Root();
-    const GsJsonObject Root() const;
-    void Root(const GsJsonObject &oRoot);
-    bool Load(const GsString &path);
+    JsonObject Root();
+    const JsonObject Root() const;
+    void Root(const JsonObject &oRoot);
+    bool Load(const String &path);
 
 private:
     mutable void *m_pRootJsonObject;

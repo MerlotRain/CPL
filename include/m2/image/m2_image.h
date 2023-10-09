@@ -39,48 +39,48 @@
 namespace m2 {
 
 /// @brief 颜色模型
-struct M2_API GsColor
+struct M2_API Color
 {
     /// @brief 默认构造
-    GsColor() noexcept;
+    Color() noexcept;
     /// @brief 根据无符号32位整型构造
     /// @param c
-    GsColor(unsigned int c) noexcept;
+    Color(unsigned int c) noexcept;
     /// @brief 根据有符号32位整型构造
     /// @param c
-    GsColor(int c) noexcept;
+    Color(int c) noexcept;
     /// @brief 根据R，G，B，A通道构造
     /// @param r 红色通道[0,255]
     /// @param g 绿色通道[0,255]
     /// @param b 蓝色通道[0,255]
     /// @param a 透明通道[0,255]
-    GsColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255) noexcept;
+    Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255) noexcept;
     /// @brief 拷贝构造
     /// @param color
-    GsColor(const GsColor &color) noexcept;
+    Color(const Color &color) noexcept;
     /// @brief 改变颜色的透明度
     /// @param rhs
     /// @param a
-    GsColor(const GsColor &rhs, unsigned char a);
+    Color(const Color &rhs, unsigned char a);
     /// @brief 拷贝构造
     /// @param color
     /// @return
-    GsColor &operator=(const GsColor &color) noexcept;
+    Color &operator=(const Color &color) noexcept;
 
     /// @brief 随机颜色
     /// @details 随机RGB值，生成颜色可能过亮
     /// @return
-    static GsColor Random();
+    static Color Random();
 
     /// @brief 随机颜色
     /// @details 使用HSV模型获取随机值，颜色更为柔和，所有渲染颜色都调用此接口获取随机值
     /// @return
-    static GsColor RandomHSV();
+    static Color RandomHSV();
 
     /// @brief 从CSS颜色描述构造
     /// @param css
     /// @return
-    static GsColor FromCSS(const char *css);
+    static Color FromCSS(const char *css);
 
     /// @brief 根据R，G，B，A通道构造
     /// @param r 红色通道[0,255]
@@ -88,7 +88,7 @@ struct M2_API GsColor
     /// @param b 蓝色通道[0,255]
     /// @param a 透明通道[0,255]
     /// @return
-    static GsColor FromARGB(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
+    static Color FromARGB(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
 
     /// @brief 从浮点R，G，B，A通道构造
     /// @param r 红色通道[0,1]
@@ -96,7 +96,7 @@ struct M2_API GsColor
     /// @param b 蓝色通道[0,1]
     /// @param a 透明通道[0,1]
     /// @return
-    static GsColor FromARGBF(double r, double g, double b, double a = 1.0f);
+    static Color FromARGBF(double r, double g, double b, double a = 1.0f);
 
     /// @brief 根据C，M，Y，K通道构造
     /// @param c 青色通道[0,100]
@@ -104,7 +104,7 @@ struct M2_API GsColor
     /// @param y 黄色通道[0,100]
     /// @param k 黑色通道[0,100]
     /// @return
-    static GsColor FromCMYK(unsigned char c, unsigned char m, unsigned char y, unsigned char k);
+    static Color FromCMYK(unsigned char c, unsigned char m, unsigned char y, unsigned char k);
 
     /// @brief 根据浮点C，M，Y，K通道构造
     /// @param c 青色通道[0,1]
@@ -112,14 +112,14 @@ struct M2_API GsColor
     /// @param y 黄色通道[0,1]
     /// @param k 黑色通道[0,1]
     /// @return
-    static GsColor FromCMYKF(double c, double m, double y, double k);
+    static Color FromCMYKF(double c, double m, double y, double k);
     /// @brief 从HSV颜色构造
     /// @param h  Hue  色调				h 范围[0, 360] (int)
     /// @param s  Saturation 饱和度		s 范围[0, 255](int)
     /// @param v  Value 亮度			v 范围[0, 255](int)
     /// @param a  透明度
     /// @return
-    static GsColor FromHSV(int h, int s, int v, unsigned char a = 255);
+    static Color FromHSV(int h, int s, int v, unsigned char a = 255);
 
     /// @brief 从HSV颜色构造
     /// @param h  Hue  色调				h 范围[0, 360] (float,取值为int)
@@ -127,7 +127,7 @@ struct M2_API GsColor
     /// @param v  Value 亮度			v 范围[0, 1.0](float)
     /// @param a  透明度
     /// @return
-    static GsColor FromHSV(float h, float s, float v, float a = 1.0);
+    static Color FromHSV(float h, float s, float v, float a = 1.0);
     /// @brief 颜色转灰度值
     /// @param r  红色通道[0,255]
     /// @param g  绿色通道[0,255]
@@ -178,37 +178,37 @@ struct M2_API GsColor
     float AlphaF() const noexcept;
     /// @brief 设置浮点数R通道值
     /// @return 返回自身的引用
-    GsColor &RedF(float r) noexcept;
+    Color &RedF(float r) noexcept;
     /// @brief 设置浮点数G通道值
     /// @return 返回自身的引用
-    GsColor &GreenF(float g) noexcept;
+    Color &GreenF(float g) noexcept;
     /// @brief 设置浮点数A通道值
     /// @return 返回自身的引用
-    GsColor &BlueF(float b) noexcept;
+    Color &BlueF(float b) noexcept;
     /// @brief 设置浮点数B通道值
     /// @return 返回自身的引用
-    GsColor &AlphaF(float a) noexcept;
+    Color &AlphaF(float a) noexcept;
     /// @brief 转换未灰度值[0,255]
     /// @return
     inline int ToGray() const
     {
-        return GsColor::ToGray(R, G, B);
+        return Color::ToGray(R, G, B);
     }
 
     /// @brief 等号操作符
     /// @param argb
     /// @return
-    GsColor &operator=(unsigned int &argb) noexcept;
+    Color &operator=(unsigned int &argb) noexcept;
     /// @brief 等号操作符
     /// @param argb
     /// @return
-    GsColor &operator=(int &argb) noexcept;
+    Color &operator=(int &argb) noexcept;
     /// @brief 等号操作符
     /// @param rhs
     /// @return
-    GsColor &operator=(GsColor &rhs) noexcept;
-    bool operator==(const GsColor &color) const noexcept;
-    bool operator!=(const GsColor &color) const noexcept;
+    Color &operator=(Color &rhs) noexcept;
+    bool operator==(const Color &color) const noexcept;
+    bool operator!=(const Color &color) const noexcept;
 
     /// @brief 无符号整数重载操作符
     explicit operator unsigned int() const noexcept;
@@ -552,12 +552,12 @@ struct M2_API GsColor
     /// @param color
     /// @param mode
     /// @return
-    GsColor &Blend(const GsColor &color, PorterDuffBlendMode mode);
+    Color &Blend(const Color &color, PorterDuffBlendMode mode);
     /// @brief 根据PS函数模型混合颜色
     /// @param color
     /// @param mode
     /// @return
-    GsColor &Blend(const GsColor &color, PhotoShopColorBlendMode mode);
+    Color &Blend(const Color &color, PhotoShopColorBlendMode mode);
 
     union
     {
@@ -576,17 +576,17 @@ struct M2_API GsColor
 
 
 /// @brief int点结构
-struct M2_API GsPT
+struct M2_API PT
 {
     int X;
     int Y;
 
     /// @brief 默认构造
-    GsPT();
+    PT();
     /// @brief 由x,y坐标构造
     /// @param xpos
     /// @param ypos
-    GsPT(int xpos, int ypos);
+    PT(int xpos, int ypos);
     /// @brief 是否为空
     /// @return
     inline bool IsNull() const;
@@ -595,64 +595,64 @@ struct M2_API GsPT
     inline int ManhattanLength() const;
     /// @brief 坐标转置
     /// @return
-    GsPT Transposed() const noexcept { return {Y, X}; }
+    PT Transposed() const noexcept { return {Y, X}; }
 
     /// @brief 重载+=操作符
     /// @param p
     /// @return
-    inline GsPT &operator+=(const GsPT &p);
+    inline PT &operator+=(const PT &p);
     /// @brief 重载-=操作符
     /// @param p
     /// @return
-    inline GsPT &operator-=(const GsPT &p);
+    inline PT &operator-=(const PT &p);
 
     /// @brief 重载*=操作符
     /// @param factor
     /// @return
-    inline GsPT &operator*=(float factor);
-    inline GsPT &operator*=(int factor);
+    inline PT &operator*=(float factor);
+    inline PT &operator*=(int factor);
 
     /// @brief 重载/=操作符
     /// @param divisor
     /// @return
-    inline GsPT &operator/=(float c);
+    inline PT &operator/=(float c);
     /// @brief 求两点点积
     /// @param p1
     /// @param p2
     /// @return
-    static inline int DotProduct(const GsPT &p1, const GsPT &p2);
+    static inline int DotProduct(const PT &p1, const PT &p2);
 
-    friend inline bool operator==(const GsPT &, const GsPT &);
-    friend inline bool operator!=(const GsPT &, const GsPT &);
-    friend inline const GsPT operator+(const GsPT &, const GsPT &);
-    friend inline const GsPT operator-(const GsPT &, const GsPT &);
-    friend inline const GsPT operator*(const GsPT &, float);
-    friend inline const GsPT operator*(float, const GsPT &);
-    friend inline const GsPT operator*(const GsPT &, float);
-    friend inline const GsPT operator*(float, const GsPT &);
-    friend inline const GsPT operator*(const GsPT &, int);
-    friend inline const GsPT operator*(int, const GsPT &);
-    friend inline const GsPT operator+(const GsPT &);
-    friend inline const GsPT operator-(const GsPT &);
-    friend inline const GsPT operator/(const GsPT &, float);
+    friend inline bool operator==(const PT &, const PT &);
+    friend inline bool operator!=(const PT &, const PT &);
+    friend inline const PT operator+(const PT &, const PT &);
+    friend inline const PT operator-(const PT &, const PT &);
+    friend inline const PT operator*(const PT &, float);
+    friend inline const PT operator*(float, const PT &);
+    friend inline const PT operator*(const PT &, float);
+    friend inline const PT operator*(float, const PT &);
+    friend inline const PT operator*(const PT &, int);
+    friend inline const PT operator*(int, const PT &);
+    friend inline const PT operator+(const PT &);
+    friend inline const PT operator-(const PT &);
+    friend inline const PT operator/(const PT &, float);
 };
 
 
 /// @brief float点结构
-struct M2_API GsPTF
+struct M2_API PTF
 {
     float X;
     float Y;
 
     /// @brief 默认构造
-    GsPTF();
+    PTF();
     /// @brief 由整型点结构构造
     /// @param p
-    explicit GsPTF(const GsPT &p);
+    explicit PTF(const PT &p);
     /// @brief 由x，y坐标构造
     /// @param xpos
     /// @param ypos
-    GsPTF(float xpos, float ypos);
+    PTF(float xpos, float ypos);
     /// @brief 获取点的曼哈顿距离
     /// @return
     inline float ManhattanLength() const;
@@ -662,35 +662,35 @@ struct M2_API GsPTF
 
     /// @brief 坐标转置
     /// @return
-    GsPTF Transposed() const noexcept { return {Y, X}; }
+    PTF Transposed() const noexcept { return {Y, X}; }
 
-    inline GsPTF &operator+=(const GsPTF &p);
-    inline GsPTF &operator-=(const GsPTF &p);
-    inline GsPTF &operator*=(float c);
-    inline GsPTF &operator/=(float divisor);
+    inline PTF &operator+=(const PTF &p);
+    inline PTF &operator-=(const PTF &p);
+    inline PTF &operator*=(float c);
+    inline PTF &operator/=(float divisor);
 
     /// @brief 求两点点积
     /// @param p1
     /// @param p2
     /// @return
-    static inline float DotProduct(const GsPTF &p1, const GsPTF &p2);
+    static inline float DotProduct(const PTF &p1, const PTF &p2);
 
-    friend inline bool operator==(const GsPTF &, const GsPTF &);
-    friend inline bool operator!=(const GsPTF &, const GsPTF &);
-    friend inline const GsPTF operator+(const GsPTF &, const GsPTF &);
-    friend inline const GsPTF operator-(const GsPTF &, const GsPTF &);
-    friend inline const GsPTF operator*(float, const GsPTF &);
-    friend inline const GsPTF operator*(const GsPTF &, float);
-    friend inline const GsPTF operator+(const GsPTF &);
-    friend inline const GsPTF operator-(const GsPTF &);
-    friend inline const GsPTF operator/(const GsPTF &, float);
+    friend inline bool operator==(const PTF &, const PTF &);
+    friend inline bool operator!=(const PTF &, const PTF &);
+    friend inline const PTF operator+(const PTF &, const PTF &);
+    friend inline const PTF operator-(const PTF &, const PTF &);
+    friend inline const PTF operator*(float, const PTF &);
+    friend inline const PTF operator*(const PTF &, float);
+    friend inline const PTF operator+(const PTF &);
+    friend inline const PTF operator-(const PTF &);
+    friend inline const PTF operator/(const PTF &, float);
 
-    GsPT ToPoint() const;
+    PT ToPoint() const;
 };
 
 
 /// @brief 缩放横纵比例的变化
-enum GsAspectRatioMode
+enum AspectRatioMode
 {
     /// @brief 忽略横纵比例，自由缩放
     /// @details 图形可能会产生形变
@@ -707,7 +707,7 @@ enum GsAspectRatioMode
 /// @brief int边距结构
 /// @details 在size,rect缩放过程中，需要主动指示正负值，Margins旨在于简化这个操作
 /// @details 其中四周边距都是正数，调用ExpandedTo和BoundedTo函数可以快速获取缩放后的结果
-struct M2_API GsMargins
+struct M2_API Margins
 {
     int Left;
     int Top;
@@ -715,33 +715,33 @@ struct M2_API GsMargins
     int Bottom;
 
     /// @brief 默认构造
-    GsMargins() noexcept;
+    Margins() noexcept;
     /// @brief 由四周边距构造
     /// @param left
     /// @param top
     /// @param right
     /// @param bottom
-    GsMargins(int left, int top, int right, int bottom) noexcept;
+    Margins(int left, int top, int right, int bottom) noexcept;
 
     /// @brief 是否为null
     /// @return
     bool IsNull() const noexcept;
 
-    GsMargins &operator+=(const GsMargins &margins) noexcept;
-    GsMargins &operator-=(const GsMargins &margins) noexcept;
-    GsMargins &operator+=(int) noexcept;
-    GsMargins &operator-=(int) noexcept;
-    GsMargins &operator*=(int) noexcept;
-    GsMargins &operator/=(int);
-    GsMargins &operator*=(float) noexcept;
-    GsMargins &operator/=(float);
+    Margins &operator+=(const Margins &margins) noexcept;
+    Margins &operator-=(const Margins &margins) noexcept;
+    Margins &operator+=(int) noexcept;
+    Margins &operator-=(int) noexcept;
+    Margins &operator*=(int) noexcept;
+    Margins &operator/=(int);
+    Margins &operator*=(float) noexcept;
+    Margins &operator/=(float);
 
-    friend inline bool operator==(const GsMargins &, const GsMargins &) noexcept;
-    friend inline bool operator!=(const GsMargins &, const GsMargins &) noexcept;
+    friend inline bool operator==(const Margins &, const Margins &) noexcept;
+    friend inline bool operator!=(const Margins &, const Margins &) noexcept;
 };
 
 /// @brief float类型边距结构
-struct M2_API GsMarginsF
+struct M2_API MarginsF
 {
     float Left;
     float Top;
@@ -750,42 +750,42 @@ struct M2_API GsMarginsF
 
 
     /// @brief 默认构造
-    GsMarginsF() noexcept;
+    MarginsF() noexcept;
     /// @brief 由四周边距构造
     /// @param left
     /// @param top
     /// @param right
     /// @param bottom
-    GsMarginsF(float left, float top, float right, float bottom) noexcept;
+    MarginsF(float left, float top, float right, float bottom) noexcept;
     /// @brief 由整型Mergins构造
     /// @param margins
-    explicit GsMarginsF(const GsMargins &margins) noexcept;
+    explicit MarginsF(const Margins &margins) noexcept;
 
     bool IsNull() const noexcept;
 
-    GsMarginsF &operator+=(const GsMarginsF &margins) noexcept;
-    GsMarginsF &operator-=(const GsMarginsF &margins) noexcept;
-    GsMarginsF &operator+=(float addend) noexcept;
-    GsMarginsF &operator-=(float subtrahend) noexcept;
-    GsMarginsF &operator*=(float factor) noexcept;
-    GsMarginsF &operator/=(float divisor);
+    MarginsF &operator+=(const MarginsF &margins) noexcept;
+    MarginsF &operator-=(const MarginsF &margins) noexcept;
+    MarginsF &operator+=(float addend) noexcept;
+    MarginsF &operator-=(float subtrahend) noexcept;
+    MarginsF &operator*=(float factor) noexcept;
+    MarginsF &operator/=(float divisor);
 
-    inline GsMargins toMargins() const noexcept;
+    inline Margins toMargins() const noexcept;
 };
 
 
 /// @brief 创建int类型的尺寸结构
-struct M2_API GsSize
+struct M2_API Size
 {
     int Width;
     int Height;
 
     /// @brief 默认构造
-    GsSize() noexcept;
+    Size() noexcept;
     /// @brief 由w,h构造
     /// @param w
     /// @param h
-    GsSize(int w, int h) noexcept;
+    Size(int w, int h) noexcept;
 
     /// @brief \a w 和 \a h 为0时判断为null
     /// @return
@@ -801,74 +801,74 @@ struct M2_API GsSize
     void Transpose() noexcept;
     /// @brief 交换宽、高值，返回结果
     /// @return
-    inline GsSize Transposed() const noexcept;
+    inline Size Transposed() const noexcept;
 
     /// @brief 尺寸缩放
     /// @param w
     /// @param h
     /// @param mode
-    inline void Scale(int w, int h, GsAspectRatioMode mode) noexcept;
-    inline void Scale(const GsSize &s, GsAspectRatioMode mode) noexcept;
+    inline void Scale(int w, int h, AspectRatioMode mode) noexcept;
+    inline void Scale(const Size &s, AspectRatioMode mode) noexcept;
     /// @brief 尺寸缩放，将结果返回
     /// @param w
     /// @param h
     /// @param mode
     /// @return
-    GsSize Scaled(int w, int h, GsAspectRatioMode mode) const noexcept;
-    GsSize Scaled(const GsSize &s, GsAspectRatioMode mode) const noexcept;
+    Size Scaled(int w, int h, AspectRatioMode mode) const noexcept;
+    Size Scaled(const Size &s, AspectRatioMode mode) const noexcept;
 
     /// @brief 返回一个大小，该大小包含此大小和给定otherSize的最小宽度和高度
     /// @param
     /// @return
-    inline GsSize ExpandedTo(const GsSize &) const noexcept;
+    inline Size ExpandedTo(const Size &) const noexcept;
     /// @brief 返回一个大小，该大小包含此大小和给定otherSize的最大宽度和高度
     /// @param
     /// @return
-    inline GsSize BoundedTo(const GsSize &) const noexcept;
+    inline Size BoundedTo(const Size &) const noexcept;
 
     /// @brief 返回按边距增大此大小所产生的大小
     /// @param m
     /// @return
-    GsSize GrownBy(GsMargins m) const noexcept;
+    Size GrownBy(Margins m) const noexcept;
     /// @brief 返回按边距缩小此大小的结果
     /// @param m
     /// @return
-    GsSize ShrunkBy(GsMargins m) const noexcept;
+    Size ShrunkBy(Margins m) const noexcept;
 
     /// @brief 尺寸代表的面积
     /// @return
     int Area() const;
 
-    inline GsSize &operator+=(const GsSize &) noexcept;
-    inline GsSize &operator-=(const GsSize &) noexcept;
-    inline GsSize &operator*=(float c) noexcept;
-    inline GsSize &operator/=(float c);
+    inline Size &operator+=(const Size &) noexcept;
+    inline Size &operator-=(const Size &) noexcept;
+    inline Size &operator*=(float c) noexcept;
+    inline Size &operator/=(float c);
 
-    friend inline bool operator==(const GsSize &, const GsSize &) noexcept;
-    friend inline bool operator!=(const GsSize &, const GsSize &) noexcept;
-    friend inline const GsSize operator+(const GsSize &, const GsSize &) noexcept;
-    friend inline const GsSize operator-(const GsSize &, const GsSize &) noexcept;
-    friend inline const GsSize operator*(const GsSize &, float) noexcept;
-    friend inline const GsSize operator*(float, const GsSize &) noexcept;
-    friend inline const GsSize operator/(const GsSize &, float);
+    friend inline bool operator==(const Size &, const Size &) noexcept;
+    friend inline bool operator!=(const Size &, const Size &) noexcept;
+    friend inline const Size operator+(const Size &, const Size &) noexcept;
+    friend inline const Size operator-(const Size &, const Size &) noexcept;
+    friend inline const Size operator*(const Size &, float) noexcept;
+    friend inline const Size operator*(float, const Size &) noexcept;
+    friend inline const Size operator/(const Size &, float);
 };
 
 
 /// @brief 创建float类型的尺寸结构
-struct M2_API GsSizeF
+struct M2_API SizeF
 {
     float Width;
     float Height;
 
     /// @brief 默认构造
-    GsSizeF() noexcept;
+    SizeF() noexcept;
     /// @brief 由整型尺寸构造
     /// @param sz
-    explicit GsSizeF(const GsSize &sz) noexcept;
+    explicit SizeF(const Size &sz) noexcept;
     /// @brief 由宽、高构造
     /// @param w
     /// @param h
-    GsSizeF(float w, float h) noexcept;
+    SizeF(float w, float h) noexcept;
 
     inline bool IsNull() const noexcept;
     inline bool IsEmpty() const noexcept;
@@ -878,64 +878,64 @@ struct M2_API GsSizeF
     void Transpose() noexcept;
     /// @brief 交换宽、高值，返回结果
     /// @return
-    inline GsSizeF Transposed() const noexcept;
+    inline SizeF Transposed() const noexcept;
 
     /// @brief 尺寸缩放
     /// @param w
     /// @param h
     /// @param mode
-    inline void Scale(float w, float h, GsAspectRatioMode mode) noexcept;
-    inline void Scale(const GsSizeF &s, GsAspectRatioMode mode) noexcept;
+    inline void Scale(float w, float h, AspectRatioMode mode) noexcept;
+    inline void Scale(const SizeF &s, AspectRatioMode mode) noexcept;
     /// @brief 尺寸缩放，将结果返回
     /// @param w
     /// @param h
     /// @param mode
     /// @return
-    GsSizeF Scaled(float w, float h, GsAspectRatioMode mode) const noexcept;
-    GsSizeF Scaled(const GsSizeF &s, GsAspectRatioMode mode) const noexcept;
+    SizeF Scaled(float w, float h, AspectRatioMode mode) const noexcept;
+    SizeF Scaled(const SizeF &s, AspectRatioMode mode) const noexcept;
 
     /// @brief 返回一个大小，该大小包含此大小和给定otherSize的最小宽度和高度
     /// @param
     /// @return
-    inline GsSizeF ExpandedTo(const GsSizeF &) const noexcept;
+    inline SizeF ExpandedTo(const SizeF &) const noexcept;
     /// @brief 返回一个大小，该大小包含此大小和给定otherSize的最大宽度和高度
     /// @param
     /// @return
-    inline GsSizeF BoundedTo(const GsSizeF &) const noexcept;
+    inline SizeF BoundedTo(const SizeF &) const noexcept;
 
     /// @brief 返回按边距增大此大小所产生的大小
     /// @param m
     /// @return
-    GsSizeF GrownBy(GsMarginsF m) const noexcept;
+    SizeF GrownBy(MarginsF m) const noexcept;
     /// @brief 返回按边距缩小此大小的结果
     /// @param m
     /// @return
-    GsSizeF ShrunkBy(GsMarginsF m) const noexcept;
+    SizeF ShrunkBy(MarginsF m) const noexcept;
 
 
     /// @brief 尺寸代表的面积
     /// @return
     float Area() const;
 
-    inline GsSizeF &operator+=(const GsSizeF &) noexcept;
-    inline GsSizeF &operator-=(const GsSizeF &) noexcept;
-    inline GsSizeF &operator*=(float c) noexcept;
-    inline GsSizeF &operator/=(float c);
+    inline SizeF &operator+=(const SizeF &) noexcept;
+    inline SizeF &operator-=(const SizeF &) noexcept;
+    inline SizeF &operator*=(float c) noexcept;
+    inline SizeF &operator/=(float c);
 
-    friend inline bool operator==(const GsSizeF &, const GsSizeF &) noexcept;
-    friend inline bool operator!=(const GsSizeF &, const GsSizeF &) noexcept;
-    friend inline const GsSizeF operator+(const GsSizeF &, const GsSizeF &) noexcept;
-    friend inline const GsSizeF operator-(const GsSizeF &, const GsSizeF &) noexcept;
-    friend inline const GsSizeF operator*(const GsSizeF &, float) noexcept;
-    friend inline const GsSizeF operator*(float, const GsSizeF &) noexcept;
-    friend inline const GsSizeF operator/(const GsSizeF &, float);
+    friend inline bool operator==(const SizeF &, const SizeF &) noexcept;
+    friend inline bool operator!=(const SizeF &, const SizeF &) noexcept;
+    friend inline const SizeF operator+(const SizeF &, const SizeF &) noexcept;
+    friend inline const SizeF operator-(const SizeF &, const SizeF &) noexcept;
+    friend inline const SizeF operator*(const SizeF &, float) noexcept;
+    friend inline const SizeF operator*(float, const SizeF &) noexcept;
+    friend inline const SizeF operator/(const SizeF &, float);
 
-    inline GsSize toSize() const noexcept;
+    inline Size toSize() const noexcept;
 };
 
 
 /// @brief int类型矩形结构
-struct M2_API GsRect
+struct M2_API Rect
 {
     int Left;
     int Top;
@@ -943,21 +943,21 @@ struct M2_API GsRect
     int Bottom;
 
     /// @brief 默认构造
-    GsRect() noexcept;
+    Rect() noexcept;
     /// @brief 由左上角点和右下角点构造
     /// @param topleft
     /// @param bottomright
-    GsRect(const GsPT &topleft, const GsPT &bottomright) noexcept;
+    Rect(const PT &topleft, const PT &bottomright) noexcept;
     /// @brief 由左上角点和尺寸构造
     /// @param topleft
     /// @param size
-    GsRect(const GsPT &topleft, const GsSize &size) noexcept;
+    Rect(const PT &topleft, const Size &size) noexcept;
     /// @brief 由左上角点坐标和矩形宽高构造
     /// @param left
     /// @param top
     /// @param width
     /// @param height
-    GsRect(int left, int top, int width, int height) noexcept;
+    Rect(int left, int top, int width, int height) noexcept;
 
     inline bool IsNull() const noexcept;
     inline bool IsEmpty() const noexcept;
@@ -966,36 +966,36 @@ struct M2_API GsRect
     /// @brief 矩形正则化
     /// @details 返回一个标准化的矩形,即具有非负宽度和高度的矩形
     /// @return
-    GsRect Normalized() const noexcept;
+    Rect Normalized() const noexcept;
 
     /// @brief 设置左上角点
     /// @param p
-    inline void TopLeft(const GsPT &p) noexcept;
+    inline void TopLeft(const PT &p) noexcept;
     /// @brief 设置右下角点
     /// @param p
-    inline void BottomRight(const GsPT &p) noexcept;
+    inline void BottomRight(const PT &p) noexcept;
     /// @brief 设置右上角点
     /// @param p
-    inline void TopRight(const GsPT &p) noexcept;
+    inline void TopRight(const PT &p) noexcept;
     /// @brief 设置左下角点
     /// @param p
-    inline void BottomLeft(const GsPT &p) noexcept;
+    inline void BottomLeft(const PT &p) noexcept;
 
     /// @brief 获取左上角点
     /// @return
-    inline GsPT TopLeft() const noexcept;
+    inline PT TopLeft() const noexcept;
     /// @brief 获取右下角点
     /// @return
-    inline GsPT BottomRight() const noexcept;
+    inline PT BottomRight() const noexcept;
     /// @brief 获取右上角点
     /// @return
-    inline GsPT TopRight() const noexcept;
+    inline PT TopRight() const noexcept;
     /// @brief 获取左下角点
     /// @return
-    inline GsPT BottomLeft() const noexcept;
+    inline PT BottomLeft() const noexcept;
     /// @brief 获取中心点
     /// @return
-    inline GsPT Center() const noexcept;
+    inline PT Center() const noexcept;
 
     /// @brief 水平移动矩形，使矩形的左边缘位于给定的x坐标处
     /// @param pos
@@ -1011,43 +1011,43 @@ struct M2_API GsRect
     inline void MoveBottom(int pos) noexcept;
     /// @brief 移动矩形，将左上角留在指定位置
     /// @param p
-    inline void MoveTopLeft(const GsPT &p) noexcept;
+    inline void MoveTopLeft(const PT &p) noexcept;
     /// @brief 移动矩形，将右下角留在指定位置
     /// @param p
-    inline void MoveBottomRight(const GsPT &p) noexcept;
+    inline void MoveBottomRight(const PT &p) noexcept;
     /// @brief 移动矩形，将右上角留在指定位置
     /// @param p
-    inline void MoveTopRight(const GsPT &p) noexcept;
+    inline void MoveTopRight(const PT &p) noexcept;
     /// @brief 移动矩形，将右下角留在指定位置
     /// @param p
-    inline void MoveBottomLeft(const GsPT &p) noexcept;
+    inline void MoveBottomLeft(const PT &p) noexcept;
     /// @brief 移动矩形，将中心点留在给定位置
     /// @param p
-    inline void MoveCenter(const GsPT &p) noexcept;
+    inline void MoveCenter(const PT &p) noexcept;
 
     /// @brief 相对于当前位置，沿x轴移动矩形dx，沿y轴移动矩形dy
     /// @param dx
     /// @param dy
     inline void Translate(int dx, int dy) noexcept;
-    inline void Translate(const GsPT &p) noexcept;
+    inline void Translate(const PT &p) noexcept;
     /// @brief 返回相对于当前位置沿x轴平移dx、沿y轴平移dy的矩形副本
     /// @param dx
     /// @param dy
     /// @return
-    inline GsRect Translated(int dx, int dy) const noexcept;
+    inline Rect Translated(int dx, int dy) const noexcept;
     /// @brief 返回相对于当前位置沿x轴平移dx、沿y轴平移dy的矩形副本
     /// @param p
     /// @return
-    inline GsRect Translated(const GsPT &p) const noexcept;
+    inline Rect Translated(const PT &p) const noexcept;
     /// @brief 返回交换了宽度和高度的矩形的副本
     /// @return
-    inline GsRect Transposed() const noexcept;
+    inline Rect Transposed() const noexcept;
 
     /// @brief 移动矩形，将左上角留在给定位置
     /// @param x
     /// @param t
     inline void MoveTo(int x, int ay) noexcept;
-    inline void MoveTo(const GsPT &p) noexcept;
+    inline void MoveTo(const PT &p) noexcept;
 
     /// @brief 将矩形左上角的坐标设置为（x，y），并将其大小设置为给定的宽度和高度
     /// @param x
@@ -1087,10 +1087,10 @@ struct M2_API GsRect
     /// @param x2
     /// @param y2
     /// @return
-    inline GsRect Adjusted(int x1, int y1, int x2, int y2) const noexcept;
+    inline Rect Adjusted(int x1, int y1, int x2, int y2) const noexcept;
 
-    inline GsSize Size() const noexcept;
-    inline void Size(const GsSize &s) noexcept;
+    inline Size Size() const noexcept;
+    inline void Size(const Size &s) noexcept;
     inline int Width() const noexcept;
     inline int Height() const noexcept;
     inline void Width(int w) noexcept;
@@ -1099,54 +1099,54 @@ struct M2_API GsRect
     /// @brief 返回此矩形和给定矩形的边界矩形
     /// @param r
     /// @return
-    GsRect operator|(const GsRect &r) const noexcept;
+    Rect operator|(const Rect &r) const noexcept;
     /// @brief 返回此矩形与给定矩形的交集如果没有交集，则返回一个空矩形
     /// @param r
     /// @return
-    GsRect operator&(const GsRect &r) const noexcept;
-    inline GsRect &operator|=(const GsRect &r) noexcept;
-    inline GsRect &operator&=(const GsRect &r) noexcept;
+    Rect operator&(const Rect &r) const noexcept;
+    inline Rect &operator|=(const Rect &r) noexcept;
+    inline Rect &operator&=(const Rect &r) noexcept;
 
     /// @brief 如果给定点位于矩形内部或边缘，则返回true，否则返回false
     /// @details 如果 \a proper 为true，则仅当给定点在矩形内部（即，不在边上）时，此函数才返回true
     /// @param r
     /// @param proper
     /// @return
-    bool Contains(const GsRect &r, bool proper = false) const noexcept;
-    bool Contains(const GsPT &p, bool proper = false) const noexcept;
+    bool Contains(const Rect &r, bool proper = false) const noexcept;
+    bool Contains(const PT &p, bool proper = false) const noexcept;
     inline bool Contains(int x, int y) const noexcept;
     inline bool Contains(int x, int y, bool proper) const noexcept;
     /// @brief 返回两个矩形合并之后的大矩形
     /// @param other
     /// @return
-    inline GsRect United(const GsRect &other) const noexcept;
+    inline Rect United(const Rect &other) const noexcept;
     /// @brief 返回两个矩形相交部分，如果不相交则返回空矩形
     /// @param other
     /// @return
-    inline GsRect Intersected(const GsRect &other) const noexcept;
+    inline Rect Intersected(const Rect &other) const noexcept;
     /// @brief 判断两个几何是否相交
     /// @param r
     /// @return
-    bool Intersects(const GsRect &r) const noexcept;
+    bool Intersects(const Rect &r) const noexcept;
 
     /// @brief 返回按边距增长的矩形
     /// @param margins
     /// @return
-    inline GsRect MarginsAdded(const GsMargins &margins) const noexcept;
+    inline Rect MarginsAdded(const Margins &margins) const noexcept;
     /// @brief 返回按边距减少的矩形
     /// @param margins
     /// @return
-    inline GsRect MarginsRemoved(const GsMargins &margins) const noexcept;
-    inline GsRect &operator+=(const GsMargins &margins) noexcept;
-    inline GsRect &operator-=(const GsMargins &margins) noexcept;
+    inline Rect MarginsRemoved(const Margins &margins) const noexcept;
+    inline Rect &operator+=(const Margins &margins) noexcept;
+    inline Rect &operator-=(const Margins &margins) noexcept;
 
-    friend inline bool operator==(const GsRect &, const GsRect &) noexcept;
-    friend inline bool operator!=(const GsRect &, const GsRect &) noexcept;
+    friend inline bool operator==(const Rect &, const Rect &) noexcept;
+    friend inline bool operator!=(const Rect &, const Rect &) noexcept;
 };
 
 
 /// @brief float矩形结构
-struct M2_API GsRectF
+struct M2_API RectF
 {
     float Left;
     float Top;
@@ -1154,24 +1154,24 @@ struct M2_API GsRectF
     float Bottom;
 
     /// @brief 默认构造
-    GsRectF() noexcept;
+    RectF() noexcept;
     /// @brief 由左上角点和右下角点构造
     /// @param topleft
     /// @param bottomRight
-    GsRectF(const GsPTF &topleft, const GsPTF &bottomRight) noexcept;
+    RectF(const PTF &topleft, const PTF &bottomRight) noexcept;
     /// @brief 由左上角点和尺寸构造
     /// @param topleft
     /// @param size
-    GsRectF(const GsPTF &topleft, const GsSizeF &size) noexcept;
+    RectF(const PTF &topleft, const SizeF &size) noexcept;
     /// @brief 由左上角点坐标和矩形宽高构造
     /// @param left
     /// @param top
     /// @param width
     /// @param height
-    GsRectF(float left, float top, float width, float height) noexcept;
+    RectF(float left, float top, float width, float height) noexcept;
     /// @brief 由整型矩形构造
     /// @param rect
-    GsRectF(const GsRect &rect) noexcept;
+    RectF(const Rect &rect) noexcept;
 
     inline bool IsNull() const noexcept;
     inline bool IsEmpty() const noexcept;
@@ -1180,36 +1180,36 @@ struct M2_API GsRectF
     /// @brief 矩形正则化
     /// @details 返回一个标准化的矩形,即具有非负宽度和高度的矩形
     /// @return
-    GsRectF Normalized() const noexcept;
+    RectF Normalized() const noexcept;
 
     /// @brief 获取左上角点
     /// @return
-    inline GsPTF TopLeft() const noexcept;
+    inline PTF TopLeft() const noexcept;
     /// @brief 获取右下角点
     /// @return
-    inline GsPTF BottomRight() const noexcept;
+    inline PTF BottomRight() const noexcept;
     /// @brief 获取右上角点
     /// @return
-    inline GsPTF TopRight() const noexcept;
+    inline PTF TopRight() const noexcept;
     /// @brief 获取左下角点
     /// @return
-    inline GsPTF BottomLeft() const noexcept;
+    inline PTF BottomLeft() const noexcept;
     /// @brief 获取中心点
     /// @return
-    inline GsPTF Center() const noexcept;
+    inline PTF Center() const noexcept;
 
     /// @brief 设置左上角点
     /// @param p
-    inline void TopLeft(const GsPTF &p) noexcept;
+    inline void TopLeft(const PTF &p) noexcept;
     /// @brief 设置右下角点
     /// @param p
-    inline void BottomRight(const GsPTF &p) noexcept;
+    inline void BottomRight(const PTF &p) noexcept;
     /// @brief 设置右上角点
     /// @param p
-    inline void TopRight(const GsPTF &p) noexcept;
+    inline void TopRight(const PTF &p) noexcept;
     /// @brief 设置左下角点
     /// @param p
-    inline void BottomLeft(const GsPTF &p) noexcept;
+    inline void BottomLeft(const PTF &p) noexcept;
 
     /// @brief 水平移动矩形，使矩形的左边缘位于给定的x坐标处
     /// @param pos
@@ -1225,39 +1225,39 @@ struct M2_API GsRectF
     inline void MoveBottom(float pos) noexcept;
     /// @brief 移动矩形，将左上角留在指定位置
     /// @param p
-    inline void MoveTopLeft(const GsPTF &p) noexcept;
+    inline void MoveTopLeft(const PTF &p) noexcept;
     /// @brief 移动矩形，将右下角留在指定位置
     /// @param p
-    inline void MoveBottomRight(const GsPTF &p) noexcept;
+    inline void MoveBottomRight(const PTF &p) noexcept;
     /// @brief 移动矩形，将右上角留在指定位置
     /// @param p
-    inline void MoveTopRight(const GsPTF &p) noexcept;
+    inline void MoveTopRight(const PTF &p) noexcept;
     /// @brief 移动矩形，将右下角留在指定位置
     /// @param p
-    inline void MoveBottomLeft(const GsPTF &p) noexcept;
+    inline void MoveBottomLeft(const PTF &p) noexcept;
     /// @brief 移动矩形，将中心点留在给定位置
     /// @param p
-    inline void MoveCenter(const GsPTF &p) noexcept;
+    inline void MoveCenter(const PTF &p) noexcept;
 
     /// @brief 相对于当前位置，沿x轴移动矩形dx，沿y轴移动矩形dy
     /// @param dx
     /// @param dy
     inline void Translate(float dx, float dy) noexcept;
-    inline void Translate(const GsPTF &p) noexcept;
+    inline void Translate(const PTF &p) noexcept;
 
     /// @brief 返回相对于当前位置沿x轴平移dx、沿y轴平移dy的矩形副本
     /// @param dx
     /// @param dy
     /// @return
-    inline GsRectF Translated(float dx, float dy) const noexcept;
-    inline GsRectF Translated(const GsPTF &p) const noexcept;
-    inline GsRectF Transposed() const noexcept;
+    inline RectF Translated(float dx, float dy) const noexcept;
+    inline RectF Translated(const PTF &p) const noexcept;
+    inline RectF Transposed() const noexcept;
 
     /// @brief 返回交换了宽度和高度的矩形的副本
     /// @param x
     /// @param y
     inline void MoveTo(float x, float y) noexcept;
-    inline void MoveTo(const GsPTF &p) noexcept;
+    inline void MoveTo(const PTF &p) noexcept;
     /// @brief 将矩形左上角的坐标设置为（x，y），并将其大小设置为给定的宽度和高度
     /// @param x
     /// @param y
@@ -1290,10 +1290,10 @@ struct M2_API GsRectF
     /// @param x2
     /// @param y2
     /// @return
-    inline GsRectF Adjusted(float x1, float y1, float x2, float y2) const noexcept;
+    inline RectF Adjusted(float x1, float y1, float x2, float y2) const noexcept;
 
-    inline GsSizeF Size() const noexcept;
-    inline void Size(const GsSizeF &s) noexcept;
+    inline SizeF Size() const noexcept;
+    inline void Size(const SizeF &s) noexcept;
     inline float Width() const noexcept;
     inline float Height() const noexcept;
     inline void Width(float w) noexcept;
@@ -1302,51 +1302,51 @@ struct M2_API GsRectF
     /// @brief 返回此矩形和给定矩形的边界矩形
     /// @param r
     /// @return
-    GsRectF operator|(const GsRectF &r) const noexcept;
-    GsRectF operator&(const GsRectF &r) const noexcept;
+    RectF operator|(const RectF &r) const noexcept;
+    RectF operator&(const RectF &r) const noexcept;
     /// @brief 返回此矩形与给定矩形的交集如果没有交集，则返回一个空矩形
     /// @param r
     /// @return
-    inline GsRectF &operator|=(const GsRectF &r) noexcept;
-    inline GsRectF &operator&=(const GsRectF &r) noexcept;
+    inline RectF &operator|=(const RectF &r) noexcept;
+    inline RectF &operator&=(const RectF &r) noexcept;
 
     /// @brief 如果给定点位于矩形内部或边缘，则返回true，否则返回false
     /// @param r
     /// @return
-    bool Contains(const GsRectF &r) const noexcept;
-    bool Contains(const GsPTF &p) const noexcept;
+    bool Contains(const RectF &r) const noexcept;
+    bool Contains(const PTF &p) const noexcept;
     inline bool Contains(float x, float y) const noexcept;
     /// @brief 返回两个矩形合并之后的大矩形
     /// @param other
     /// @return
-    inline GsRectF United(const GsRectF &other) const noexcept;
+    inline RectF United(const RectF &other) const noexcept;
     /// @brief 返回两个矩形相交部分，如果不相交则返回空矩形
     /// @param other
     /// @return
-    inline GsRectF Intersected(const GsRectF &other) const noexcept;
+    inline RectF Intersected(const RectF &other) const noexcept;
     /// @brief 判断两个几何是否相交
     /// @param r
     /// @return
-    bool Intersects(const GsRectF &r) const noexcept;
+    bool Intersects(const RectF &r) const noexcept;
 
     /// @brief 返回按边距增长的矩形
     /// @param margins
     /// @return
-    inline GsRectF MarginsAdded(const GsMarginsF &margins) const noexcept;
+    inline RectF MarginsAdded(const MarginsF &margins) const noexcept;
     /// @brief 返回按边距减少的矩形
     /// @param margins
     /// @return
-    inline GsRectF MarginsRemoved(const GsMarginsF &margins) const noexcept;
-    inline GsRectF &operator+=(const GsMarginsF &margins) noexcept;
-    inline GsRectF &operator-=(const GsMarginsF &margins) noexcept;
+    inline RectF MarginsRemoved(const MarginsF &margins) const noexcept;
+    inline RectF &operator+=(const MarginsF &margins) noexcept;
+    inline RectF &operator-=(const MarginsF &margins) noexcept;
 
-    friend inline bool operator==(const GsRectF &, const GsRectF &) noexcept;
-    friend inline bool operator!=(const GsRectF &, const GsRectF &) noexcept;
+    friend inline bool operator==(const RectF &, const RectF &) noexcept;
+    friend inline bool operator!=(const RectF &, const RectF &) noexcept;
 
     /// @brief 转换为整型矩形
     /// @return
-    inline GsRect ToRect() const noexcept;
-    GsRect ToAlignedRect() const noexcept;
+    inline Rect ToRect() const noexcept;
+    Rect ToAlignedRect() const noexcept;
 };
 
 
@@ -1356,7 +1356,7 @@ struct M2_API GsRectF
 
 
 /// @brief 颜色通道类型
-enum GsImageColoType
+enum ImageColoType
 {
     /// @brief 8bit的灰度图像
     eGRAY8Bit,
@@ -1375,7 +1375,7 @@ enum GsImageColoType
 };
 
 /// @brief 图像转换的模式
-enum GsImageTransformationMode
+enum ImageTransformationMode
 {
     /// @brief 快速转换，优先考虑效率
     eFastTransformation,
@@ -1385,7 +1385,7 @@ enum GsImageTransformationMode
 
 /// @brief 常见的图像编码方式
 /// @details https://docs.fileformat.com/image/
-enum class GsImageFormat
+enum class ImageFormat
 {
     eUnknownType,
     ePNG,
@@ -1407,35 +1407,35 @@ enum class GsImageFormat
 
 
 /// @brief 图像基类
-class M2_API GsImage
+class M2_API Image
 {
 public:
     /// @brief 默认析构
-    virtual ~GsImage();
+    virtual ~Image();
     /// @brief 拷贝图像
     /// @param pImage
     /// @return
-    virtual bool CopyFrom(GsImage *pImage);
+    virtual bool CopyFrom(Image *pImage);
     /// @brief 拷贝外部数据到自身
     /// @param pBuff
     /// @param nLen
     /// @param type
     /// @return
-    virtual bool FillImage(const unsigned char *pBuff, int nLen, GsImageColoType type);
+    virtual bool FillImage(const unsigned char *pBuff, int nLen, ImageColoType type);
 
     /// @brief 拷贝自身的数据到外部影像
     /// @param pBuff
     /// @param nLen
     /// @param type
     /// @return
-    virtual int CopyTo(unsigned char *pBuff, int nLen, GsImageColoType type);
+    virtual int CopyTo(unsigned char *pBuff, int nLen, ImageColoType type);
 
     /// @brief 将自身数据剪裁到目标图像中
     /// @param target 要存储数据的图像
     /// @param rect 要剪裁的数据范围
     /// @param offset 存储到目标数据的偏移位置
     /// @return
-    virtual bool CropTo(GsImage *target, const GsRect &rect, const GsPT &offset);
+    virtual bool CropTo(Image *target, const Rect &rect, const PT &offset);
 
     /// @brief 将自身数据剪裁到目标内存块中
     /// @param target 要存储数据的目标内存
@@ -1443,7 +1443,7 @@ public:
     /// @param extent 要剪裁的数据范围
     /// @param eType
     /// @return
-    virtual bool CropTo(unsigned char *target, int nStride, const GsRect &extent, GsImageColoType eType = GsImageColoType::eRGBA32Bit);
+    virtual bool CropTo(unsigned char *target, int nStride, const Rect &extent, ImageColoType eType = ImageColoType::eRGBA32Bit);
 
     /// @brief 将自身数据剪裁到目标内存块中
     /// @param target 要存储数据的目标内存
@@ -1451,13 +1451,13 @@ public:
     /// @param extent 要剪裁的数据范围
     /// @param eType
     /// @return
-    virtual bool CropTo(GsByteBuffer *target, int nStride, const GsRect &extent, GsImageColoType eType = GsImageColoType::eRGBA32Bit);
+    virtual bool CropTo(ByteBuffer *target, int nStride, const Rect &extent, ImageColoType eType = ImageColoType::eRGBA32Bit);
 
     /// @brief 获取图片颜色格式
     /// @return
-    virtual GsImageColoType RGBAType();
+    virtual ImageColoType RGBAType();
     /// @brief 影像的宽和高
-    virtual GsSize Size();
+    virtual Size Size();
 
     /// @brief 获得宽度
     /// @return
@@ -1475,47 +1475,47 @@ public:
     /// @param h
     /// @param eMode
     /// @return
-    virtual GsImage *Scaled(int w, int h, GsImageTransformationMode eMode = GsImageTransformationMode::eFastTransformation);
+    virtual Image *Scaled(int w, int h, ImageTransformationMode eMode = ImageTransformationMode::eFastTransformation);
 
     unsigned char *ScanLine(int);
     const unsigned char *ScanLine(int) const;
     long long BytesPerLine() const;
 
     bool Valid(int x, int y) const;
-    bool Valid(const GsPT &pt) const;
+    bool Valid(const PT &pt) const;
 
     int PixelIndex(int x, int y) const;
-    int PixelIndex(const GsPT &pt) const;
+    int PixelIndex(const PT &pt) const;
 
-    GsColor Pixel(int x, int y) const;
-    GsColor Pixel(const GsPT &pt) const;
+    Color Pixel(int x, int y) const;
+    Color Pixel(const PT &pt) const;
 
     void Pixel(int x, int y, unsigned int index_or_rgb);
-    void Pixel(const GsPT &pt, unsigned int index_or_rgb);
+    void Pixel(const PT &pt, unsigned int index_or_rgb);
 
-    GsColor PixelColor(int x, int y) const;
-    GsColor PixelColor(const GsPT &pt) const;
+    Color PixelColor(int x, int y) const;
+    Color PixelColor(const PT &pt) const;
 
-    void PixelColor(int x, int y, const GsColor &c);
-    void PixelColor(const GsPT &pt, const GsColor &c);
+    void PixelColor(int x, int y, const Color &c);
+    void PixelColor(const PT &pt, const Color &c);
 
     void Fill(unsigned int pixel);
-    void Fill(const GsColor &color);
+    void Fill(const Color &color);
 };
-GS_SMARTER_PTR(GsImage)
+GS_SMARTER_PTR(Image)
 
 
 /// @brief 图像读写
-class M2_API GsImageIO
+class M2_API ImageIO
 {
 public:
-    virtual bool CanRead(GsImage *image) = 0;
+    virtual bool CanRead(Image *image) = 0;
 };
 
-class M2_API GsBmpImageIO : public GsImageIO
+class M2_API BmpImageIO : public ImageIO
 {
 public:
-    enum GsBmpFormat
+    enum BmpFormat
     {
         eDibFromat,
         eBmpFormat
@@ -1525,65 +1525,65 @@ public:
     typedef void *BmpInfoHeaderHandle;
 
 public:
-    GsBmpImageIO(GsBmpFormat format = eBmpFormat);
+    BmpImageIO(BmpFormat format = eBmpFormat);
 
 private:
-    GsBmpFormat m_format;
+    BmpFormat m_format;
     BmpFileHeaderHandle fileHeader;
     BmpInfoHeaderHandle infoHeader;
     unsigned long long offset;
 };
 
-class M2_API GsPNGImageIO : public GsImageIO
+class M2_API PNGImageIO : public ImageIO
 {
 };
 
-class M2_API GsGifImageIO : public GsImageIO
+class M2_API GifImageIO : public ImageIO
 {
 };
 
-class M2_API GsWebpImageIO : public GsImageIO
+class M2_API WebpImageIO : public ImageIO
 {
 };
 
-class M2_API GsSvgImageIO : public GsImageIO
+class M2_API SvgImageIO : public ImageIO
 {
 };
 
-class M2_API GsTiffImageIO : public GsImageIO
+class M2_API TiffImageIO : public ImageIO
 {
 };
 
-class M2_API GsPpmImageIO : public GsImageIO
+class M2_API PpmImageIO : public ImageIO
 {
 };
 
-class M2_API GsXbmImageIO : public GsImageIO
+class M2_API XbmImageIO : public ImageIO
 {
 };
 
-class M2_API GsXpmImageIO : public GsImageIO
+class M2_API XpmImageIO : public ImageIO
 {
 };
 
-class M2_API GsICOImageIO : public GsImageIO
+class M2_API ICOImageIO : public ImageIO
 {
 };
 
-class M2_API GsDDSImageIO : public GsImageIO
+class M2_API DDSImageIO : public ImageIO
 {
 };
 
-class M2_API GsTgaImageIO : public GsImageIO
+class M2_API TgaImageIO : public ImageIO
 {
 };
 
-class M2_API GsWbmpImageIO : public GsImageIO
+class M2_API WbmpImageIO : public ImageIO
 {
 };
 
 /// @brief 图像处理
-class GsImageProcess
+class ImageProcess
 {
 public:
     //高斯滤波

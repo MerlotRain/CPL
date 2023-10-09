@@ -417,7 +417,7 @@ valid_named_ref := |*
   'GreaterLess;' => { output->first = 0x2277; fbreak; };
   'GreaterSlantEqual;' => { output->first = 0x2a7e; fbreak; };
   'GreaterTilde;' => { output->first = 0x2273; fbreak; };
-  'Gscr;' => { output->first = 0x0001d4a2; fbreak; };
+  'cr;' => { output->first = 0x0001d4a2; fbreak; };
   'Gt;' => { output->first = 0x226b; fbreak; };
   'HARDcy;' => { output->first = 0x042a; fbreak; };
   'Hacek;' => { output->first = 0x02c7; fbreak; };

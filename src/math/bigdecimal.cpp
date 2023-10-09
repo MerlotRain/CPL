@@ -5,241 +5,241 @@
 
 namespace m2 {
 
-GsBigDecimal::GsBigDecimal() noexcept
+BigDecimal::BigDecimal() noexcept
 {
 }
 
-GsBigDecimal::GsBigDecimal(const GsBigDecimal &v) noexcept : m_Value(v.m_Value)
+BigDecimal::BigDecimal(const BigDecimal &v) noexcept : m_Value(v.m_Value)
 {
 }
 
-GsBigDecimal::GsBigDecimal(const char *v) : m_Value(v)
+BigDecimal::BigDecimal(const char *v) : m_Value(v)
 {
 }
 
-GsBigDecimal::GsBigDecimal(GsString v) : m_Value(v)
+BigDecimal::BigDecimal(String v) : m_Value(v)
 {
 }
 
-GsBigDecimal::GsBigDecimal(int v) noexcept : m_Value()
+BigDecimal::BigDecimal(int v) noexcept : m_Value()
 {
-    GsStringStream ss;
+    StringStream ss;
     ss << v;
     m_Value = ss.Str();
 }
 
-GsBigDecimal::GsBigDecimal(long long v) noexcept : m_Value()
+BigDecimal::BigDecimal(long long v) noexcept : m_Value()
 {
-    GsStringStream ss;
+    StringStream ss;
     ss << v;
     m_Value = ss.Str();
 }
 
-GsBigDecimal::GsBigDecimal(long long int v) noexcept : m_Value()
+BigDecimal::BigDecimal(long long int v) noexcept : m_Value()
 {
-    GsStringStream ss;
+    StringStream ss;
     ss << v;
     m_Value = ss.Str();
 }
 
-GsBigDecimal::GsBigDecimal(unsigned int v) noexcept : m_Value()
+BigDecimal::BigDecimal(unsigned int v) noexcept : m_Value()
 {
-    GsStringStream ss;
+    StringStream ss;
     ss << v;
     m_Value = ss.Str();
 }
 
-GsBigDecimal::GsBigDecimal(unsigned long long v) noexcept
+BigDecimal::BigDecimal(unsigned long long v) noexcept
 {
-    GsStringStream ss;
+    StringStream ss;
     ss << v;
     m_Value = ss.Str();
 }
 
-GsBigDecimal::GsBigDecimal(unsigned long long int v) noexcept : m_Value()
+BigDecimal::BigDecimal(unsigned long long int v) noexcept : m_Value()
 {
-    GsStringStream ss;
+    StringStream ss;
     ss << v;
     m_Value = ss.Str();
 }
 
-GsBigDecimal::GsBigDecimal(float v) noexcept : m_Value()
+BigDecimal::BigDecimal(float v) noexcept : m_Value()
 {
-    GsStringStream ss;
+    StringStream ss;
     ss << v;
     m_Value = ss.Str();
 }
 
-GsBigDecimal::GsBigDecimal(double v) noexcept : m_Value()
+BigDecimal::BigDecimal(double v) noexcept : m_Value()
 {
-    GsStringStream ss;
+    StringStream ss;
     ss << v;
     m_Value = ss.Str();
 }
 
-GsBigDecimal::GsBigDecimal(long double v) noexcept
+BigDecimal::BigDecimal(long double v) noexcept
 {
-    GsStringStream ss;
+    StringStream ss;
     ss << v;
     m_Value = ss.Str();
 }
 
-GsBigDecimal GsBigDecimal::operator+(const GsBigDecimal &rhs)
+BigDecimal BigDecimal::operator+(const BigDecimal &rhs)
 {
-    return GsBigDecimal::Add(m_Value, rhs.m_Value);
+    return BigDecimal::Add(m_Value, rhs.m_Value);
 }
 
-GsBigDecimal GsBigDecimal::operator-(const GsBigDecimal &rhs)
+BigDecimal BigDecimal::operator-(const BigDecimal &rhs)
 {
-    return GsBigDecimal::Subtract(m_Value, rhs.m_Value);
+    return BigDecimal::Subtract(m_Value, rhs.m_Value);
 }
 
-GsBigDecimal GsBigDecimal::operator*(const GsBigDecimal &rhs)
+BigDecimal BigDecimal::operator*(const BigDecimal &rhs)
 {
-    return GsBigDecimal::Multiply(m_Value, rhs.m_Value);
+    return BigDecimal::Multiply(m_Value, rhs.m_Value);
 }
 
-GsBigDecimal GsBigDecimal::operator/(const GsBigDecimal &rhs)
+BigDecimal BigDecimal::operator/(const BigDecimal &rhs)
 {
-    return GsBigDecimal::Divide(m_Value, rhs.m_Value);
+    return BigDecimal::Divide(m_Value, rhs.m_Value);
 }
 
-GsBigDecimal GsBigDecimal::operator%(const GsBigDecimal &rhs)
+BigDecimal BigDecimal::operator%(const BigDecimal &rhs)
 {
-    return GsBigDecimal::Modulus(m_Value, rhs.m_Value);
+    return BigDecimal::Modulus(m_Value, rhs.m_Value);
 }
 
-GsBigDecimal GsBigDecimal::operator^(const GsBigDecimal &rhs)
+BigDecimal BigDecimal::operator^(const BigDecimal &rhs)
 {
-    return GsBigDecimal::Pow(m_Value, rhs.m_Value);
+    return BigDecimal::Pow(m_Value, rhs.m_Value);
 }
 
-void GsBigDecimal::operator+=(const GsBigDecimal &rhs)
+void BigDecimal::operator+=(const BigDecimal &rhs)
 {
-    m_Value = GsBigDecimal::Add(m_Value, rhs.m_Value);
+    m_Value = BigDecimal::Add(m_Value, rhs.m_Value);
 }
 
-void GsBigDecimal::operator-=(const GsBigDecimal &rhs)
+void BigDecimal::operator-=(const BigDecimal &rhs)
 {
-    m_Value = GsBigDecimal::Subtract(m_Value, rhs.m_Value);
+    m_Value = BigDecimal::Subtract(m_Value, rhs.m_Value);
 }
 
-void GsBigDecimal::operator*=(const GsBigDecimal &rhs)
+void BigDecimal::operator*=(const BigDecimal &rhs)
 {
-    m_Value = GsBigDecimal::Multiply(m_Value, rhs.m_Value);
+    m_Value = BigDecimal::Multiply(m_Value, rhs.m_Value);
 }
 
-void GsBigDecimal::operator/=(const GsBigDecimal &rhs)
+void BigDecimal::operator/=(const BigDecimal &rhs)
 {
-    m_Value = GsBigDecimal::Divide(m_Value, rhs.m_Value);
+    m_Value = BigDecimal::Divide(m_Value, rhs.m_Value);
 }
 
-void GsBigDecimal::operator^=(const GsBigDecimal &rhs)
+void BigDecimal::operator^=(const BigDecimal &rhs)
 {
-    m_Value = GsBigDecimal::Pow(m_Value, rhs.m_Value);
+    m_Value = BigDecimal::Pow(m_Value, rhs.m_Value);
 }
 
-bool GsBigDecimal::operator>(const GsBigDecimal &rhs)
+bool BigDecimal::operator>(const BigDecimal &rhs)
 {
-    return GsBigDecimal::CompareTo(m_Value, rhs.m_Value) > 0;
+    return BigDecimal::CompareTo(m_Value, rhs.m_Value) > 0;
 }
 
-bool GsBigDecimal::operator>=(const GsBigDecimal &rhs)
+bool BigDecimal::operator>=(const BigDecimal &rhs)
 {
-    return GsBigDecimal::CompareTo(m_Value, rhs.m_Value) >= 0;
+    return BigDecimal::CompareTo(m_Value, rhs.m_Value) >= 0;
 }
 
-bool GsBigDecimal::operator==(const GsBigDecimal &rhs)
+bool BigDecimal::operator==(const BigDecimal &rhs)
 {
-    return GsBigDecimal::CompareTo(m_Value, rhs.m_Value) == 0;
+    return BigDecimal::CompareTo(m_Value, rhs.m_Value) == 0;
 }
 
-bool GsBigDecimal::operator<(const GsBigDecimal &rhs)
+bool BigDecimal::operator<(const BigDecimal &rhs)
 {
-    return GsBigDecimal::CompareTo(m_Value, rhs.m_Value) < 0;
+    return BigDecimal::CompareTo(m_Value, rhs.m_Value) < 0;
 }
 
-bool GsBigDecimal::operator<=(const GsBigDecimal &rhs)
+bool BigDecimal::operator<=(const BigDecimal &rhs)
 {
-    return GsBigDecimal::CompareTo(m_Value, rhs.m_Value) <= 0;
+    return BigDecimal::CompareTo(m_Value, rhs.m_Value) <= 0;
 }
 
-int GsBigDecimal::ToInt()
+int BigDecimal::ToInt()
 {
-    GsIStringStream buffer(m_Value);
+    IStringStream buffer(m_Value);
     int ret;
     buffer >> ret;
     return ret;
 }
 
-unsigned int GsBigDecimal::ToUInt()
+unsigned int BigDecimal::ToUInt()
 {
-    GsIStringStream buffer(m_Value);
+    IStringStream buffer(m_Value);
     unsigned int ret;
     buffer >> ret;
     return ret;
 }
 
-long long GsBigDecimal::ToLongLong()
+long long BigDecimal::ToLongLong()
 {
-    GsIStringStream buffer(m_Value);
+    IStringStream buffer(m_Value);
     long long ret;
     buffer >> ret;
     return ret;
 }
 
-unsigned long long GsBigDecimal::ToULongLong()
+unsigned long long BigDecimal::ToULongLong()
 {
-    GsIStringStream buffer(m_Value);
+    IStringStream buffer(m_Value);
     unsigned long long ret;
     buffer >> ret;
     return ret;
 }
 
-long double GsBigDecimal::ToLongDouble()
+long double BigDecimal::ToLongDouble()
 {
-    GsIStringStream buffer(m_Value);
+    IStringStream buffer(m_Value);
     long double ret;
     buffer >> ret;
     return ret;
 }
 
-double GsBigDecimal::ToDouble()
+double BigDecimal::ToDouble()
 {
-    GsIStringStream buffer(m_Value);
+    IStringStream buffer(m_Value);
     double ret;
     buffer >> ret;
     return ret;
 }
 
-float GsBigDecimal::ToFloat()
+float BigDecimal::ToFloat()
 {
-    GsIStringStream buffer(m_Value);
+    IStringStream buffer(m_Value);
     float ret;
     buffer >> ret;
     return ret;
 }
 
-GsString GsBigDecimal::ToString()
+String BigDecimal::ToString()
 {
     return m_Value;
 }
 
-void GsBigDecimal::Round(int scale)
+void BigDecimal::Round(int scale)
 {
     if (scale >= 1)
-        m_Value = GsBigDecimal::Round(m_Value, scale);
+        m_Value = BigDecimal::Round(m_Value, scale);
 }
 
-GsString GsBigDecimal::IntPart()
+String BigDecimal::IntPart()
 {
     size_t dot = m_Value.find('.');
-    if (dot != GsString::npos)
+    if (dot != String::npos)
     {
         if (dot == 0)
-            return GsString("0");
+            return String("0");
         if (dot == 1 && m_Value[0] == '-')
-            return GsString("-0");
+            return String("-0");
         return m_Value.substr(0, dot);
     }
     else
@@ -248,47 +248,47 @@ GsString GsBigDecimal::IntPart()
     }
 }
 
-GsString GsBigDecimal::DecPart()
+String BigDecimal::DecPart()
 {
     size_t dot = m_Value.find('.');
-    if (dot != GsString::npos)
-        return m_Value.length() > dot + 1 ? m_Value.substr(dot + 1) : GsString("0");
+    if (dot != String::npos)
+        return m_Value.length() > dot + 1 ? m_Value.substr(dot + 1) : String("0");
     else
-        return GsString("0");
+        return String("0");
 }
 
 
 static int _scale = 100;
-static const GsString ONE("1");
-static const GsString ZERO("0");
-static const GsString TEN("10");
-static GsString LeftOfDot(GsString &value)
+static const String ONE("1");
+static const String ZERO("0");
+static const String TEN("10");
+static String LeftOfDot(String &value)
 {
     std::size_t dot = value.find('.');
-    if (dot != GsString::npos)
+    if (dot != String::npos)
     {
         if (dot == 0)
-            return GsString("0");
+            return String("0");
         if (dot == 1 && value[0] == '-')
-            return GsString("-0");
+            return String("-0");
         else
             return value;
     }
 }
 
-GsString trimTrailingZeros(GsString input)
+String trimTrailingZeros(String input)
 {
-    if (input.find(".") != GsString::npos)
+    if (input.find(".") != String::npos)
     {
-        GsString result = "";
+        String result = "";
         std::size_t i;
-        GsString inp(input.rbegin(), input.rend());
+        String inp(input.rbegin(), input.rend());
         result = inp.erase(0, std::min(inp.find_first_not_of('0'), inp.size() - 1));
         if (result.at(0) == '.')
         {
             result = result.erase(0, 1);
         }
-        return GsString(result.rbegin(), result.rend());
+        return String(result.rbegin(), result.rend());
     }
     else
     {
@@ -296,7 +296,7 @@ GsString trimTrailingZeros(GsString input)
     }
 }
 
-static int parse_number(const GsString &s, int &lsign, int &lint, int &ldot, int &lfrac, int &lscale)
+static int parse_number(const String &s, int &lsign, int &lint, int &ldot, int &lfrac, int &lscale)
 {
     int i = 0;
     lsign = 1;
@@ -356,13 +356,13 @@ static int parse_number(const GsString &s, int &lsign, int &lint, int &ldot, int
     return lscale;
 }
 
-static GsString _zero(int scale)
+static String _zero(int scale)
 {
     if (scale == 0)
     {
         return ZERO;
     }
-    GsString result(scale + 2, '0');
+    String result(scale + 2, '0');
     result[1] = '.';
     return result;
 }
@@ -400,7 +400,7 @@ static int _compareTo(const char *lhs, int lint, int ldot, int lfrac, int lscale
     return 0;
 }
 
-static GsString _round(char *lhs, int lint, int ldot, int lfrac, int lscale, int scale, int sign,
+static String _round(char *lhs, int lint, int ldot, int lfrac, int lscale, int scale, int sign,
                        bool add_trailing_zeroes, bool round_last = false)
 {
     while (lhs[lint] == '0' && lint + 1 < ldot)
@@ -484,11 +484,11 @@ static GsString _round(char *lhs, int lint, int ldot, int lfrac, int lscale, int
 
     if (lscale == scale || !add_trailing_zeroes)
     {
-        return GsString(GsString(lhs + lint).substr(0, lfrac + lscale - lint));
+        return String(String(lhs + lint).substr(0, lfrac + lscale - lint));
     }
     else
     {
-        GsString result(GsString(lhs + lint).substr(0, lfrac + lscale - lint));
+        String result(String(lhs + lint).substr(0, lfrac + lscale - lint));
         if (lscale == 0)
         {
             result += '.';
@@ -498,7 +498,7 @@ static GsString _round(char *lhs, int lint, int ldot, int lfrac, int lscale, int
     }
 }
 
-static GsString add_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale, const char *rhs,
+static String add_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale, const char *rhs,
                              int rint, int rdot, int rfrac, int rscale, int scale, int sign)
 {
     int llen = ldot - lint;
@@ -509,7 +509,7 @@ static GsString add_positive(const char *lhs, int lint, int ldot, int lfrac, int
     int result_len = std::max(llen, rlen) + 1;
     int result_scale = std::max(lscale, rscale);
     int result_size = result_len + result_scale + 3;
-    GsString result(result_size, '0');
+    String result(result_size, '0');
 
     int i, um = 0;
     int cur_pos = result_size;
@@ -560,7 +560,7 @@ static GsString add_positive(const char *lhs, int lint, int ldot, int lfrac, int
     return _round((char *) result.data(), resint, resdot, resfrac, resscale, scale, sign, 1);
 }
 
-static GsString subtract_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale,
+static String subtract_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale,
                                   const char *rhs, int rint, int rdot, int rfrac, int rscale, int scale,
                                   int sign)
 {
@@ -572,7 +572,7 @@ static GsString subtract_positive(const char *lhs, int lint, int ldot, int lfrac
     int result_len = llen;
     int result_scale = std::max(lscale, rscale);
     int result_size = result_len + result_scale + 3;
-    GsString result(result_size, '0');
+    String result(result_size, '0');
 
     int i, um = 0, next_um = 0;
     int cur_pos = result_size;
@@ -638,7 +638,7 @@ static GsString subtract_positive(const char *lhs, int lint, int ldot, int lfrac
     return _round((char *) result.data(), resint, resdot, resfrac, resscale, scale, sign, 1);
 }
 
-static GsString multiply_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale,
+static String multiply_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale,
                                   const char *rhs, int rint, int rdot, int rfrac, int rscale, int scale,
                                   int sign)
 {
@@ -650,7 +650,7 @@ static GsString multiply_positive(const char *lhs, int lint, int ldot, int lfrac
     int result_len = llen + rlen;
     int result_scale = lscale + rscale;
     int result_size = result_len + result_scale + 3;
-    GsString result(result_size, '0');
+    String result(result_size, '0');
 
     int *res = (int *) malloc(sizeof(int) * result_size);
     memset(res, 0, sizeof(int) * result_size);
@@ -693,13 +693,13 @@ static GsString multiply_positive(const char *lhs, int lint, int ldot, int lfrac
 
     char *data = (char *) malloc((result.length() + 1) * sizeof(char));
     sprintf(data, result.c_str());
-    GsString ret = _round(data, resint, resdot, resfrac, resscale, scale, sign, 0);
+    String ret = _round(data, resint, resdot, resfrac, resscale, scale, sign, 0);
     free(data);
 
     return ret;
 }
 
-static GsString divide_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale,
+static String divide_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale,
                                 const char *rhs, int rint, int rdot, int rfrac, int rscale, int scale,
                                 int sign)
 {
@@ -759,7 +759,7 @@ static GsString divide_positive(const char *lhs, int lint, int ldot, int lfrac, 
         return _zero(scale);
     }
 
-    GsString result(result_size, '0');
+    String result(result_size, '0');
     resint = cur_pos;
     if (cur_pow < 0)
     {
@@ -836,14 +836,14 @@ static GsString divide_positive(const char *lhs, int lint, int ldot, int lfrac, 
 
     char *data = (char *) malloc((result.length() + 1) * sizeof(char));
     sprintf(data, result.c_str());
-    GsString ret = _round(data, resint, resdot, resfrac, resscale, scale, sign, 0);
+    String ret = _round(data, resint, resdot, resfrac, resscale, scale, sign, 0);
     free(data);
 
     return ret;
 }
 
 
-static GsString _add(const char *lhs, int lsign, int lint, int ldot, int lfrac, int lscale,
+static String _add(const char *lhs, int lsign, int lint, int ldot, int lfrac, int lscale,
                      const char *rhs, int rsign, int rint, int rdot, int rfrac, int rscale, int scale)
 {
     if (lsign > 0 && rsign > 0)
@@ -889,27 +889,27 @@ static GsString _add(const char *lhs, int lsign, int lint, int ldot, int lfrac, 
 }
 
 template<typename T>
-GsString to_string(const T &t)
+String to_string(const T &t)
 {
-    GsStringStream ss;
+    StringStream ss;
     ss << t;
     return ss.Str();
 }
 
-GsString fact(GsString a)
+String fact(String a)
 {
-    GsString i("1");
-    GsString fact("1");
-    while (GsBigDecimal::CompareTo(i, a) <= 0)
+    String i("1");
+    String fact("1");
+    while (BigDecimal::CompareTo(i, a) <= 0)
     {
-        fact = GsBigDecimal::Multiply(fact, to_string(i));
-        i = GsBigDecimal::Add(i, ONE);
+        fact = BigDecimal::Multiply(fact, to_string(i));
+        i = BigDecimal::Add(i, ONE);
     }
     return fact;
 }
 
 
-void GsBigDecimal::Scale(int scale)
+void BigDecimal::Scale(int scale)
 {
     if (scale < 0)
         _scale = 0;
@@ -917,7 +917,7 @@ void GsBigDecimal::Scale(int scale)
         _scale = scale;
 }
 
-GsString GsBigDecimal::Divide(const GsString &lhs, const GsString &rhs, int scale)
+String BigDecimal::Divide(const String &lhs, const String &rhs, int scale)
 {
     if (scale == INT_MIN)
     {
@@ -956,7 +956,7 @@ GsString GsBigDecimal::Divide(const GsString &lhs, const GsString &rhs, int scal
                                              rdot, rfrac, rscale, scale, lsign * rsign));
 }
 
-GsString GsBigDecimal::Modulus(const GsString &lhs, const GsString &rhs, int scale)
+String BigDecimal::Modulus(const String &lhs, const String &rhs, int scale)
 {
     if (lhs.empty())
     {
@@ -1023,10 +1023,10 @@ GsString GsBigDecimal::Modulus(const GsString &lhs, const GsString &rhs, int sca
         buffer[--cur_pos] = '-';
     }
 
-    return GsString(trimTrailingZeros(GsString(buffer + cur_pos).substr(0, 20 - cur_pos)));
+    return String(trimTrailingZeros(String(buffer + cur_pos).substr(0, 20 - cur_pos)));
 }
 
-GsString GsBigDecimal::Pow(const GsString &lhs, const GsString &rhs, int scale)
+String BigDecimal::Pow(const String &lhs, const String &rhs, int scale)
 {
     if (lhs.empty())
     {
@@ -1069,8 +1069,8 @@ GsString GsBigDecimal::Pow(const GsString &lhs, const GsString &rhs, int scale)
         return ONE;
     }
 
-    GsString result = ONE;
-    GsString mul = lhs;
+    String result = ONE;
+    String mul = lhs;
     while (deg > 0)
     {
         if (deg & 1)
@@ -1084,7 +1084,7 @@ GsString GsBigDecimal::Pow(const GsString &lhs, const GsString &rhs, int scale)
     return trimTrailingZeros(result);
 }
 
-GsString GsBigDecimal::Add(const GsString &lhs, const GsString &rhs, int scale)
+String BigDecimal::Add(const String &lhs, const String &rhs, int scale)
 {
     if (lhs.empty())
     {
@@ -1119,7 +1119,7 @@ GsString GsBigDecimal::Add(const GsString &lhs, const GsString &rhs, int scale)
                                   rint, rdot, rfrac, rscale, std::max(lscale, rscale)));
 }
 
-GsString GsBigDecimal::Subtract(const GsString &lhs, const GsString &rhs, int scale)
+String BigDecimal::Subtract(const String &lhs, const String &rhs, int scale)
 {
     if (lhs.empty())
     {
@@ -1156,7 +1156,7 @@ GsString GsBigDecimal::Subtract(const GsString &lhs, const GsString &rhs, int sc
                                   rint, rdot, rfrac, rscale, std::max(lscale, rscale)));
 }
 
-GsString GsBigDecimal::Multiply(const GsString &lhs, const GsString &rhs, int scale)
+String BigDecimal::Multiply(const String &lhs, const String &rhs, int scale)
 {
     if (lhs.empty())
     {
@@ -1191,11 +1191,11 @@ GsString GsBigDecimal::Multiply(const GsString &lhs, const GsString &rhs, int sc
                                                rdot, rfrac, rscale, lscale + rscale, lsign * rsign));
 }
 
-GsString GsBigDecimal::Round(const GsString &lhs, int scale)
+String BigDecimal::Round(const String &lhs, int scale)
 {
     if (lhs.empty())
     {
-        return GsBigDecimal::Round(ZERO, scale);
+        return BigDecimal::Round(ZERO, scale);
     }
 
     if (scale == INT_MIN)
@@ -1217,7 +1217,7 @@ GsString GsBigDecimal::Round(const GsString &lhs, int scale)
     }
 
     int len = lhs.size();
-    GsString result(len + 1, '0');
+    String result(len + 1, '0');
     for (int i = len - 1; i >= lint; --i)
     {
         result[i + 1] = lhs[i];
@@ -1225,20 +1225,20 @@ GsString GsBigDecimal::Round(const GsString &lhs, int scale)
 
     char *data = (char *) malloc((result.length() + 1) * sizeof(char));
     sprintf(data, result.c_str());
-    GsString ret = _round(data, lint + 1, ldot + 1, lfrac + 1, lscale, scale, lsign, 1, 1);
+    String ret = _round(data, lint + 1, ldot + 1, lfrac + 1, lscale, scale, lsign, 1, 1);
     free(data);
     return ret;
 }
 
-int GsBigDecimal::CompareTo(const GsString &lhs, const GsString &rhs, int scale)
+int BigDecimal::CompareTo(const String &lhs, const String &rhs, int scale)
 {
     if (lhs.empty())
     {
-        return GsBigDecimal::CompareTo(ZERO, rhs, scale);
+        return BigDecimal::CompareTo(ZERO, rhs, scale);
     }
     if (rhs.empty())
     {
-        return GsBigDecimal::CompareTo(lhs, ZERO, scale);
+        return BigDecimal::CompareTo(lhs, ZERO, scale);
     }
 
     if (scale == INT_MIN)
@@ -1274,11 +1274,11 @@ int GsBigDecimal::CompareTo(const GsString &lhs, const GsString &rhs, int scale)
                                               rdot, rfrac, rscale, scale);
 }
 
-GsString GsBigDecimal::Log2(const GsString &lhs, int scale)
+String BigDecimal::Log2(const String &lhs, int scale)
 {
     if (lhs.empty())
     {
-        return GsBigDecimal::Round(ZERO, scale);
+        return BigDecimal::Round(ZERO, scale);
     }
 
     if (scale == INT_MIN)
@@ -1296,21 +1296,21 @@ GsString GsBigDecimal::Log2(const GsString &lhs, int scale)
         std::cerr << "\"" << lhs.c_str() << "\" Cannot Be A Negative Number" << std::endl;
         return "0";
     }
-    return (GsBigDecimal::CompareTo(lhs, ONE) > 0)
-                   ? GsString(GsBigDecimal::Add(ONE, GsBigDecimal::Log(GsBigDecimal::Divide(lhs, TEN))))
+    return (BigDecimal::CompareTo(lhs, ONE) > 0)
+                   ? String(BigDecimal::Add(ONE, BigDecimal::Log(BigDecimal::Divide(lhs, TEN))))
                    : ZERO;
 }
 
-GsString GsBigDecimal::Ln(const GsString &lhs, int scale)
+String BigDecimal::Ln(const String &lhs, int scale)
 {
-    return GsString();
+    return String();
 }
 
-GsString GsBigDecimal::Log(const GsString &lhs, int scale)
+String BigDecimal::Log(const String &lhs, int scale)
 {
     if (lhs.empty())
     {
-        return GsBigDecimal::Round(ZERO, scale);
+        return BigDecimal::Round(ZERO, scale);
     }
 
     if (scale == INT_MIN)
@@ -1329,42 +1329,42 @@ GsString GsBigDecimal::Log(const GsString &lhs, int scale)
         std::cerr << "\"" << lhs.c_str() << "\" Cannot Be A Negative Number" << std::endl;
         return _zero(scale);
     }
-    return GsString(
-            GsBigDecimal::Divide(GsBigDecimal::Ln(lhs, 0), GsBigDecimal::Ln(to_string("10"), 0), 0));
+    return String(
+            BigDecimal::Divide(BigDecimal::Ln(lhs, 0), BigDecimal::Ln(to_string("10"), 0), 0));
 }
 
 
-GsString GsBigDecimal::Sin(const GsString &lhs, int scale)
+String BigDecimal::Sin(const String &lhs, int scale)
 {
-    GsString sum("0"), n, d, t, i("0"), j("0");
-    while (GsBigDecimal::CompareTo(i, lhs) <= 0)
+    String sum("0"), n, d, t, i("0"), j("0");
+    while (BigDecimal::CompareTo(i, lhs) <= 0)
     {
-        if (GsBigDecimal::Modulus(i, "2") != "0")
+        if (BigDecimal::Modulus(i, "2") != "0")
         {
-            j = GsBigDecimal::Add(j, ONE);
-            n = GsBigDecimal::Pow(lhs, i);
+            j = BigDecimal::Add(j, ONE);
+            n = BigDecimal::Pow(lhs, i);
             d = fact(i);
-            t = GsBigDecimal::Divide(n, d);
-            if (GsBigDecimal::Modulus(j, "2") != "0")
+            t = BigDecimal::Divide(n, d);
+            if (BigDecimal::Modulus(j, "2") != "0")
             {
-                sum = GsBigDecimal::Subtract(sum, t);
+                sum = BigDecimal::Subtract(sum, t);
             }
             else
             {
-                sum = GsBigDecimal::Add(sum, t);
+                sum = BigDecimal::Add(sum, t);
             }
         }
-        i = GsBigDecimal::Add(i, ONE);
+        i = BigDecimal::Add(i, ONE);
     }
     return sum;
 }
 
-GsString GsBigDecimal::StringToHex(GsString &lhs, int caps)
+String BigDecimal::StringToHex(String &lhs, int caps)
 {
     long int i = 1;
     int temp;
     lhs = LeftOfDot(lhs);
-    GsString quotient = lhs, hexoutput("");
+    String quotient = lhs, hexoutput("");
     temp = atoi(Modulus(quotient, to_string("16"), 0).c_str());
     std::cout << temp;
     return hexoutput;

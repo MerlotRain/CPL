@@ -9,11 +9,11 @@
 
 namespace m2 {
 
-class GsSemaphoreImpl
+class SemaphoreImpl
 {
 public:
-    GsSemaphoreImpl(int n, int max);
-    ~GsSemaphoreImpl();
+    SemaphoreImpl(int n, int max);
+    ~SemaphoreImpl();
     void Set();
     void Wait();
     bool Wait(int milliseconds);
@@ -31,7 +31,7 @@ private:
 
 #if GS_OS_WIN
 
-GsSemaphoreImpl::GsSemaphoreImpl(int n, int max)
+SemaphoreImpl::SemaphoreImpl(int n, int max)
 {
     assert(n >= 0 && max > 0 && n <= max);
     m_sema = CreateSemaphoreW(NULL, n, max, NULL);
@@ -39,18 +39,18 @@ GsSemaphoreImpl::GsSemaphoreImpl(int n, int max)
         throw std::runtime_error("cannot create semaphore");
 }
 
-GsSemaphoreImpl::~GsSemaphoreImpl()
+SemaphoreImpl::~SemaphoreImpl()
 {
     CloseHandle(m_sema);
 }
 
-void GsSemaphoreImpl::Set()
+void SemaphoreImpl::Set()
 {
     if (!ReleaseSemaphore(m_sema, 1, NULL))
         throw std::runtime_error("cannot signal semaphore");
 }
 
-void GsSemaphoreImpl::Wait()
+void SemaphoreImpl::Wait()
 {
     switch (WaitForSingleObject(m_sema, INFINITE))
     {
@@ -61,7 +61,7 @@ void GsSemaphoreImpl::Wait()
     }
 }
 
-bool GsSemaphoreImpl::Wait(int milliseconds)
+bool SemaphoreImpl::Wait(int milliseconds)
 {
     switch (WaitForSingleObject(m_sema, milliseconds + 1))
     {
@@ -76,66 +76,66 @@ bool GsSemaphoreImpl::Wait(int milliseconds)
 
 #else
 
-GsSemaphoreImpl::GsSemaphoreImpl(int n, int max)
+SemaphoreImpl::SemaphoreImpl(int n, int max)
 {
 }
 
-GsSemaphoreImpl::~GsSemaphoreImpl()
+SemaphoreImpl::~SemaphoreImpl()
 {
 }
 
-void GsSemaphoreImpl::Set()
+void SemaphoreImpl::Set()
 {
 }
 
-void GsSemaphoreImpl::Wait()
+void SemaphoreImpl::Wait()
 {
 }
 
-bool GsSemaphoreImpl::Wait(int milliseconds)
+bool SemaphoreImpl::Wait(int milliseconds)
 {
 }
 
 #endif
 
-GsSemaphore::GsSemaphore(int n)
-    : GsSemaphore(n, n)
+Semaphore::Semaphore(int n)
+    : Semaphore(n, n)
 {
 }
 
-GsSemaphore::GsSemaphore(int n, int max)
-    : m_Handle(new GsSemaphoreImpl(n, max))
+Semaphore::Semaphore(int n, int max)
+    : m_Handle(new SemaphoreImpl(n, max))
 {
 }
 
-GsSemaphore::~GsSemaphore()
+Semaphore::~Semaphore()
 {
     delete m_Handle;
     m_Handle = NULL;
 }
 
-void GsSemaphore::Acquire()
+void Semaphore::Acquire()
 {
     if (m_Handle)
-        (static_cast<GsSemaphoreImpl *>(m_Handle))->Set();
+        (static_cast<SemaphoreImpl *>(m_Handle))->Set();
 }
 
-void GsSemaphore::Wait()
+void Semaphore::Wait()
 {
     if (m_Handle)
-        (static_cast<GsSemaphoreImpl *>(m_Handle))->Wait();
+        (static_cast<SemaphoreImpl *>(m_Handle))->Wait();
 }
 
-void GsSemaphore::Wait(int milliseconds)
+void Semaphore::Wait(int milliseconds)
 {
     if (!TryWait(milliseconds))
         throw std::runtime_error("cannot wait semaphore");
 }
 
-bool GsSemaphore::TryWait(int milliseconds)
+bool Semaphore::TryWait(int milliseconds)
 {
     if (m_Handle)
-        return (static_cast<GsSemaphoreImpl *>(m_Handle))->Wait(milliseconds);
+        return (static_cast<SemaphoreImpl *>(m_Handle))->Wait(milliseconds);
     return false;
 }
 

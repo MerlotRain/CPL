@@ -11,51 +11,51 @@
 
 namespace m2 {
 
-std::mutex GsLibrary::m_mutex;
+std::mutex Library::m_mutex;
 
 #ifdef _WIN32
-GsLibrary::GsLibrary()
+Library::Library()
 {
     m_Handle = 0;
 }
 
-GsLibrary::GsLibrary(const char *path) : m_strPath(path) { Load(path); }
+Library::Library(const char *path) : m_strPath(path) { Load(path); }
 
-GsLibrary::GsLibrary(const char *path, int flags) : m_strPath(path)
+Library::Library(const char *path, int flags) : m_strPath(path)
 {
     Load(path, 0);
 }
 
-GsLibrary::~GsLibrary() {}
+Library::~Library() {}
 
-void GsLibrary::Load(const char *path) { Load(path, 0); }
+void Library::Load(const char *path) { Load(path, 0); }
 
-void GsLibrary::Load(const char *path, int flag)
+void Library::Load(const char *path, int flag)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
 
     if (m_Handle)
-        throw GsUtilityException(m_strPath);
+        throw UtilityException(m_strPath);
     DWORD flags(0);
 #if !defined(_WIN32_WCE)
-    GsPath p(path);
+    Path p(path);
     if (p.IsAbsolute())
         flags |= LOAD_WITH_ALTERED_SEARCH_PATH;
 #endif
-    GsCA2W ca2w(path);
+    CA2W ca2w(path);
     m_Handle = LoadLibraryExW(ca2w.m_WStr.c_str(), 0, flags);
     if (!m_Handle)
     {
-        DWORD errn = GsError::LastError();
-        GsString errMsg = GsError::Message(errn).Trimmed();
-        GsString err = GsString::Format("Error %ul while loading [%s]: [%s]", errn,
+        DWORD errn = Error::LastError();
+        String errMsg = Error::Message(errn).Trimmed();
+        String err = String::Format("Error %ul while loading [%s]: [%s]", errn,
                                         path, errMsg);
-        throw GsUtilityException(err);
+        throw UtilityException(err);
     }
     m_strPath = path;
 }
 
-void GsLibrary::Unload()
+void Library::Unload()
 {
     std::lock_guard<std::mutex> lock(m_mutex);
 
@@ -67,15 +67,15 @@ void GsLibrary::Unload()
     m_strPath.clear();
 }
 
-bool GsLibrary::IsLoaded() const
+bool Library::IsLoaded() const
 {
     std::lock_guard<std::mutex> lock(m_mutex);
     return m_Handle != 0;
 }
 
-bool GsLibrary::HasSymbol(const char *name) { return Symbol(name) != 0; }
+bool Library::HasSymbol(const char *name) { return Symbol(name) != 0; }
 
-void *GsLibrary::Symbol(const char *name)
+void *Library::Symbol(const char *name)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
 
@@ -93,15 +93,15 @@ void *GsLibrary::Symbol(const char *name)
         return 0;
 }
 
-const GsString &GsLibrary::Path() const { return m_strPath; }
+const String &Library::Path() const { return m_strPath; }
 
-GsString GsLibrary::Suffix() { return ".dll"; }
+String Library::Suffix() { return ".dll"; }
 
-bool GsLibrary::SearchPath(const GsString &path)
+bool Library::SearchPath(const String &path)
 {
 #if _WIN32_WINNT >= 0x0502
     std::wstring wpath;
-    GsCA2W ca2w(path);
+    CA2W ca2w(path);
     return SetDllDirectoryW(ca2w.m_WStr.c_str()) != 0;
 #else
     return false;
@@ -110,26 +110,26 @@ bool GsLibrary::SearchPath(const GsString &path)
 
 #else
 
-GsLibrary::GsLibrary(const char *path) : GsLibrary(path, 0)
+Library::Library(const char *path) : Library(path, 0)
 {
 }
 
-GsLibrary::GsLibrary(const char *path, int flags) : m_strPath(path)
+Library::Library(const char *path, int flags) : m_strPath(path)
 {
     Load(path, flags);
 }
 
-GsLibrary::~GsLibrary() = default;
+Library::~Library() = default;
 
-void GsLibrary::Load(const char *path) { Load(path, 0); }
+void Library::Load(const char *path) { Load(path, 0); }
 
-void GsLibrary::Load(const char *path, int flags)
+void Library::Load(const char *path, int flags)
 {
     if (path == NULL)
-        throw GsIllegalArgumentException("path is null");
+        throw IllegalArgumentException("path is null");
     std::unique_lock<std::mutex> l(m_mutex);
     if (m_Handle)
-        throw GsUtilityException(path);
+        throw UtilityException(path);
     int readFlags = RTLD_LAZY;
     if (flags & SHLIB_LOCAL)
         readFlags |= RTLD_LOCAL;
@@ -139,11 +139,11 @@ void GsLibrary::Load(const char *path, int flags)
     if (!m_Handle)
     {
         const char *err = dlerror();
-        throw GsUtilityException(err ? GsString(err) : path);
+        throw UtilityException(err ? String(err) : path);
     }
 }
 
-void GsLibrary::Unload()
+void Library::Unload()
 {
     std::unique_lock<std::mutex> l(m_mutex);
     if (m_Handle)
@@ -153,15 +153,15 @@ void GsLibrary::Unload()
     }
 }
 
-bool GsLibrary::IsLoaded() const
+bool Library::IsLoaded() const
 {
     std::unique_lock<std::mutex> l(m_mutex);
     return m_Handle != 0;
 }
 
-bool GsLibrary::HasSymbol(const char *name) { return Symbol(name) != 0; }
+bool Library::HasSymbol(const char *name) { return Symbol(name) != 0; }
 
-void *GsLibrary::Symbol(const char *name)
+void *Library::Symbol(const char *name)
 {
     std::unique_lock<std::mutex> l(m_mutex);
     void *result = 0;
@@ -172,9 +172,9 @@ void *GsLibrary::Symbol(const char *name)
     return result;
 }
 
-const GsString &GsLibrary::Path() const { return m_strPath; }
+const String &Library::Path() const { return m_strPath; }
 
-GsString GsLibrary::Suffix()
+String Library::Suffix()
 {
 #ifdef __APPLE__
     return ".dylib";
@@ -187,7 +187,7 @@ GsString GsLibrary::Suffix()
 #endif
 }
 
-bool GsLibrary::SearchPath(const GsString &path) { return false; }
+bool Library::SearchPath(const String &path) { return false; }
 
 #endif
 

@@ -157,7 +157,7 @@ bool intToString(T value, unsigned short base, char *result, size_t &size, bool 
 }
 
 template<typename T>
-bool intToString(T value, unsigned short base, GsString &result, bool prefix = false, int width = -1,
+bool intToString(T value, unsigned short base, String &result, bool prefix = false, int width = -1,
                  char fill = ' ', char sep = 0)
 {
     char res[MAX_INT_STRING_LENGHT] = {0};
@@ -255,7 +255,7 @@ bool unsignedIntToString(T value, unsigned short base, char *result, size_t &siz
 }
 
 template<typename T>
-bool unsignedIntToString(T value, unsigned short base, GsString &result, bool prefix = false,
+bool unsignedIntToString(T value, unsigned short base, String &result, bool prefix = false,
                          int width = -1, char fill = ' ', char sep = 0)
 {
     char res[MAX_INT_STRING_LENGHT] = {0};
@@ -274,10 +274,10 @@ bool unsignedIntToString(T value, unsigned short base, GsString &result, bool pr
 void floatToString(char *buff, int buffSize, float value,
                    int low = -std::numeric_limits<float>::digits10,
                    int high = std::numeric_limits<float>::digits10);
-GsString floatToString(GsString &str, float value, int precision = -1, int width = 0, char thSep = 0,
+String floatToString(String &str, float value, int precision = -1, int width = 0, char thSep = 0,
                        char decSep = 0);
 void floatToFixedString(char *buff, int buffSize, float value, int precision);
-GsString floatToFixedString(GsString &str, float value, int precision, int width = 0, char thSep = 0,
+String floatToFixedString(String &str, float value, int precision, int width = 0, char thSep = 0,
                             char decSep = 0);
 
 /// @brief double模块
@@ -289,10 +289,10 @@ GsString floatToFixedString(GsString &str, float value, int precision, int width
 void doubleToString(char *buff, int buffSize, double value,
                     int low = -std::numeric_limits<double>::digits10,
                     int high = std::numeric_limits<double>::digits10);
-GsString doubleToString(GsString &str, double value, int precision = -1, int width = 0, char thSep = 0,
+String doubleToString(String &str, double value, int precision = -1, int width = 0, char thSep = 0,
                         char decSep = 0);
 void doubleToFixedString(char *buff, int buffSize, double value, int precision);
-GsString doubleToFixedString(GsString &str, double value, int precision, int width = 0, char thSep = 0,
+String doubleToFixedString(String &str, double value, int precision, int width = 0, char thSep = 0,
                              char decSep = 0);
 
 
@@ -439,7 +439,7 @@ bool stringToInt(const char *str, T &out, unsigned short base, char sep = ',')
     return true;
 }
 template<typename T>
-bool stringToInt(GsString &str, T &result, unsigned short base, char sep = ',')
+bool stringToInt(String &str, T &result, unsigned short base, char sep = ',')
 {
     return stringToInt(str.c_str(), result, base, sep);
 }
@@ -451,7 +451,7 @@ bool stringToInt(GsString &str, T &result, unsigned short base, char sep = ',')
 /// @param nan
 /// @return
 float stringToFloat(const char *str, const char *inf = FLOAT_INF, const char *nan = FLOAT_NAN);
-bool stringToFloat(const GsString &str, float &result, char decSep = '.', char thSep = ',',
+bool stringToFloat(const String &str, float &result, char decSep = '.', char thSep = ',',
                    const char *inf = FLOAT_INF, const char *nan = FLOAT_NAN);
 
 
@@ -461,7 +461,7 @@ bool stringToFloat(const GsString &str, float &result, char decSep = '.', char t
 /// @param nan
 /// @return
 double stringToDouble(const char *str, const char *inf = FLOAT_INF, const char *nan = FLOAT_NAN);
-bool stringToDouble(const GsString &str, double &result, char decSep = '.', char thSep = ',',
+bool stringToDouble(const String &str, double &result, char decSep = '.', char thSep = ',',
                     const char *inf = FLOAT_INF, const char *nan = FLOAT_NAN);
 
 

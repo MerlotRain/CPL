@@ -9,13 +9,13 @@
 
 namespace m2 {
 
-/******************************************* GsPipeImpl *******************************************/
+/******************************************* PipeImpl *******************************************/
 
-class GsPipeImpl : public GsRefObject
+class PipeImpl : public RefObject
 {
 public:
-    GsPipeImpl();
-    ~GsPipeImpl();
+    PipeImpl();
+    ~PipeImpl();
     int Write(const unsigned char *buf, int len);
     int Read(unsigned char *buf, int len);
 
@@ -31,7 +31,7 @@ public:
 #endif
 };
 
-#define PIPE_HANDLE(x) (static_cast<GsPipeImpl *>(x))
+#define PIPE_HANDLE(x) (static_cast<PipeImpl *>(x))
 
 }// namespace m2
 

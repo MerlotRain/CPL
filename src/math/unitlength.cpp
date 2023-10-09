@@ -70,175 +70,175 @@ static constexpr auto FenToMeter = 0.0033;
 static constexpr auto DegreeToMeter = 111319.49079327358;
 
 
-GsLength::GsLength() noexcept
+Length::Length() noexcept
 {
 }
 
-GsLength::GsLength(const GsLength &rhs) noexcept : Length(rhs.Length), Unit(rhs.Unit)
+Length::Length(const Length &rhs) noexcept : Length(rhs.Length), Unit(rhs.Unit)
 {
 }
 
-GsLength &GsLength::operator=(const GsLength &rhs) noexcept
+Length &Length::operator=(const Length &rhs) noexcept
 {
     Length = rhs.Length;
     Unit = rhs.Unit;
     return *this;
 }
 
-GsLength::GsLength(double len, GsLengthUnits uints) noexcept : Length(len), Unit(uints)
+Length::Length(double len, LengthUnits uints) noexcept : Length(len), Unit(uints)
 {
 }
 
-GsLength::GsLength(GsLength &&rhs) noexcept
+Length::Length(Length &&rhs) noexcept
 {
     Length = std::move(rhs.Length);
     Unit = std::move(rhs.Unit);
 }
 
-GsLength &GsLength::operator=(GsLength &&rhs) noexcept
+Length &Length::operator=(Length &&rhs) noexcept
 {
     Length = std::move(rhs.Length);
     Unit = std::move(rhs.Unit);
     return *this;
 }
 
-void GsLength::Swap(GsLength &rhs) noexcept
+void Length::Swap(Length &rhs) noexcept
 {
     std::swap(Length, rhs.Length);
     std::swap(Unit, rhs.Unit);
 }
 
-bool GsLength::operator==(const GsLength &rhs) const noexcept
+bool Length::operator==(const Length &rhs) const noexcept
 {
-    return Math::FuzzyCompare(Length, rhs.Length * GsLength::ConvertScale(rhs.Unit, Unit));
+    return Math::FuzzyCompare(Length, rhs.Length * Length::ConvertScale(rhs.Unit, Unit));
 }
 
-bool GsLength::operator!=(const GsLength &rhs) const noexcept
+bool Length::operator!=(const Length &rhs) const noexcept
 {
     return !(*this == rhs);
 }
 
-bool GsLength::operator<(const GsLength &rhs) const noexcept
+bool Length::operator<(const Length &rhs) const noexcept
 {
-    return Length < rhs.Length * GsLength::ConvertScale(rhs.Unit, Unit);
+    return Length < rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
 }
 
-bool GsLength::operator<=(const GsLength &rhs) const noexcept
+bool Length::operator<=(const Length &rhs) const noexcept
 {
-    return Length <= rhs.Length * GsLength::ConvertScale(rhs.Unit, Unit);
+    return Length <= rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
 }
 
-bool GsLength::operator>(const GsLength &rhs) const noexcept
+bool Length::operator>(const Length &rhs) const noexcept
 {
-    return Length > rhs.Length * GsLength::ConvertScale(rhs.Unit, Unit);
+    return Length > rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
 }
 
-bool GsLength::operator>=(const GsLength &rhs) const noexcept
+bool Length::operator>=(const Length &rhs) const noexcept
 {
-    return Length >= rhs.Length * GsLength::ConvertScale(rhs.Unit, Unit);
+    return Length >= rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
 }
 
-GsLength GsLength::operator-(const GsLength &rhs) const noexcept
+Length Length::operator-(const Length &rhs) const noexcept
 {
-    GsLength area;
-    area.Length = Length - rhs.Length * GsLength::ConvertScale(rhs.Unit, Unit);
+    Length area;
+    area.Length = Length - rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
     area.Unit = Unit;
     return area;
 }
 
-GsLength GsLength::operator+(const GsLength &rhs) const noexcept
+Length Length::operator+(const Length &rhs) const noexcept
 {
-    GsLength area;
-    area.Length = Length + rhs.Length * GsLength::ConvertScale(rhs.Unit, Unit);
+    Length area;
+    area.Length = Length + rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
     area.Unit = Unit;
     return area;
 }
 
-GsLength &GsLength::operator+=(const GsLength &rhs) noexcept
+Length &Length::operator+=(const Length &rhs) noexcept
 {
-    Length += rhs.Length * GsLength::ConvertScale(rhs.Unit, Unit);
+    Length += rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
     return *this;
 }
 
-GsLength &GsLength::operator-=(const GsLength &rhs) noexcept
+Length &Length::operator-=(const Length &rhs) noexcept
 {
-    Length -= rhs.Length * GsLength::ConvertScale(rhs.Unit, Unit);
+    Length -= rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
     return *this;
 }
 
-GsLength::operator double() const
+Length::operator double() const
 {
     return Length;
 }
 
-GsLength GsLength::ToMeter(double l, GsLengthUnits units)
+Length Length::ToMeter(double l, LengthUnits units)
 {
-    GsLength length;
-    length.Length = l * GsLength::ConvertScale(units, GsLengthUnits::eMeter);
-    length.Unit = GsLengthUnits::eMeter;
+    Length length;
+    length.Length = l * Length::ConvertScale(units, LengthUnits::eMeter);
+    length.Unit = LengthUnits::eMeter;
     return length;
 }
 
-GsLength GsLength::ConvertTo(double l, GsLengthUnits srcUnit, GsLengthUnits tagUnit)
+Length Length::ConvertTo(double l, LengthUnits srcUnit, LengthUnits tagUnit)
 {
-    GsLength length;
-    length.Length = l * GsLength::ConvertScale(srcUnit, tagUnit);
+    Length length;
+    length.Length = l * Length::ConvertScale(srcUnit, tagUnit);
     length.Unit = tagUnit;
     return length;
 }
 
-double GsLength::ConvertScale(GsLengthUnits from, GsLengthUnits to)
+double Length::ConvertScale(LengthUnits from, LengthUnits to)
 {
     double factor1 = 1.0, factor2 = 1.0;
     switch (from)
     {
-        case GsLengthUnits::eKilometer:
+        case LengthUnits::eKilometer:
             factor1 = KilometerToMeter;
             break;
-        case GsLengthUnits::eDecimetre:
+        case LengthUnits::eDecimetre:
             factor1 = DecimetreToMeter;
             break;
-        case GsLengthUnits::eCentimeter:
+        case LengthUnits::eCentimeter:
             factor1 = CentimeterToMeter;
             break;
-        case GsLengthUnits::eMillimeter:
+        case LengthUnits::eMillimeter:
             factor1 = MillimeterToMeter;
             break;
-        case GsLengthUnits::eMicron:
+        case LengthUnits::eMicron:
             factor1 = MicronToMeter;
             break;
-        case GsLengthUnits::eNanometer:
+        case LengthUnits::eNanometer:
             factor1 = NanometerToMeter;
             break;
-        case GsLengthUnits::eInche:
+        case LengthUnits::eInche:
             factor1 = IncheToMeter;
             break;
-        case GsLengthUnits::eMile:
+        case LengthUnits::eMile:
             factor1 = MileToMeter;
             break;
-        case GsLengthUnits::eFeet:
+        case LengthUnits::eFeet:
             factor1 = FeetToMeter;
             break;
-        case GsLengthUnits::eYard:
+        case LengthUnits::eYard:
             factor1 = YardToMeter;
             break;
-        case GsLengthUnits::eNauticalMile:
+        case LengthUnits::eNauticalMile:
             factor1 = NauticalMileToMeter;
             break;
-        case GsLengthUnits::eZhang:
+        case LengthUnits::eZhang:
             factor1 = ZhangToMeter;
             break;
-        case GsLengthUnits::eChi:
+        case LengthUnits::eChi:
             factor1 = ChiToMeter;
             break;
-        case GsLengthUnits::eCun:
+        case LengthUnits::eCun:
             factor1 = CunToMeter;
             break;
-        case GsLengthUnits::eFen:
+        case LengthUnits::eFen:
             factor1 = FenToMeter;
             break;
 #ifdef SPATIAL_FEATURE
-        case GsLengthUnits::eDegree:
+        case LengthUnits::eDegree:
             factor1 = DegreeToMeter;
             break;
 #endif
@@ -248,53 +248,53 @@ double GsLength::ConvertScale(GsLengthUnits from, GsLengthUnits to)
 
     switch (to)
     {
-        case GsLengthUnits::eKilometer:
+        case LengthUnits::eKilometer:
             factor2 = MeterToKilometer;
             break;
-        case GsLengthUnits::eDecimetre:
+        case LengthUnits::eDecimetre:
             factor2 = MeterToDecimetre;
             break;
-        case GsLengthUnits::eCentimeter:
+        case LengthUnits::eCentimeter:
             factor2 = MeterToCentimeter;
             break;
-        case GsLengthUnits::eMillimeter:
+        case LengthUnits::eMillimeter:
             factor2 = MeterToMillimeter;
             break;
-        case GsLengthUnits::eMicron:
+        case LengthUnits::eMicron:
             factor2 = MeterToMicron;
             break;
-        case GsLengthUnits::eNanometer:
+        case LengthUnits::eNanometer:
             factor2 = MeterToNanometer;
             break;
-        case GsLengthUnits::eInche:
+        case LengthUnits::eInche:
             factor2 = MeterToInche;
             break;
-        case GsLengthUnits::eMile:
+        case LengthUnits::eMile:
             factor2 = MeterToMile;
             break;
-        case GsLengthUnits::eFeet:
+        case LengthUnits::eFeet:
             factor2 = MeterToFeet;
             break;
-        case GsLengthUnits::eYard:
+        case LengthUnits::eYard:
             factor2 = MeterToYard;
             break;
-        case GsLengthUnits::eNauticalMile:
+        case LengthUnits::eNauticalMile:
             factor2 = MeterToNauticalMile;
             break;
-        case GsLengthUnits::eZhang:
+        case LengthUnits::eZhang:
             factor2 = MeterToZhang;
             break;
-        case GsLengthUnits::eChi:
+        case LengthUnits::eChi:
             factor2 = MeterToChi;
             break;
-        case GsLengthUnits::eCun:
+        case LengthUnits::eCun:
             factor2 = MeterToCun;
             break;
-        case GsLengthUnits::eFen:
+        case LengthUnits::eFen:
             factor2 = MeterToFen;
             break;
 #ifdef SPATIAL_FEATURE
-        case GsLengthUnits::eDegree:
+        case LengthUnits::eDegree:
             factor2 = MeterToDegree;
             break;
 #endif

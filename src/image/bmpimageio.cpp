@@ -55,7 +55,7 @@ const int BMP_BITFIELDS = 3;     // RGB values encoded in data as bit-fields
 const int BMP_ALPHABITFIELDS = 4;// RGBA values encoded in data as bit-fields
 
 
-static bool read_dib_fileheader(GsInputStream &s, BMP_FILEHDR &bf)
+static bool read_dib_fileheader(InputStream &s, BMP_FILEHDR &bf)
 {
     s >> bf;
 
@@ -65,7 +65,7 @@ static bool read_dib_fileheader(GsInputStream &s, BMP_FILEHDR &bf)
     return true;
 }
 
-static bool read_dib_infoheader(GsInputStream &s, BMP_INFOHDR &bi)
+static bool read_dib_infoheader(InputStream &s, BMP_INFOHDR &bi)
 {
     s >> bi;
 
@@ -85,7 +85,7 @@ static bool read_dib_infoheader(GsInputStream &s, BMP_INFOHDR &bi)
     return true;
 }
 
-GsBmpImageIO::GsBmpImageIO(GsBmpFormat format)
+BmpImageIO::BmpImageIO(BmpFormat format)
 {
 }
 

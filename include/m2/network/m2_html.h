@@ -39,7 +39,7 @@
 namespace m2 {
 
 /// @brief html节点类型
-enum class GsHtmlNodeType : int
+enum class HtmlNodeType : int
 {
     eNODE_DOCUMENT,
     eNODE_ELEMENT,
@@ -51,7 +51,7 @@ enum class GsHtmlNodeType : int
 };
 
 /// @brief html中Tag类型
-enum class GsHtmlTag : int
+enum class HtmlTag : int
 {
     eTAG_HTML,
     eTAG_HEAD,
@@ -208,7 +208,7 @@ enum class GsHtmlTag : int
 
 /// @brief Html属性空间
 /// @details HTML包括对属性上的XLink、XML和XMLNS命名空间的特殊处理。其他所有内容都在通用的“NONE”命名空间中
-enum class GsHtmlAttributeNamespace
+enum class HtmlAttributeNamespace
 {
     eATTR_NAMESPACE_NONE,
     eATTR_NAMESPACE_XLINK,
@@ -217,7 +217,7 @@ enum class GsHtmlAttributeNamespace
 };
 
 /// @brief Html解析标识
-enum class GsHtmlParserFlag
+enum class HtmlParserFlag
 {
     /// @brief 一个正常的节点-开始和结束标记都出现在源中，没有任何内容被重新安排
     eINSERTION_NORMAL = 0,
@@ -242,11 +242,11 @@ enum class GsHtmlParserFlag
     /// @brief 表中已被寄养为父级的节点的标志
     eINSERTION_FOSTER_PARENTED = 1 << 10,
 };
-GS_DECLARE_FLAGS(GsHtmlParserFlags, GsHtmlParserFlag)
+GS_DECLARE_FLAGS(HtmlParserFlags, HtmlParserFlag)
 
 
 /// @brief Html解析的空间
-enum class GsHtmlNamespace
+enum class HtmlNamespace
 {
     /// @brief 以Html形式解析
     eNAMESPACE_HTML,
@@ -258,7 +258,7 @@ enum class GsHtmlNamespace
 
 
 /// @brief 原始文本缓冲区中的字符位置
-struct GsHtmlPosition
+struct HtmlPosition
 {
     /// @brief 行
     unsigned int Line = 0;
@@ -268,33 +268,33 @@ struct GsHtmlPosition
     unsigned int Offset = 0;
 };
 
-struct GsHtmlAttribute
+struct HtmlAttribute
 {
-    GsHtmlAttributeNamespace AttrNamespace;
-    GsString strName;
-    GsString strValue;
-    GsHtmlPosition NameStartPosition;
-    GsHtmlPosition NameEndPosition;
-    GsHtmlPosition ValueStartPosition;
-    GsHtmlPosition ValueEndPosition;
+    HtmlAttributeNamespace AttrNamespace;
+    String strName;
+    String strValue;
+    HtmlPosition NameStartPosition;
+    HtmlPosition NameEndPosition;
+    HtmlPosition ValueStartPosition;
+    HtmlPosition ValueEndPosition;
 };
 
-struct GsHtmlText
+struct HtmlText
 {
-    GsString Text;
-    GsHtmlPosition StartPosition;
-};
-
-
-class GsHtmlNode
-{
+    String Text;
+    HtmlPosition StartPosition;
 };
 
 
-class GsHtmlDocument
+class HtmlNode
+{
+};
+
+
+class HtmlDocument
 {
 public:
-    GsHtmlNode *RootNode();
+    HtmlNode *RootNode();
 };
 
 

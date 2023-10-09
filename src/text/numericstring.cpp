@@ -13,25 +13,25 @@ namespace m2 {
 
 namespace {
 
-void pad(GsString &str, int precision, int width, char prefix = ' ', char decSep = '.')
+void pad(String &str, int precision, int width, char prefix = ' ', char decSep = '.')
 {
     assert(precision > 0);
     assert(str.length());
 
-    GsString::size_type decSepPos = str.find(decSep);
-    if (decSepPos == GsString::npos)
+    String::size_type decSepPos = str.find(decSep);
+    if (decSepPos == String::npos)
     {
         str.append(1, decSep);
         decSepPos = str.size() - 1;
     }
 
-    GsString::size_type frac = str.length() - decSepPos - 1;
+    String::size_type frac = str.length() - decSepPos - 1;
 
-    GsString::size_type ePos = str.find_first_of("eE");
-    std::unique_ptr<GsString> eStr;
-    if (ePos != GsString::npos)
+    String::size_type ePos = str.find_first_of("eE");
+    std::unique_ptr<String> eStr;
+    if (ePos != String::npos)
     {
-        eStr.reset(new GsString(str.substr(ePos, GsString::npos)));
+        eStr.reset(new String(str.substr(ePos, String::npos)));
         frac -= eStr->length();
         str = str.substr(0, str.length() - eStr->length());
     }
@@ -42,7 +42,7 @@ void pad(GsString &str, int precision, int width, char prefix = ' ', char decSep
         {
             str.append(precision - frac, '0');
         }
-        else if ((frac > precision) && (decSepPos != GsString::npos))
+        else if ((frac > precision) && (decSepPos != String::npos))
         {
             int pos = static_cast<int>(decSepPos) + 1 + precision;
             if (str[pos] >= '5')// we must round up
@@ -98,7 +98,7 @@ void pad(GsString &str, int precision, int width, char prefix = ' ', char decSep
     }
 }
 
-void insertThousandSep(GsString &str, char thSep, char decSep = '.')
+void insertThousandSep(String &str, char thSep, char decSep = '.')
 {
     assert(decSep != thSep);
     if (str.size() == 0)
@@ -106,20 +106,20 @@ void insertThousandSep(GsString &str, char thSep, char decSep = '.')
         return;
     }
 
-    GsString::size_type exPos = str.find('e');
-    if (exPos == GsString::npos)
+    String::size_type exPos = str.find('e');
+    if (exPos == String::npos)
     {
         exPos = str.find('E');
     }
-    GsString::size_type decPos = str.find(decSep);
+    String::size_type decPos = str.find(decSep);
     // there's no rinsert, using forward iterator to go backwards
-    GsString::iterator it = str.end();
-    if (exPos != GsString::npos)
+    String::iterator it = str.end();
+    if (exPos != String::npos)
     {
         it -= str.size() - exPos;
     }
 
-    if (decPos != GsString::npos)
+    if (decPos != String::npos)
     {
         while (it != str.begin())
         {
@@ -137,9 +137,9 @@ void insertThousandSep(GsString &str, char thSep, char decSep = '.')
     }
     for (; it != str.begin();)
     {
-        GsString::iterator pos = it;
-        GsString::value_type chr = *it;
-        GsString::value_type prevChr = *--it;
+        String::iterator pos = it;
+        String::value_type chr = *it;
+        String::value_type prevChr = *--it;
 
         if (!std::isdigit(chr))
         {
@@ -173,7 +173,7 @@ void floatToString(char *buff, int buffSize, float value, int low, int high)
     builder.Finalize();
 }
 
-GsString floatToString(GsString &str, float value, int precision, int width, char thSep, char decSep)
+String floatToString(String &str, float value, int precision, int width, char thSep, char decSep)
 {
     if (!decSep)
     {
@@ -188,7 +188,7 @@ GsString floatToString(GsString &str, float value, int precision, int width, cha
     floatToString(buffer, MAX_FLOAT_STRING_LENGTH, value);
     str = buffer;
 
-    if (decSep && (decSep != '.') && (str.find('.') != GsString::npos))
+    if (decSep && (decSep != '.') && (str.find('.') != String::npos))
     {
         str.Replace('.', decSep);
     }
@@ -218,7 +218,7 @@ void floatToFixedString(char *buff, int buffSize, float value, int precision)
     builder.Finalize();
 }
 
-GsString floatToFixedString(GsString &str, float value, int precision, int width, char thSep,
+String floatToFixedString(String &str, float value, int precision, int width, char thSep,
                             char decSep)
 {
     if (!decSep)
@@ -234,7 +234,7 @@ GsString floatToFixedString(GsString &str, float value, int precision, int width
     floatToFixedString(buffer, MAX_FLOAT_STRING_LENGTH, value, precision);
     str = buffer;
 
-    if (decSep && (decSep != '.') && (str.find('.') != GsString::npos))
+    if (decSep && (decSep != '.') && (str.find('.') != String::npos))
     {
         str.Replace('.', decSep);
     }
@@ -262,12 +262,12 @@ float stringToFloat(const char *str, const char *inf, const char *nan)
     return result;
 }
 
-bool stringToFloat(const GsString &str, float &result, char decSep, char thSep, const char *inf,
+bool stringToFloat(const String &str, float &result, char decSep, char thSep, const char *inf,
                    const char *nan)
 {
     using namespace double_conversion;
 
-    GsString tmp(str);
+    String tmp(str);
     tmp.Trimmed();
     tmp.Remove(thSep);
     tmp.Remove('f');
@@ -288,7 +288,7 @@ void doubleToString(char *buff, int buffSize, double value, int low, int high)
     builder.Finalize();
 }
 
-GsString doubleToString(GsString &str, double value, int precision, int width, char thSep, char decSep)
+String doubleToString(String &str, double value, int precision, int width, char thSep, char decSep)
 {
     if (!decSep)
     {
@@ -304,7 +304,7 @@ GsString doubleToString(GsString &str, double value, int precision, int width, c
 
     str = buffer;
 
-    if (decSep && (decSep != '.') && (str.find('.') != GsString::npos))
+    if (decSep && (decSep != '.') && (str.find('.') != String::npos))
     {
         str.Replace('.', decSep);
     }
@@ -334,7 +334,7 @@ void doubleToFixedString(char *buff, int buffSize, double value, int precision)
     builder.Finalize();
 }
 
-GsString doubleToFixedString(GsString &str, double value, int precision, int width, char thSep,
+String doubleToFixedString(String &str, double value, int precision, int width, char thSep,
                              char decSep)
 {
     if (!decSep)
@@ -351,7 +351,7 @@ GsString doubleToFixedString(GsString &str, double value, int precision, int wid
 
     str = buffer;
 
-    if (decSep && (decSep != '.') && (str.find('.') != GsString::npos))
+    if (decSep && (decSep != '.') && (str.find('.') != String::npos))
     {
         str.Replace('.', decSep);
     }
@@ -378,7 +378,7 @@ double stringToDouble(const char *str, const char *inf, const char *nan)
     return result;
 }
 
-bool stringToDouble(const GsString &str, double &result, char decSep, char thSep, const char *inf,
+bool stringToDouble(const String &str, double &result, char decSep, char thSep, const char *inf,
                     const char *nan)
 {
     if (str.empty())
@@ -388,7 +388,7 @@ bool stringToDouble(const GsString &str, double &result, char decSep, char thSep
 
     using namespace double_conversion;
 
-    GsString tmp(str);
+    String tmp(str);
     tmp.Trimmed();
     tmp.Remove(thSep);
     tmp.Replace(decSep, '.');

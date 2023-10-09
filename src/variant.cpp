@@ -3,340 +3,340 @@
 
 namespace m2 {
 
-GsVariant::~GsVariant()
+Variant::~Variant()
 {
 }
 
-GsVariant::GsVariant()
+Variant::Variant()
 {
 }
 
-GsVariant::GsVariant(char v)
+Variant::Variant(char v)
 {
 }
 
-GsVariant::GsVariant(unsigned char v)
+Variant::Variant(unsigned char v)
 {
 }
 
-GsVariant::GsVariant(short v)
+Variant::Variant(short v)
 {
 }
 
-GsVariant::GsVariant(unsigned short v)
+Variant::Variant(unsigned short v)
 {
 }
 
-GsVariant::GsVariant(int v)
+Variant::Variant(int v)
 {
 }
 
-GsVariant::GsVariant(unsigned int v)
+Variant::Variant(unsigned int v)
 {
 }
 
-GsVariant::GsVariant(long long v, bool bDateTime)
+Variant::Variant(long long v, bool bDateTime)
 {
 }
 
-GsVariant::GsVariant(unsigned long long v)
+Variant::Variant(unsigned long long v)
 {
 }
 
-GsVariant::GsVariant(float v)
+Variant::Variant(float v)
 {
 }
 
-GsVariant::GsVariant(double v)
+Variant::Variant(double v)
 {
 }
 
-GsVariant::GsVariant(bool v)
+Variant::Variant(bool v)
 {
 }
 
-GsVariant::GsVariant(GsRefObject *v)
+Variant::Variant(RefObject *v)
 {
 }
 
-GsVariant::GsVariant(const char *v)
+Variant::Variant(const char *v)
 {
 }
 
-GsVariant::GsVariant(const GsString &str)
+Variant::Variant(const String &str)
 {
 }
 
-GsVariant::GsVariant(const unsigned char *v, int nLen)
+Variant::Variant(const unsigned char *v, int nLen)
 {
 }
 
-GsVariant::GsVariant(const GsVariant &rhs)
+Variant::Variant(const Variant &rhs)
 {
 }
 
-GsVariant::GsVariant(GsVariant &&rhs)
+Variant::Variant(Variant &&rhs)
 {
 }
 
-GsVariant::GsVariant(GsVarType type)
+Variant::Variant(VarType type)
 {
 }
 
-GsVariant &GsVariant::operator=(const GsVariant &rhs)
-{
-    // TODO: insert return statement here
-}
-
-GsVariant &GsVariant::operator=(char v)
+Variant &Variant::operator=(const Variant &rhs)
 {
     // TODO: insert return statement here
 }
 
-GsVariant &GsVariant::operator=(unsigned char v)
+Variant &Variant::operator=(char v)
 {
     // TODO: insert return statement here
 }
 
-GsVariant &GsVariant::operator=(short v)
+Variant &Variant::operator=(unsigned char v)
 {
     // TODO: insert return statement here
 }
 
-GsVariant &GsVariant::operator=(unsigned short v)
+Variant &Variant::operator=(short v)
 {
     // TODO: insert return statement here
 }
 
-GsVariant &GsVariant::operator=(int v)
+Variant &Variant::operator=(unsigned short v)
 {
     // TODO: insert return statement here
 }
 
-GsVariant &GsVariant::operator=(unsigned int v)
+Variant &Variant::operator=(int v)
 {
     // TODO: insert return statement here
 }
 
-GsVariant &GsVariant::operator=(long long v)
+Variant &Variant::operator=(unsigned int v)
 {
     // TODO: insert return statement here
 }
 
-GsVariant &GsVariant::operator=(unsigned long long v)
+Variant &Variant::operator=(long long v)
 {
     // TODO: insert return statement here
 }
 
-GsVariant &GsVariant::operator=(float v)
+Variant &Variant::operator=(unsigned long long v)
 {
     // TODO: insert return statement here
 }
 
-GsVariant &GsVariant::operator=(double v)
+Variant &Variant::operator=(float v)
 {
     // TODO: insert return statement here
 }
 
-GsVariant &GsVariant::operator=(bool v)
+Variant &Variant::operator=(double v)
 {
     // TODO: insert return statement here
 }
 
-GsVariant &GsVariant::operator=(const char *v)
+Variant &Variant::operator=(bool v)
 {
     // TODO: insert return statement here
 }
 
-GsVariant &GsVariant::operator=(const GsString &str)
+Variant &Variant::operator=(const char *v)
 {
     // TODO: insert return statement here
 }
 
-GsVariant &GsVariant::operator=(GsRefObject *v)
+Variant &Variant::operator=(const String &str)
 {
     // TODO: insert return statement here
 }
 
-GsVariant &GsVariant::operator=(GsVariant &&v)
+Variant &Variant::operator=(RefObject *v)
 {
     // TODO: insert return statement here
 }
 
-bool GsVariant::operator==(const GsVariant &o) const
+Variant &Variant::operator=(Variant &&v)
+{
+    // TODO: insert return statement here
+}
+
+bool Variant::operator==(const Variant &o) const
 {
     return false;
 }
 
-bool GsVariant::operator!=(const GsVariant &o) const
+bool Variant::operator!=(const Variant &o) const
 {
     return false;
 }
 
-void GsVariant::Clear()
+void Variant::Clear()
 {
 }
 
-char GsVariant::AsChar() const
-{
-    return 0;
-}
-
-unsigned char GsVariant::AsUChar() const
+char Variant::AsChar() const
 {
     return 0;
 }
 
-short GsVariant::AsShort() const
+unsigned char Variant::AsUChar() const
 {
     return 0;
 }
 
-unsigned short GsVariant::AsUShort() const
+short Variant::AsShort() const
 {
     return 0;
 }
 
-int GsVariant::AsInt() const
+unsigned short Variant::AsUShort() const
 {
     return 0;
 }
 
-unsigned int GsVariant::AsUInt() const
+int Variant::AsInt() const
 {
     return 0;
 }
 
-long long GsVariant::AsLongLong() const
+unsigned int Variant::AsUInt() const
 {
     return 0;
 }
 
-unsigned long long GsVariant::AsULongLong() const
+long long Variant::AsLongLong() const
 {
     return 0;
 }
 
-float GsVariant::AsFloat() const
+unsigned long long Variant::AsULongLong() const
+{
+    return 0;
+}
+
+float Variant::AsFloat() const
 {
     return 0.0f;
 }
 
-double GsVariant::AsDouble() const
+double Variant::AsDouble() const
 {
     return 0.0;
 }
 
-bool GsVariant::AsBool() const
+bool Variant::AsBool() const
 {
     return false;
 }
 
-GsRefObject *GsVariant::AsObject() const
+RefObject *Variant::AsObject() const
 {
     return nullptr;
 }
 
-char *GsVariant::AsString() const
+char *Variant::AsString() const
 {
     return nullptr;
 }
 
-int GsVariant::AsBlob(unsigned char *bBlob) const
+int Variant::AsBlob(unsigned char *bBlob) const
 {
     return 0;
 }
 
-GsVariant::operator char() const
+Variant::operator char() const
 {
 }
 
-GsVariant::operator unsigned char() const
+Variant::operator unsigned char() const
 {
 }
 
-GsVariant::operator short() const
+Variant::operator short() const
 {
 }
 
-GsVariant::operator unsigned short() const
+Variant::operator unsigned short() const
 {
 }
 
-GsVariant::operator int() const
+Variant::operator int() const
 {
 }
 
-GsVariant::operator unsigned int() const
+Variant::operator unsigned int() const
 {
 }
 
-GsVariant::operator long long() const
+Variant::operator long long() const
 {
 }
 
-GsVariant::operator unsigned long long() const
+Variant::operator unsigned long long() const
 {
 }
 
-GsVariant::operator bool() const
+Variant::operator bool() const
 {
 }
 
-GsVariant::operator float() const
+Variant::operator float() const
 {
 }
 
-GsVariant::operator double() const
+Variant::operator double() const
 {
 }
 
-GsVariant::operator const char *() const
+Variant::operator const char *() const
 {
 }
 
-GsVariant::operator GsRefObject *()
+Variant::operator RefObject *()
 {
 }
 
-void GsVariant::Set(const unsigned char *bBlob, int nLen)
+void Variant::Set(const unsigned char *bBlob, int nLen)
 {
 }
 
-void GsVariant::Set(const char *str, int nLen)
+void Variant::Set(const char *str, int nLen)
 {
 }
 
-unsigned char *GsVariant::AllocBlob(int nLen)
-{
-    return nullptr;
-}
-
-int GsVariant::ValueSize() const
-{
-    return 0;
-}
-
-const void *GsVariant::ValuePtr() const
+unsigned char *Variant::AllocBlob(int nLen)
 {
     return nullptr;
 }
 
-unsigned long long GsVariant::HashCode() const
+int Variant::ValueSize() const
 {
     return 0;
 }
 
-GsString GsVariant::ToString() const
+const void *Variant::ValuePtr() const
 {
-    return GsString();
+    return nullptr;
 }
 
-void GsVariant::Swap(GsVariant &rhs)
+unsigned long long Variant::HashCode() const
+{
+    return 0;
+}
+
+String Variant::ToString() const
+{
+    return String();
+}
+
+void Variant::Swap(Variant &rhs)
 {
 }
 
-const GsVariant &GsVariant::Empty()
+const Variant &Variant::Empty()
 {
     // TODO: insert return statement here
 }

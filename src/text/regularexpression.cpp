@@ -4,19 +4,19 @@
 
 namespace m2 {
 
-GsRegularExpression::GsRegularExpression()
+RegularExpression::RegularExpression()
 {
 }
 
-GsRegularExpression::GsRegularExpression(const char *pattern, GsRegularOptions options)
+RegularExpression::RegularExpression(const char *pattern, RegularOptions options)
 {
 }
 
-GsRegularExpression::~GsRegularExpression()
+RegularExpression::~RegularExpression()
 {
 }
 
-GsString GsRegularExpression::WellknownRegex(GsWellknownRegex eRegex)
+String RegularExpression::WellknownRegex(WellknownRegex eRegex)
 {
     switch (eRegex)
     {
@@ -143,89 +143,89 @@ GsString GsRegularExpression::WellknownRegex(GsWellknownRegex eRegex)
         default:
             break;
     }
-    return GsString();
+    return String();
 }
 
-bool GsRegularExpression::IsMatch(const char *str, const char *strPattern)
+bool RegularExpression::IsMatch(const char *str, const char *strPattern)
 {
     return false;
 }
 
-GsString GsRegularExpression::WildcardToRegexp(const char *wildcard)
+String RegularExpression::WildcardToRegexp(const char *wildcard)
 {
-    return GsString();
+    return String();
 }
 
-GsString GsRegularExpression::Description() const
+String RegularExpression::Description() const
 {
-    return GsString();
+    return String();
 }
 
-void GsRegularExpression::Description(const char *desc)
+void RegularExpression::Description(const char *desc)
 {
 }
 
-GsString GsRegularExpression::Pattern() const
+String RegularExpression::Pattern() const
 {
-    return GsString();
+    return String();
 }
 
-bool GsRegularExpression::Compile(const char *tstring, GsRegularOptions flag)
-{
-    return false;
-}
-
-GsMatchResult GsRegularExpression::Match(const char *tstring, GsRegularOptions options) const
-{
-    return GsMatchResult();
-}
-
-GsMatchResult GsRegularExpression::Match(const char *tstring, int start, GsRegularOptions options) const
-{
-    return GsMatchResult();
-}
-
-bool GsRegularExpression::operator==(const char *tstring) const
+bool RegularExpression::Compile(const char *tstring, RegularOptions flag)
 {
     return false;
 }
 
-bool GsRegularExpression::operator!=(const char *tstring) const
+MatchResult RegularExpression::Match(const char *tstring, RegularOptions options) const
+{
+    return MatchResult();
+}
+
+MatchResult RegularExpression::Match(const char *tstring, int start, RegularOptions options) const
+{
+    return MatchResult();
+}
+
+bool RegularExpression::operator==(const char *tstring) const
 {
     return false;
 }
 
-int GsRegularExpression::Split(const char *tstring, int start, GsStringList &strings, GsRegularOptions options) const
-{
-    return 0;
-}
-
-int GsRegularExpression::Substr(char *tstring, const char *replacement, GsRegularOptions options) const
-{
-    return 0;
-}
-
-int GsRegularExpression::Substr(char *tstring, int start, const char *replacement, GsRegularOptions options) const
-{
-    return 0;
-}
-
-bool GsRegularExpression::Match(const char *tstring, const char *pattern, GsRegularOptions options)
+bool RegularExpression::operator!=(const char *tstring) const
 {
     return false;
 }
 
-int GsRegularExpression::substOne(char *tstring, int start, const char *replacement, GsRegularOptions options) const
+int RegularExpression::Split(const char *tstring, int start, StringList &strings, RegularOptions options) const
 {
     return 0;
 }
 
-int GsRegularExpression::compileOptions(GsRegularOptions options)
+int RegularExpression::Substr(char *tstring, const char *replacement, RegularOptions options) const
 {
     return 0;
 }
 
-int GsRegularExpression::matchOptions(GsRegularOptions options)
+int RegularExpression::Substr(char *tstring, int start, const char *replacement, RegularOptions options) const
+{
+    return 0;
+}
+
+bool RegularExpression::Match(const char *tstring, const char *pattern, RegularOptions options)
+{
+    return false;
+}
+
+int RegularExpression::substOne(char *tstring, int start, const char *replacement, RegularOptions options) const
+{
+    return 0;
+}
+
+int RegularExpression::compileOptions(RegularOptions options)
+{
+    return 0;
+}
+
+int RegularExpression::matchOptions(RegularOptions options)
 {
     return 0;
 }

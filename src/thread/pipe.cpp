@@ -8,11 +8,11 @@
 
 namespace m2 {
 
-/******************************************* GsPipeImpl *******************************************/
+/******************************************* PipeImpl *******************************************/
 
 #ifdef _WIN32
 
-GsPipeImpl::GsPipeImpl()
+PipeImpl::PipeImpl()
 {
     SECURITY_ATTRIBUTES attr;
     attr.nLength = sizeof(attr);
@@ -22,13 +22,13 @@ GsPipeImpl::GsPipeImpl()
     if (!CreatePipe(&readHandle, &writeHandle, &attr, 0)) { throw std::runtime_error("anonymous pipe"); }
 }
 
-GsPipeImpl::~GsPipeImpl()
+PipeImpl::~PipeImpl()
 {
     CloseRead();
     CloseWrite();
 }
 
-int GsPipeImpl::Write(const unsigned char *buf, int len)
+int PipeImpl::Write(const unsigned char *buf, int len)
 {
     assert(writeHandle);
 
@@ -40,7 +40,7 @@ int GsPipeImpl::Write(const unsigned char *buf, int len)
     return byteWritten;
 }
 
-int GsPipeImpl::Read(unsigned char *buf, int len)
+int PipeImpl::Read(unsigned char *buf, int len)
 {
     assert(readHandle);
 
@@ -56,7 +56,7 @@ int GsPipeImpl::Read(unsigned char *buf, int len)
     }
 }
 
-void GsPipeImpl::CloseWrite()
+void PipeImpl::CloseWrite()
 {
     if (writeHandle != INVALID_HANDLE_VALUE)
     {
@@ -65,7 +65,7 @@ void GsPipeImpl::CloseWrite()
     }
 }
 
-void GsPipeImpl::CloseRead()
+void PipeImpl::CloseRead()
 {
     if (readHandle != INVALID_HANDLE_VALUE)
     {
@@ -76,80 +76,80 @@ void GsPipeImpl::CloseRead()
 
 #else
 
-GsPipeImpl::GsPipeImpl()
+PipeImpl::PipeImpl()
 {
 }
 
-GsPipeImpl::~GsPipeImpl() {}
+PipeImpl::~PipeImpl() {}
 
-int GsPipeImpl::Write(const unsigned char *buf, int len) { return 0; }
+int PipeImpl::Write(const unsigned char *buf, int len) { return 0; }
 
-int GsPipeImpl::Read(unsigned char *buf, int len) { return 0; }
+int PipeImpl::Read(unsigned char *buf, int len) { return 0; }
 
-void GsPipeImpl::CloseWrite() {}
+void PipeImpl::CloseWrite() {}
 
-void GsPipeImpl::CloseRead() {}
+void PipeImpl::CloseRead() {}
 
 #endif
 
 
-/******************************************* GsPipe *******************************************/
+/******************************************* Pipe *******************************************/
 
-GsPipe::GsPipe()
+Pipe::Pipe()
 {
-    GsPipeImpl *p = new GsPipeImpl();
+    PipeImpl *p = new PipeImpl();
     p->AddRef();
     m_Handle = p;
 }
 
-GsPipe::GsPipe(const GsPipe &pipe) : m_Handle(pipe.m_Handle)
+Pipe::Pipe(const Pipe &pipe) : m_Handle(pipe.m_Handle)
 {
-    (static_cast<GsPipeImpl *>(m_Handle))->AddRef();
+    (static_cast<PipeImpl *>(m_Handle))->AddRef();
 }
 
-GsPipe::~GsPipe() { (static_cast<GsPipeImpl *>(m_Handle))->Release(); }
+Pipe::~Pipe() { (static_cast<PipeImpl *>(m_Handle))->Release(); }
 
-GsPipe &GsPipe::operator=(const GsPipe &pipe)
+Pipe &Pipe::operator=(const Pipe &pipe)
 {
     if (this != &pipe)
     {
-        (static_cast<GsPipeImpl *>(m_Handle))->Release();
+        (static_cast<PipeImpl *>(m_Handle))->Release();
         m_Handle = pipe.m_Handle;
-        (static_cast<GsPipeImpl *>(m_Handle))->AddRef();
+        (static_cast<PipeImpl *>(m_Handle))->AddRef();
     }
     return *this;
 }
 
-int GsPipe::Write(const unsigned char *pBuffer, int nLen)
+int Pipe::Write(const unsigned char *pBuffer, int nLen)
 {
-    return (static_cast<GsPipeImpl *>(m_Handle))->Write(pBuffer, nLen);
+    return (static_cast<PipeImpl *>(m_Handle))->Write(pBuffer, nLen);
 }
 
-int GsPipe::Read(unsigned char *pBuffer, int nLen)
+int Pipe::Read(unsigned char *pBuffer, int nLen)
 {
-    return (static_cast<GsPipeImpl *>(m_Handle))->Read(pBuffer, nLen);
+    return (static_cast<PipeImpl *>(m_Handle))->Read(pBuffer, nLen);
 }
 
-void GsPipe::Close(GsPipeCloseMode mode)
+void Pipe::Close(PipeCloseMode mode)
 {
     switch (mode)
     {
-        case GsPipeCloseMode::eCloseRead:
-            (static_cast<GsPipeImpl *>(m_Handle))->CloseRead();
+        case PipeCloseMode::eCloseRead:
+            (static_cast<PipeImpl *>(m_Handle))->CloseRead();
             break;
-        case GsPipeCloseMode::eCloseWrite:
-            (static_cast<GsPipeImpl *>(m_Handle))->CloseWrite();
+        case PipeCloseMode::eCloseWrite:
+            (static_cast<PipeImpl *>(m_Handle))->CloseWrite();
             break;
-        case GsPipeCloseMode::eCloseAll:
-            (static_cast<GsPipeImpl *>(m_Handle))->CloseRead();
-            (static_cast<GsPipeImpl *>(m_Handle))->CloseWrite();
+        case PipeCloseMode::eCloseAll:
+            (static_cast<PipeImpl *>(m_Handle))->CloseRead();
+            (static_cast<PipeImpl *>(m_Handle))->CloseWrite();
             break;
         default:
             break;
     }
 }
 
-void *GsPipe::Handle()
+void *Pipe::Handle()
 {
     return m_Handle;
 }

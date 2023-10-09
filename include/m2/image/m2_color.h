@@ -36,48 +36,48 @@
 
 namespace m2 {
 
-struct M2_API GsColor
+struct M2_API Color
 {
     /// @brief 默认构造
-    GsColor() noexcept;
+    Color() noexcept;
     /// @brief 根据无符号32位整型构造
     /// @param c
-    GsColor(unsigned int c) noexcept;
+    Color(unsigned int c) noexcept;
     /// @brief 根据有符号32位整型构造
     /// @param c
-    GsColor(int c) noexcept;
+    Color(int c) noexcept;
     /// @brief 根据R，G，B，A通道构造
     /// @param r 红色通道[0,255]
     /// @param g 绿色通道[0,255]
     /// @param b 蓝色通道[0,255]
     /// @param a 透明通道[0,255]
-    GsColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255) noexcept;
+    Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255) noexcept;
     /// @brief 拷贝构造
     /// @param color
-    GsColor(const GsColor &color) noexcept;
+    Color(const Color &color) noexcept;
     /// @brief 改变颜色的透明度
     /// @param rhs
     /// @param a
-    GsColor(const GsColor &rhs, unsigned char a);
+    Color(const Color &rhs, unsigned char a);
     /// @brief 拷贝构造
     /// @param color
     /// @return
-    GsColor &operator=(const GsColor &color) noexcept;
+    Color &operator=(const Color &color) noexcept;
 
     /// @brief 随机颜色
     /// @details 随机RGB值，生成颜色可能过亮
     /// @return
-    static GsColor Random();
+    static Color Random();
 
     /// @brief 随机颜色
     /// @details 使用HSV模型获取随机值，颜色更为柔和，所有渲染颜色都调用此接口获取随机值
     /// @return
-    static GsColor RandomHSV();
+    static Color RandomHSV();
 
     /// @brief 从CSS颜色描述构造
     /// @param css
     /// @return
-    static GsColor FromCSS(const char *css);
+    static Color FromCSS(const char *css);
 
     /// @brief 根据R，G，B，A通道构造
     /// @param r 红色通道[0,255]
@@ -85,7 +85,7 @@ struct M2_API GsColor
     /// @param b 蓝色通道[0,255]
     /// @param a 透明通道[0,255]
     /// @return
-    static GsColor FromARGB(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
+    static Color FromARGB(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
 
     /// @brief 从浮点R，G，B，A通道构造
     /// @param r 红色通道[0,1]
@@ -93,7 +93,7 @@ struct M2_API GsColor
     /// @param b 蓝色通道[0,1]
     /// @param a 透明通道[0,1]
     /// @return
-    static GsColor FromARGBF(double r, double g, double b, double a = 1.0f);
+    static Color FromARGBF(double r, double g, double b, double a = 1.0f);
 
     /// @brief 根据C，M，Y，K通道构造
     /// @param c 青色通道[0,100]
@@ -101,7 +101,7 @@ struct M2_API GsColor
     /// @param y 黄色通道[0,100]
     /// @param k 黑色通道[0,100]
     /// @return
-    static GsColor FromCMYK(unsigned char c, unsigned char m, unsigned char y, unsigned char k);
+    static Color FromCMYK(unsigned char c, unsigned char m, unsigned char y, unsigned char k);
 
     /// @brief 根据浮点C，M，Y，K通道构造
     /// @param c 青色通道[0,1]
@@ -109,14 +109,14 @@ struct M2_API GsColor
     /// @param y 黄色通道[0,1]
     /// @param k 黑色通道[0,1]
     /// @return
-    static GsColor FromCMYKF(double c, double m, double y, double k);
+    static Color FromCMYKF(double c, double m, double y, double k);
     /// @brief 从HSV颜色构造
     /// @param h  Hue  色调				h 范围[0, 360] (int)
     /// @param s  Saturation 饱和度		s 范围[0, 255](int)
     /// @param v  Value 亮度			v 范围[0, 255](int)
     /// @param a  透明度
     /// @return
-    static GsColor FromHSV(int h, int s, int v, unsigned char a = 255);
+    static Color FromHSV(int h, int s, int v, unsigned char a = 255);
 
     /// @brief 从HSV颜色构造
     /// @param h  Hue  色调				h 范围[0, 360] (float,取值为int)
@@ -124,7 +124,7 @@ struct M2_API GsColor
     /// @param v  Value 亮度			v 范围[0, 1.0](float)
     /// @param a  透明度
     /// @return
-    static GsColor FromHSV(float h, float s, float v, float a = 1.0);
+    static Color FromHSV(float h, float s, float v, float a = 1.0);
     /// @brief 颜色转灰度值
     /// @param r  红色通道[0,255]
     /// @param g  绿色通道[0,255]
@@ -175,37 +175,37 @@ struct M2_API GsColor
     float AlphaF() const noexcept;
     /// @brief 设置浮点数R通道值
     /// @return 返回自身的引用
-    GsColor &RedF(float r) noexcept;
+    Color &RedF(float r) noexcept;
     /// @brief 设置浮点数G通道值
     /// @return 返回自身的引用
-    GsColor &GreenF(float g) noexcept;
+    Color &GreenF(float g) noexcept;
     /// @brief 设置浮点数A通道值
     /// @return 返回自身的引用
-    GsColor &BlueF(float b) noexcept;
+    Color &BlueF(float b) noexcept;
     /// @brief 设置浮点数B通道值
     /// @return 返回自身的引用
-    GsColor &AlphaF(float a) noexcept;
+    Color &AlphaF(float a) noexcept;
     /// @brief 转换未灰度值[0,255]
     /// @return
     inline int ToGray() const
     {
-        return GsColor::ToGray(R, G, B);
+        return Color::ToGray(R, G, B);
     }
 
     /// @brief 等号操作符
     /// @param argb
     /// @return
-    GsColor &operator=(unsigned int &argb) noexcept;
+    Color &operator=(unsigned int &argb) noexcept;
     /// @brief 等号操作符
     /// @param argb
     /// @return
-    GsColor &operator=(int &argb) noexcept;
+    Color &operator=(int &argb) noexcept;
     /// @brief 等号操作符
     /// @param rhs
     /// @return
-    GsColor &operator=(GsColor &rhs) noexcept;
-    bool operator==(const GsColor &color) const noexcept;
-    bool operator!=(const GsColor &color) const noexcept;
+    Color &operator=(Color &rhs) noexcept;
+    bool operator==(const Color &color) const noexcept;
+    bool operator!=(const Color &color) const noexcept;
 
     /// @brief 无符号整数重载操作符
     explicit operator unsigned int() const noexcept;
@@ -549,12 +549,12 @@ struct M2_API GsColor
     /// @param color
     /// @param mode
     /// @return
-    GsColor &Blend(const GsColor &color, PorterDuffBlendMode mode);
+    Color &Blend(const Color &color, PorterDuffBlendMode mode);
     /// @brief 根据PS函数模型混合颜色
     /// @param color
     /// @param mode
     /// @return
-    GsColor &Blend(const GsColor &color, PhotoShopColorBlendMode mode);
+    Color &Blend(const Color &color, PhotoShopColorBlendMode mode);
 
     union
     {

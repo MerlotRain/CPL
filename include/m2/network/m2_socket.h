@@ -39,25 +39,25 @@ namespace Network {
 
 
 /// @brief 网卡信息
-struct M2_API GsNetworkAdpterInfomation
+struct M2_API NetworkAdpterInfomation
 {
     /// @brief 网卡名称
-    GsString AdpterName;
+    String AdpterName;
     /// @brief 网卡描述
-    GsString AdpterDescription;
+    String AdpterDescription;
     /// @brief ip地址
-    GsString IPAddress;
+    String IPAddress;
     /// @brief 子网掩码
-    GsString Mask;
+    String Mask;
     /// @brief 网关
-    GsString Gateway;
+    String Gateway;
     /// @brief mac地址
     unsigned char Mac[8];
 };
 
 /// @brief 获取所有网卡信息，ipconfig效果
 /// @return
-static std::vector<GsNetworkAdpterInfomation> NetworkAdpterInfomations();
+static std::vector<NetworkAdpterInfomation> NetworkAdpterInfomations();
 
 /// @brief ping xx.xx.xx.xx
 /// @param ip
@@ -69,9 +69,9 @@ static bool Ping(const char *ip, const int timeout = 500);
 }// namespace Network
 
 
-class GsSocket;
-class GsSocketAddress;
-class GsSocketAcceptor;
+class Socket;
+class SocketAddress;
+class SocketAcceptor;
 
 
 }// namespace m2

@@ -38,22 +38,22 @@
 namespace m2 {
 
 /// @brief 二维码对象
-class GsQRCodePage
+class QRCodePage
 {
     void *m_QRCode;
 
 public:
-    GsQRCodePage(void *code = nullptr);
-    ~GsQRCodePage();
-    GsQRCodePage(const GsQRCodePage &rhs);
+    QRCodePage(void *code = nullptr);
+    ~QRCodePage();
+    QRCodePage(const QRCodePage &rhs);
 
-    GsQRCodePage &operator=(const GsQRCodePage &rhs);
+    QRCodePage &operator=(const QRCodePage &rhs);
     int Size();
     bool IsSet(int r, int c);
 };
 
 /// @brief 二维码生成的级别
-enum GsQREncodeLevel
+enum QREncodeLevel
 {
     eQR_ECLEVEL_L = 0,///< lowest
     eQR_ECLEVEL_M,
@@ -62,7 +62,7 @@ enum GsQREncodeLevel
 };
 
 /// @brief 二维码编码模式
-enum GsQREncodeMode
+enum QREncodeMode
 {
     eQR_MODE_NUL = -1,  ///< Terminator (NUL character). Internal use only
     eQR_MODE_NUM = 0,   ///< Numeric mode
@@ -77,7 +77,7 @@ enum GsQREncodeMode
 
 
 /// @brief 二维码编码数据类型
-enum GsQRCodeDataType
+enum QRCodeDataType
 {
     eQRCodeUnknown,//!< 未知类型，错误类型
     eQRCodeString, //!< 字符串二维编码
@@ -86,28 +86,28 @@ enum GsQRCodeDataType
 
 
 /// @brief 二维码生成
-class GsQRCode
+class QRCode
 {
 public:
-    GsQRCode();
-    GsQRCode(const char *strData);
-    GsQRCode(const unsigned char *pData, int nLen);
-    virtual ~GsQRCode();
-    GsQREncodeLevel Level();
-    void Level(GsQREncodeLevel eLevel);
-    GsQREncodeMode Mode();
-    void Mode(GsQREncodeMode mode);
+    QRCode();
+    QRCode(const char *strData);
+    QRCode(const unsigned char *pData, int nLen);
+    virtual ~QRCode();
+    QREncodeLevel Level();
+    void Level(QREncodeLevel eLevel);
+    QREncodeMode Mode();
+    void Mode(QREncodeMode mode);
     bool Encode(const char *strData);
     bool Encode(const unsigned char *pData, int nLen);
     int PageCount();
-    GsQRCodePage CodePage(int i);
+    QRCodePage CodePage(int i);
     void Reset();
 
 private:
     void *m_QRCodeList;
-    std::vector<GsQRCodePage> m_Pages;
-    GsQREncodeLevel m_eLevel;
-    GsQREncodeMode m_eMode;
+    std::vector<QRCodePage> m_Pages;
+    QREncodeLevel m_eLevel;
+    QREncodeMode m_eMode;
 };
 
 }// namespace m2

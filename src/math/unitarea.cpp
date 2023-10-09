@@ -70,181 +70,181 @@ static constexpr auto fenToMeter2 = 66.6667;
 static constexpr auto DegreesToMeter2 = 12392029030.5;
 
 
-GsArea::GsArea() noexcept
+Area::Area() noexcept
 {
 }
 
-GsArea::GsArea(const GsArea &rhs) noexcept : Area(rhs.Area), Unit(rhs.Unit)
+Area::Area(const Area &rhs) noexcept : Area(rhs.Area), Unit(rhs.Unit)
 {
 }
 
-GsArea &GsArea::operator=(const GsArea &rhs) noexcept
+Area &Area::operator=(const Area &rhs) noexcept
 {
     Area = rhs.Area;
     Unit = rhs.Unit;
     return *this;
 }
 
-GsArea::GsArea(double a, GsAreaUnits unit) noexcept : Area(a), Unit(unit)
+Area::Area(double a, AreaUnits unit) noexcept : Area(a), Unit(unit)
 {
 }
 
-GsArea::GsArea(GsArea &&rhs) noexcept
+Area::Area(Area &&rhs) noexcept
 {
     Area = std::move(rhs.Area);
     Unit = std::move(rhs.Unit);
 }
 
-GsArea &GsArea::operator=(GsArea &&rhs) noexcept
+Area &Area::operator=(Area &&rhs) noexcept
 {
     Area = std::move(rhs.Area);
     Unit = std::move(rhs.Unit);
     return *this;
 }
 
-void GsArea::Swap(GsArea &rhs) noexcept
+void Area::Swap(Area &rhs) noexcept
 {
     std::swap(Area, rhs.Area);
     std::swap(Unit, rhs.Unit);
 }
 
-bool GsArea::operator==(const GsArea &rhs) const noexcept
+bool Area::operator==(const Area &rhs) const noexcept
 {
-    return Math::FuzzyCompare(Area, rhs.Area * GsArea::ConvertScale(rhs.Unit, Unit));
+    return Math::FuzzyCompare(Area, rhs.Area * Area::ConvertScale(rhs.Unit, Unit));
 }
 
-bool GsArea::operator!=(const GsArea &rhs) const noexcept
+bool Area::operator!=(const Area &rhs) const noexcept
 {
     return !(*this == rhs);
 }
 
-bool GsArea::operator<(const GsArea &rhs) const noexcept
+bool Area::operator<(const Area &rhs) const noexcept
 {
-    return Area < rhs.Area * GsArea::ConvertScale(rhs.Unit, Unit);
+    return Area < rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
 }
 
-bool GsArea::operator<=(const GsArea &rhs) const noexcept
+bool Area::operator<=(const Area &rhs) const noexcept
 {
-    return Area <= rhs.Area * GsArea::ConvertScale(rhs.Unit, Unit);
+    return Area <= rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
 }
 
-bool GsArea::operator>(const GsArea &rhs) const noexcept
+bool Area::operator>(const Area &rhs) const noexcept
 {
-    return Area > rhs.Area * GsArea::ConvertScale(rhs.Unit, Unit);
+    return Area > rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
 }
 
-bool GsArea::operator>=(const GsArea &rhs) const noexcept
+bool Area::operator>=(const Area &rhs) const noexcept
 {
-    return Area >= rhs.Area * GsArea::ConvertScale(rhs.Unit, Unit);
+    return Area >= rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
 }
 
-GsArea GsArea::operator-(const GsArea &rhs) const noexcept
+Area Area::operator-(const Area &rhs) const noexcept
 {
-    GsArea area;
-    area.Area = Area - rhs.Area * GsArea::ConvertScale(rhs.Unit, Unit);
+    Area area;
+    area.Area = Area - rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
     area.Unit = Unit;
     return area;
 }
 
-GsArea GsArea::operator+(const GsArea &rhs) const noexcept
+Area Area::operator+(const Area &rhs) const noexcept
 {
-    GsArea area;
-    area.Area = Area + rhs.Area * GsArea::ConvertScale(rhs.Unit, Unit);
+    Area area;
+    area.Area = Area + rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
     area.Unit = Unit;
     return area;
 }
 
-GsArea &GsArea::operator+=(const GsArea &rhs) noexcept
+Area &Area::operator+=(const Area &rhs) noexcept
 {
-    Area += rhs.Area * GsArea::ConvertScale(rhs.Unit, Unit);
+    Area += rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
     return *this;
 }
 
-GsArea &GsArea::operator-=(const GsArea &rhs) noexcept
+Area &Area::operator-=(const Area &rhs) noexcept
 {
-    Area -= rhs.Area * GsArea::ConvertScale(rhs.Unit, Unit);
+    Area -= rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
     return *this;
 }
 
-GsArea::operator double() const
+Area::operator double() const
 {
     return Area;
 }
 
-GsArea GsArea::ToMeter2(double a, GsAreaUnits units)
+Area Area::ToMeter2(double a, AreaUnits units)
 {
-    GsArea area;
-    area.Area = a * GsArea::ConvertScale(units, GsAreaUnits::eMeter2);
-    area.Unit = GsAreaUnits::eMeter2;
+    Area area;
+    area.Area = a * Area::ConvertScale(units, AreaUnits::eMeter2);
+    area.Unit = AreaUnits::eMeter2;
     return area;
 }
 
-GsArea GsArea::ConvertTo(double a, GsAreaUnits srcUnit, GsAreaUnits tagUnit)
+Area Area::ConvertTo(double a, AreaUnits srcUnit, AreaUnits tagUnit)
 {
-    GsArea area;
-    area.Area = a * GsArea::ConvertScale(srcUnit, tagUnit);
+    Area area;
+    area.Area = a * Area::ConvertScale(srcUnit, tagUnit);
     area.Unit = tagUnit;
     return area;
 }
 
-double GsArea::Meter2Area(double a, GsAreaUnits srcUnit, GsAreaUnits tagUnit)
+double Area::Meter2Area(double a, AreaUnits srcUnit, AreaUnits tagUnit)
 {
     return ConvertTo(a, srcUnit, tagUnit).Area;
 }
 
-double GsArea::ConvertScale(GsAreaUnits from, GsAreaUnits to)
+double Area::ConvertScale(AreaUnits from, AreaUnits to)
 {
     double fromToMeter2 = 1.0;
     double Meter2ToTo = 1.0;
     switch (from)
     {
-        case GsAreaUnits::eKilometer2:
+        case AreaUnits::eKilometer2:
             fromToMeter2 = Kilemeter2ToMeter2;
             break;
-        case GsAreaUnits::ehm2:
+        case AreaUnits::ehm2:
             fromToMeter2 = Hm2ToMeter2;
             break;
-        case GsAreaUnits::eAre:
+        case AreaUnits::eAre:
             fromToMeter2 = AreToMeter2;
             break;
-        case GsAreaUnits::eDecimetre2:
+        case AreaUnits::eDecimetre2:
             fromToMeter2 = Decimetre2ToMeter2;
             break;
-        case GsAreaUnits::eCentimeter2:
+        case AreaUnits::eCentimeter2:
             fromToMeter2 = Centimeter2ToMeter2;
             break;
-        case GsAreaUnits::eMillimeter2:
+        case AreaUnits::eMillimeter2:
             fromToMeter2 = Millimeter2ToMeter2;
             break;
-        case GsAreaUnits::eAcre:
+        case AreaUnits::eAcre:
             fromToMeter2 = AcreToMeter2;
             break;
-        case GsAreaUnits::eMile2:
+        case AreaUnits::eMile2:
             fromToMeter2 = Mile2ToMeter2;
             break;
-        case GsAreaUnits::eYard2:
+        case AreaUnits::eYard2:
             fromToMeter2 = Yard2ToMeter2;
             break;
-        case GsAreaUnits::eFeet2:
+        case AreaUnits::eFeet2:
             fromToMeter2 = Feet2ToMeter2;
             break;
-        case GsAreaUnits::eInche2:
+        case AreaUnits::eInche2:
             fromToMeter2 = Inche2ToMeter2;
             break;
-        case GsAreaUnits::eRd2:
+        case AreaUnits::eRd2:
             fromToMeter2 = Rd2ToMeter2;
             break;
-        case GsAreaUnits::eQing:
+        case AreaUnits::eQing:
             fromToMeter2 = qingToMeter2;
             break;
-        case GsAreaUnits::eMu:
+        case AreaUnits::eMu:
             fromToMeter2 = muToMeter2;
             break;
-        case GsAreaUnits::eFen:
+        case AreaUnits::eFen:
             fromToMeter2 = fenToMeter2;
             break;
 #ifdef SPATIAL_FEATURE
-        case GsAreaUnits::eDegrees:
+        case AreaUnits::eDegrees:
             fromToMeter2 = DegreesToMeter2;
             break;
 #endif
@@ -254,53 +254,53 @@ double GsArea::ConvertScale(GsAreaUnits from, GsAreaUnits to)
 
     switch (to)
     {
-        case GsAreaUnits::eKilometer2:
+        case AreaUnits::eKilometer2:
             Meter2ToTo = Meter2ToKilemeter2;
             break;
-        case GsAreaUnits::ehm2:
+        case AreaUnits::ehm2:
             Meter2ToTo = Meter2ToHm2;
             break;
-        case GsAreaUnits::eAre:
+        case AreaUnits::eAre:
             Meter2ToTo = Meter2ToAre;
             break;
-        case GsAreaUnits::eDecimetre2:
+        case AreaUnits::eDecimetre2:
             Meter2ToTo = Meter2ToDecimetre2;
             break;
-        case GsAreaUnits::eCentimeter2:
+        case AreaUnits::eCentimeter2:
             Meter2ToTo = Meter2ToCentimeter2;
             break;
-        case GsAreaUnits::eMillimeter2:
+        case AreaUnits::eMillimeter2:
             Meter2ToTo = Meter2ToMillimeter2;
             break;
-        case GsAreaUnits::eAcre:
+        case AreaUnits::eAcre:
             Meter2ToTo = Meter2ToAcre;
             break;
-        case GsAreaUnits::eMile2:
+        case AreaUnits::eMile2:
             Meter2ToTo = Meter2ToMile2;
             break;
-        case GsAreaUnits::eYard2:
+        case AreaUnits::eYard2:
             Meter2ToTo = Meter2ToYard2;
             break;
-        case GsAreaUnits::eFeet2:
+        case AreaUnits::eFeet2:
             Meter2ToTo = Meter2ToFeet2;
             break;
-        case GsAreaUnits::eInche2:
+        case AreaUnits::eInche2:
             Meter2ToTo = Meter2ToInche2;
             break;
-        case GsAreaUnits::eRd2:
+        case AreaUnits::eRd2:
             Meter2ToTo = Meter2ToRd2;
             break;
-        case GsAreaUnits::eQing:
+        case AreaUnits::eQing:
             Meter2ToTo = Meter2Toqing;
             break;
-        case GsAreaUnits::eMu:
+        case AreaUnits::eMu:
             Meter2ToTo = Meter2Tomu;
             break;
-        case GsAreaUnits::eFen:
+        case AreaUnits::eFen:
             Meter2ToTo = Meter2Tofen;
             break;
 #ifdef SPATIAL_FEATURE
-        case GsAreaUnits::eDegrees:
+        case AreaUnits::eDegrees:
             Meter2ToTo = Meter2ToDegrees;
             break;
 #endif

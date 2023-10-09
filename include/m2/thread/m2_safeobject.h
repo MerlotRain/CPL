@@ -38,7 +38,7 @@
 namespace m2 {
 
 template<class T, class L = RWLock>
-class GsSafeObject : public T, public L
+class SafeObject : public T, public L
 {
 public:
     using T::operator=;
@@ -53,13 +53,13 @@ public:
 };
 
 template<class T, class L = RWLock>
-class GsSafeType : public L
+class SafeType : public L
 {
 public:
-    GsSafeType()
+    SafeType()
     {
     }
-    GsSafeType(T v) : Value(v)
+    SafeType(T v) : Value(v)
     {
     }
     template<class FUN>

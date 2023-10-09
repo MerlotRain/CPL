@@ -8,15 +8,15 @@
 
 namespace m2 {
 
-GsDateTime::GsDateTime()
+DateTime::DateTime()
 {
-    GsTimestamp now;
+    Timestamp now;
     m_nUTCTime = now.UTCTime();
     ComputeGregorian(JulianDay());
     ComputeDaytime();
 }
 
-GsDateTime::GsDateTime(const tm &_tm)
+DateTime::DateTime(const tm &_tm)
     : m_nYear(_tm.tm_year + 1900), m_nMonth(_tm.tm_mon + 1), m_nDay(_tm.tm_mday), m_nHour(_tm.tm_hour),
       m_nMinute(_tm.tm_min), m_nSecond(_tm.tm_sec), m_nMillisecond(0), m_nMicrosecond(0)
 {
@@ -31,11 +31,11 @@ GsDateTime::GsDateTime(const tm &_tm)
                  10 * (m_nHour * TM_HOURS + m_nMinute * TM_MINUTES + m_nSecond * TM_SECONDS);
 }
 
-GsDateTime::GsDateTime(const GsTimestamp &timestamp) : m_nUTCTime(timestamp.UTCTime())
+DateTime::DateTime(const Timestamp &timestamp) : m_nUTCTime(timestamp.UTCTime())
 {
 }
 
-GsDateTime::GsDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond,
+DateTime::DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond,
                        int microsecond)
     : m_nYear(year), m_nMonth(month), m_nDay(day), m_nHour(hour), m_nMinute(minute), m_nSecond(second),
       m_nMillisecond(millisecond), m_nMicrosecond(microsecond)
@@ -54,13 +54,13 @@ GsDateTime::GsDateTime(int year, int month, int day, int hour, int minute, int s
                        millisecond * TM_MILLISECONDS + microsecond);
 }
 
-GsDateTime::GsDateTime(long long utcTime, long long diff) : m_nUTCTime(utcTime + diff * 10)
+DateTime::DateTime(long long utcTime, long long diff) : m_nUTCTime(utcTime + diff * 10)
 {
     ComputeGregorian(JulianDay());
     ComputeDaytime();
 }
 
-GsDateTime::GsDateTime(const GsDateTime &dateTime)
+DateTime::DateTime(const DateTime &dateTime)
     : m_nUTCTime(dateTime.m_nUTCTime), m_nYear(dateTime.m_nYear), m_nMonth(dateTime.m_nMonth),
       m_nDay(dateTime.m_nDay), m_nHour(dateTime.m_nHour), m_nMinute(dateTime.m_nMinute),
       m_nSecond(dateTime.m_nSecond), m_nMillisecond(dateTime.m_nMillisecond),
@@ -68,11 +68,11 @@ GsDateTime::GsDateTime(const GsDateTime &dateTime)
 {
 }
 
-GsDateTime::~GsDateTime()
+DateTime::~DateTime()
 {
 }
 
-GsDateTime &GsDateTime::operator=(const GsDateTime &dateTime)
+DateTime &DateTime::operator=(const DateTime &dateTime)
 {
     if (&dateTime != this)
     {
@@ -89,7 +89,7 @@ GsDateTime &GsDateTime::operator=(const GsDateTime &dateTime)
     return *this;
 }
 
-GsDateTime &GsDateTime::operator=(const GsTimestamp &timestamp)
+DateTime &DateTime::operator=(const Timestamp &timestamp)
 {
     m_nUTCTime = timestamp.UTCTime();
     ComputeGregorian(JulianDay());
@@ -97,7 +97,7 @@ GsDateTime &GsDateTime::operator=(const GsTimestamp &timestamp)
     return *this;
 }
 
-GsDateTime &GsDateTime::Assign(int year, int month, int day, int hour, int minute, int second,
+DateTime &DateTime::Assign(int year, int month, int day, int hour, int minute, int second,
                                int millisecond, int microseconds)
 {
     assert(year >= 0 && year <= 9999);
@@ -124,7 +124,7 @@ GsDateTime &GsDateTime::Assign(int year, int month, int day, int hour, int minut
     return *this;
 }
 
-void GsDateTime::Swap(GsDateTime &dateTime) noexcept
+void DateTime::Swap(DateTime &dateTime) noexcept
 {
     std::swap(m_nUTCTime, dateTime.m_nUTCTime);
     std::swap(m_nYear, dateTime.m_nYear);
@@ -137,23 +137,23 @@ void GsDateTime::Swap(GsDateTime &dateTime) noexcept
     std::swap(m_nMicrosecond, dateTime.m_nMicrosecond);
 }
 
-int GsDateTime::Year() const
+int DateTime::Year() const
 {
     return m_nYear;
 }
 
-int GsDateTime::Month() const
+int DateTime::Month() const
 {
     return m_nMonth;
 }
 
-int GsDateTime::Week(int firstDayOfWeek) const
+int DateTime::Week(int firstDayOfWeek) const
 {
     assert(firstDayOfWeek >= 0 && firstDayOfWeek <= 6);
 
     /// find the first firstDayOfWeek.
     int baseDay = 1;
-    while (GsDateTime(m_nYear, 1, baseDay).DayOfWeek() != firstDayOfWeek) ++baseDay;
+    while (DateTime(m_nYear, 1, baseDay).DayOfWeek() != firstDayOfWeek) ++baseDay;
 
     int doy = DayOfYear();
     int offs = baseDay <= 4 ? 0 : 1;
@@ -163,17 +163,17 @@ int GsDateTime::Week(int firstDayOfWeek) const
         return (doy - baseDay) / 7 + 1 + offs;
 }
 
-int GsDateTime::Day() const
+int DateTime::Day() const
 {
     return m_nDay;
 }
 
-int GsDateTime::DayOfWeek() const
+int DateTime::DayOfWeek() const
 {
     return int((std::floor(JulianDay() + 1.5))) % 7;
 }
 
-int GsDateTime::DayOfYear() const
+int DateTime::DayOfYear() const
 {
     int doy = 0;
     for (int month = 1; month < m_nMonth; ++month) doy += DaysOfMonth(m_nYear, month);
@@ -181,12 +181,12 @@ int GsDateTime::DayOfYear() const
     return doy;
 }
 
-int GsDateTime::Hour() const
+int DateTime::Hour() const
 {
     return m_nHour;
 }
 
-int GsDateTime::HourAMPM() const
+int DateTime::HourAMPM() const
 {
     if (m_nHour < 1)
         return 12;
@@ -196,102 +196,102 @@ int GsDateTime::HourAMPM() const
         return m_nHour;
 }
 
-bool GsDateTime::AM() const
+bool DateTime::AM() const
 {
     return m_nHour < 12;
 }
 
-bool GsDateTime::PM() const
+bool DateTime::PM() const
 {
     return m_nHour >= 12;
 }
 
-int GsDateTime::Minute() const
+int DateTime::Minute() const
 {
     return m_nMinute;
 }
 
-int GsDateTime::Second() const
+int DateTime::Second() const
 {
     return m_nSecond;
 }
 
-int GsDateTime::Millisecond() const
+int DateTime::Millisecond() const
 {
     return m_nMillisecond;
 }
 
-int GsDateTime::Microsecond() const
+int DateTime::Microsecond() const
 {
     return m_nMicrosecond;
 }
 
-double GsDateTime::JulianDay() const
+double DateTime::JulianDay() const
 {
     return ToJulianDay(m_nUTCTime);
 }
 
-GsTimestamp GsDateTime::Timestamp() const
+Timestamp DateTime::Timestamp() const
 {
-    return GsTimestamp::FromUTCTime(m_nUTCTime);
+    return Timestamp::FromUTCTime(m_nUTCTime);
 }
 
-long long GsDateTime::UTCTime() const
+long long DateTime::UTCTime() const
 {
     return 0;
 }
 
-GsDateTime GsDateTime::ToLocal() const
+DateTime DateTime::ToLocal() const
 {
-    return GsDateTime();
+    return DateTime();
 }
 
-bool GsDateTime::operator==(const GsDateTime &dateTime) const
+bool DateTime::operator==(const DateTime &dateTime) const
 {
     return m_nUTCTime == dateTime.m_nUTCTime;
 }
 
-bool GsDateTime::operator!=(const GsDateTime &dateTime) const
+bool DateTime::operator!=(const DateTime &dateTime) const
 {
     return m_nUTCTime != dateTime.m_nUTCTime;
 }
 
-bool GsDateTime::operator<(const GsDateTime &dateTime) const
+bool DateTime::operator<(const DateTime &dateTime) const
 {
     return m_nUTCTime < dateTime.m_nUTCTime;
 }
 
-bool GsDateTime::operator<=(const GsDateTime &dateTime) const
+bool DateTime::operator<=(const DateTime &dateTime) const
 {
     return m_nUTCTime <= dateTime.m_nUTCTime;
 }
 
-bool GsDateTime::operator>(const GsDateTime &dateTime) const
+bool DateTime::operator>(const DateTime &dateTime) const
 {
     return m_nUTCTime > dateTime.m_nUTCTime;
 }
 
-bool GsDateTime::operator>=(const GsDateTime &dateTime) const
+bool DateTime::operator>=(const DateTime &dateTime) const
 {
     return m_nUTCTime >= dateTime.m_nUTCTime;
 }
 
-GsDateTime GsDateTime::operator+(const GsTimeSpan &span) const
+DateTime DateTime::operator+(const TimeSpan &span) const
 {
-    return GsDateTime(m_nUTCTime, span.TotalMicroseconds());
+    return DateTime(m_nUTCTime, span.TotalMicroseconds());
 }
 
-GsDateTime GsDateTime::operator-(const GsTimeSpan &span) const
+DateTime DateTime::operator-(const TimeSpan &span) const
 {
-    return GsDateTime(m_nUTCTime, -span.TotalMicroseconds());
+    return DateTime(m_nUTCTime, -span.TotalMicroseconds());
 }
 
-GsTimeSpan GsDateTime::operator-(const GsDateTime &dateTime) const
+TimeSpan DateTime::operator-(const DateTime &dateTime) const
 {
-    return GsTimeSpan((m_nUTCTime - dateTime.m_nUTCTime) / 10);
+    return TimeSpan((m_nUTCTime - dateTime.m_nUTCTime) / 10);
 }
 
-GsDateTime &GsDateTime::operator+=(const GsTimeSpan &span)
+DateTime &DateTime::operator+=(const TimeSpan &span)
 {
     m_nUTCTime += span.TotalMicroseconds() * 10;
     ComputeGregorian(JulianDay());
@@ -299,7 +299,7 @@ GsDateTime &GsDateTime::operator+=(const GsTimeSpan &span)
     return *this;
 }
 
-GsDateTime &GsDateTime::operator-=(const GsTimeSpan &span)
+DateTime &DateTime::operator-=(const TimeSpan &span)
 {
     m_nUTCTime -= span.TotalMicroseconds() * 10;
     ComputeGregorian(JulianDay());
@@ -307,22 +307,22 @@ GsDateTime &GsDateTime::operator-=(const GsTimeSpan &span)
     return *this;
 }
 
-void GsDateTime::MakeUTC(int tzd)
+void DateTime::MakeUTC(int tzd)
 {
-    operator-=(GsTimeSpan(((long long) tzd) * TM_SECONDS));
+    operator-=(TimeSpan(((long long) tzd) * TM_SECONDS));
 }
 
-void GsDateTime::MakeLocal(int tzd)
+void DateTime::MakeLocal(int tzd)
 {
-    operator+=(GsTimeSpan(((long long) tzd) * TM_SECONDS));
+    operator+=(TimeSpan(((long long) tzd) * TM_SECONDS));
 }
 
-bool GsDateTime::IsLeapYear(int year)
+bool DateTime::IsLeapYear(int year)
 {
     return (year % 4) == 0 && ((year % 100) != 0 || (year % 400) == 0);
 }
 
-int GsDateTime::DaysOfMonth(int year, int month)
+int DateTime::DaysOfMonth(int year, int month)
 {
     assert(month >= 1 && month <= 12);
 
@@ -334,7 +334,7 @@ int GsDateTime::DaysOfMonth(int year, int month)
         return daysOfMonthTable[month];
 }
 
-bool GsDateTime::IsValid(int year, int month, int day, int hour, int minute, int second, int millisecond,
+bool DateTime::IsValid(int year, int month, int day, int hour, int minute, int second, int millisecond,
                          int microsecond)
 {
     return (year >= 0 && year <= 9999) && (month >= 1 && month <= 12) &&
@@ -343,13 +343,13 @@ bool GsDateTime::IsValid(int year, int month, int day, int hour, int minute, int
            (millisecond >= 0 && millisecond <= 999) && (microsecond >= 0 && microsecond <= 999);
 }
 
-double GsDateTime::ToJulianDay(long long utcTime)
+double DateTime::ToJulianDay(long long utcTime)
 {
     double utcDays = double(utcTime) / 864000000000.0;
     return utcDays + 2299160.5;// first day of Gregorian reform (Oct 15 1582)
 }
 
-double GsDateTime::ToJulianDay(int year, int month, int day, int hour, int minute, int second,
+double DateTime::ToJulianDay(int year, int month, int day, int hour, int minute, int second,
                                int millisecond, int microsecond)
 {
     static int lookup[] = {-91, -60, -30, 0, 31, 61, 92, 122, 153, 184, 214, 245, 275, 306, 337};
@@ -369,12 +369,12 @@ double GsDateTime::ToJulianDay(int year, int month, int day, int hour, int minut
            std::floor(dyear / 400) + 1721118.5;
 }
 
-long long GsDateTime::ToUTCTime(double julianDay)
+long long DateTime::ToUTCTime(double julianDay)
 {
     return long long((julianDay - 2299160.5) * 864000000000.0);
 }
 
-void GsDateTime::ComputeGregorian(double julianDay)
+void DateTime::ComputeGregorian(double julianDay)
 {
     double z = std::floor(julianDay - 1721118.5);
     double r = julianDay - 1721118.5 - z;
@@ -417,9 +417,9 @@ void GsDateTime::ComputeGregorian(double julianDay)
     assert(m_nMicrosecond >= 0 && m_nMicrosecond <= 999);
 }
 
-void GsDateTime::ComputeDaytime()
+void DateTime::ComputeDaytime()
 {
-    GsTimeSpan span(m_nUTCTime / 10);
+    TimeSpan span(m_nUTCTime / 10);
     int hour = span.Hours();
     if (hour == 23 && m_nHour == 0)
     {
@@ -460,37 +460,37 @@ void GsDateTime::ComputeDaytime()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const std::vector<GsString> WEEKDAY_NAMES = {"Sunday", "Monday", "Tuesday", "Wednesday",
+const std::vector<String> WEEKDAY_NAMES = {"Sunday", "Monday", "Tuesday", "Wednesday",
                                              "Thursday", "Friday", "Saturday"};
 
-const std::vector<GsString> MONTH_NAMES = {"January", "February", "March", "April",
+const std::vector<String> MONTH_NAMES = {"January", "February", "March", "April",
                                            "May", "June", "July", "August",
                                            "September", "October", "November", "December"};
 
 
 #define SKIP_JUNK() \
-    while (it != end && !GsAscii::IsDigit(*it)) ++it
+    while (it != end && !Ascii::IsDigit(*it)) ++it
 
 
 #define SKIP_DIGITS() \
-    while (it != end && GsAscii::IsDigit(*it)) ++it
+    while (it != end && Ascii::IsDigit(*it)) ++it
 
 
 #define PARSE_NUMBER(var) \
-    while (it != end && GsAscii::IsDigit(*it)) var = var * 10 + ((*it++) - '0')
+    while (it != end && Ascii::IsDigit(*it)) var = var * 10 + ((*it++) - '0')
 
 
 #define PARSE_NUMBER_N(var, n)                                                                  \
     {                                                                                           \
         int i = 0;                                                                              \
-        while (i++ < n && it != end && GsAscii::IsDigit(*it)) var = var * 10 + ((*it++) - '0'); \
+        while (i++ < n && it != end && Ascii::IsDigit(*it)) var = var * 10 + ((*it++) - '0'); \
     }
 
 
 #define PARSE_FRACTIONAL_N(var, n)                          \
     {                                                       \
         int i = 0;                                          \
-        while (i < n && it != end && GsAscii::IsDigit(*it)) \
+        while (i < n && it != end && Ascii::IsDigit(*it)) \
         {                                                   \
             var = var * 10 + ((*it++) - '0');               \
             i++;                                            \
@@ -499,7 +499,7 @@ const std::vector<GsString> MONTH_NAMES = {"January", "February", "March", "Apri
     }
 
 
-static GsString WellKnownDateTimeFormat(GsDateTimeFormat format)
+static String WellKnownDateTimeFormat(DateTimeFormat format)
 {
     static constexpr auto WellKnownFormatList = {
             "%Y-%m-%dT%H:%M:%S%z", "%Y-%m-%dT%H:%M:%s%z", "%w, %e %b %y %H:%M:%S %Z",
@@ -507,7 +507,7 @@ static GsString WellKnownDateTimeFormat(GsDateTimeFormat format)
             "%W, %e %b %y %H:%M:%S %Z", "%w %b %f %H:%M:%S %Y", "%Y-%m-%d %H:%M:%S"};
 
     if (format > WellKnownFormatList.size())
-        return GsString();
+        return String();
 
     return *(WellKnownFormatList.begin() + format);
 }
@@ -516,55 +516,55 @@ static GsString WellKnownDateTimeFormat(GsDateTimeFormat format)
 /// @param it
 /// @param end
 /// @return 如果月份名称有效，则返回月份编号（1..12）
-static int ParseMonth(GsString::const_iterator &it, const GsString::const_iterator &end)
+static int ParseMonth(String::const_iterator &it, const String::const_iterator &end)
 {
-    GsString month;
-    while (it != end && (GsAscii::IsSpace(*it) || GsAscii::IsPunctuation(*it))) ++it;
+    String month;
+    while (it != end && (Ascii::IsSpace(*it) || Ascii::IsPunctuation(*it))) ++it;
     bool isFirst = true;
-    while (it != end && GsAscii::IsAlpha(*it))
+    while (it != end && Ascii::IsAlpha(*it))
     {
         char ch = (*it++);
         if (isFirst)
         {
-            month += GsAscii::ToUpper(ch);
+            month += Ascii::ToUpper(ch);
             isFirst = false;
         }
         else
-            month += GsAscii::ToLower(ch);
+            month += Ascii::ToLower(ch);
     }
     if (month.length() < 3)
-        throw GsUtilityException(GsString::Format(
+        throw UtilityException(String::Format(
                 "Month name '%s' must be at least three characters long", month.c_str()));
     for (int i = 0; i < 12; ++i)
     {
         if (MONTH_NAMES[i].find(month) == 0)
             return i + 1;
     }
-    throw GsUtilityException(GsString::Format("%s is not a valid month name", month.c_str()));
+    throw UtilityException(String::Format("%s is not a valid month name", month.c_str()));
 }
 
 /// @brief 尝试将给定的范围解释为工作日名称，范围必须至少有三个字符长
 /// @param it
 /// @param end
 /// @return 如果工作日名称有效，则返回工作日编号 0..6，其中0=周日，1=周一
-static int ParseDayOfWeek(GsString::const_iterator &it, const GsString::const_iterator &end)
+static int ParseDayOfWeek(String::const_iterator &it, const String::const_iterator &end)
 {
-    GsString dow;
-    while (it != end && (GsAscii::IsSpace(*it) || GsAscii::IsPunctuation(*it))) ++it;
+    String dow;
+    while (it != end && (Ascii::IsSpace(*it) || Ascii::IsPunctuation(*it))) ++it;
     bool isFirst = true;
-    while (it != end && GsAscii::IsAlpha(*it))
+    while (it != end && Ascii::IsAlpha(*it))
     {
         char ch = (*it++);
         if (isFirst)
         {
-            dow += GsAscii::ToUpper(ch);
+            dow += Ascii::ToUpper(ch);
             isFirst = false;
         }
         else
-            dow += GsAscii::ToLower(ch);
+            dow += Ascii::ToLower(ch);
     }
     if (dow.length() < 3)
-        throw GsUtilityException(GsString::Format(
+        throw UtilityException(String::Format(
                 "Weekday name '%s' must be at least three characters long", dow.c_str()));
 
     for (int i = 0; i < 7; ++i)
@@ -573,10 +573,10 @@ static int ParseDayOfWeek(GsString::const_iterator &it, const GsString::const_it
             return i;
     }
 
-    throw GsUtilityException(GsString::Format("%s is not a valid weekday name", dow.c_str()));
+    throw UtilityException(String::Format("%s is not a valid weekday name", dow.c_str()));
 }
 
-static int ParseTimeZoneDifferential(GsString::const_iterator &it, const GsString::const_iterator &end)
+static int ParseTimeZoneDifferential(String::const_iterator &it, const String::const_iterator &end)
 {
     struct Zone
     {
@@ -622,18 +622,18 @@ static int ParseTimeZoneDifferential(GsString::const_iterator &it, const GsStrin
     };
 
     int tzd = 0;
-    while (it != end && GsAscii::IsSpace(*it)) ++it;
+    while (it != end && Ascii::IsSpace(*it)) ++it;
     if (it != end)
     {
-        if (GsAscii::IsAlpha(*it))
+        if (Ascii::IsAlpha(*it))
         {
-            GsString designator;
+            String designator;
             designator += *it++;
-            if (it != end && GsAscii::IsAlpha(*it))
+            if (it != end && Ascii::IsAlpha(*it))
                 designator += *it++;
-            if (it != end && GsAscii::IsAlpha(*it))
+            if (it != end && Ascii::IsAlpha(*it))
                 designator += *it++;
-            if (it != end && GsAscii::IsAlpha(*it))
+            if (it != end && Ascii::IsAlpha(*it))
                 designator += *it++;
             for (unsigned i = 0; i < sizeof(zones) / sizeof(Zone); ++i)
             {
@@ -660,14 +660,14 @@ static int ParseTimeZoneDifferential(GsString::const_iterator &it, const GsStrin
     return tzd;
 }
 
-static int ParseAMPM(GsString::const_iterator &it, const GsString::const_iterator &end, int hour)
+static int ParseAMPM(String::const_iterator &it, const String::const_iterator &end, int hour)
 {
-    GsString ampm;
-    while (it != end && (GsAscii::IsSpace(*it) || GsAscii::IsPunctuation(*it))) ++it;
-    while (it != end && GsAscii::IsAlpha(*it))
+    String ampm;
+    while (it != end && (Ascii::IsSpace(*it) || Ascii::IsPunctuation(*it))) ++it;
+    while (it != end && Ascii::IsAlpha(*it))
     {
         char ch = (*it++);
-        ampm += GsAscii::ToUpper(ch);
+        ampm += Ascii::ToUpper(ch);
     }
     if (ampm == "AM")
     {
@@ -684,12 +684,12 @@ static int ParseAMPM(GsString::const_iterator &it, const GsString::const_iterato
             return hour;
     }
     else
-        throw GsUtilityException(GsString::Format("%s is not a valid AM/PM designator", ampm.c_str()));
+        throw UtilityException(String::Format("%s is not a valid AM/PM designator", ampm.c_str()));
 }
 
-void TimeZoneDifferentialISO(GsString &str, int timeZoneDifferential)
+void TimeZoneDifferentialISO(String &str, int timeZoneDifferential)
 {
-    if (timeZoneDifferential != GsDateTime::UTC)
+    if (timeZoneDifferential != DateTime::UTC)
     {
         if (timeZoneDifferential >= 0)
         {
@@ -710,9 +710,9 @@ void TimeZoneDifferentialISO(GsString &str, int timeZoneDifferential)
         str += 'Z';
 }
 
-void TimeZoneDifferentialRFC(GsString &str, int timeZoneDifferential)
+void TimeZoneDifferentialRFC(String &str, int timeZoneDifferential)
 {
-    if (timeZoneDifferential != GsDateTime::UTC)
+    if (timeZoneDifferential != DateTime::UTC)
     {
         if (timeZoneDifferential >= 0)
         {
@@ -731,9 +731,9 @@ void TimeZoneDifferentialRFC(GsString &str, int timeZoneDifferential)
         str += "GMT";
 }
 
-GsDateTime GsDateTime::Parse(const GsString &fmt, const GsString &str, int &timeZoneDifferential)
+DateTime DateTime::Parse(const String &fmt, const String &str, int &timeZoneDifferential)
 {
-    GsDateTime dateTime;
+    DateTime dateTime;
     if (fmt.empty() || str.empty())
         return dateTime;
 
@@ -747,10 +747,10 @@ GsDateTime GsDateTime::Parse(const GsString &fmt, const GsString &str, int &time
     int micros = 0;
     int tzd = 0;
 
-    GsString::const_iterator it = str.begin();
-    GsString::const_iterator end = str.end();
-    GsString::const_iterator itf = fmt.begin();
-    GsString::const_iterator endf = fmt.end();
+    String::const_iterator it = str.begin();
+    String::const_iterator end = str.end();
+    String::const_iterator itf = fmt.begin();
+    String::const_iterator endf = fmt.end();
 
     while (itf != endf && it != end)
     {
@@ -762,8 +762,8 @@ GsDateTime GsDateTime::Parse(const GsString &fmt, const GsString &str, int &time
                 {
                     case 'w':
                     case 'W':
-                        while (it != end && GsAscii::IsSpace(*it)) ++it;
-                        while (it != end && GsAscii::IsAlpha(*it)) ++it;
+                        while (it != end && Ascii::IsSpace(*it)) ++it;
+                        while (it != end && Ascii::IsAlpha(*it)) ++it;
                         break;
                     case 'b':
                     case 'B':
@@ -862,21 +862,21 @@ GsDateTime GsDateTime::Parse(const GsString &fmt, const GsString &str, int &time
         month = 1;
     if (day == 0)
         day = 1;
-    if (GsDateTime::IsValid(year, month, day, hour, minute, second, millis, micros))
+    if (DateTime::IsValid(year, month, day, hour, minute, second, millis, micros))
         dateTime.Assign(year, month, day, hour, minute, second, millis, micros);
     else
-        throw GsUtilityException("date/time component out of range");
+        throw UtilityException("date/time component out of range");
     timeZoneDifferential = tzd;
-    return GsDateTime();
+    return DateTime();
 }
 
-GsDateTime GsDateTime::Parse(GsDateTimeFormat fmt, const GsString &str, int &timeZoneDifferential)
+DateTime DateTime::Parse(DateTimeFormat fmt, const String &str, int &timeZoneDifferential)
 {
-    GsString format = WellKnownDateTimeFormat(fmt);
+    String format = WellKnownDateTimeFormat(fmt);
     return Parse(format, str, timeZoneDifferential);
 }
 
-bool GsDateTime::TryParse(const GsString &fmt, const GsString &str, GsDateTime &dateTime,
+bool DateTime::TryParse(const String &fmt, const String &str, DateTime &dateTime,
                           int &timeZoneDifferential)
 {
     try
@@ -890,10 +890,10 @@ bool GsDateTime::TryParse(const GsString &fmt, const GsString &str, GsDateTime &
     return true;
 }
 
-bool GsDateTime::TryParse(GsDateTimeFormat fmt, const GsString &str, GsDateTime &dateTime,
+bool DateTime::TryParse(DateTimeFormat fmt, const String &str, DateTime &dateTime,
                           int &timeZoneDifferential)
 {
-    GsString format = WellKnownDateTimeFormat(fmt);
+    String format = WellKnownDateTimeFormat(fmt);
     try
     {
         dateTime = Parse(format, str, timeZoneDifferential);
@@ -905,16 +905,16 @@ bool GsDateTime::TryParse(GsDateTimeFormat fmt, const GsString &str, GsDateTime 
     return true;
 }
 
-GsDateTime GsDateTime::Parse(const GsString &str, int &timeZoneDifferential)
+DateTime DateTime::Parse(const String &str, int &timeZoneDifferential)
 {
-    GsDateTime result;
+    DateTime result;
     if (TryParse(str, result, timeZoneDifferential))
         return result;
     else
-        throw GsUtilityException("Unsupported or invalid date/time format");
+        throw UtilityException("Unsupported or invalid date/time format");
 }
 
-bool GsDateTime::TryParse(const GsString &str, GsDateTime &dateTime, int &timeZoneDifferential)
+bool DateTime::TryParse(const String &str, DateTime &dateTime, int &timeZoneDifferential)
 {
     if (str.length() < 4)
         return false;
@@ -925,12 +925,12 @@ bool GsDateTime::TryParse(const GsString &str, GsDateTime &dateTime, int &timeZo
         return TryParse(WellKnownDateTimeFormat(eASCTIME_FORMAT), str, dateTime, timeZoneDifferential);
     else if (str.find(',') < 10)
         return TryParse("%W, %e %b %r %H:%M:%S %Z", str, dateTime, timeZoneDifferential);
-    else if (GsAscii::IsDigit(str[0]))
+    else if (Ascii::IsDigit(str[0]))
     {
-        if (str.find(' ') != GsString::npos || str.length() == 10)
+        if (str.find(' ') != String::npos || str.length() == 10)
             return TryParse(WellKnownDateTimeFormat(eSORTABLE_FORMAT), str, dateTime,
                             timeZoneDifferential);
-        else if (str.find('.') != GsString::npos || str.find(',') != GsString::npos)
+        else if (str.find('.') != String::npos || str.find(',') != String::npos)
             return TryParse(WellKnownDateTimeFormat(eISO8601_FRAC_FORMAT), str, dateTime,
                             timeZoneDifferential);
         else
@@ -941,12 +941,12 @@ bool GsDateTime::TryParse(const GsString &str, GsDateTime &dateTime, int &timeZo
         return false;
 }
 
-GsString GsDateTime::ToString(const GsDateTime &dateTime, const GsString &fmt, int timeZoneDifferential)
+String DateTime::ToString(const DateTime &dateTime, const String &fmt, int timeZoneDifferential)
 {
-    GsString result;
+    String result;
     result.reserve(64);
-    GsString::const_iterator it = fmt.begin();
-    GsString::const_iterator end = fmt.end();
+    String::const_iterator it = fmt.begin();
+    String::const_iterator end = fmt.end();
     while (it != end)
     {
         if (*it == '%')
@@ -1041,19 +1041,19 @@ GsString GsDateTime::ToString(const GsDateTime &dateTime, const GsString &fmt, i
     return result;
 }
 
-GsString GsDateTime::ToString(const GsTimestamp &timestamp, const GsString &fmt,
+String DateTime::ToString(const Timestamp &timestamp, const String &fmt,
                               int timeZoneDifferential)
 {
-    GsDateTime dateTime(timestamp);
+    DateTime dateTime(timestamp);
     return ToString(dateTime, fmt, timeZoneDifferential);
 }
 
-GsString GsDateTime::ToString(const GsTimeSpan &timespan, const GsString &fmt)
+String DateTime::ToString(const TimeSpan &timespan, const String &fmt)
 {
-    GsString result;
+    String result;
     result.reserve(32);
-    GsString::const_iterator it = fmt.begin();
-    GsString::const_iterator end = fmt.end();
+    String::const_iterator it = fmt.begin();
+    String::const_iterator end = fmt.end();
     while (it != end)
     {
         if (*it == '%')
@@ -1104,7 +1104,7 @@ GsString GsDateTime::ToString(const GsTimeSpan &timespan, const GsString &fmt)
     return result;
 }
 
-unsigned long long GsDateTime::TickCount()
+unsigned long long DateTime::TickCount()
 {
 #ifdef _WIN32
     return GetTickCount();
@@ -1116,7 +1116,7 @@ unsigned long long GsDateTime::TickCount()
 }
 
 
-void GsDateTime::CheckLimit(short &lower, short &higher, short limit)
+void DateTime::CheckLimit(short &lower, short &higher, short limit)
 {
     if (lower >= limit)
     {
@@ -1125,7 +1125,7 @@ void GsDateTime::CheckLimit(short &lower, short &higher, short limit)
     }
 }
 
-void GsDateTime::Normalize()
+void DateTime::Normalize()
 {
     CheckLimit(m_nMicrosecond, m_nMillisecond, 1000);
     CheckLimit(m_nMillisecond, m_nSecond, 1000);

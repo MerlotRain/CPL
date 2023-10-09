@@ -2,7 +2,7 @@
 
 namespace m2 {
 
-GsInputStream::~GsInputStream()
+InputStream::~InputStream()
 {
 }
 

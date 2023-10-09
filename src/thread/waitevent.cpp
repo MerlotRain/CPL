@@ -5,30 +5,30 @@ namespace m2 {
 
 #if GS_OS_WIN
 
-GsWaitEvent::GsWaitEvent(EventType type)
-    : GsWaitEvent(type == AutoReset)
+WaitEvent::WaitEvent(EventType type)
+    : WaitEvent(type == AutoReset)
 {
 }
 
-GsWaitEvent::GsWaitEvent(bool autoReset)
+WaitEvent::WaitEvent(bool autoReset)
 {
     _event = CreateEvent(NULL, autoReset ? FALSE : TRUE, FALSE, NULL);
     if (!_event)
         GS_E << "cannot create event";
 }
 
-GsWaitEvent::~GsWaitEvent()
+WaitEvent::~WaitEvent()
 {
     CloseHandle(_event);
 }
 
-void GsWaitEvent::Set()
+void WaitEvent::Set()
 {
     if (!SetEvent(_event))
         GS_E << "cannot signal event";
 }
 
-void GsWaitEvent::Wait(int milliseconds)
+void WaitEvent::Wait(int milliseconds)
 {
     switch (WaitForSingleObject(_event, INFINITE))
     {
@@ -39,7 +39,7 @@ void GsWaitEvent::Wait(int milliseconds)
     }
 }
 
-bool GsWaitEvent::TryWait(int milliseconds)
+bool WaitEvent::TryWait(int milliseconds)
 {
     assert(milliseconds != INFINITE);
     switch (WaitForSingleObject(_event, milliseconds ? milliseconds : 1))
@@ -53,7 +53,7 @@ bool GsWaitEvent::TryWait(int milliseconds)
     }
 }
 
-void GsWaitEvent::Reset()
+void WaitEvent::Reset()
 {
     if (!ResetEvent(_event))
         GS_E << "cannot reset event";
@@ -61,32 +61,32 @@ void GsWaitEvent::Reset()
 
 #else
 
-GsWaitEvent::GsWaitEvent(EventType type)
+WaitEvent::WaitEvent(EventType type)
 {
 }
 
-GsWaitEvent::GsWaitEvent(bool autoReset)
+WaitEvent::WaitEvent(bool autoReset)
 {
 }
 
-GsWaitEvent::~GsWaitEvent()
+WaitEvent::~WaitEvent()
 {
 }
 
-void GsWaitEvent::Set()
+void WaitEvent::Set()
 {
 }
 
-void GsWaitEvent::Wait(int milliseconds)
+void WaitEvent::Wait(int milliseconds)
 {
 }
 
-bool GsWaitEvent::TryWait(int milliseconds)
+bool WaitEvent::TryWait(int milliseconds)
 {
     return false;
 }
 
-void GsWaitEvent::Reset()
+void WaitEvent::Reset()
 {
 }
 

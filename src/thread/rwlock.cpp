@@ -8,11 +8,11 @@
 
 namespace m2 {
 
-class GsRWLockImpl
+class RWLockImpl
 {
 public:
-    GsRWLockImpl();
-    ~GsRWLockImpl();
+    RWLockImpl();
+    ~RWLockImpl();
     void ReadLock();
     bool TryReadLock();
     void WriteLock();
@@ -38,7 +38,7 @@ private:
 
 #if GS_OS_WIN
 
-GsRWLockImpl::GsRWLockImpl()
+RWLockImpl::RWLockImpl()
     : m_readers(0), m_writers(0), m_writersWaiting(0)
 {
     m_mutex = CreateMutexW(NULL, FALSE, NULL);
@@ -54,14 +54,14 @@ GsRWLockImpl::GsRWLockImpl()
         throw std::runtime_error("cannot create readwrite mutex");
 }
 
-GsRWLockImpl::~GsRWLockImpl()
+RWLockImpl::~RWLockImpl()
 {
     CloseHandle(m_mutex);
     CloseHandle(m_readEvent);
     CloseHandle(m_writeEvent);
 }
 
-void GsRWLockImpl::ReadLock()
+void RWLockImpl::ReadLock()
 {
     HANDLE hdl[2];
     hdl[0] = m_mutex;
@@ -79,7 +79,7 @@ void GsRWLockImpl::ReadLock()
     }
 }
 
-bool GsRWLockImpl::TryReadLock()
+bool RWLockImpl::TryReadLock()
 {
     for (;;)
     {
@@ -101,7 +101,7 @@ bool GsRWLockImpl::TryReadLock()
     }
 }
 
-void GsRWLockImpl::WriteLock()
+void RWLockImpl::WriteLock()
 {
     AddWriter();
     HANDLE hdl[2];
@@ -124,7 +124,7 @@ void GsRWLockImpl::WriteLock()
     }
 }
 
-bool GsRWLockImpl::TryWriteLock()
+bool RWLockImpl::TryWriteLock()
 {
     AddWriter();
     HANDLE hdl[2];
@@ -150,7 +150,7 @@ bool GsRWLockImpl::TryWriteLock()
     }
 }
 
-void GsRWLockImpl::Unlock()
+void RWLockImpl::Unlock()
 {
     switch (WaitForSingleObject(m_mutex, INFINITE))
     {
@@ -167,7 +167,7 @@ void GsRWLockImpl::Unlock()
     }
 }
 
-void GsRWLockImpl::AddWriter()
+void RWLockImpl::AddWriter()
 {
     switch (WaitForSingleObject(m_mutex, INFINITE))
     {
@@ -180,7 +180,7 @@ void GsRWLockImpl::AddWriter()
     }
 }
 
-void GsRWLockImpl::RemoveWriter()
+void RWLockImpl::RemoveWriter()
 {
     switch (WaitForSingleObject(m_mutex, INFINITE))
     {
@@ -193,7 +193,7 @@ void GsRWLockImpl::RemoveWriter()
     }
 }
 
-DWORD GsRWLockImpl::TryReadLockOnce()
+DWORD RWLockImpl::TryReadLockOnce()
 {
     HANDLE hdl[2];
     hdl[0] = m_mutex;
@@ -216,79 +216,79 @@ DWORD GsRWLockImpl::TryReadLockOnce()
 
 #else
 
-GsRWLockImpl::GsRWLockImpl()
+RWLockImpl::RWLockImpl()
 {
 }
 
-GsRWLockImpl::~GsRWLockImpl()
+RWLockImpl::~RWLockImpl()
 {
 }
 
-void GsRWLockImpl::ReadLock()
+void RWLockImpl::ReadLock()
 {
 }
 
-bool GsRWLockImpl::TryReadLock()
+bool RWLockImpl::TryReadLock()
 {
 }
 
-void GsRWLockImpl::WriteLock()
+void RWLockImpl::WriteLock()
 {
 }
 
-bool GsRWLockImpl::TryWriteLock()
+bool RWLockImpl::TryWriteLock()
 {
 }
 
-void GsRWLockImpl::Unlock()
+void RWLockImpl::Unlock()
 {
 }
 
 #endif
 
 
-GsRWLock::GsRWLock()
-    : m_Handle(new GsRWLockImpl())
+RWLock::RWLock()
+    : m_Handle(new RWLockImpl())
 {
 }
 
-GsRWLock::~GsRWLock()
+RWLock::~RWLock()
 {
     if (m_Handle)
         delete m_Handle;
     m_Handle = nullptr;
 }
 
-void GsRWLock::ReadLock()
+void RWLock::ReadLock()
 {
     if (m_Handle)
-        (static_cast<GsRWLockImpl *>(m_Handle))->ReadLock();
+        (static_cast<RWLockImpl *>(m_Handle))->ReadLock();
 }
 
-bool GsRWLock::TryReadLock()
+bool RWLock::TryReadLock()
 {
     if (m_Handle)
-        return (static_cast<GsRWLockImpl *>(m_Handle))->TryReadLock();
+        return (static_cast<RWLockImpl *>(m_Handle))->TryReadLock();
     return false;
 }
 
-void GsRWLock::WriteLock()
+void RWLock::WriteLock()
 {
     if (m_Handle)
-        (static_cast<GsRWLockImpl *>(m_Handle))->WriteLock();
+        (static_cast<RWLockImpl *>(m_Handle))->WriteLock();
 }
 
-bool GsRWLock::TryWriteLock()
+bool RWLock::TryWriteLock()
 {
     if (m_Handle)
-        return (static_cast<GsRWLockImpl *>(m_Handle))->TryWriteLock();
+        return (static_cast<RWLockImpl *>(m_Handle))->TryWriteLock();
     return false;
 }
 
-void GsRWLock::Unlock()
+void RWLock::Unlock()
 {
     if (m_Handle)
-        (static_cast<GsRWLockImpl *>(m_Handle))->Unlock();
+        (static_cast<RWLockImpl *>(m_Handle))->Unlock();
 }
 
 }// namespace m2

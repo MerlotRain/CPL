@@ -30,20 +30,20 @@
 **
 ****************************************************************************/
 
-#pragma once
+#ifndef M2_CRYTOGRAPHICHASH_H_
+#define M2_CRYTOGRAPHICHASH_H_
 
-#include "bytebuffer.h"
-#include "stringhelp.h"
+#include <m2_bytebuffer.h>
+#include <m2_string.h>
 
 namespace m2 {
 
-
 /// @brief hash算法库
-class GsCryptographicHashData;
-class GsCryptographicHash
+class CryptographicHashPrivate;
+class CryptographicHash
 {
 public:
-    enum GsHashAlgorithm
+    enum HashAlgorithm
     {
         eMD4,
         eMD5,
@@ -66,44 +66,23 @@ public:
         eSHA3_256 = eREALSHA3_256,
         eSHA3_384 = eREALSHA3_384,
         eSHA3_512 = eREALSHA3_512
-
     };
 
 public:
-    /// @brief 根据算法类型构造hash函数
-    /// @param algorithm
-    explicit GsCryptographicHash(GsHashAlgorithm algorithm);
-
-    /// @brief 默认析构
-    ~GsCryptographicHash();
-
-    /// @brief 重置hash结果
-    void Reset();
-
-    /// @brief 添加hash数据
-    /// @param data
-    /// @param length
-    void AddData(const char *data, int length);
-    void AddData(const GsByteBuffer &data);
-    void AddData(const GsString &str);
-
-    /// @brief 求hash结果
-    /// @return
-    GsByteBuffer Result() const;
-
-    /// @brief 求hash结果
-    /// @param data
-    /// @param algorithm
-    /// @return
-    static GsByteBuffer Hash(const GsByteBuffer &data, GsHashAlgorithm algorithm);
-
-    /// @brief 获取hash长度
-    /// @param algorithm 算法
-    static int HashLength(GsHashAlgorithm algorithm);
+    explicit CryptographicHash(HashAlgorithm algorithm);
+    ~CryptographicHash();
+    void reset();
+    void addData(const char *data, int length);
+    void addData(const ByteBuffer &data);
+    void addData(const String &str);
+    ByteBuffer result() const;
+    static ByteBuffer hash(const ByteBuffer &data, HashAlgorithm algorithm);
+    static int hashLength(HashAlgorithm algorithm);
 
 private:
-    GsCryptographicHashData *m_Data;
+    CryptographicHashPrivate *d;
 };
 
-
 }// namespace m2
+
+#endif//M2_CRYTOGRAPHICHASH_H_

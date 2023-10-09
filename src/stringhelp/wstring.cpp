@@ -3,122 +3,122 @@
 namespace m2 {
 
 
-GsWString::GsWString() noexcept
+WString::WString() noexcept
 {
 }
 
-GsWString::GsWString(const GsWString &str) : GsStlWString(str)
+WString::WString(const WString &str) : StlWString(str)
 {
 }
 
-GsWString::GsWString(const GsStlWString &str) : GsStlWString(str)
+WString::WString(const StlWString &str) : StlWString(str)
 {
 }
 
-GsWString::GsWString(const wchar_t *str) : GsStlWString(str)
+WString::WString(const wchar_t *str) : StlWString(str)
 {
 }
 
-GsWString::GsWString(wchar_t *str) : GsStlWString(str)
+WString::WString(wchar_t *str) : StlWString(str)
 {
 }
 
-GsWString::GsWString(const wchar_t *str, int off, int count) noexcept : GsStlWString(str, off, count)
+WString::WString(const wchar_t *str, int off, int count) noexcept : StlWString(str, off, count)
 {
 }
 
-GsWString::GsWString(const wchar_t *str, int count) noexcept : GsStlWString(str, count)
+WString::WString(const wchar_t *str, int count) noexcept : StlWString(str, count)
 {
 }
 
-GsWString::GsWString(const wchar_t *start, const wchar_t *end) noexcept : GsStlWString(start, end)
+WString::WString(const wchar_t *start, const wchar_t *end) noexcept : StlWString(start, end)
 {
 }
 
-GsWString::GsWString(int count, wchar_t e) noexcept : GsStlWString(count, e)
+WString::WString(int count, wchar_t e) noexcept : StlWString(count, e)
 {
 }
 
-GsWString::GsWString(GsWString::iterator first, GsWString::iterator last) noexcept
-    : GsStlWString(first, last)
+WString::WString(WString::iterator first, WString::iterator last) noexcept
+    : StlWString(first, last)
 {
 }
 
-GsWString::GsWString(GsWString::const_iterator first, GsWString::const_iterator last) noexcept
-    : GsStlWString(first, last)
+WString::WString(WString::const_iterator first, WString::const_iterator last) noexcept
+    : StlWString(first, last)
 {
 }
 
-GsWString::GsWString(GsWString::reverse_iterator first, GsWString::reverse_iterator last) noexcept
-    : GsStlWString(first, last)
+WString::WString(WString::reverse_iterator first, WString::reverse_iterator last) noexcept
+    : StlWString(first, last)
 {
 }
 
-GsWString::GsWString(GsWString::const_reverse_iterator first,
-                     GsWString::const_reverse_iterator last) noexcept
-    : GsStlWString(first, last)
+WString::WString(WString::const_reverse_iterator first,
+                     WString::const_reverse_iterator last) noexcept
+    : StlWString(first, last)
 {
 }
 
-GsWString::~GsWString()
+WString::~WString()
 {
 }
 
-GsWString &GsWString::operator=(const wchar_t *str)
-{
-    this->append(str);
-    return *this;
-}
-
-GsWString &GsWString::operator=(const GsStlWString &str)
+WString &WString::operator=(const wchar_t *str)
 {
     this->append(str);
     return *this;
 }
 
-GsWString &GsWString::operator=(const GsWString &str)
+WString &WString::operator=(const StlWString &str)
+{
+    this->append(str);
+    return *this;
+}
+
+WString &WString::operator=(const WString &str)
 {
     this->append(str.c_str());
     return *this;
 }
 
-GsWString &GsWString::operator+=(const GsWString &str)
+WString &WString::operator+=(const WString &str)
 {
     this->append(str.c_str());
     return *this;
 }
 
-GsWString &GsWString::operator+=(const wchar_t *str)
+WString &WString::operator+=(const wchar_t *str)
 {
     this->append(str);
     return *this;
 }
 
-GsWString GsWString::operator+(const wchar_t *str) const
+WString WString::operator+(const wchar_t *str) const
 {
-    GsWString result;
+    WString result;
     result.assign(this->data());
     result.append(str);
     return result;
 }
 
-GsWString GsWString::operator+(const GsStlWString &str) const
+WString WString::operator+(const StlWString &str) const
 {
-    GsWString result;
+    WString result;
     result.assign(this->data());
     result.append(str);
     return result;
 }
 
-GsWString GsWString::operator+(const GsWString &str) const
+WString WString::operator+(const WString &str) const
 {
-    GsWString result;
+    WString result;
     result.assign(this->data());
     result.append(str);
     return result;
 }
 
-bool GsWString::IsNullOrEmpty(const wchar_t *str)
+bool WString::IsNullOrEmpty(const wchar_t *str)
 {
     if (!str || 0 == wcslen(str))
     {

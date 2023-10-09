@@ -4,7 +4,7 @@
 
 namespace m2 {
 
-GsStringTokenizer::GsStringTokenizer(const GsString &txt) : m_str(txt), m_stok(""), m_ntok(0.0)
+StringTokenizer::StringTokenizer(const String &txt) : m_str(txt), m_stok(""), m_ntok(0.0)
 {
     m_iter = m_str.begin();
 }
@@ -50,12 +50,12 @@ static double strtod_with_vc_fix(const char *m_str, char **str_end)
     return dbl;
 }
 
-int GsStringTokenizer::NextToken()
+int StringTokenizer::NextToken()
 {
-    GsString tok = "";
+    String tok = "";
     if (m_iter == m_str.end())
     {
-        return GsStringTokenizer::TT_EOF;
+        return StringTokenizer::TT_EOF;
     }
     switch (*m_iter)
     {
@@ -67,20 +67,20 @@ int GsStringTokenizer::NextToken()
         case '\r':
         case '\t':
         case ' ':
-            GsString::size_type pos = m_str.find_first_not_of(
-                    " \n\r\t", static_cast<GsString::size_type>(m_iter - m_str.begin()));
+            String::size_type pos = m_str.find_first_not_of(
+                    " \n\r\t", static_cast<String::size_type>(m_iter - m_str.begin()));
             if (pos == std::string::npos)
             {
-                return GsStringTokenizer::TT_EOF;
+                return StringTokenizer::TT_EOF;
             }
             else
             {
-                m_iter = m_str.begin() + static_cast<GsString::difference_type>(pos);
+                m_iter = m_str.begin() + static_cast<String::difference_type>(pos);
                 return NextToken();
             }
     }
-    GsString::size_type pos =
-            m_str.find_first_of("\n\r\t() ,", static_cast<GsString::size_type>(m_iter - m_str.begin()));
+    String::size_type pos =
+            m_str.find_first_of("\n\r\t() ,", static_cast<String::size_type>(m_iter - m_str.begin()));
     if (pos == std::string::npos)
     {
         if (m_iter != m_str.end())
@@ -90,13 +90,13 @@ int GsStringTokenizer::NextToken()
         }
         else
         {
-            return GsStringTokenizer::TT_EOF;
+            return StringTokenizer::TT_EOF;
         }
     }
     else
     {
-        tok.assign(m_iter, m_str.begin() + static_cast<GsString::difference_type>(pos));
-        m_iter = m_str.begin() + static_cast<GsString::difference_type>(pos);
+        tok.assign(m_iter, m_str.begin() + static_cast<String::difference_type>(pos));
+        m_iter = m_str.begin() + static_cast<String::difference_type>(pos);
     }
     char *stopstring;
     double dbl = strtod_with_vc_fix(tok.c_str(), &stopstring);
@@ -104,30 +104,30 @@ int GsStringTokenizer::NextToken()
     {
         m_ntok = dbl;
         m_stok = "";
-        return GsStringTokenizer::TT_NUMBER;
+        return StringTokenizer::TT_NUMBER;
     }
     else
     {
         m_ntok = 0.0;
         m_stok = tok;
-        return GsStringTokenizer::TT_WORD;
+        return StringTokenizer::TT_WORD;
     }
 }
 
-int GsStringTokenizer::PeekNextToken()
+int StringTokenizer::PeekNextToken()
 {
-    GsString::size_type pos;
-    GsString tok = "";
+    String::size_type pos;
+    String tok = "";
     if (m_iter == m_str.end())
     {
-        return GsStringTokenizer::TT_EOF;
+        return StringTokenizer::TT_EOF;
     }
 
-    pos = m_str.find_first_not_of(" \r\n\t", static_cast<GsString::size_type>(m_iter - m_str.begin()));
+    pos = m_str.find_first_not_of(" \r\n\t", static_cast<String::size_type>(m_iter - m_str.begin()));
 
     if (pos == std::string::npos)
     {
-        return GsStringTokenizer::TT_EOF;
+        return StringTokenizer::TT_EOF;
     }
     switch (m_str[pos])
     {
@@ -137,10 +137,10 @@ int GsStringTokenizer::PeekNextToken()
             return m_str[pos];
     }
 
-    // It's either a GsNumericLimits or a Word, let's
+    // It's either a NumericLimits or a Word, let's
     // see when it ends
 
-    pos = m_str.find_first_of("\n\r\t() ,", static_cast<GsString::size_type>(m_iter - m_str.begin()));
+    pos = m_str.find_first_of("\n\r\t() ,", static_cast<String::size_type>(m_iter - m_str.begin()));
 
     if (pos == std::string::npos)
     {
@@ -150,12 +150,12 @@ int GsStringTokenizer::PeekNextToken()
         }
         else
         {
-            return GsStringTokenizer::TT_EOF;
+            return StringTokenizer::TT_EOF;
         }
     }
     else
     {
-        tok.assign(m_iter, m_str.begin() + static_cast<GsString::difference_type>(pos));//m_str.end());
+        tok.assign(m_iter, m_str.begin() + static_cast<String::difference_type>(pos));//m_str.end());
     }
 
     char *stopstring;
@@ -164,22 +164,22 @@ int GsStringTokenizer::PeekNextToken()
     {
         m_ntok = dbl;
         m_stok = "";
-        return GsStringTokenizer::TT_NUMBER;
+        return StringTokenizer::TT_NUMBER;
     }
     else
     {
         m_ntok = 0.0;
         m_stok = tok;
-        return GsStringTokenizer::TT_WORD;
+        return StringTokenizer::TT_WORD;
     }
 }
 
-double GsStringTokenizer::GetNVal() const
+double StringTokenizer::GetNVal() const
 {
     return m_ntok;
 }
 
-GsString GsStringTokenizer::GetSVal() const
+String StringTokenizer::GetSVal() const
 {
     return m_stok;
 }

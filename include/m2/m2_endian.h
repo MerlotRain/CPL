@@ -38,7 +38,7 @@ namespace m2 {
 namespace EndianConverter {
 
 /// @brief 字节序枚举
-enum class GsEndian
+enum class Endian
 {
     BigEndian,
     LittleEndian,
@@ -46,23 +46,23 @@ enum class GsEndian
 
 /// @brief 判断字节序类型
 /// @return
-inline GsEndian OsEndian()
+inline Endian OsEndian()
 {
 #if (__CPP_LIB_ENDIAN == BIG_ENDIAN)
-    return GsEndian::BigEndian;
+    return Endian::BigEndian;
 #elif (__CPP_LIB_ENDIAN == LITTLE_ENDIAN)
-    return GsEndian::LittleEndian;
+    return Endian::LittleEndian;
 #endif
 }
 /// @brief 是否是高字节序
 inline bool IsBigEndian()
 {
-    return OsEndian() == GsEndian::BigEndian;
+    return OsEndian() == Endian::BigEndian;
 }
 /// @brief 是否是低字节序
 inline bool IsLittleEndian()
 {
-    return OsEndian() == GsEndian::LittleEndian;
+    return OsEndian() == Endian::LittleEndian;
 }
 
 template<typename T>

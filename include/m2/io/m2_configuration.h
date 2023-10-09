@@ -41,21 +41,21 @@
 namespace m2 {
 
 
-struct GsConfigItem
+struct ConfigItem
 {
-    GsString strName;
-    GsString strValue;
-    GsString strDescription;
-    GsString strType;
+    String strName;
+    String strValue;
+    String strDescription;
+    String strType;
 };
 
-class GsConfigEngine : public GsRefObject
+class ConfigEngine : public RefObject
 {
 protected:
-    GsConfigEngine();
+    ConfigEngine();
 
 public:
-    virtual ~GsConfigEngine();
+    virtual ~ConfigEngine();
     /// \brief 数据是否变化了
     /// \return
     virtual bool IsDirty();
@@ -64,63 +64,63 @@ public:
 
     /// \brief 获取数据
     /// \param item
-    virtual void Assign(GsConfigItem *item) = 0;
+    virtual void Assign(ConfigItem *item) = 0;
     /// \brief 判断是否存在子项
     /// \param name
     /// \param parent
     /// \return
-    virtual bool Exists(const char *name, const GsConfigItem *parent = NULL) = 0;
+    virtual bool Exists(const char *name, const ConfigItem *parent = NULL) = 0;
     /// \brief 获取一个配置项的所有子项
     /// \param parent
     /// \return
-    virtual std::vector<GsString> Children(const GsConfigItem *parent = NULL) = 0;
+    virtual std::vector<String> Children(const ConfigItem *parent = NULL) = 0;
     /// \brief 获取一个配置项的所有子项
     /// \param vec
     /// \param parent
-    virtual void Children(std::vector<GsConfigItem> &vec, const GsConfigItem *parent = NULL) = 0;
+    virtual void Children(std::vector<ConfigItem> &vec, const ConfigItem *parent = NULL) = 0;
     /// \brief 删除一个子项
     /// \param name
     /// \param parent
-    virtual void RemoveChild(const char *name, const GsConfigItem *parent = NULL) = 0;
+    virtual void RemoveChild(const char *name, const ConfigItem *parent = NULL) = 0;
 
     /// \brief 获取一个配置项的子项
     /// \param name
     /// \param parent
     /// \return
-    virtual GsConfigItem Child(const char *name, const GsConfigItem *parent = NULL) = 0;
+    virtual ConfigItem Child(const char *name, const ConfigItem *parent = NULL) = 0;
     /// \brief 确保一定获取到子项，没有子项则创建子项
     /// \param name
     /// \param parent
     /// \return
-    virtual GsConfigItem EnsureChild(const char *name, const GsConfigItem *parent = NULL);
+    virtual ConfigItem EnsureChild(const char *name, const ConfigItem *parent = NULL);
 
 
     /// \brief 更新或者添加一个子项
     /// \param child
     /// \param parent
     /// \return
-    virtual GsConfigItem UpdateChild(const GsConfigItem &child, const GsConfigItem *parent = NULL) = 0;
+    virtual ConfigItem UpdateChild(const ConfigItem &child, const ConfigItem *parent = NULL) = 0;
 
     /// \brief 获取一个子项的父
     /// \param child
     /// \return
-    virtual GsConfigItem Parent(const GsConfigItem &child) = 0;
+    virtual ConfigItem Parent(const ConfigItem &child) = 0;
 
     /// \brief 释放一个配置项的资源
     /// \param item
     /// \return
-    virtual void FreeItem(GsConfigItem &item);
+    virtual void FreeItem(ConfigItem &item);
 
     /// \brief 拷贝一个配置项资源
     /// \param item
     /// \return
-    virtual GsConfigItem CopyItem(const GsConfigItem &item);
+    virtual ConfigItem CopyItem(const ConfigItem &item);
 };
-GS_SMARTER_PTR(GsConfigEngine)
+GS_SMARTER_PTR(ConfigEngine)
 
-class GsXMLConfigEngine
+class XMLConfigEngine
 {
-    Utility::GsRWLock m_Lock;
+    Utility::RWLock m_Lock;
     tinyxml2::XXMLDocument m_Doc;
     tinyxml2::XXMLDocument *m_pDoc;
     bool m_bDirty;
@@ -130,19 +130,19 @@ class GsXMLConfigEngine
     void Init();
     /// \brief 获取数据
     /// \param item
-    virtual void InnerAssign(GsConfigItem *item);
+    virtual void InnerAssign(ConfigItem *item);
 
 
 public:
-    GsXMLConfigEngine();
+    XMLConfigEngine();
     /// \brief
     /// \param pEle 配置项目的xml节点
-    GsXMLConfigEngine(tinyxml2::XMLElement *pEle);
+    XMLConfigEngine(tinyxml2::XMLElement *pEle);
     /// \brief 从xml文件或者字符串打开配置
     /// \param strXML 字符串或者配置文件路径
     /// \param bIsString 判断strXML是xml字符串还是文件名，true表示strXML为纯的xml字符串
-    GsXMLConfigEngine(const char *strXML, bool bIsString = false);
-    ~GsXMLConfigEngine();
+    XMLConfigEngine(const char *strXML, bool bIsString = false);
+    ~XMLConfigEngine();
     /// \brief 数据是否变化了
     /// \return
     virtual bool IsDirty();
@@ -151,43 +151,43 @@ public:
     virtual void ClearDirty();
     /// \brief
     /// \return
-    virtual GsString FileName();
+    virtual String FileName();
     /// \brief 获取数据
     /// \param item
-    virtual void Assign(GsConfigItem *item);
+    virtual void Assign(ConfigItem *item);
     /// \brief 删除一个子项
     /// \param name
     /// \param parent
-    virtual void RemoveChild(const char *name, const GsConfigItem *parent = NULL);
+    virtual void RemoveChild(const char *name, const ConfigItem *parent = NULL);
 
     /// \brief 判断是否存在子项
     /// \param name
     /// \param parent
     /// \return
-    virtual bool Exists(const char *name, const GsConfigItem *parent = NULL);
+    virtual bool Exists(const char *name, const ConfigItem *parent = NULL);
     /// \brief 获取一个配置项的所有子项
     /// \param parent
     /// \return
-    virtual std::vector<GsString> Children(const GsConfigItem *parent = NULL);
+    virtual std::vector<String> Children(const ConfigItem *parent = NULL);
     /// \brief 获取一个配置项的所有子项
     /// \param vec
     /// \param parent
-    virtual void Children(std::vector<GsConfigItem> &vec, const GsConfigItem *parent = NULL);
+    virtual void Children(std::vector<ConfigItem> &vec, const ConfigItem *parent = NULL);
     /// \brief 获取一个配置项的子项
     /// \param name
     /// \param parent
     /// \return
-    virtual GsConfigItem Child(const char *name, const GsConfigItem *parent = NULL);
+    virtual ConfigItem Child(const char *name, const ConfigItem *parent = NULL);
     /// \brief 更新或者添加一个子项
     /// \param child
     /// \param parent
     /// \return
-    virtual GsConfigItem UpdateChild(const GsConfigItem &child, const GsConfigItem *parent = NULL);
+    virtual ConfigItem UpdateChild(const ConfigItem &child, const ConfigItem *parent = NULL);
 
     /// \brief 获取一个子项的父
     /// \param child
     /// \return
-    virtual GsConfigItem Parent(const GsConfigItem &child);
+    virtual ConfigItem Parent(const ConfigItem &child);
 
     /// \brief 保存到文件
     /// \param file
@@ -196,62 +196,62 @@ public:
 
     /// \brief 输出成xml字符串
     /// \return
-    GsString ToString();
+    String ToString();
 };
-GS_SMARTER_PTR(GsXMLConfigEngine)
+GS_SMARTER_PTR(XMLConfigEngine)
 
-class GsConfig
+class Config
 {
-    GsConfigEnginePtr m_Engine;
-    GsConfigItem m_Item;
+    ConfigEnginePtr m_Engine;
+    ConfigItem m_Item;
 
 public:
     /// \brief 构造一个完全空的配置对象
-    GsConfig(int i);
+    Config(int i);
     /// \brief 缺省构造,缺省构造内存xml引擎的配置
-    GsConfig();
+    Config();
 
     /// \brief
     /// \param engine
     /// \param item
-    GsConfig(GsConfigEngine *engine, const GsConfigItem &item);
+    Config(ConfigEngine *engine, const ConfigItem &item);
     /// \brief
     /// \param engine
-    GsConfig(GsConfigEngine *engine);
+    Config(ConfigEngine *engine);
 
     /// \brief 拷贝构造函数
-    /// \param GsConfig
+    /// \param Config
     /// \return
-    GsConfig(const GsConfig &GsConfig);
+    Config(const Config &Config);
 
     /// \brief 拷贝构造函数
-    /// \param GsConfig
+    /// \param Config
     /// \return
-    GsConfig(GsConfig &&config);
+    Config(Config &&config);
 
 
     /// \brief
     /// \param pEle 配置项目的xml节点
-    GsConfig(tinyxml2::XMLElement *pEle);
+    Config(tinyxml2::XMLElement *pEle);
     /// \brief 从xml文件或者字符串打开配置
     /// \param strXML 字符串或者配置文件路径
     /// \param bIsString 判断strXML是xml字符串还是文件名，true表示strXML为纯的xml字符串
-    GsConfig(const char *strXML, bool bIsString = false);
+    Config(const char *strXML, bool bIsString = false);
 
     /// \brief 等号赋值操作符。
-    /// \brief GsConfig其他配置项
-    GsConfig &operator=(const GsConfig &GsConfig);
+    /// \brief Config其他配置项
+    Config &operator=(const Config &Config);
 
     /// \brief 析构函数
-    virtual ~GsConfig(void);
+    virtual ~Config(void);
 
     /// \brief 获取配置项的内容
     /// \return
-    const GsConfigItem &Item() const;
+    const ConfigItem &Item() const;
 
     /// \brief 获取配置文件的文件名
     /// \return
-    GsString FileName() const;
+    String FileName() const;
 
     /// \brief 保存到文件中
     /// \param strFile
@@ -260,7 +260,7 @@ public:
 
     /// \brief 保存为XML字符串
     /// \return
-    GsString Save();
+    String Save();
 
     /// \brief 判断配置是否发生了变化
     /// \return
@@ -272,7 +272,7 @@ public:
 
     /// \brief 获取根配置对象
     /// \return
-    GsConfig Root() const;
+    Config Root() const;
 
     /// \brief 是否为根配置
     /// \return
@@ -280,34 +280,34 @@ public:
 
     /// \brief 获取父亲配置对象
     /// \return
-    GsConfig Parent() const;
+    Config Parent() const;
 
     /// \brief 获取设置配置的名称
     /// \return
-    GsString Name() const;
+    String Name() const;
     /// \brief
     /// \param str
-    void Name(const GsString &str);
+    void Name(const String &str);
     /// \brief
     /// \param str
     void Name(const char *str);
 
     /// \brief 获取设置配置项的描述
     /// \return
-    GsString Description() const;
+    String Description() const;
     /// \brief
     /// \param str
-    void Description(const GsString &str);
+    void Description(const String &str);
     /// \brief
     /// \param str
     void Description(const char *str);
 
     /// \brief 配置的数据类型
     /// \return
-    GsString Type() const;
+    String Type() const;
     /// \brief
     /// \param str
-    void Type(const GsString &str);
+    void Type(const String &str);
     /// \brief
     /// \param str
     void Type(const char *str);
@@ -326,16 +326,16 @@ public:
 
     /// \brief 获取配置的路径
     /// \return
-    GsString Path() const;
+    String Path() const;
 
     /// \brief 选择一个子的配置，如果不存在的话会创建这个子的配置并返回
     /// \param strName
     /// \return
-    GsConfig Child(const char *strName);
+    Config Child(const char *strName);
     /// \brief
     /// \param strName
     /// \return
-    GsConfig Child(const GsString &strName);
+    Config Child(const String &strName);
 
     /// \brief 是否存在某个子的配置
     /// \param strName
@@ -344,50 +344,50 @@ public:
     /// \brief
     /// \param strName
     /// \return
-    bool Exist(const GsString &strName) const;
+    bool Exist(const String &strName) const;
 
     /// \brief 是否存在子的配置
     /// \return
     bool HasChildren() const;
     /// \brief 是否为同一配置节点
-    bool operator==(const GsConfig &config) const;
+    bool operator==(const Config &config) const;
 
     /// \brief 所有的子对象列表
     /// \return
-    std::vector<GsConfig> Children() const;
+    std::vector<Config> Children() const;
     /// \brief
     /// \param vec
-    void Children(std::vector<GsConfig> &vec) const;
+    void Children(std::vector<Config> &vec) const;
 
     /// \brief 子配置的名称
     /// \return
-    std::vector<GsString> ChildrenName() const;
+    std::vector<String> ChildrenName() const;
     /// \brief
     /// \param vec
-    void ChildrenName(std::vector<GsString> &vec) const;
+    void ChildrenName(std::vector<String> &vec) const;
 
     /// \brief 选择一个子的配置，如果不存在的话并不会创建
     /// \param strName
     /// \return
-    GsConfig Peek(const char *strName) const;
+    Config Peek(const char *strName) const;
     /// \brief
     /// \param strName
     /// \return
-    GsConfig Peek(const GsString &strName) const;
+    Config Peek(const String &strName) const;
 
     /// \brief 方括号操作符，设计调用Peek方法
-    GsConfig operator[](const char *strName) const;
-    GsConfig operator[](const GsString &strName) const;
+    Config operator[](const char *strName) const;
+    Config operator[](const String &strName) const;
 
     /// \brief 配置的值
     /// \return
-    GsString Value() const;
+    String Value() const;
     /// \brief 设置配置的值
     /// \param strValue
     void Value(const char *strValue);
     /// \brief
     /// \param strValue
-    void Value(const GsString &strValue);
+    void Value(const String &strValue);
     /// \brief
     /// \param value
     void Value(int value);
@@ -415,11 +415,11 @@ public:
     /// \brief 获取字符串值，不存在则返回缺省值
     /// \param strDefaultValue
     /// \return
-    GsString StringValue(const char *strDefaultValue) const;
+    String StringValue(const char *strDefaultValue) const;
     /// \brief
     /// \param strDefaultValue
     /// \return
-    GsString StringValue(const GsString &strDefaultValue) const;
+    String StringValue(const String &strDefaultValue) const;
     /// \brief
     /// \return
     const char *ValuePtr() const;
@@ -463,9 +463,9 @@ public:
     operator unsigned int() const;
     operator unsigned long long() const;
 
-    /// \brief 将另外的分支添加到这个GsConfig中
+    /// \brief 将另外的分支添加到这个Config中
     /// \param config
-    void Append(const GsConfig &config);
+    void Append(const Config &config);
 
     /// \brief 清空所有的子配置
     void Clear();
@@ -475,25 +475,25 @@ public:
     void Remove(const char *childName);
     /// \brief 删除一个子配置
     /// \param childName
-    void Remove(const GsString &childName);
+    void Remove(const String &childName);
 
     /// \brief 交换两个节点的内容
     /// \param other
     /// \return
-    GsConfig &Swap(GsConfig &other);
+    Config &Swap(Config &other);
 
     /// \brief 获取配置的存储引擎
     /// \return
-    GsConfigEngine *Engine();
+    ConfigEngine *Engine();
 };
 
 
-class GsGlobalConfig
+class GlobalConfig
 {
 public:
     /// \brief 全局的配置类根对象
     /// \return
-    static GsConfig &Instance();
+    static Config &Instance();
 
     /// \brief 将全局的配置保存为文件
     /// \param strFile
@@ -502,7 +502,7 @@ public:
 
     /// \brief 将全局的配置保存为字符串
     /// \return
-    static GsString Save();
+    static String Save();
 
     /// \brief 从xml或者配置中load配置信息
     /// \param strFileOrXML 文件路径或者xml串
@@ -513,15 +513,15 @@ public:
 
 
 /// @brief 序列化流基类
-class GsSerializeStream : public GsRefObject
+class SerializeStream : public RefObject
 {
 public:
-    virtual ~GsSerializeStream() {}
+    virtual ~SerializeStream() {}
 
     /// @brief 转换为字符串
     /// @details 根据流类型转换为XML或JSON格式
     /// @return
-    virtual GsString ToString() = 0;
+    virtual String ToString() = 0;
 
     /// @brief 设置字符串内容，用于内部解析使用
     /// @param str
@@ -583,18 +583,18 @@ public:
     /// @brief 设置指定key的指定对象值
     /// @param key 属性名称
     /// @param value 属性值
-    virtual void Save(const char *key, GsRefObject *object) = 0;
+    virtual void Save(const char *key, RefObject *object) = 0;
 
     /// @brief 设置指定key的指定日期值
     /// @param key 属性名称
     /// @param value 属性值
-    virtual void Save(const char *key, GsDateTime dateTime) = 0;
+    virtual void Save(const char *key, DateTime dateTime) = 0;
 
     /// @brief 读取指定key的字符串值
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual GsString LoadStringValue(const char *key, const char *defaultValue) = 0;
+    virtual String LoadStringValue(const char *key, const char *defaultValue) = 0;
 
     /// @brief 读取指定key的int值
     /// @param key 属性名称
@@ -642,22 +642,22 @@ public:
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual GsDateTime LoadDateTimeValue(const char *key, const GsDateTime &defaultValue) = 0;
+    virtual DateTime LoadDateTimeValue(const char *key, const DateTime &defaultValue) = 0;
 
     /// @brief 读取指定key的对象
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual GsRefObject *LoadRefObjectValue(const char *key) = 0;
+    virtual RefObject *LoadRefObjectValue(const char *key) = 0;
 
     /// @brief 读取指定key的对象
     /// @tparam T 对象类型
     /// @param key 属性名称
     /// @return
     template<typename T>
-    GsSharedPointer<T> LoadRefObjectValueT(const char *key)
+    SharedPointer<T> LoadRefObjectValueT(const char *key)
     {
-        GsRefObject *ref = LoadRefObjectValue(key);
+        RefObject *ref = LoadRefObjectValue(key);
         if (!ref)
         {
             return 0;
@@ -671,24 +671,24 @@ public:
         return SharedPointer<T>(o, false);
     }
 };
-GS_SMARTER_PTR(GsSerializeStream)
+GS_SMARTER_PTR(SerializeStream)
 
 
 /// @brief 序列化接口
-class GsSerializeInterface
+class SerializeInterface
 {
 public:
     /// @brief 对象序列化为流
     /// @param pStream
-    virtual bool Serialize(GsSerializeStream *pStream) = 0;
+    virtual bool Serialize(SerializeStream *pStream) = 0;
 
     /// @brief 对象反序列化为流
     /// @param pStream
-    virtual bool DeSerialize(GsSerializeStream *pStream) = 0;
+    virtual bool DeSerialize(SerializeStream *pStream) = 0;
 };
 
 /// @brief 序列化流类型
-enum GsSerializeStreamType
+enum SerializeStreamType
 {
     /// @brief XML流
     eXML,
@@ -700,13 +700,13 @@ enum GsSerializeStreamType
 };
 
 /// @brief 序列化流工厂
-class GsSerializeStreamFactory
+class SerializeStreamFactory
 {
 public:
     /// @brief 创建序列化流对象
     /// @param type
     /// @return
-    static GsSerializeStreamPtr CreateStream(GsSerializeStreamType eType);
+    static SerializeStreamPtr CreateStream(SerializeStreamType eType);
 };
 
 

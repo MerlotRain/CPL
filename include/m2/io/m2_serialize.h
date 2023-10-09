@@ -41,15 +41,15 @@
 namespace m2 {
 
 /// @brief 序列化流基类
-class GsSerializeStream : public GsRefObject
+class SerializeStream : public RefObject
 {
 public:
-    virtual ~GsSerializeStream() {}
+    virtual ~SerializeStream() {}
 
     /// @brief 转换为字符串
     /// @details 根据流类型转换为XML或JSON格式
     /// @return
-    virtual GsString ToString() = 0;
+    virtual String ToString() = 0;
 
     /// @brief 设置字符串内容，用于内部解析使用
     /// @param str
@@ -111,18 +111,18 @@ public:
     /// @brief 设置指定key的指定对象值
     /// @param key 属性名称
     /// @param value 属性值
-    virtual void Save(const char *key, GsRefObject *object) = 0;
+    virtual void Save(const char *key, RefObject *object) = 0;
 
     /// @brief 设置指定key的指定日期值
     /// @param key 属性名称
     /// @param value 属性值
-    virtual void Save(const char *key, GsDateTime dateTime) = 0;
+    virtual void Save(const char *key, DateTime dateTime) = 0;
 
     /// @brief 读取指定key的字符串值
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual GsString LoadStringValue(const char *key, const char *defaultValue) = 0;
+    virtual String LoadStringValue(const char *key, const char *defaultValue) = 0;
 
     /// @brief 读取指定key的int值
     /// @param key 属性名称
@@ -170,22 +170,22 @@ public:
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual GsDateTime LoadDateTimeValue(const char *key, const GsDateTime &defaultValue) = 0;
+    virtual DateTime LoadDateTimeValue(const char *key, const DateTime &defaultValue) = 0;
 
     /// @brief 读取指定key的对象
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual GsRefObject *LoadRefObjectValue(const char *key) = 0;
+    virtual RefObject *LoadRefObjectValue(const char *key) = 0;
 
     /// @brief 读取指定key的对象
     /// @tparam T 对象类型
     /// @param key 属性名称
     /// @return
     template<typename T>
-    GsSharedPointer<T> LoadRefObjectValueT(const char *key)
+    SharedPointer<T> LoadRefObjectValueT(const char *key)
     {
-        GsRefObject *ref = LoadObjectValue(key);
+        RefObject *ref = LoadObjectValue(key);
         if (!ref)
         {
             return 0;
@@ -199,24 +199,24 @@ public:
         return SharedPointer<T>(o, false);
     }
 };
-GS_SMARTER_PTR(GsSerializeStream)
+GS_SMARTER_PTR(SerializeStream)
 
 
 /// @brief 序列化接口
-class GsSerializeInterface
+class SerializeInterface
 {
 public:
     /// @brief 对象序列化为流
     /// @param pStream
-    virtual bool Serialize(GsSerializeStream *pStream) = 0;
+    virtual bool Serialize(SerializeStream *pStream) = 0;
 
     /// @brief 对象反序列化为流
     /// @param pStream
-    virtual bool DeSerialize(GsSerializeStream *pStream) = 0;
+    virtual bool DeSerialize(SerializeStream *pStream) = 0;
 };
 
 /// @brief 序列化流类型
-enum GsSerializeStreamType
+enum SerializeStreamType
 {
     /// @brief XML流
     eXML,
@@ -228,13 +228,13 @@ enum GsSerializeStreamType
 };
 
 /// @brief 序列化流工厂
-class GsSerializeStreamFactory
+class SerializeStreamFactory
 {
 public:
     /// @brief 创建序列化流对象
     /// @param type
     /// @return
-    static GsSerializeStreamPtr CreateStream(GsSerializeStreamType eType);
+    static SerializeStreamPtr CreateStream(SerializeStreamType eType);
 };
 
 }// namespace m2

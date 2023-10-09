@@ -2,150 +2,150 @@
 
 namespace m2 {
 
-GsBitset::Reference::Reference(const Reference &) {}
+Bitset::Reference::Reference(const Reference &) {}
 
-GsBitset::Reference::~Reference() {}
+Bitset::Reference::~Reference() {}
 
-GsBitset::Reference &GsBitset::Reference::operator=(bool x) noexcept
+Bitset::Reference &Bitset::Reference::operator=(bool x) noexcept
 {
     // TODO: insert return statement here
 }
 
-GsBitset::Reference &
-GsBitset::Reference::operator=(const Reference &) noexcept
+Bitset::Reference &
+Bitset::Reference::operator=(const Reference &) noexcept
 {
     // TODO: insert return statement here
 }
 
-bool GsBitset::Reference::operator~() const noexcept { return false; }
+bool Bitset::Reference::operator~() const noexcept { return false; }
 
-GsBitset::Reference::operator bool() const noexcept {}
+Bitset::Reference::operator bool() const noexcept {}
 
-GsBitset::Reference &GsBitset::Reference::Flip() noexcept
+Bitset::Reference &Bitset::Reference::Flip() noexcept
 {
     // TODO: insert return statement here
 }
 
-/****************************** GsBitset ******************************/
+/****************************** Bitset ******************************/
 
-GsBitset::GsBitset(unsigned int nSize) {}
+Bitset::Bitset(unsigned int nSize) {}
 
-GsBitset::GsBitset(const char *str) {}
+Bitset::Bitset(const char *str) {}
 
-GsBitset::GsBitset(const GsBitset &r) {}
+Bitset::Bitset(const Bitset &r) {}
 
-GsBitset::GsBitset(GsBitset &&rr) noexcept {}
+Bitset::Bitset(Bitset &&rr) noexcept {}
 
-GsBitset &GsBitset::operator=(const GsBitset &r)
+Bitset &Bitset::operator=(const Bitset &r)
 {
     // TODO: insert return statement here
 }
 
-GsBitset &GsBitset::operator=(GsBitset &&r) noexcept
+Bitset &Bitset::operator=(Bitset &&r) noexcept
 {
     // TODO: insert return statement here
 }
 
-void GsBitset::Swap(GsBitset &bit) {}
+void Bitset::Swap(Bitset &bit) {}
 
-bool GsBitset::operator==(const GsBitset &r) { return false; }
+bool Bitset::operator==(const Bitset &r) { return false; }
 
-bool GsBitset::operator!=(const GsBitset &r) { return false; }
+bool Bitset::operator!=(const Bitset &r) { return false; }
 
-bool GsBitset::Empty() const { return false; }
+bool Bitset::Empty() const { return false; }
 
-GsBitset &GsBitset::operator&=(const GsBitset &r)
+Bitset &Bitset::operator&=(const Bitset &r)
 {
     // TODO: insert return statement here
 }
 
-GsBitset &GsBitset::operator|=(const GsBitset &r)
+Bitset &Bitset::operator|=(const Bitset &r)
 {
     // TODO: insert return statement here
 }
 
-GsBitset &GsBitset::operator^=(const GsBitset &r)
+Bitset &Bitset::operator^=(const Bitset &r)
 {
     // TODO: insert return statement here
 }
 
-GsBitset &GsBitset::operator<<=(size_t pos) noexcept
+Bitset &Bitset::operator<<=(size_t pos) noexcept
 {
     // TODO: insert return statement here
 }
 
-GsBitset &GsBitset::operator>>=(size_t pos) noexcept
+Bitset &Bitset::operator>>=(size_t pos) noexcept
 {
     // TODO: insert return statement here
 }
 
-GsBitset GsBitset::operator<<(size_t pos) const noexcept { return GsBitset(); }
+Bitset Bitset::operator<<(size_t pos) const noexcept { return Bitset(); }
 
-GsBitset GsBitset::operator>>(size_t pos) const noexcept { return GsBitset(); }
+Bitset Bitset::operator>>(size_t pos) const noexcept { return Bitset(); }
 
-GsBitset &GsBitset::Set() noexcept
+Bitset &Bitset::Set() noexcept
 {
     // TODO: insert return statement here
 }
 
-GsBitset &GsBitset::Set(size_t pos, bool val)
+Bitset &Bitset::Set(size_t pos, bool val)
 {
     // TODO: insert return statement here
 }
 
-GsBitset &GsBitset::Reset() noexcept
+Bitset &Bitset::Reset() noexcept
 {
     // TODO: insert return statement here
 }
 
-GsBitset &GsBitset::Reset(size_t pos)
+Bitset &Bitset::Reset(size_t pos)
 {
     // TODO: insert return statement here
 }
 
-GsBitset GsBitset::operator~() const noexcept { return GsBitset(); }
+Bitset Bitset::operator~() const noexcept { return Bitset(); }
 
-GsBitset &GsBitset::Flip() noexcept
+Bitset &Bitset::Flip() noexcept
 {
     // TODO: insert return statement here
 }
 
-GsBitset &GsBitset::Flip(size_t pos)
+Bitset &Bitset::Flip(size_t pos)
 {
     // TODO: insert return statement here
 }
 
-bool GsBitset::operator[](size_t pos) const { return false; }
+bool Bitset::operator[](size_t pos) const { return false; }
 
-GsBitset::Reference GsBitset::operator[](size_t pos) {}
+Bitset::Reference Bitset::operator[](size_t pos) {}
 
-unsigned int GsBitset::Size() { return 0; }
+unsigned int Bitset::Size() { return 0; }
 
-GsBitset &GsBitset::PushBack(bool bit)
+Bitset &Bitset::PushBack(bool bit)
 {
     // TODO: insert return statement here
 }
 
-GsBitset &GsBitset::Resize(int size)
+Bitset &Bitset::Resize(int size)
 {
     // TODO: insert return statement here
 }
 
-GsBitset &GsBitset::Reverse(int size)
+Bitset &Bitset::Reverse(int size)
 {
     // TODO: insert return statement here
 }
 
-bool GsBitset::Test(unsigned int n) { return false; }
+bool Bitset::Test(unsigned int n) { return false; }
 
-bool GsBitset::None() { return false; }
+bool Bitset::None() { return false; }
 
-bool GsBitset::Any() { return false; }
+bool Bitset::Any() { return false; }
 
-bool GsBitset::All() { return false; }
+bool Bitset::All() { return false; }
 
-bool GsBitset::Count() const { return false; }
+bool Bitset::Count() const { return false; }
 
-GsString GsBitset::ToString() const { return GsString(); }
+String Bitset::ToString() const { return String(); }
 
 }// namespace m2

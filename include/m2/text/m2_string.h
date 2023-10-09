@@ -183,6 +183,11 @@ public:
     double toDouble(bool *ok = nullptr) const noexcept;
 };
 
+struct M2_API StringCompareIgnoreCase
+{
+    bool operator()(const String &l, const String &r) const;
+};
+
 inline bool String::isNullOrEmpty() const
 {
     return String::isNullOrEmpty(this->data());

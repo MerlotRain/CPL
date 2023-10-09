@@ -8,54 +8,54 @@
 namespace m2 {
 
 
-/*********************************** GsProcessHandleImpl ***********************************/
+/*********************************** ProcessHandleImpl ***********************************/
 
 #ifdef _WIN32
 
-GsProcessHandleImpl::GsProcessHandleImpl(HANDLE handle, unsigned int pid)
+ProcessHandleImpl::ProcessHandleImpl(HANDLE handle, unsigned int pid)
     : _process(handle), _pid(pid)
 {
 }
 
-GsProcessHandleImpl::~GsProcessHandleImpl()
+ProcessHandleImpl::~ProcessHandleImpl()
 {
     closeHandle();
 }
 
-HANDLE GsProcessHandleImpl::Process() const
+HANDLE ProcessHandleImpl::Process() const
 {
     return _process;
 }
 
-void GsProcessHandleImpl::closeHandle()
+void ProcessHandleImpl::closeHandle()
 {
     if (_process)
         CloseHandle(_process);
     _process = nullptr;
 }
 
-unsigned int GsProcessHandleImpl::PID() const
+unsigned int ProcessHandleImpl::PID() const
 {
     return _pid;
 }
 
-int GsProcessHandleImpl::Wait() const
+int ProcessHandleImpl::Wait() const
 {
     DWORD rc = WaitForSingleObject(_process, INFINITE);
     if (rc != WAIT_OBJECT_0)
-        throw std::runtime_error(GsString::Format("Wait failed for process %d", _pid).c_str());
+        throw std::runtime_error(String::Format("Wait failed for process %d", _pid).c_str());
     DWORD exitCode;
     if (GetExitCodeProcess(_process, &exitCode) == 0)
-        throw std::runtime_error(GsString::Format("Cannot get exit code for process %d", _pid).c_str());
+        throw std::runtime_error(String::Format("Cannot get exit code for process %d", _pid).c_str());
 
     return exitCode;
 }
 
-int GsProcessHandleImpl::TryWait() const
+int ProcessHandleImpl::TryWait() const
 {
     DWORD exitCode;
     if (GetExitCodeProcess(_process, &exitCode) == 0)
-        throw std::runtime_error(GsString::Format("Cannot get exit code for process %d", _pid).c_str());
+        throw std::runtime_error(String::Format("Cannot get exit code for process %d", _pid).c_str());
     if (exitCode == STILL_ACTIVE)
         return -1;
     else
@@ -63,7 +63,7 @@ int GsProcessHandleImpl::TryWait() const
 }
 
 
-/*********************************** GsProcessImpl ***********************************/
+/*********************************** ProcessImpl ***********************************/
 
 
 std::vector<wchar_t> getUnicodeEnvironmentVariablesBuffer(const _Env &env)
@@ -75,10 +75,10 @@ std::vector<wchar_t> getUnicodeEnvironmentVariablesBuffer(const _Env &env)
     {
         std::size_t envlen = p.first.length() + p.second.length() + 1;
 
-        GsWString uname;
-        GsTextConverter::Convert(p.first, uname);
-        GsWString uvalue;
-        GsTextConverter::Convert(p.second, uvalue);
+        WString uname;
+        TextConverter::Convert(p.first, uname);
+        WString uvalue;
+        TextConverter::Convert(p.second, uvalue);
 
         envbuf.resize(pos + envlen + 1);
         std::copy(uname.begin(), uname.end(), &envbuf[pos]);
@@ -98,12 +98,12 @@ std::vector<wchar_t> getUnicodeEnvironmentVariablesBuffer(const _Env &env)
     return envbuf;
 }
 
-_PID GsProcessImpl::ID()
+_PID ProcessImpl::ID()
 {
     return GetCurrentProcessId();
 }
 
-void GsProcessImpl::Times(long &userTime, long &kernelTime)
+void ProcessImpl::Times(long &userTime, long &kernelTime)
 {
     FILETIME ftCreation;
     FILETIME ftExit;
@@ -126,27 +126,27 @@ void GsProcessImpl::Times(long &userTime, long &kernelTime)
     }
 }
 
-GsProcessHandleImpl *GsProcessImpl::Launch(const GsString &command, const _Args &args, const GsString &initialDirectory,
-                                           GsPipe *inPipe, GsPipe *outPipe, GsPipe *errPipe, const _Env &env)
+ProcessHandleImpl *ProcessImpl::Launch(const String &command, const _Args &args, const String &initialDirectory,
+                                           Pipe *inPipe, Pipe *outPipe, Pipe *errPipe, const _Env &env)
 {
-    GsString commandLine = EscapeArg(command);
+    String commandLine = EscapeArg(command);
     for (const auto &a: args)
     {
         commandLine.append(" ");
         commandLine.append(EscapeArg(a));
     }
 
-    GsWString ucommandLine;
-    GsTextConverter::Convert(commandLine, ucommandLine);
+    WString ucommandLine;
+    TextConverter::Convert(commandLine, ucommandLine);
 
     const wchar_t *applicationName = 0;
-    GsWString uapplicationName;
+    WString uapplicationName;
     if (command.size() > MAX_PATH)
     {
-        GsFile file(command);
+        File file(command);
         if (file.Exists())
         {
-            GsTextConverter::Convert(command, uapplicationName);
+            TextConverter::Convert(command, uapplicationName);
             if (file.Extension().empty())
                 uapplicationName += L".EXE";
             applicationName = uapplicationName.c_str();
@@ -169,7 +169,7 @@ GsProcessHandleImpl *GsProcessImpl::Launch(const GsString &command, const _Args 
     {
         DuplicateHandle(hProc, PIPE_HANDLE(inPipe->Handle())->readHandle, hProc, &startupInfo.hStdInput, 0, TRUE, DUPLICATE_SAME_ACCESS);
         mustInheritHandles = true;
-        inPipe->Close(GsPipe::GsPipeCloseMode::eCloseRead);
+        inPipe->Close(Pipe::PipeCloseMode::eCloseRead);
     }
     else if (GetStdHandle(STD_INPUT_HANDLE))
     {
@@ -209,16 +209,16 @@ GsProcessHandleImpl *GsProcessImpl::Launch(const GsString &command, const _Args 
     {
         startupInfo.hStdError = 0;
     }
-    if (outPipe) outPipe->Close(GsPipe::GsPipeCloseMode::eCloseWrite);
-    if (errPipe) errPipe->Close(GsPipe::GsPipeCloseMode::eCloseWrite);
+    if (outPipe) outPipe->Close(Pipe::PipeCloseMode::eCloseWrite);
+    if (errPipe) errPipe->Close(Pipe::PipeCloseMode::eCloseWrite);
 
     if (mustInheritHandles)
     {
         startupInfo.dwFlags |= STARTF_USESTDHANDLES;
     }
 
-    GsWString uinitialDirectory;
-    GsTextConverter::Convert(initialDirectory, uinitialDirectory);
+    WString uinitialDirectory;
+    TextConverter::Convert(initialDirectory, uinitialDirectory);
     const wchar_t *workingDirectory = uinitialDirectory.empty() ? 0 : uinitialDirectory.c_str();
 
     const wchar_t *pEnv = 0;
@@ -249,13 +249,13 @@ GsProcessHandleImpl *GsProcessImpl::Launch(const GsString &command, const _Args 
     if (rc)
     {
         CloseHandle(processInfo.hThread);
-        return new GsProcessHandleImpl(processInfo.hProcess, processInfo.dwProcessId);
+        return new ProcessHandleImpl(processInfo.hProcess, processInfo.dwProcessId);
     }
     else
-        throw std::runtime_error(GsString::Format("Cannot launch process %s", command.c_str()));
+        throw std::runtime_error(String::Format("Cannot launch process %s", command.c_str()));
 }
 
-void GsProcessImpl::Kill(GsProcessHandleImpl &handle)
+void ProcessImpl::Kill(ProcessHandleImpl &handle)
 {
     if (handle.Process())
     {
@@ -268,7 +268,7 @@ void GsProcessImpl::Kill(GsProcessHandleImpl &handle)
     }
 }
 
-void GsProcessImpl::Kill(_PID pid)
+void ProcessImpl::Kill(_PID pid)
 {
     HANDLE hProc = OpenProcess(PROCESS_TERMINATE, FALSE, pid);
     if (hProc)
@@ -296,7 +296,7 @@ void GsProcessImpl::Kill(_PID pid)
     }
 }
 
-bool GsProcessImpl::IsRunning(const GsProcessHandleImpl &handle)
+bool ProcessImpl::IsRunning(const ProcessHandleImpl &handle)
 {
     bool result = true;
     DWORD exitCode;
@@ -305,7 +305,7 @@ bool GsProcessImpl::IsRunning(const GsProcessHandleImpl &handle)
     return result;
 }
 
-bool GsProcessImpl::IsRunning(_PID pid)
+bool ProcessImpl::IsRunning(_PID pid)
 {
     HANDLE hProc = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, pid);
     bool result = true;
@@ -323,41 +323,41 @@ bool GsProcessImpl::IsRunning(_PID pid)
     return result;
 }
 
-void GsProcessImpl::RequestTermination(_PID pid)
+void ProcessImpl::RequestTermination(_PID pid)
 {
-    GsString str = TerminationEventName(pid);
-    GsWString ustr;
-    GsTextConverter::Convert(str, ustr);
+    String str = TerminationEventName(pid);
+    WString ustr;
+    TextConverter::Convert(str, ustr);
     HANDLE event = CreateEventW(NULL, FALSE, FALSE, ustr.c_str());
     if (!event)
     {
-        int code = GsError::LastError();
-        GS_E << GsString::Format("cannot create named event %s [Error %d: %s]", str.c_str(), code, GsError::Message(code).c_str());
+        int code = Error::LastError();
+        GS_E << String::Format("cannot create named event %s [Error %d: %s]", str.c_str(), code, Error::Message(code).c_str());
         return;
     }
 
     if (!SetEvent(event))
     {
-        GS_E << GsString::Format("cannot signal named event %s", str.c_str());
+        GS_E << String::Format("cannot signal named event %s", str.c_str());
     }
     CloseHandle(event);
 }
 
-GsString GsProcessImpl::TerminationEventName(_PID pid)
+String ProcessImpl::TerminationEventName(_PID pid)
 {
-    GsString evName("POCOTRM");
+    String evName("POCOTRM");
     evName.Arg(pid, 0x10, 8);
     return evName;
 }
 
-bool GsProcessImpl::MustEscapeArg(const GsString &arg)
+bool ProcessImpl::MustEscapeArg(const String &arg)
 {
     bool result = false;
     bool inQuotes = false;
     bool escaped = false;
     for (char c: arg)
     {
-        if (GsAscii::IsSpace(c) && !inQuotes && !escaped)
+        if (Ascii::IsSpace(c) && !inQuotes && !escaped)
         {
             result = true;
             break;
@@ -378,12 +378,12 @@ bool GsProcessImpl::MustEscapeArg(const GsString &arg)
     return result || inQuotes;
 }
 
-GsString GsProcessImpl::EscapeArg(const GsString &arg)
+String ProcessImpl::EscapeArg(const String &arg)
 {
     if (MustEscapeArg(arg))
     {
-        GsString quotedArg("\"");
-        for (GsString::const_iterator it = arg.begin();; ++it)
+        String quotedArg("\"");
+        for (String::const_iterator it = arg.begin();; ++it)
         {
             unsigned backslashCount = 0;
             while (it != arg.end() && '\\' == *it)
@@ -419,72 +419,72 @@ GsString GsProcessImpl::EscapeArg(const GsString &arg)
 #elif defined(__linux__) || defined(__linux)
 
 
-/*********************************** GsProcessHandleImpl ********************************** */
+/*********************************** ProcessHandleImpl ********************************** */
 
-GsProcessHandleImpl::GsProcessHandleImpl(pid_t pid)
+ProcessHandleImpl::ProcessHandleImpl(pid_t pid)
 {
 }
 
-GsProcessHandleImpl::~GsProcessHandleImpl()
+ProcessHandleImpl::~ProcessHandleImpl()
 {
 }
 
-unsigned int GsProcessHandleImpl::PID() const
-{
-    return 0;
-}
-
-int GsProcessHandleImpl::Wait() const
+unsigned int ProcessHandleImpl::PID() const
 {
     return 0;
 }
 
-int GsProcessHandleImpl::TryWait() const
+int ProcessHandleImpl::Wait() const
 {
     return 0;
 }
 
-/*********************************** GsProcessImpl ***********************************/
+int ProcessHandleImpl::TryWait() const
+{
+    return 0;
+}
 
-_PID GsProcessImpl::ID()
+/*********************************** ProcessImpl ***********************************/
+
+_PID ProcessImpl::ID()
 {
 }
 
-void GsProcessImpl::Times(long &userTime, long &kernelTime)
+void ProcessImpl::Times(long &userTime, long &kernelTime)
 {
 }
 
-GsProcessHandleImpl *GsProcessImpl::Launch(const GsString &command, const _Args &args, const GsString &initialDirectory,
-                                           GsPipe *inPipe, GsPipe *outPipe, GsPipe *errPipe, const _Env &env)
+ProcessHandleImpl *ProcessImpl::Launch(const String &command, const _Args &args, const String &initialDirectory,
+                                           Pipe *inPipe, Pipe *outPipe, Pipe *errPipe, const _Env &env)
 {
     return nullptr;
 }
 
-void GsProcessImpl::Kill(GsProcessHandleImpl &handle)
+void ProcessImpl::Kill(ProcessHandleImpl &handle)
 {
 }
 
-void GsProcessImpl::Kill(_PID pid)
+void ProcessImpl::Kill(_PID pid)
 {
 }
 
-bool GsProcessImpl::IsRunning(const GsProcessHandleImpl &handle)
-{
-    return false;
-}
-
-bool GsProcessImpl::IsRunning(_PID pid)
+bool ProcessImpl::IsRunning(const ProcessHandleImpl &handle)
 {
     return false;
 }
 
-void GsProcessImpl::RequestTermination(_PID pid)
+bool ProcessImpl::IsRunning(_PID pid)
+{
+    return false;
+}
+
+void ProcessImpl::RequestTermination(_PID pid)
 {
 }
 
-GsProcessHandleImpl *GsProcessImpl::LaunchByForkExec(const GsString &command, const _Args &args,
-                                                     const GsString &initialDirectory, GsPipe *inPipe,
-                                                     GsPipe *outPipe, GsPipe *errPipe, const _Env &env)
+ProcessHandleImpl *ProcessImpl::LaunchByForkExec(const String &command, const _Args &args,
+                                                     const String &initialDirectory, Pipe *inPipe,
+                                                     Pipe *outPipe, Pipe *errPipe, const _Env &env)
 {
     return nullptr;
 }

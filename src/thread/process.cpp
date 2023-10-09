@@ -4,159 +4,159 @@
 
 namespace m2 {
 
-/*********************************** GsProcessHandle ***********************************/
+/*********************************** ProcessHandle ***********************************/
 
-GsProcessHandle::GsProcessHandle()
+ProcessHandle::ProcessHandle()
     : m_Handle(nullptr)
 {
 }
 
-GsProcessHandle::GsProcessHandle(void *handle)
+ProcessHandle::ProcessHandle(void *handle)
     : m_Handle(handle)
 {
 }
 
-GsProcessHandle::GsProcessHandle(const GsProcessHandle &rhs)
+ProcessHandle::ProcessHandle(const ProcessHandle &rhs)
     : m_Handle(rhs.m_Handle)
 {
-    (static_cast<GsProcessHandleImpl *>(m_Handle))->AddRef();
+    (static_cast<ProcessHandleImpl *>(m_Handle))->AddRef();
 }
 
-GsProcessHandle &GsProcessHandle::operator=(const GsProcessHandle &rhs)
+ProcessHandle &ProcessHandle::operator=(const ProcessHandle &rhs)
 {
     if (m_Handle)
-        (static_cast<GsProcessHandleImpl *>(m_Handle))->Release();
+        (static_cast<ProcessHandleImpl *>(m_Handle))->Release();
 
     if (&rhs != this)
     {
-        (static_cast<GsProcessHandleImpl *>(m_Handle))->Release();
+        (static_cast<ProcessHandleImpl *>(m_Handle))->Release();
         m_Handle = rhs.m_Handle;
-        (static_cast<GsProcessHandleImpl *>(m_Handle))->AddRef();
+        (static_cast<ProcessHandleImpl *>(m_Handle))->AddRef();
     }
     return *this;
 }
 
-GsProcessHandle::~GsProcessHandle()
+ProcessHandle::~ProcessHandle()
 {
     if (m_Handle)
-        (static_cast<GsProcessHandleImpl *>(m_Handle))->Release();
+        (static_cast<ProcessHandleImpl *>(m_Handle))->Release();
 }
 
-unsigned int GsProcessHandle::PID() const
+unsigned int ProcessHandle::PID() const
 {
     if (m_Handle)
-        return (static_cast<GsProcessHandleImpl *>(m_Handle))->PID();
+        return (static_cast<ProcessHandleImpl *>(m_Handle))->PID();
     return 0;
 }
 
-int GsProcessHandle::Wait() const
+int ProcessHandle::Wait() const
 {
     if (m_Handle)
-        return (static_cast<GsProcessHandleImpl *>(m_Handle))->Wait();
+        return (static_cast<ProcessHandleImpl *>(m_Handle))->Wait();
     return 0;
 }
 
-int GsProcessHandle::TryWait() const
+int ProcessHandle::TryWait() const
 {
     if (m_Handle)
-        return (static_cast<GsProcessHandleImpl *>(m_Handle))->TryWait();
+        return (static_cast<ProcessHandleImpl *>(m_Handle))->TryWait();
     return 0;
 }
 
 
-/*********************************** GsProcess ***********************************/
+/*********************************** Process ***********************************/
 
-unsigned int GsProcess::PID()
+unsigned int Process::PID()
 {
-    return GsProcessImpl::ID();
+    return ProcessImpl::ID();
 }
 
-void GsProcess::Times(long &userTime, long &kernelTime)
+void Process::Times(long &userTime, long &kernelTime)
 {
-    GsProcessImpl::Times(userTime, kernelTime);
+    ProcessImpl::Times(userTime, kernelTime);
 }
 
-GsProcessHandle GsProcess::Launch(const char *command, const GsStringList &args, int option)
+ProcessHandle Process::Launch(const char *command, const StringList &args, int option)
 {
-    GsString initialDirectory;
+    String initialDirectory;
     _Env env;
-    return GsProcessHandle(GsProcessImpl::Launch(command, args, initialDirectory, 0, 0, 0, env));
+    return ProcessHandle(ProcessImpl::Launch(command, args, initialDirectory, 0, 0, 0, env));
 }
 
-GsProcessHandle GsProcess::Launch(const char *command, const GsStringList &args,
+ProcessHandle Process::Launch(const char *command, const StringList &args,
                                   const char *initialDirectory, int option)
 {
     _Env env;
-    return GsProcessHandle(GsProcessImpl::Launch(command, args, initialDirectory, 0, 0, 0, env));
+    return ProcessHandle(ProcessImpl::Launch(command, args, initialDirectory, 0, 0, 0, env));
 }
 
-GsProcessHandle GsProcess::Launch(const char *command, const GsStringList &args, GsPipe *in, GsPipe *out,
-                                  GsPipe *error, int option)
+ProcessHandle Process::Launch(const char *command, const StringList &args, Pipe *in, Pipe *out,
+                                  Pipe *error, int option)
 {
     assert(in == 0 || (in != out && in != error));
-    GsString initialDirectory;
+    String initialDirectory;
     _Env env;
-    return GsProcessHandle(GsProcessImpl::Launch(command, args, initialDirectory, in, out, error, env));
+    return ProcessHandle(ProcessImpl::Launch(command, args, initialDirectory, in, out, error, env));
 }
 
-GsProcessHandle GsProcess::Launch(const char *command, const GsStringList &args,
-                                  const char *initialDirectory, GsPipe *in, GsPipe *out, GsPipe *error,
+ProcessHandle Process::Launch(const char *command, const StringList &args,
+                                  const char *initialDirectory, Pipe *in, Pipe *out, Pipe *error,
                                   int option)
 {
     assert(in == 0 || (in != out && in != error));
     _Env env;
-    return GsProcessHandle(GsProcessImpl::Launch(command, args, initialDirectory, in, out, error, env));
+    return ProcessHandle(ProcessImpl::Launch(command, args, initialDirectory, in, out, error, env));
 }
 
-GsProcessHandle GsProcess::Launch(const char *command, const GsStringList &args, GsPipe *in, GsPipe *out,
-                                  GsPipe *error, const std::map<GsString, GsString> &env, int option)
+ProcessHandle Process::Launch(const char *command, const StringList &args, Pipe *in, Pipe *out,
+                                  Pipe *error, const std::map<String, String> &env, int option)
 {
     assert(in == 0 || (in != out && in != error));
-    GsString initialDirectory;
-    return GsProcessHandle(GsProcessImpl::Launch(command, args, initialDirectory, in, out, error, env));
+    String initialDirectory;
+    return ProcessHandle(ProcessImpl::Launch(command, args, initialDirectory, in, out, error, env));
 }
 
-GsProcessHandle GsProcess::Launch(const char *command, const GsStringList &args,
-                                  const char *initialDirectory, GsPipe *in, GsPipe *out, GsPipe *error,
-                                  const std::map<GsString, GsString> &env, int option)
+ProcessHandle Process::Launch(const char *command, const StringList &args,
+                                  const char *initialDirectory, Pipe *in, Pipe *out, Pipe *error,
+                                  const std::map<String, String> &env, int option)
 {
     assert(in == 0 || (in != out && in != error));
-    return GsProcessHandle(GsProcessImpl::Launch(command, args, initialDirectory, in, out, error, env));
+    return ProcessHandle(ProcessImpl::Launch(command, args, initialDirectory, in, out, error, env));
 }
 
-int GsProcess::Wait(const GsProcessHandle &handle)
+int Process::Wait(const ProcessHandle &handle)
 {
     return handle.Wait();
 }
 
-int GsProcess::TryWait(const GsProcessHandle &handle)
+int Process::TryWait(const ProcessHandle &handle)
 {
     return handle.TryWait();
 }
 
-bool GsProcess::IsRunning(const GsProcessHandle &handle)
+bool Process::IsRunning(const ProcessHandle &handle)
 {
-    return GsProcessImpl::IsRunning(*(static_cast<GsProcessHandleImpl *>(handle.m_Handle)));
+    return ProcessImpl::IsRunning(*(static_cast<ProcessHandleImpl *>(handle.m_Handle)));
 }
 
-bool GsProcess::IsRunning(unsigned int pid)
+bool Process::IsRunning(unsigned int pid)
 {
-    return GsProcessImpl::IsRunning(pid);
+    return ProcessImpl::IsRunning(pid);
 }
 
-void GsProcess::Kill(GsProcessHandle &handle)
+void Process::Kill(ProcessHandle &handle)
 {
-    GsProcessImpl::Kill(*(static_cast<GsProcessHandleImpl *>(handle.m_Handle)));
+    ProcessImpl::Kill(*(static_cast<ProcessHandleImpl *>(handle.m_Handle)));
 }
 
-void GsProcess::Kill(unsigned int pid)
+void Process::Kill(unsigned int pid)
 {
-    GsProcessImpl::Kill(pid);
+    ProcessImpl::Kill(pid);
 }
 
-void GsProcess::RequestTermination(unsigned int pid)
+void Process::RequestTermination(unsigned int pid)
 {
-    GsProcessImpl::RequestTermination(pid);
+    ProcessImpl::RequestTermination(pid);
 }
 
 }// namespace m2

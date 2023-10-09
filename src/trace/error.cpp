@@ -9,20 +9,20 @@ namespace m2 {
 
 #ifdef _WIN32
 
-int GsError::LastError()
+int Error::LastError()
 {
     return static_cast<int>(GetLastError());
 }
 
-GsString GsError::Message(int code)
+String Error::Message(int code)
 {
-    GsString errMsg;
+    String errMsg;
     DWORD dwFlg = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
                   FORMAT_MESSAGE_IGNORE_INSERTS;
     LPWSTR lpMsgBuf = 0;
     if (FormatMessageW(dwFlg, 0, (DWORD) code, 0, (LPWSTR) &lpMsgBuf, 0, NULL))
     {
-        GsCW2A cw2a(lpMsgBuf);
+        CW2A cw2a(lpMsgBuf);
         errMsg = cw2a.m_Str;
     }
     LocalFree(lpMsgBuf);
@@ -31,7 +31,7 @@ GsString GsError::Message(int code)
 
 #else
 
-int GsError::LastError()
+int Error::LastError()
 {
     return errno;
 }
@@ -56,7 +56,7 @@ public:
     {
     }
 
-    const GsString &message() const
+    const String &message() const
     {
         return _message;
     }
@@ -74,10 +74,10 @@ protected:
 
 private:
     char _buffer[256];
-    GsString _message;
+    String _message;
 };
 
-GsString GsError::Message(int code)
+String Error::Message(int code)
 {
     StrErrorHelper helper(code);
     return helper.message();

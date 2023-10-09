@@ -40,18 +40,18 @@
 namespace m2 {
 
 
-class M2_API GsByteBufferStream : public std::iostream
+class M2_API ByteBufferStream : public std::iostream
 {
 public:
-    GsByteBufferStream(GsByteBuffer *buffer);
+    ByteBufferStream(ByteBuffer *buffer);
 
 private:
-    class GsByteStreamBuf : public std::streambuf
+    class ByteStreamBuf : public std::streambuf
     {
-        GsByteBuffer *m_Buffer;
+        ByteBuffer *m_Buffer;
 
     public:
-        GsByteStreamBuf(GsByteBuffer *buffer);
+        ByteStreamBuf(ByteBuffer *buffer);
 
     protected:
         virtual std::streamsize xsputn(const char *s, std::streamsize num);
@@ -59,23 +59,23 @@ private:
         virtual pos_type seekoff(off_type, ios_base::seekdir,
                                  ios_base::openmode = ios_base::in | ios_base::out);
     };
-    GsByteStreamBuf *m_buf;
+    ByteStreamBuf *m_buf;
 };
 
 
 /// @brief 流查询原点
-enum GsStreamSeekOrigin
+enum StreamSeekOrigin
 {
     eBegin,  //!< 从流的起点向后查询
     eCurrent,//!< 从流当前位置向后查询
     eEnd     //!< 从流的尾部向前查询
 };
 
-class M2_API GsInputStream : public GsRefObject
+class M2_API InputStream : public RefObject
 {
 public:
     /// @brief
-    virtual ~GsInputStream();
+    virtual ~InputStream();
     /// @brief
     /// @param nLen
     /// @return
@@ -101,7 +101,7 @@ public:
     /// @param offset
     /// @param origin
     /// @return
-    virtual bool Seek(int offset, GsStreamSeekOrigin origin);
+    virtual bool Seek(int offset, StreamSeekOrigin origin);
     /// @brief
     /// @return
     virtual bool Eof() const;
@@ -150,7 +150,7 @@ public:
     /// @param v
     /// @return
     template<class T>
-    GsInputStream &operator>>(T &v)
+    InputStream &operator>>(T &v)
     {
         ReadT(v);
         return *this;
@@ -159,19 +159,19 @@ public:
     /// @brief
     /// @param nLen
     /// @return
-    GsString ReadString(int nLen);
+    String ReadString(int nLen);
     /// @brief
     /// @param nLen
     /// @param str
     /// @return
-    int ReadString(int nLen, GsString &str);
+    int ReadString(int nLen, String &str);
     /// @brief
     /// @return
-    GsString ReadLine();
+    String ReadLine();
     /// @brief
     /// @param line
     /// @return
-    bool ReadLine(GsString &line);
+    bool ReadLine(String &line);
     /// @brief
     /// @return
     char ReadInt8();
@@ -204,31 +204,31 @@ public:
     double ReadFloat64();
 
 protected:
-    GsInputStream();
+    InputStream();
 };
 
 
 /// @brief 写入内存
-class M2_API GsMemoryInputStream : public GsInputStream
+class M2_API MemoryInputStream : public InputStream
 {
 public:
     /// @brief
     /// @param buffer
     /// @param nLen
     /// @param bCopy
-    GsMemoryInputStream(const unsigned char *buffer, int nLen, bool bCopy = false);
+    MemoryInputStream(const unsigned char *buffer, int nLen, bool bCopy = false);
     /// @brief
     /// @param buffer
     /// @param bCopy
-    GsMemoryInputStream(GsByteBuffer *buffer, bool bCopy = false);
+    MemoryInputStream(ByteBuffer *buffer, bool bCopy = false);
     /// @brief
     /// @param str
     /// @param bCopy
-    GsMemoryInputStream(const char *str, bool bCopy = false);
+    MemoryInputStream(const char *str, bool bCopy = false);
     /// @brief
     /// @param str
     /// @param bCopy
-    GsMemoryInputStream(const GsString &str, bool bCopy = false);
+    MemoryInputStream(const String &str, bool bCopy = false);
     /// @brief 读取一块数据
     /// @details 从输入流读出一块特定长度的数据，返回实际读取的数据长度，pointer返回存储数据的原始指针，如果存在的话。具备0拷贝能力的派生类覆盖此函数
     /// @param buff 要存储读取数据的缓冲区，buff和pointer二者只允许一个为空
@@ -243,7 +243,7 @@ public:
     virtual unsigned long long Offset() const;
 
     /// @brief 定位输入流偏移位置
-    virtual bool Seek(int offset, GsStreamSeekOrigin origin);
+    virtual bool Seek(int offset, StreamSeekOrigin origin);
 
     /// @brief 关闭流
     virtual bool Close();
@@ -252,15 +252,15 @@ protected:
     unsigned long long m_nOffset = 0;
     unsigned long long m_nLength = 0;
     const unsigned char *m_Head = NULL;
-    GsByteBuffer m_Buffer;
+    ByteBuffer m_Buffer;
     void Init();
-    GsMemoryInputStream();
+    MemoryInputStream();
 };
-GS_SMARTER_PTR(GsMemoryInputStream)
+GS_SMARTER_PTR(MemoryInputStream)
 
 
 /// @brief 读文件
-class M2_API GsFileInputStream : public GsInputStream
+class M2_API FileInputStream : public InputStream
 {
     FILE *m_pFile = NULL;
     unsigned long long m_nLength = 0;
@@ -271,21 +271,21 @@ public:
     /// @brief 从文件路径构造
     /// @param  file 文件路径
     /// @param  bBin 是否以二进制方式打开文件
-    GsFileInputStream(const char *file, bool bBin = true);
+    FileInputStream(const char *file, bool bBin = true);
 
     /// @brief 从文件句柄构造
     /// @param file 文件句柄
     /// @param nLen 文件的长度
     /// @param bCloseFile 在对象析构时是否关闭文件
-    GsFileInputStream(FILE *file, unsigned long long nLen, bool bCloseFile = false);
+    FileInputStream(FILE *file, unsigned long long nLen, bool bCloseFile = false);
 
-    virtual ~GsFileInputStream();
+    virtual ~FileInputStream();
 
-    using GsInputStream::ReadLine;
+    using InputStream::ReadLine;
     /// @brief 读取一行字符串
     /// @param  line
     /// @return
-    bool ReadLine(GsString &line);
+    bool ReadLine(String &line);
 
     /// @brief 读取一块数据
     /// @details 从输入流读出一块特定长度的数据，返回实际读取的数据长度，不具备0拷贝能力的派生类覆盖此函数
@@ -307,24 +307,24 @@ public:
     /// @param  offset 偏移量
     /// @param  origin 定位原点
     /// @return
-    virtual bool Seek(int offset, GsStreamSeekOrigin origin);
+    virtual bool Seek(int offset, StreamSeekOrigin origin);
 };
-GS_SMARTER_PTR(GsFileInputStream)
+GS_SMARTER_PTR(FileInputStream)
 
 
 /// @brief 写出流
-class M2_API GsOutputStream : public GsRefObject
+class M2_API OutputStream : public RefObject
 {
 protected:
-    GsOutputStream();
+    OutputStream();
 
 public:
-    virtual ~GsOutputStream();
+    virtual ~OutputStream();
     virtual int RawWrite(const unsigned char *buff, int nLen) = 0;
     /// @brief 下次写入的偏移，即已经写入的长度，子类必须实现
     virtual unsigned long long Offset() const = 0;
     /// @brief 定位写入偏移。允许定位的输出流子类必须实现。
-    virtual bool Seek(int offset, GsStreamSeekOrigin origin);
+    virtual bool Seek(int offset, StreamSeekOrigin origin);
     /// @brief 如果存在缓存，提交缓存中未写入的内容。
     virtual bool Flush();
 
@@ -333,14 +333,14 @@ public:
 
     /// @brief 模板写入
     template<class T>
-    GsOutputStream &WriteT(const T &val)
+    OutputStream &WriteT(const T &val)
     {
         RawWrite((const unsigned char *) &val, sizeof(T));
         return *this;
     }
     /// @brief <<输出操作符
     template<class T>
-    GsOutputStream &operator<<(const T &val)
+    OutputStream &operator<<(const T &val)
     {
         return WriteT(val);
     }
@@ -349,38 +349,38 @@ public:
     /// @param nLen 要输出的字符串长度，如果长度小于0，则自动计算
     int WriteString(const char *str, int nLen = -1);
     /// @brief 输出字符串
-    int WriteString(const GsString &str);
+    int WriteString(const String &str);
 
     /// @brief 写入整块内存
-    int WriteBuffer(const GsByteBuffer *buff);
+    int WriteBuffer(const ByteBuffer *buff);
 };
-GS_SMARTER_PTR(GsOutputStream)
+GS_SMARTER_PTR(OutputStream)
 
 
 /// @brief 写入内存
-class M2_API GsMemoryOutputStream : public GsOutputStream
+class M2_API MemoryOutputStream : public OutputStream
 {
 public:
     /// @brief 缺省构造，将数据输出到内部ByteBuffer中，通过Buffer方法获取存储数据的对象。
-    GsMemoryOutputStream();
+    MemoryOutputStream();
 
     /// @brief 将数据输出到std::stringstream中存储。
-    GsMemoryOutputStream(std::stringstream &str);
+    MemoryOutputStream(std::stringstream &str);
 
-    /// @brief 将数据输出到GsString中存储。
-    GsMemoryOutputStream(GsString &str);
+    /// @brief 将数据输出到String中存储。
+    MemoryOutputStream(String &str);
 
     /// @brief 将数据输出到Vector中存储
-    GsMemoryOutputStream(std::vector<unsigned char> &vec);
+    MemoryOutputStream(std::vector<unsigned char> &vec);
 
     /// @brief 将数据输出到ByteBuffer中存储
-    GsMemoryOutputStream(GsByteBuffer *buff);
+    MemoryOutputStream(ByteBuffer *buff);
 
     /// @brief 将数据输出到固定长度的内存块中
-    GsMemoryOutputStream(unsigned char *fixMem, unsigned long long nLen);
+    MemoryOutputStream(unsigned char *fixMem, unsigned long long nLen);
 
     /// @brief 获取存储数据的Buffer
-    const GsByteBuffer *Buffer() const;
+    const ByteBuffer *Buffer() const;
 
     /// @brief 向输出流中写入一块数据，子类必须实现。
     virtual int RawWrite(const unsigned char *buff, int nLen);
@@ -389,7 +389,7 @@ public:
     virtual unsigned long long Offset() const;
 
     /// @brief 定位写入偏移。允许定位的输出流子类必须实现。
-    virtual bool Seek(int offset, GsStreamSeekOrigin origin);
+    virtual bool Seek(int offset, StreamSeekOrigin origin);
 
 private:
     unsigned long long m_Offset = 0;
@@ -398,16 +398,16 @@ private:
 
     unsigned long long m_Start = 0;
     std::vector<unsigned char> *m_pVectorOutput = NULL;
-    GsString *m_pStringOutput = NULL;
-    GsByteBuffer *m_pByteBufferOutput = NULL;
+    String *m_pStringOutput = NULL;
+    ByteBuffer *m_pByteBufferOutput = NULL;
     std::stringstream *m_pStringStream = NULL;
-    GsByteBuffer m_InnerBuffer;
+    ByteBuffer m_InnerBuffer;
 };
-GS_SMARTER_PTR(GsMemoryOutputStream)
+GS_SMARTER_PTR(MemoryOutputStream)
 
 
 /// @brief 写入文件
-class M2_API GsFileOutputStream : public GsOutputStream
+class M2_API FileOutputStream : public OutputStream
 {
     unsigned long long m_Start;
     FILE *m_pFile = NULL;
@@ -418,12 +418,12 @@ public:
     /// @param path 文件路径
     /// @param bBinary 是否以二进制方式打开文件
     /// @param bAppend 是否以追加的方式打开文件,如果为false，当文件存在时会被覆盖。
-    GsFileOutputStream(const char *path, bool bBinary = true, bool bAppend = false);
+    FileOutputStream(const char *path, bool bBinary = true, bool bAppend = false);
     /// @brief 从已有的文件句柄构造
     /// @param f 已经打开的文件句柄
     /// @param bCloseOnEnd 在输出流关闭的是否是否自动关闭文件句柄
-    GsFileOutputStream(FILE *f, bool bCloseOnEnd = true);
-    ~GsFileOutputStream();
+    FileOutputStream(FILE *f, bool bCloseOnEnd = true);
+    ~FileOutputStream();
 
     /// @brief 向输出流中写入一块数据，子类必须实现。
     virtual int RawWrite(const unsigned char *buff, int nLen);
@@ -432,9 +432,9 @@ public:
     virtual unsigned long long Offset() const;
 
     /// @brief 定位写入偏移。允许定位的输出流子类必须实现。
-    virtual bool Seek(int offset, GsStreamSeekOrigin origin);
+    virtual bool Seek(int offset, StreamSeekOrigin origin);
 };
-GS_SMARTER_PTR(GsFileOutputStream)
+GS_SMARTER_PTR(FileOutputStream)
 
 
 }// namespace m2

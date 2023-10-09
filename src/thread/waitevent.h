@@ -13,7 +13,7 @@
 
 namespace m2 {
 
-class GsWaitEvent : public GsNonCopyable
+class WaitEvent : public NonCopyable
 {
 public:
     enum EventType
@@ -22,9 +22,9 @@ public:
         AutoReset
     };
 
-    explicit GsWaitEvent(EventType t = AutoReset);
-    explicit GsWaitEvent(bool autoReset);
-    ~GsWaitEvent();
+    explicit WaitEvent(EventType t = AutoReset);
+    explicit WaitEvent(bool autoReset);
+    ~WaitEvent();
 
     void Set();
     void Wait(int milliseconds);
