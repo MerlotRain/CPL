@@ -116,7 +116,7 @@ public:
     /// \return
     virtual ConfigItem CopyItem(const ConfigItem &item);
 };
-GS_SMARTER_PTR(ConfigEngine)
+M2_SMARTER_PTR(ConfigEngine)
 
 class XMLConfigEngine
 {
@@ -198,7 +198,7 @@ public:
     /// \return
     String ToString();
 };
-GS_SMARTER_PTR(XMLConfigEngine)
+M2_SMARTER_PTR(XMLConfigEngine)
 
 class Config
 {
@@ -671,7 +671,7 @@ public:
         return SharedPointer<T>(o, false);
     }
 };
-GS_SMARTER_PTR(SerializeStream)
+M2_SMARTER_PTR(SerializeStream)
 
 
 /// @brief 序列化接口

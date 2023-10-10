@@ -6,6 +6,6 @@ class XMLSerializeStream : public SerializeStream
 {
 public:
 };
-GS_SMARTER_PTR(XMLSerializeStream)
+M2_SMARTER_PTR(XMLSerializeStream)
 
 }// namespace m2

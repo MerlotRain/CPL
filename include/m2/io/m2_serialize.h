@@ -199,7 +199,7 @@ public:
         return SharedPointer<T>(o, false);
     }
 };
-GS_SMARTER_PTR(SerializeStream)
+M2_SMARTER_PTR(SerializeStream)
 
 
 /// @brief 序列化接口

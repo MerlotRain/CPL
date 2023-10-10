@@ -30,190 +30,151 @@
 **
 ****************************************************************************/
 
-#pragma once
+#ifndef M2_COLOR_H_
+#define M2_COLOR_H_
 
-#include "preconfig.h"
+#include <preconfig.h>
 
 namespace m2 {
 
-struct M2_API Color
+class String;
+typedef unsigned int rgb32;
+class M2_API Color
 {
-    /// @brief 默认构造
-    Color() noexcept;
-    /// @brief 根据无符号32位整型构造
-    /// @param c
-    Color(unsigned int c) noexcept;
-    /// @brief 根据有符号32位整型构造
-    /// @param c
-    Color(int c) noexcept;
-    /// @brief 根据R，G，B，A通道构造
-    /// @param r 红色通道[0,255]
-    /// @param g 绿色通道[0,255]
-    /// @param b 蓝色通道[0,255]
-    /// @param a 透明通道[0,255]
-    Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255) noexcept;
-    /// @brief 拷贝构造
-    /// @param color
-    Color(const Color &color) noexcept;
-    /// @brief 改变颜色的透明度
-    /// @param rhs
-    /// @param a
-    Color(const Color &rhs, unsigned char a);
-    /// @brief 拷贝构造
-    /// @param color
-    /// @return
-    Color &operator=(const Color &color) noexcept;
-
-    /// @brief 随机颜色
-    /// @details 随机RGB值，生成颜色可能过亮
-    /// @return
-    static Color Random();
-
-    /// @brief 随机颜色
-    /// @details 使用HSV模型获取随机值，颜色更为柔和，所有渲染颜色都调用此接口获取随机值
-    /// @return
-    static Color RandomHSV();
-
-    /// @brief 从CSS颜色描述构造
-    /// @param css
-    /// @return
-    static Color FromCSS(const char *css);
-
-    /// @brief 根据R，G，B，A通道构造
-    /// @param r 红色通道[0,255]
-    /// @param g 绿色通道[0,255]
-    /// @param b 蓝色通道[0,255]
-    /// @param a 透明通道[0,255]
-    /// @return
-    static Color FromARGB(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
-
-    /// @brief 从浮点R，G，B，A通道构造
-    /// @param r 红色通道[0,1]
-    /// @param g 绿色通道[0,1]
-    /// @param b 蓝色通道[0,1]
-    /// @param a 透明通道[0,1]
-    /// @return
-    static Color FromARGBF(double r, double g, double b, double a = 1.0f);
-
-    /// @brief 根据C，M，Y，K通道构造
-    /// @param c 青色通道[0,100]
-    /// @param m 品红色通道[0,100]
-    /// @param y 黄色通道[0,100]
-    /// @param k 黑色通道[0,100]
-    /// @return
-    static Color FromCMYK(unsigned char c, unsigned char m, unsigned char y, unsigned char k);
-
-    /// @brief 根据浮点C，M，Y，K通道构造
-    /// @param c 青色通道[0,1]
-    /// @param m 品红色通道[0,1]
-    /// @param y 黄色通道[0,1]
-    /// @param k 黑色通道[0,1]
-    /// @return
-    static Color FromCMYKF(double c, double m, double y, double k);
-    /// @brief 从HSV颜色构造
-    /// @param h  Hue  色调				h 范围[0, 360] (int)
-    /// @param s  Saturation 饱和度		s 范围[0, 255](int)
-    /// @param v  Value 亮度			v 范围[0, 255](int)
-    /// @param a  透明度
-    /// @return
-    static Color FromHSV(int h, int s, int v, unsigned char a = 255);
-
-    /// @brief 从HSV颜色构造
-    /// @param h  Hue  色调				h 范围[0, 360] (float,取值为int)
-    /// @param s  Saturation 饱和度		s 范围[0, 1.0](float)
-    /// @param v  Value 亮度			v 范围[0, 1.0](float)
-    /// @param a  透明度
-    /// @return
-    static Color FromHSV(float h, float s, float v, float a = 1.0);
-    /// @brief 颜色转灰度值
-    /// @param r  红色通道[0,255]
-    /// @param g  绿色通道[0,255]
-    /// @param b  蓝色通道[0,255]
-    /// @return
-    static int ToGray(unsigned char r, unsigned char g, unsigned char b);
-
-    /// @brief 获取float类型的hsv颜色值
-    /// @param h 色调范围[0, 360] (float,取值为int)
-    /// @param s 饱和度范围[0, 1.0](float)
-    /// @param v 亮度范围[0, 1.0](float)
-    /// @return
-    bool ToHSV(float *h, float *s, float *v) const;
-    /// @brief 获取C，M，Y，K通道值
-    /// @param c 青色通道[0,100]
-    /// @param m 品红色通道[0,100]
-    /// @param y 黄色通道[0,100]
-    /// @param k 黑色通道[0,100]
-    /// @return
-    bool ToCMKY(unsigned int *c, unsigned int *m, unsigned int *y, unsigned int *k) const;
-    /// @brief 获取H，S，L通道值
-    /// @param h 色相范围[0, 360]
-    /// @param s 饱和度范围[0, 100]
-    /// @param l 亮度范围[0, 100]
-    /// @param a 透明度范围[0, 255]
-    /// @return
-    bool ToHSL(float *h, float *s, float *l, int *a = nullptr) const;
-
-    /// @brief 用Win32 RGB颜色设置颜色值
-    /// @param rgb
-    /// @param a
-    void SetCOLORREF(unsigned int rgb, unsigned char a = 255);
-    /// @brief 转换为win32 RGB颜色值
-    /// @return
-    unsigned int ToCOLORREF() const;
-
-    /// @brief 浮点数R通道值
-    /// @return 返回R通道值[0,1]
-    float RedF() const noexcept;
-    /// @brief 浮点数G通道值
-    /// @return 返回R通道值[0,1]
-    float GreenF() const noexcept;
-    /// @brief 浮点数B通道值
-    /// @return 返回R通道值[0,1]
-    float BlueF() const noexcept;
-    /// @brief 浮点数A通道值
-    /// @return 返回R通道值[0,1]
-    float AlphaF() const noexcept;
-    /// @brief 设置浮点数R通道值
-    /// @return 返回自身的引用
-    Color &RedF(float r) noexcept;
-    /// @brief 设置浮点数G通道值
-    /// @return 返回自身的引用
-    Color &GreenF(float g) noexcept;
-    /// @brief 设置浮点数A通道值
-    /// @return 返回自身的引用
-    Color &BlueF(float b) noexcept;
-    /// @brief 设置浮点数B通道值
-    /// @return 返回自身的引用
-    Color &AlphaF(float a) noexcept;
-    /// @brief 转换未灰度值[0,255]
-    /// @return
-    inline int ToGray() const
+public:
+    enum Spec
     {
-        return Color::ToGray(R, G, B);
-    }
+        Invalid,
+        Rgb,
+        Hsv,
+        Cmyk,
+        Hsl,
+        ExtendedRgb
+    };
 
-    /// @brief 等号操作符
-    /// @param argb
-    /// @return
-    Color &operator=(unsigned int &argb) noexcept;
-    /// @brief 等号操作符
-    /// @param argb
-    /// @return
-    Color &operator=(int &argb) noexcept;
-    /// @brief 等号操作符
-    /// @param rhs
-    /// @return
-    Color &operator=(Color &rhs) noexcept;
-    bool operator==(const Color &color) const noexcept;
-    bool operator!=(const Color &color) const noexcept;
+    Color() noexcept;
+    Color(rgb32 c) noexcept;
+    Color(int r, int g, int b, int a = 255) noexcept;
+    Color(const char *name);
 
-    /// @brief 无符号整数重载操作符
-    explicit operator unsigned int() const noexcept;
-    /// @brief 整数重载操作符
-    explicit operator int() const noexcept;
+    Color(const Color &color) noexcept;
+    Color &operator=(const Color &color) noexcept;
+    Color(Color &&color) noexcept;
+    Color &operator=(Color &&color) noexcept;
 
-    /// @brief w3s预设颜色值
-    /// @details https://www.w3school.com.cn/tiy/color.asp
+    static Color random();
+
+    String name() const;
+    Spec spec() const noexcept;
+
+    int alpha() const noexcept;
+    void setAlpha(int alpha);
+
+    float alphaF() const noexcept;
+    void setAlphaF(float alpha);
+
+    int red() const noexcept;
+    int green() const noexcept;
+    int blue() const noexcept;
+    void setRed(int red);
+    void setGreen(int green);
+    void setBlue(int blue);
+
+    float redF() const noexcept;
+    float greenF() const noexcept;
+    float blueF() const noexcept;
+    void setRedF(float red);
+    void setGreenF(float green);
+    void setBlueF(float blue);
+
+    void getRgb(int *r, int *g, int *b, int *a = nullptr) const;
+    void setRgb(int r, int g, int b, int a = 255);
+
+    void getRgbF(float *r, float *g, float *b, float *a = nullptr) const;
+    void setRgbF(float r, float g, float b, float a = 1.0);
+
+
+    rgb32 rgba() const noexcept;
+    void setRgba(rgb32 rgba) noexcept;
+
+    rgb32 rgb() const noexcept;
+    void setRgb(rgb32 rgb) noexcept;
+
+    int hue() const noexcept;
+    int saturation() const noexcept;
+    int hsvHue() const noexcept;
+    int hsvSaturation() const noexcept;
+    int value() const noexcept;
+
+    float hueF() const noexcept;
+    float saturationF() const noexcept;
+    float hsvHueF() const noexcept;
+    float hsvSaturationF() const noexcept;
+    float valueF() const noexcept;
+
+    void getHsv(int *h, int *s, int *v, int *a = nullptr) const;
+    void setHsv(int h, int s, int v, int a = 255);
+
+    void getHsvF(float *h, float *s, float *v, float *a = nullptr) const;
+    void setHsvF(float h, float s, float v, float a = 1.0);
+
+    int cyan() const noexcept;
+    int magenta() const noexcept;
+    int yellow() const noexcept;
+    int black() const noexcept;
+
+    float cyanF() const noexcept;
+    float magentaF() const noexcept;
+    float yellowF() const noexcept;
+    float blackF() const noexcept;
+
+    void getCmyk(int *c, int *m, int *y, int *k, int *a = nullptr) const;
+    void setCmyk(int c, int m, int y, int k, int a = 255);
+
+    void getCmykF(float *c, float *m, float *y, float *k, float *a = nullptr) const;
+    void setCmykF(float c, float m, float y, float k, float a = 1.0);
+
+    int hslHue() const noexcept;
+    int hslSaturation() const noexcept;
+    int lightness() const noexcept;
+
+    float hslHueF() const noexcept;
+    float hslSaturationF() const noexcept;
+    float lightnessF() const noexcept;
+
+    void getHsl(int *h, int *s, int *l, int *a = nullptr) const;
+    void setHsl(int h, int s, int l, int a = 255);
+
+    void getHslF(float *h, float *s, float *l, float *a = nullptr) const;
+    void setHslF(float h, float s, float l, float a = 1.0);
+
+    Color toRgb() const noexcept;
+    Color toHsv() const noexcept;
+    Color toCmyk() const noexcept;
+    Color toHsl() const noexcept;
+    Color toExtendedRgb() const noexcept;
+
+    static Color fromRgb(rgb32 rgb) noexcept;
+    static Color fromRgba(rgb32 rgba) noexcept;
+
+    static Color fromRgb(int r, int g, int b, int a = 255);
+    static Color fromRgbF(float r, float g, float b, float a = 1.0);
+
+    static Color fromHsv(int h, int s, int v, int a = 255);
+    static Color fromHsvF(float h, float s, float v, float a = 1.0);
+
+    static Color fromCmyk(int c, int m, int y, int k, int a = 255);
+    static Color fromCmykF(float c, float m, float y, float k, float a = 1.0);
+
+    static Color fromHsl(int h, int s, int l, int a = 255);
+    static Color fromHslF(float h, float s, float l, float a = 1.0);
+
+    [[nodiscard]] Color lighter(int f = 150) const noexcept;
+    [[nodiscard]] Color darker(int f = 200) const noexcept;
+
+    bool operator==(const Color &c) const noexcept;
+    bool operator!=(const Color &c) const noexcept;
+
     enum
     {
         AliceBlue = 0xFFF0F8FF,
@@ -359,7 +320,6 @@ struct M2_API Color
         YellowGreen = 0xFF9ACD32
     };
 
-    /// @brief ArcGIS Pro预设颜色
     enum
     {
         Arc_ArcticWhite = 0xFFFFFFFF,
@@ -484,87 +444,60 @@ struct M2_API Color
         Arc_Cabernet = 0xFF894465,
     };
 
-    // https://photoblogstop.com/photoshop/photoshop-blend-modes-explained
-    // https://www.jianshu.com/p/175631f45ec6
-    enum PhotoShopColorBlendMode
+private:
+    Spec cspec;
+    union CS
     {
-        PS_Normal,      //!< 正常 f(a,b) = a
-        PS_Dissolve,    //!< 溶解 f(a,b) = random(a,b)
-        PS_Darken,      //!< 变暗 f(a,b)=min(a,b)
-        PS_Multiply,    //!< 正片叠底 f(a,b) = ab
-        PS_ColorBurn,   //!< 颜色加深 f(a,b) = 1-(1-b)/a
-        PS_LinearBurn,  //!< 线性加深 f(a,b)=a+b-1
-        PS_DarkerColor, //!< 深色 f(a,b)=min(ar + ag + ab, br + bg +bb)
-        PS_Lighten,     //!< 变亮 f(a,b)=max(a,b)
-        PS_Screen,      //!< 滤色 f(a,b) = 1-(1-a)(1-b)
-        PS_ColorDodge,  //!< 颜色减淡 f(a,b) = 1-(1-a)(1-b)
-        PS_LinearDodge, //!< 线性减淡(添加)  f(a,b)=a+b
-        PS_LighterColor,//!< 浅色 f(a,b)=max(ar + ag + ab, br + bg +bb)
-        PS_Overlay,     //!< 叠加
-        PS_SoftLight,   //!< 柔光
-        PS_HardLight,   //!< 强光
-        PS_VividLight,  //!< 亮光
-        PS_LinearLight, //!< 线性光
-        PS_PinLight,    //!< 点光
-        PS_HardMix,     //!< 实色混合
-        PS_Difference,  //!< 差值 f(a,b)= abs(b-a)
-        PS_Exclusion,   //!< 排除 不详
-        PS_Subtract,    //!< 减去 f(a,b)=b-a
-        PS_Divide,      //!< 划分 f(a,b)=b/a
-        PS_Hue,         //!< 色相 HcScBc = HaSbBb
-        PS_Color,       //!< 饱和度 HcScBc = HaSaBb
-        PS_Saturation,  //!< 饱和度 HcScBc = HbSaBb
-        PS_Luminosity,  //!< 明度 HcScBc = HbSbBa
-    };
+        CS() {}
+        constexpr explicit CS(uint16_t a1, uint16_t a2, uint16_t a3, uint16_t a4, uint16_t a5) noexcept
+            : array{a1, a2, a3, a4, a5} {}
 
-
-    /// @brief PorterDuff颜色混合模式
-    /// @details https://learn.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/effects/blend-modes/porter-duff
-    /// @details https://blog.csdn.net/hitzsf/article/details/108634044
-    /// @details Sa：全称为Source alpha，表示源图的Alpha通道；
-    /// @details Sc：全称为Source color，表示源图的颜色；
-    /// @details Da：全称为Destination alpha，表示目标图的Alpha通道；
-    /// @details Dc：全称为Destination color，表示目标图的颜色.
-    enum PorterDuffBlendMode
-    {
-        eCLEAR,   //!< [0, 0]
-        eSRC,     //!< [Sa, Sc]
-        eDST,     //!< [Da, Dc]
-        eSRC_OVER,//!< [Sa + (1 - Sa)*Da, Rc = Sc + (1 - Sa)*Dc]
-        eDST_OVER,//!< [Sa + (1 - Sa)*Da, Rc = Dc + (1 - Da)*Sc]
-        eSRC_IN,  //!< [Sa * Da, Sc * Da]
-        eDST_IN,  //!< [Sa * Da, Sa * Dc]
-        eSRC_OUT, //!< [Sa * (1 - Da), Sc * (1 - Da)]
-        eDST_OUT, //!< [Da * (1 - Sa), Dc * (1 - Sa)]
-        eSRC_ATOP,//!< [Da, Sc * Da + (1 - Sa) * Dc]
-        eDST_ATOP,//!< [Sa, Sa * Dc + Sc * (1 - Da)]
-        eXOR,     //!< [Sa + Da - 2 * Sa * Da, Sc * (1 - Da) + (1 - Sa) * Dc]
-        eDARKEN,  //!< [Sa + Da - Sa*Da, Sc*(1 - Da) + Dc*(1 - Sa) + min(Sc, Dc)]
-        eLIGHTEN, //!< [Sa + Da - Sa*Da, Sc*(1 - Da) + Dc*(1 - Sa) + max(Sc, Dc)]
-        eMULTIPLY,//!< [Sa * Da, Sc * Dc]
-        eSCREEN   //!< [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc]
-    };
-
-    /// @brief 根据Porter-Duff模型混合颜色
-    /// @param color
-    /// @param mode
-    /// @return
-    Color &Blend(const Color &color, PorterDuffBlendMode mode);
-    /// @brief 根据PS函数模型混合颜色
-    /// @param color
-    /// @param mode
-    /// @return
-    Color &Blend(const Color &color, PhotoShopColorBlendMode mode);
-
-    union
-    {
-        unsigned int Argb;
         struct
         {
-            unsigned char A, R, G, B;
-        };
-    };
+            uint16_t alpha;
+            uint16_t red;
+            uint16_t green;
+            uint16_t blue;
+            uint16_t pad;
+        } argb;
+        struct
+        {
+            uint16_t alpha;
+            uint16_t hue;
+            uint16_t saturation;
+            uint16_t value;
+            uint16_t pad;
+
+        } ahsv;
+        struct
+        {
+            uint16_t alpha;
+            uint16_t cyan;
+            uint16_t magenta;
+            uint16_t yellow;
+            uint16_t black;
+        } acmyk;
+        struct
+        {
+            uint16_t alpha;
+            uint16_t hue;
+            uint16_t saturation;
+            uint16_t lightness;
+            uint16_t pad;
+        } ahsl;
+        struct
+        {
+            uint16_t alphaF16;
+            uint16_t redF16;
+            uint16_t greenF16;
+            uint16_t blueF16;
+            uint16_t pad;
+        } argbExtended;
+
+        uint16_t array[5];
+    } cs;
 };
 
-
 }// namespace m2
+
+#endif//M2_COLOR_H_

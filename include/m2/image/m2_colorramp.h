@@ -1,4 +1,4 @@
-﻿/****************************************************************************
+/****************************************************************************
 **
 ** Copyright (C) 2023 MerlotRain
 ** Github:https://github.com/MerlotRain
@@ -30,19 +30,37 @@
 **
 ****************************************************************************/
 
-#ifndef M2_IMAGE_H_
-#define M2_IMAGE_H_
+#ifndef M2_COLORRAMP_H_
+#define M2_COLORRAMP_H_
 
-#include <preconfig.h>
+#include <m2_colorscheme.h>
 
 namespace m2 {
 
-/// @brief 图像基类
-class M2_API Image
+class ColorRamp
 {
-public:
+};
+
+class GradientColorRamp : public ColorRamp
+{
+};
+
+class LimitedRandomColorRamp : public ColorRamp
+{
+};
+
+class RandomColorRamp : public ColorRamp
+{
+};
+
+class CptCityColorRamp : public GradientColorRamp
+{
+};
+
+class PresetSchemeColorRamp : public ColorRamp, public ColorScheme
+{
 };
 
 }// namespace m2
 
-#endif//M2_IMAGE_H_
+#endif//M2_COLORRAMP_H_

@@ -45,7 +45,7 @@ protected:
     BackgroundTask();
     volatile bool m_bCancel;
 };
-GS_SMARTER_PTR(BackgroundTask)
+M2_SMARTER_PTR(BackgroundTask)
 
 
 enum DispatchOption
@@ -69,4 +69,4 @@ public:
 
     void Shutdown();
 };
-GS_SMARTER_PTR(PackagedTack)
+M2_SMARTER_PTR(PackagedTack)

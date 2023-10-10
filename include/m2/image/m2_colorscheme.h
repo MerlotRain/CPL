@@ -1,4 +1,4 @@
-﻿/****************************************************************************
+/****************************************************************************
 **
 ** Copyright (C) 2023 MerlotRain
 ** Github:https://github.com/MerlotRain
@@ -30,19 +30,19 @@
 **
 ****************************************************************************/
 
-#ifndef M2_IMAGE_H_
-#define M2_IMAGE_H_
-
-#include <preconfig.h>
+#ifndef M2_COLORSHEME_H_
+#define M2_COLORSHEME_H_
 
 namespace m2 {
 
-/// @brief 图像基类
-class M2_API Image
+class ColorScheme
 {
-public:
+};
+
+class GplColorScheme : public ColorScheme
+{
 };
 
 }// namespace m2
 
-#endif//M2_IMAGE_H_
+#endif//M2_COLORSHEME_H_

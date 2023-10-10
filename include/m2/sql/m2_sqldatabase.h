@@ -305,7 +305,7 @@ protected:
     /// @brief 默认构造
     SqlTransaction() {}
 };
-GS_SMARTER_PTR(SqlTransaction)
+M2_SMARTER_PTR(SqlTransaction)
 
 
 }// namespace Data

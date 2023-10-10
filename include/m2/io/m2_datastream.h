@@ -256,7 +256,7 @@ protected:
     void Init();
     MemoryInputStream();
 };
-GS_SMARTER_PTR(MemoryInputStream)
+M2_SMARTER_PTR(MemoryInputStream)
 
 
 /// @brief 读文件
@@ -309,7 +309,7 @@ public:
     /// @return
     virtual bool Seek(int offset, StreamSeekOrigin origin);
 };
-GS_SMARTER_PTR(FileInputStream)
+M2_SMARTER_PTR(FileInputStream)
 
 
 /// @brief 写出流
@@ -354,7 +354,7 @@ public:
     /// @brief 写入整块内存
     int WriteBuffer(const ByteBuffer *buff);
 };
-GS_SMARTER_PTR(OutputStream)
+M2_SMARTER_PTR(OutputStream)
 
 
 /// @brief 写入内存
@@ -403,7 +403,7 @@ private:
     std::stringstream *m_pStringStream = NULL;
     ByteBuffer m_InnerBuffer;
 };
-GS_SMARTER_PTR(MemoryOutputStream)
+M2_SMARTER_PTR(MemoryOutputStream)
 
 
 /// @brief 写入文件
@@ -434,7 +434,7 @@ public:
     /// @brief 定位写入偏移。允许定位的输出流子类必须实现。
     virtual bool Seek(int offset, StreamSeekOrigin origin);
 };
-GS_SMARTER_PTR(FileOutputStream)
+M2_SMARTER_PTR(FileOutputStream)
 
 
 }// namespace m2
