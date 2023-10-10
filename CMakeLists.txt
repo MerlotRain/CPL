@@ -50,6 +50,7 @@ set(m2_include_files
     ./include/m2/math/m2_uuid.h
     ./include/m2/math/m2_vector.h
 
+    ./include/m2/image/m2_bezier.h
     ./include/m2/image/m2_color.h
     ./include/m2/image/m2_colorramp.h
     ./include/m2/image/m2_colorscheme.h

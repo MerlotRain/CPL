@@ -33,79 +33,45 @@
 #ifndef M2_LIBRARY_H_
 #define M2_LIBRARY_H_
 
+#include <m2_mutex.h>
+#include <m2_string.h>
+
 namespace m2 {
 
+class LibraryPrivate;
 class Library
 {
 public:
-    /// @brief linux动态库加载标识
     enum Flags
     {
-        /// @brief 标识此共享对象定义的符号将可用于后续加载的共享对象的符号解析
-        SHLIB_GLOBAL = 1,
-        /// @brief 标识此共享对象定义的符号不可用于后续加载的共享对象中的引用
-        SHLIB_LOCAL = 2
+        Global = 1,
+        Local = 2
     };
 
-    /// @brief 默认构造
-    Library() = default;
-
-    /// @brief 根据路径打开动态库
-    /// @param path
+    Library();
     explicit Library(const char *path);
-
-    /// @brief 根据路径和标识打开动态库
-    /// @param path
-    /// @param flags
     Library(const char *path, int flags);
-    /// @brief 默认析构
-    /// @details 析构时不会主动释放动态库句柄，需要手动管理
     virtual ~Library();
 
-    /// @brief 加载动态库
-    /// @details 加载失败时会抛出异常
-    /// @param path
-    void Load(const char *path);
-    /// @brief 加载动态库
-    /// @details 加载失败时会抛出异常
-    /// @param path
-    /// @param flags
-    void Load(const char *path, int flags);
+    void load(const char *path);
+    void load(const char *path, int flags);
+    void unload();
+    bool isLoaded() const;
+    bool hasSymbol(const char *name);
+    void *symbol(const char *name);
+    const String &path() const;
 
-    /// @brief 卸载动态库
-    void Unload();
-    /// @brief 判断动态库是否加载
-    /// @return
-    bool IsLoaded() const;
-
-    /// @brief 是否存在指定符号
-    /// @param name
-    /// @return
-    bool HasSymbol(const char *name);
-
-    /// @brief 获取给定名称的带有符号的地址
-    /// @param name
-    /// @return
-    void *Symbol(const char *name);
-
-    /// @brief 动态库路径
-    /// @return
-    const String &Path() const;
-
-    /// @brief 获取当前平台下库文件后缀
-    /// @return
-    static String Suffix();
-    /// @brief 动态库搜索路径，设置后可仅通过名称加载动态库
-    /// @param path
-    /// @return
-    static bool SearchPath(const String &path);
+    static String suffix();
+    static bool searchPath(const String &path);
 
 private:
-    GS_DISABLE_COPY(Library)
+    Library(const Library &) = delete;
+    Library &operator=(const Library &) = delete;
+    Library(Library &&) = delete;
+    Library &operator=(Library &&) = delete;
 
-    String m_strPath;
-    void *m_Handle;
-    static RecursiveMutex m_mutex;
+private:
+    LibraryPrivate *d;
 };
 
 }// namespace m2
