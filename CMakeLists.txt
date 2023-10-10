@@ -61,6 +61,21 @@ set(m2_include_files
     ./include/m2/image/m2_polygon.h
     ./include/m2/image/m2_rect.h
     ./include/m2/image/m2_size.h
+
+    ./include/m2/thread/m2_backgroundtask.h
+    ./include/m2/thread/m2_mutex.h
+    ./include/m2/thread/m2_rwlock.h
+    ./include/m2/thread/m2_safeobject.h
+    ./include/m2/thread/m2_semaphore.h
+    ./include/m2/thread/m2_thread.h
+    ./include/m2/thread/m2_waitcondition.h
+
+    ./include/m2/tm/m2_clock.h
+    ./include/m2/tm/m2_datetime.h
+    ./include/m2/tm/m2_timer.h
+    ./include/m2/tm/m2_timespan.h
+    ./include/m2/tm/m2_timestamp.h
+    ./include/m2/tm/m2_timezone.h
     )
 
 set(m2_source_files 

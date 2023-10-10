@@ -29,3 +29,31 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_TIMEZONE_H_
+#define M2_TIMEZONE_H_
+
+#include <m2_string.h>
+
+namespace m2 {
+
+class Timestamp;
+class M2_API TimeZone
+{
+public:
+    static int UTCOffset();
+
+    static int DST();
+    static int DST(const Timestamp &timestamp);
+
+    static bool IsDST(const Timestamp &timestamp);
+
+    static int TimeZoneDifferential();
+    static String Name();
+    static String StandardName();
+    static String DSTName();
+};
+
+}// namespace m2
+
+#endif//M2_TIMEZONE_H_

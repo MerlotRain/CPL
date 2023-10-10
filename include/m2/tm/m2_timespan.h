@@ -29,3 +29,85 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_TIMESPAN_H_
+#define M2_TIMESPAN_H_
+
+#include <m2_string.h>
+
+namespace m2 {
+
+struct M2_API TimeSpan
+{
+public:
+    TimeSpan();
+    explicit TimeSpan(long long microseconds);
+    TimeSpan(long seconds, long microseconds);
+    TimeSpan(int days, int hours, int minutes, int seconds, int microSeconds);
+    TimeSpan(const TimeSpan &rhs);
+
+    template<class T, class Period>
+    explicit TimeSpan(const std::chrono::duration<T, Period> &time)
+        : TimeSpan(std::chrono::duration_cast<std::chrono::microseconds(time).count()>)
+    {
+    }
+
+    ~TimeSpan();
+
+    TimeSpan &operator=(const TimeSpan &rhs);
+    TimeSpan &operator=(long long microseconds);
+
+    TimeSpan &assign(int days, int hours, int minutes, int seconds, int microSeconds);
+    TimeSpan &assign(long seconds, long microseconds);
+
+    template<class T, class Period>
+    TimeSpan &assign(const std::chrono::duration<T, Period> &time)
+    {
+        TimeSpan = std::chrono::duration_cast<std::chrono::microseconds>(time).count();
+        return *this;
+    }
+
+    void swap(TimeSpan &timespan) noexcept;
+
+    bool operator==(const TimeSpan &rhs) const;
+    bool operator!=(const TimeSpan &rhs) const;
+    bool operator>(const TimeSpan &rhs) const;
+    bool operator>=(const TimeSpan &rhs) const;
+    bool operator<(const TimeSpan &rhs) const;
+    bool operator<=(const TimeSpan &rhs) const;
+    bool operator==(long long microSeconds) const;
+    bool operator!=(long long microSeconds) const;
+    bool operator>(long long microSeconds) const;
+    bool operator>=(long long microSeconds) const;
+    bool operator<(long long microSeconds) const;
+    bool operator<=(long long microSeconds) const;
+
+    TimeSpan operator+(const TimeSpan &rhs) const;
+    TimeSpan operator-(const TimeSpan &rhs) const;
+    TimeSpan &operator+=(const TimeSpan &rhs);
+    TimeSpan &operator-=(const TimeSpan &rhs);
+    TimeSpan operator+(long long microSeconds) const;
+    TimeSpan operator-(long long microSeconds) const;
+    TimeSpan &operator+=(long long microSeconds);
+    TimeSpan &operator-=(long long microSeconds);
+
+    int days() const;
+    int hours() const;
+    int totalHours() const;
+    int minutes() const;
+    int totalMinutes() const;
+    int seconds() const;
+    int totalSeconds() const;
+    int milliseconds() const;
+    long long totalMilliseconds() const;
+    int microseconds() const;
+    int useconds() const;
+    long long totalMicroseconds() const;
+
+private:
+    long long tspan;
+};
+
+}// namespace m2
+
+#endif

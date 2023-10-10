@@ -29,3 +29,55 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_CLOCK_H_
+#define M2_CLOCK_H_
+
+#include <preconfig.h>
+
+namespace m2 {
+
+class M2_API Clock
+{
+public:
+    Clock();
+    explicit Clock(long long c);
+    Clock(const Clock &other);
+    Clock &operator=(const Clock &other);
+    Clock(Clock &&other);
+    Clock &operator=(Clock &&other);
+    Clock &operator=(long long tv);
+
+    ~Clock();
+
+    void swap(Clock &clock) noexcept;
+    void update();
+
+    bool operator==(const Clock &rhs) const;
+    bool operator!=(const Clock &rhs) const;
+    bool operator>(const Clock &rhs) const;
+    bool operator>=(const Clock &rhs) const;
+    bool operator<(const Clock &rhs) const;
+    bool operator<=(const Clock &rhs) const;
+    Clock operator+(long long d) const;
+    Clock operator-(long long d) const;
+    long long operator-(const Clock &rhs) const;
+    Clock &operator+=(long long d);
+    Clock &operator-=(long long d);
+
+    long long microseconds() const;
+    long long raw() const;
+    long long elapsed() const;
+    bool isElapsed(long long interval) const;
+
+    static long long Resolution();
+    static long long accuracy();
+    static bool monotonic();
+
+private:
+    long long m_nClock;
+};
+
+}// namespace m2
+
+#endif//M2_CLOCK_H_
