@@ -18,8 +18,6 @@ set(m2_include_files
     ./include/m2/m2_object.h
     ./include/m2/m2_trace.h
     ./include/m2/m2_variant.h
-    ./include/m2/sqlite3.h
-    ./include/m2/tinyxml2.h
 
     ./include/m2/io/m2_bytebuffer.h
     ./include/m2/io/m2_configuration.h
@@ -95,14 +93,13 @@ set(m2_include_files
     )
 
 set(m2_source_files 
-    ./src/text/string.cpp
+    ./src/text/m2_string.cpp
 
     ./src/sql/m2_sqldatabase.cpp
     ./src/sql/m2_sqldriver.cpp
     ./src/sql/m2_sqldriver.h
     ./src/sql/sqldrivers/sqlite/m2_sqlitedriver.cpp
     ./src/sql/sqldrivers/sqlite/m2_sqlitedriver.h
-    ./src/sql/sqldrivers/sqlite/sqlite3.c
 )
 
 add_library(libm2 SHARED ${m2_include_files} ${m2_source_files})

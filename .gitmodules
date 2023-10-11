@@ -1,0 +1,18 @@
+[submodule "src/3rd_party/libxml2"]
+    path = src/3rd_party/libxml2
+    url = https://github.com/GNOME/libxml2.git
+[submodule "src/3rd_party/libjson"]
+    path = src/3rd_party/libjson
+    url = https://github.com/json-c/json-c.git
+[submodule "src/3rd_party/tinycbor"]
+    path = src/3rd_party/tinycbor
+    url = https://github.com/intel/tinycbor.git
+[submodule "src/3rd_party/libpng"]
+    path = src/3rd_party/libpng
+    url = https://github.com/glennrp/libpng.git
+[submodule "src/3rd_party/libjpeg"]
+    path = src/3rd_party/libjpeg
+    url = https://github.com/libjpeg-turbo/libjpeg-turbo.git
+[submodule "src/3rd_party/zlib"]
+    path = src/3rd_party/zlib
+    url = https://github.com/madler/zlib.git
