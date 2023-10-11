@@ -89,6 +89,9 @@ set(m2_include_files
     ./include/m2/tm/m2_timespan.h
     ./include/m2/tm/m2_timestamp.h
     ./include/m2/tm/m2_timezone.h
+
+    ./include/m2/sql/m2_sqldatabase.h
+    ./include/m2/sql/m2_sqlstatement.h
     )
 
 set(m2_source_files 
