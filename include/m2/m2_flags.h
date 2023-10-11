@@ -30,7 +30,8 @@
 **
 ****************************************************************************/
 
-#pragma once
+#ifndef M2_FLAGS_H_
+#define M2_FLAGS_H_
 
 #include <type_traits>
 
@@ -44,7 +45,6 @@ public:
     constexpr inline explicit Flag(int val) noexcept : i(val) {}
     constexpr inline explicit operator int() const noexcept { return i; }
 };
-
 
 template<typename Enum>
 class Flags
@@ -133,5 +133,6 @@ private:
 };
 #define M2_DECLARE_FLAGS(flags, Enum) typedef m2::Flags<Enum> flags;
 
-
 }// namespace m2
+
+#endif//M2_FLAGS_H_

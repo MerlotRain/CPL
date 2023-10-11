@@ -30,84 +30,57 @@
 **
 ****************************************************************************/
 
-#ifndef M2_TRACE_H_
-#define M2_TRACE_H_
-
-#include <m2_flags.h>
-#include <m2_string.h>
-#include <m2_stringlist.h>
-#ifdef _WIN32
-#include <Windows.h>
-#endif
+#ifndef M2_ELAPSEDTIMER_H_
+#define M2_ELAPSEDTIMER_H_
 
 namespace m2 {
 
-class StackTrace
+class QElapsedTimer
 {
 public:
-    struct StackLine
+    enum ClockType
     {
-        String Module;
-        String Symbol;
-        String File;
-        String Line;
+        SystemTime,
+        MonotonicClock,
+        TickCounter,
+        MachAbsoluteTime,
+        PerformanceCounter
     };
 
-    bool bSymbolLoaded;
-    String strFullStack;
-    std::vector<StackTrace::StackLine> vctLines;
+    constexpr QElapsedTimer();
 
-#ifdef _WIN32
-    HANDLE process;
-    HANDLE thread;
-    std::vector<HANDLE> threads;
-    static StackTrace *Trace(DWORD processID, DWORD threadID, struct _EXCEPTION_POINTERS *ExceptionInfo, String symbolPath);
-#else
-    static std::vector<StackTrace::StackLine> Trace(unsigned int maxFrames = 63);
-#endif
-};
+    static ClockType clockType() noexcept;
+    static bool isMonotonic() noexcept;
 
-class CrashReport
-{
-public:
-    CrashReport();
+    void start() noexcept;
+    long long restart() noexcept;
+    void invalidate() noexcept;
+    bool isValid() const noexcept;
 
-public:
-    enum CrashFlag
+    long long nsecsElapsed() const noexcept;
+    long long elapsed() const noexcept;
+    bool hasExpired(long long timeout) const noexcept;
+
+    long long msecsSinceReference() const noexcept;
+    long long msecsTo(const QElapsedTimer &other) const noexcept;
+    long long secsTo(const QElapsedTimer &other) const noexcept;
+
+    friend bool operator==(const QElapsedTimer &lhs, const QElapsedTimer &rhs) noexcept
     {
-        Stack = 1 << 0,
-        Plugins = 1 << 1,
-        ProjectDetails = 1 << 2,
-        SystemInfo = 1 << 3,
-        All = Stack | Plugins | ProjectDetails | SystemInfo
-    };
-    M2_DECLARE_FLAGS(CrashFlags, CrashFlag)
-
-    enum class LikelyPythonFaultCause
+        return lhs.t1 == rhs.t1 && lhs.t2 == rhs.t2;
+    }
+    friend bool operator!=(const QElapsedTimer &lhs, const QElapsedTimer &rhs) noexcept
     {
-        NotPython,
-        Unknown,
-        ProcessingScript,
-        Plugin,
-        ConsoleCommand
-    };
+        return !(lhs == rhs);
+    }
 
-    void setStackTrace(StackTrace *value);
-    StackTrace *stackTrace() const;
-    void setFlags(CrashReport::CrashFlags flags);
-    CrashFlags flags() const;
-    const String toHtml() const;
-    const String crashID() const;
-    void exportToCrashFolder();
-    String crashReportFolder();
-    void versionInfo(const StringList &versionInfo);
+    friend bool operator<(const QElapsedTimer &lhs, const QElapsedTimer &rhs) noexcept;
 
 private:
-    CrashFlags m_Flags;
-    StackTrace *m_StackTrace = nullptr;
-    StringList m_VersionInfo;
+    long long t1;
+    long long t2;
 };
 
 }// namespace m2
 
-#endif//M2_TRACE_H_
+#endif//M2_ELAPSEDTIMER_H_

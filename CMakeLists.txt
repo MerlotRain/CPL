@@ -9,6 +9,17 @@ set(m2_include_files
     ./include/preconfig.h
     ./include/m2.h
     ./include/m2/m2_allocator.h
+    ./include/m2/m2_delegate.h
+    ./include/m2/m2_delegateT.h
+    ./include/m2/m2_endian.h
+    ./include/m2/m2_enummaskflag.h
+    ./include/m2/m2_error.h
+    ./include/m2/m2_flags.h
+    ./include/m2/m2_object.h
+    ./include/m2/m2_trace.h
+    ./include/m2/m2_variant.h
+    ./include/m2/sqlite3.h
+    ./include/m2/tinyxml2.h
 
     ./include/m2/io/m2_bytebuffer.h
     ./include/m2/io/m2_configuration.h
@@ -73,6 +84,7 @@ set(m2_include_files
 
     ./include/m2/tm/m2_clock.h
     ./include/m2/tm/m2_datetime.h
+    ./include/m2/tm/m2_deadlinetimer.h
     ./include/m2/tm/m2_timer.h
     ./include/m2/tm/m2_timespan.h
     ./include/m2/tm/m2_timestamp.h

@@ -30,7 +30,8 @@
 **
 ****************************************************************************/
 
-#pragma once
+#ifndef M2_ENUMMASKFLAG_H_
+#define M2_ENUMMASKFLAG_H_
 
 #include <bitset>
 #include <type_traits>
@@ -50,7 +51,6 @@ public:
     virtual const unsigned char *markData() const = 0;
     virtual int assign(const unsigned char *markData, int nLen) = 0;
 };
-
 
 template<typename Enum>
 class BitMaskFlag : public EnumMaskFlag<Enum>
@@ -243,3 +243,5 @@ public:
 };
 
 }// namespace m2
+
+#endif//M2_ENUMMASKFLAG_H_

@@ -95,9 +95,5 @@ bool operator!=(const Allocator<T> &, const Allocator<U> &)
 
 typedef std::basic_string<char, std::char_traits<char>, m2::Allocator<char>> StlString;
 typedef std::basic_string<wchar_t, std::char_traits<wchar_t>, m2::Allocator<wchar_t>> StlWString;
-typedef std::basic_stringstream<char, std::char_traits<char>, m2::Allocator<char>> StlSStream;
-typedef std::basic_ostringstream<char, std::char_traits<char>, m2::Allocator<char>> StlOSStream;
-typedef std::basic_istringstream<char, std::char_traits<char>, m2::Allocator<char>> StlISStream;
-
 
 }// namespace m2
