@@ -34,7 +34,7 @@
 #define M2_DATASTREAM_H_
 
 #include <m2_endian.h>
-#include <preconfig.h>
+#include <m2_iobase.h>
 
 namespace m2 {
 
@@ -48,6 +48,7 @@ public:
         ReadCorruptData,
         WriteFailed
     };
+
 
     bool atEnd() const;
 

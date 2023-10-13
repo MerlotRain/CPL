@@ -88,10 +88,10 @@ public:
     virtual RectF boundingBox() const;
 
 protected:
-    PointF m_Center;
-    double m_SemiMajorAxis;
-    double m_SemiMinorAxis;
-    double m_Azimuth;
+    PointF m_center;
+    double m_semiMajorAxis;
+    double m_semiMinorAxis;
+    double m_azimuth;
 
 private:
     void normalizeAxis();

@@ -1,4 +1,3 @@
-
 cmake_minimum_required(VERSION 3.0..3.24)
 project(libm2 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
@@ -17,8 +16,8 @@ set(m2_include_files
     ./include/m2/m2_trace.h
     ./include/m2/m2_variant.h
 
-    ./include/m2/io/m2_bytebuffer.h
-    ./include/m2/io/m2_configuration.h
+    ./include/m2/io/m2_buffer.h
+    ./include/m2/io/m2_bytearray.h
     ./include/m2/io/m2_datastream.h
     ./include/m2/io/m2_dir.h
     ./include/m2/io/m2_file.h
@@ -96,6 +95,9 @@ set(m2_include_files
 
 set(m2_source_files 
     ./src/image/m2_pagesize.cpp
+    
+    ./src/io/m2_buffer.cpp
+    ./src/io/m2_bytearray.cpp
     
     ./src/text/m2_string.cpp
 

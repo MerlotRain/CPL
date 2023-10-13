@@ -72,10 +72,10 @@ public:
     ~CryptographicHash();
     void reset();
     void addData(const char *data, int length);
-    void addData(const ByteBuffer &data);
+    void addData(const ByteArray &data);
     void addData(const String &str);
-    ByteBuffer result() const;
-    static ByteBuffer hash(const ByteBuffer &data, HashAlgorithm algorithm);
+    ByteArray result() const;
+    static ByteArray hash(const ByteArray &data, HashAlgorithm algorithm);
     static int hashLength(HashAlgorithm algorithm);
 
 private:

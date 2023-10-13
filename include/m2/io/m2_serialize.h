@@ -30,7 +30,16 @@
 **
 ****************************************************************************/
 
-#pragma once
+#ifndef M2_SERIALIZE_H_
+#define M2_SERIALIZE_H_
+
+namespace m2 {
+
+    class 
+
+}// namespace m2
+
+#endif//M2_SERIALIZE_H_
 
 #include "datetime.h"
 #include "object.h"
