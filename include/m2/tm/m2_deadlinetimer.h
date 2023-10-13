@@ -131,19 +131,21 @@ public:
     template<class Clock, class Duration>
     void setDeadline(std::chrono::time_point<Clock, Duration> deadline_)
     {
-        setRemainingTime(deadline_ == deadline_.max() ? Duration::max() : deadline_ - Clock::now());
+        setRemainingTime(deadline_ == deadline_.max()
+                                 ? Duration::max()
+                                 : deadline_ - Clock::now());
     }
 
     template<class Clock, class Duration = typename Clock::duration>
     std::chrono::time_point<Clock, Duration> deadline() const
     {
-        auto val = std::chrono::nanoseconds(rawRemainingTimeNSecs()) + Clock::now();
+        auto val = std::chrono::nanoseconds(rawRemainingTimeNSecs()) +
+                   Clock::now();
         return std::chrono::time_point_cast<Duration>(val);
     }
 
     template<class Rep, class Period>
-    DeadlineTimer(std::chrono::duration<Rep, Period> remaining)
-        : t2(0)
+    DeadlineTimer(std::chrono::duration<Rep, Period> remaining) : t2(0)
     {
         setRemainingTime(remaining, type_);
     }
@@ -158,34 +160,37 @@ public:
     template<class Rep, class Period>
     void setRemainingTime(std::chrono::duration<Rep, Period> remaining)
     {
-        if (remaining == remaining.max())
-            *this = DeadlineTimer(Forever, type_);
+        if (remaining == remaining.max()) *this = DeadlineTimer(Forever, type_);
         else
-            setPreciseRemainingTime(0, std::chrono::nanoseconds(remaining).count(), type_);
+            setPreciseRemainingTime(
+                    0, std::chrono::nanoseconds(remaining).count(), type_);
     }
 
     std::chrono::nanoseconds remainingTimeAsDuration() const noexcept
     {
-        if (isForever())
-            return std::chrono::nanoseconds::max();
+        if (isForever()) return std::chrono::nanoseconds::max();
         long long nsecs = rawRemainingTimeNSecs();
-        if (nsecs <= 0)
-            return std::chrono::nanoseconds::zero();
+        if (nsecs <= 0) return std::chrono::nanoseconds::zero();
         return std::chrono::nanoseconds(nsecs);
     }
 
     template<class Rep, class Period>
-    friend DeadlineTimer operator+(DeadlineTimer dt, std::chrono::duration<Rep, Period> value)
+    friend DeadlineTimer operator+(DeadlineTimer dt,
+                                   std::chrono::duration<Rep, Period> value)
     {
-        return DeadlineTimer::addNSecs(dt, std::chrono::duration_cast<std::chrono::nanoseconds>(value).count());
+        return DeadlineTimer::addNSecs(
+                dt, std::chrono::duration_cast<std::chrono::nanoseconds>(value)
+                            .count());
     }
     template<class Rep, class Period>
-    friend DeadlineTimer operator+(std::chrono::duration<Rep, Period> value, DeadlineTimer dt)
+    friend DeadlineTimer operator+(std::chrono::duration<Rep, Period> value,
+                                   DeadlineTimer dt)
     {
         return dt + value;
     }
     template<class Rep, class Period>
-    friend DeadlineTimer operator+=(DeadlineTimer &dt, std::chrono::duration<Rep, Period> value)
+    friend DeadlineTimer operator+=(DeadlineTimer &dt,
+                                    std::chrono::duration<Rep, Period> value)
     {
         return dt = dt + value;
     }

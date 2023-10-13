@@ -90,32 +90,24 @@ private:
 public:
     explicit ScopedLock(M &m) : m_lock(&m)
     {
-        if (m_lock)
-            m_lock->lock();
+        if (m_lock) m_lock->lock();
     }
     explicit ScopedLock(M *m) : m_lock(m)
     {
-        if (m_lock)
-            m_lock->lock();
+        if (m_lock) m_lock->lock();
     }
     ScopedLock(M &m, int milliseconds) : m_lock(&m)
     {
-        if (m_lock)
-            m_lock->lock(milliseconds);
+        if (m_lock) m_lock->lock(milliseconds);
     }
     ScopedLock(M *m, int milliseconds) : m_lock(m)
     {
-        if (m_lock)
-            m_lock->lock(milliseconds);
+        if (m_lock) m_lock->lock(milliseconds);
     }
-    ~ScopedLock()
-    {
-        unlock();
-    }
+    ~ScopedLock() { unlock(); }
     void unlock()
     {
-        if (m_lock)
-            m_lock->unlock();
+        if (m_lock) m_lock->unlock();
         m_lock = NULL;
     }
 };
@@ -133,18 +125,15 @@ private:
 public:
     explicit ReverseScopedLock(M &m) : m_lock(&m)
     {
-        if (m_lock)
-            m_lock->unlock();
+        if (m_lock) m_lock->unlock();
     }
     explicit ReverseScopedLock(M *m) : m_lock(m)
     {
-        if (m_lock)
-            m_lock->unlock();
+        if (m_lock) m_lock->unlock();
     }
     ~ReverseScopedLock()
     {
-        if (m_lock)
-            m_lock->lock();
+        if (m_lock) m_lock->lock();
         m_lock = NULL;
     }
 };

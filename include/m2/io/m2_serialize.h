@@ -122,7 +122,8 @@ public:
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual String LoadStringValue(const char *key, const char *defaultValue) = 0;
+    virtual String LoadStringValue(const char *key,
+                                   const char *defaultValue) = 0;
 
     /// @brief 读取指定key的int值
     /// @param key 属性名称
@@ -134,19 +135,22 @@ public:
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual unsigned int LoadUInt32Value(const char *key, unsigned int defaultValue) = 0;
+    virtual unsigned int LoadUInt32Value(const char *key,
+                                         unsigned int defaultValue) = 0;
 
     /// @brief 读取指定key的long long值
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual long long LoadInt64Value(const char *key, long long defaultValue) = 0;
+    virtual long long LoadInt64Value(const char *key,
+                                     long long defaultValue) = 0;
 
     /// @brief 读取指定key的unsigned long long值
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual unsigned long long LoadUInt64Value(const char *key, unsigned long long defaultValue) = 0;
+    virtual unsigned long long
+    LoadUInt64Value(const char *key, unsigned long long defaultValue) = 0;
 
     /// @brief 读取指定key的bool值
     /// @param key 属性名称
@@ -170,7 +174,8 @@ public:
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual DateTime LoadDateTimeValue(const char *key, const DateTime &defaultValue) = 0;
+    virtual DateTime LoadDateTimeValue(const char *key,
+                                       const DateTime &defaultValue) = 0;
 
     /// @brief 读取指定key的对象
     /// @param key 属性名称
@@ -186,10 +191,7 @@ public:
     SharedPointer<T> LoadRefObjectValueT(const char *key)
     {
         RefObject *ref = LoadObjectValue(key);
-        if (!ref)
-        {
-            return 0;
-        }
+        if (!ref) { return 0; }
         T *o = dynamic_cast<T *>(ref);
         if (!o)
         {

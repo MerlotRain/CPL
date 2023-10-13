@@ -34,10 +34,11 @@
 #define M2_ELLIPSE_H_
 
 #include <m2_point.h>
-#include <m2_rect.h>
 
 namespace m2 {
 
+class PolygonF;
+class RectF;
 class Ellipse
 {
 public:
@@ -46,14 +47,17 @@ public:
     Ellipse &operator=(const Ellipse &);
     Ellipse(Ellipse &&);
     Ellipse &operator=(Ellipse &&);
-    Ellipse(const PointF &center, double semiMajorAxis, double semiMinorAxis, double azimuth = 90);
+    Ellipse(const PointF &center, double semiMajorAxis, double semiMinorAxis,
+            double azimuth = 90);
 
     ~Ellipse();
 
-    static Ellipse fromFoci(const PointF &pt1, const PointF &pt2, const PointF &pt3);
+    static Ellipse fromFoci(const PointF &pt1, const PointF &pt2,
+                            const PointF &pt3);
     static Ellipse fromExtent(const PointF &pt1, const PointF &pt2);
     static Ellipse fromCenterPoint(const PointF &ptc, const PointF &pt1);
-    static Ellipse fromCenter2Points(const PointF &ptc, const PointF &pt1, const PointF &pt2);
+    static Ellipse fromCenter2Points(const PointF &ptc, const PointF &pt1,
+                                     const PointF &pt2);
 
     virtual bool operator==(const Ellipse &elp) const;
     virtual bool operator!=(const Ellipse &elp) const;

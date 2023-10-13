@@ -138,7 +138,8 @@ public:
 
 public:
     RegularExpression();
-    RegularExpression(const char *pattern, RegularOptions options = RegularOptions());
+    RegularExpression(const char *pattern,
+                      RegularOptions options = RegularOptions());
     RegularExpression(const RegularExpression &);
     RegularExpression &operator=(const RegularExpression &);
     RegularExpression(RegularExpression &&);
@@ -155,24 +156,34 @@ public:
     String pattern() const;
 
     bool compile(const char *tstring, RegularOptions flag = RegularOptions());
-    MatchResult match(const char *tstring, RegularOptions options = RegularOptions()) const;
-    MatchResult match(const char *tstring, int start, RegularOptions options = RegularOptions()) const;
+    MatchResult match(const char *tstring,
+                      RegularOptions options = RegularOptions()) const;
+    MatchResult match(const char *tstring, int start,
+                      RegularOptions options = RegularOptions()) const;
 
     bool operator==(const char *tstring) const;
     bool operator!=(const char *tstring) const;
 
-    int Split(const char *tstring, int start, StringList &strings, RegularOptions options = RegularOptions()) const;
-    int Substr(char *tstring, const char *replacement, RegularOptions options = RegularOptions()) const;
-    int Substr(char *tstring, int start, const char *replacement, RegularOptions options = RegularOptions()) const;
-    static bool Match(const char *tstring, const char *pattern, RegularOptions options = RegularOptions());
+    int Split(const char *tstring, int start, StringList &strings,
+              RegularOptions options = RegularOptions()) const;
+    int Substr(char *tstring, const char *replacement,
+               RegularOptions options = RegularOptions()) const;
+    int Substr(char *tstring, int start, const char *replacement,
+               RegularOptions options = RegularOptions()) const;
+    static bool Match(const char *tstring, const char *pattern,
+                      RegularOptions options = RegularOptions());
 
-    String Replace(const char *tstring, const char *replaceto, int start = -1, int ntimes = -1,
-                   MatchResult *result = 0, RegularOptions options = RegularOptions()) const;
-    String Replace(const char *tstring, int string_length, const char *replaceto, int to_length,
-                   int start = -1, int ntimes = -1, MatchResult *result = 0, RegularOptions options = RegularOptions()) const;
+    String Replace(const char *tstring, const char *replaceto, int start = -1,
+                   int ntimes = -1, MatchResult *result = 0,
+                   RegularOptions options = RegularOptions()) const;
+    String Replace(const char *tstring, int string_length,
+                   const char *replaceto, int to_length, int start = -1,
+                   int ntimes = -1, MatchResult *result = 0,
+                   RegularOptions options = RegularOptions()) const;
 
 protected:
-    int substOne(char *tstring, int start, const char *replacement, RegularOptions options) const;
+    int substOne(char *tstring, int start, const char *replacement,
+                 RegularOptions options) const;
     static int compileOptions(RegularOptions options);
     static int matchOptions(RegularOptions options);
 

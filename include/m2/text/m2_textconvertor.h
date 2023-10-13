@@ -56,14 +56,20 @@ public:
     static constexpr auto ENCODING_GB18030 = "GB18030";
 
 public:
-    static bool convert(const char *src, const char *srcEncoding, const char *dstEncoding, String &dst);
-    static bool convert(const String &src, const char *srcEncoding, const char *dstEncoding, String &dst);
+    static bool convert(const char *src, const char *srcEncoding,
+                        const char *dstEncoding, String &dst);
+    static bool convert(const String &src, const char *srcEncoding,
+                        const char *dstEncoding, String &dst);
 
-    static bool convert(const wchar_t *src, const char *srcEncoding, const char *dstEncoding, String &dst);
-    static bool convert(const WString &src, const char *srcEncoding, const char *dstEncoding, String &dst);
+    static bool convert(const wchar_t *src, const char *srcEncoding,
+                        const char *dstEncoding, String &dst);
+    static bool convert(const WString &src, const char *srcEncoding,
+                        const char *dstEncoding, String &dst);
 
-    static bool convert(const char *src, const char *srcEncoding, const char *dstEncoding, WString &dst);
-    static bool convert(const String &src, const char *srcEncoding, const char *dstEncoding, WString &dst);
+    static bool convert(const char *src, const char *srcEncoding,
+                        const char *dstEncoding, WString &dst);
+    static bool convert(const String &src, const char *srcEncoding,
+                        const char *dstEncoding, WString &dst);
 
     static bool convert(const String &utf8, WString &utf16);
     static bool convert(const char *utf8, WString &utf16);

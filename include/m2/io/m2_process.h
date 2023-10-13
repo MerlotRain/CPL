@@ -76,7 +76,7 @@ public:
     ProcessHandle(ProcessHandle &&);
     ProcessHandle &operator=(ProcessHandle &&);
     virtual ~ProcessHandle();
-    
+
     virtual unsigned int pid() const;
     virtual int wait() const;
     virtual int tryWait() const;
@@ -95,15 +95,20 @@ public:
     static ProcessHandle launch(const char *command, const StringList &args,
                                 const char *initialDirectory, int option = 0);
     static ProcessHandle launch(const char *command, const StringList &args,
-                                Pipe *in, Pipe *out, Pipe *error, int option = 0);
+                                Pipe *in, Pipe *out, Pipe *error,
+                                int option = 0);
     static ProcessHandle launch(const char *command, const StringList &args,
-                                const char *initialDirectory, Pipe *in, Pipe *out, Pipe *error, int option = 0);
+                                const char *initialDirectory, Pipe *in,
+                                Pipe *out, Pipe *error, int option = 0);
     static ProcessHandle launch(const char *command, const StringList &args,
                                 Pipe *in, Pipe *out, Pipe *error,
-                                const std::map<String, String> &env, int option = 0);
+                                const std::map<String, String> &env,
+                                int option = 0);
     static ProcessHandle launch(const char *command, const StringList &args,
-                                const char *initialDirectory, Pipe *in, Pipe *out, Pipe *error,
-                                const std::map<String, String> &env, int option = 0);
+                                const char *initialDirectory, Pipe *in,
+                                Pipe *out, Pipe *error,
+                                const std::map<String, String> &env,
+                                int option = 0);
     static int wait(const ProcessHandle &handle);
     static int tryWait(const ProcessHandle &handle);
     static bool isRunning(const ProcessHandle &handle);

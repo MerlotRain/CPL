@@ -67,14 +67,16 @@ public:
     /// @param authority
     /// @param path
     /// @param query
-    Url(const String &scheme, const String &authority, const String &path, const String &query);
+    Url(const String &scheme, const String &authority, const String &path,
+        const String &query);
     /// @brief
     /// @param scheme
     /// @param authority
     /// @param path
     /// @param query
     /// @param fragment
-    Url(const String &scheme, const String &authority, const String &path, const String &query, const String &fragment);
+    Url(const String &scheme, const String &authority, const String &path,
+        const String &query, const String &fragment);
     /// @brief 拷贝构造
     /// @param url
     Url(const Url &url);
@@ -253,12 +255,14 @@ public:
     /// @param str
     /// @param reserved
     /// @param encodedStr
-    static void Encode(const String &str, const String &reserved, String &encodedStr);
+    static void Encode(const String &str, const String &reserved,
+                       String &encodedStr);
     /// @brief
     /// @param str
     /// @param decodedStr
     /// @param plusAsSpace
-    static void Decode(const String &str, String &decodedStr, bool plusAsSpace = false);
+    static void Decode(const String &str, String &decodedStr,
+                       bool plusAsSpace = false);
 
 protected:
     /// @brief
@@ -277,27 +281,33 @@ protected:
     /// @brief
     /// @param begin
     /// @param end
-    void ParseAuthority(String::const_iterator &begin, const String::const_iterator &end);
+    void ParseAuthority(String::const_iterator &begin,
+                        const String::const_iterator &end);
     /// @brief
     /// @param begin
     /// @param end
-    void ParseHostAndPort(String::const_iterator &begin, const String::const_iterator &end);
+    void ParseHostAndPort(String::const_iterator &begin,
+                          const String::const_iterator &end);
     /// @brief
     /// @param begin
     /// @param end
-    void ParsePath(String::const_iterator &begin, const String::const_iterator &end);
+    void ParsePath(String::const_iterator &begin,
+                   const String::const_iterator &end);
     /// @brief
     /// @param begin
     /// @param end
-    void ParsePathEtc(String::const_iterator &begin, const String::const_iterator &end);
+    void ParsePathEtc(String::const_iterator &begin,
+                      const String::const_iterator &end);
     /// @brief
     /// @param begin
     /// @param end
-    void ParseQuery(String::const_iterator &begin, const String::const_iterator &end);
+    void ParseQuery(String::const_iterator &begin,
+                    const String::const_iterator &end);
     /// @brief
     /// @param begin
     /// @param end
-    void ParseFragment(String::const_iterator &begin, const String::const_iterator &end);
+    void ParseFragment(String::const_iterator &begin,
+                       const String::const_iterator &end);
     /// @brief
     /// @param path
     void MergePath(const String &path);
@@ -312,7 +322,8 @@ protected:
     /// @param segments
     /// @param leadingSlash
     /// @param trailingSlash
-    void BuildPath(const std::vector<String> &segments, bool leadingSlash, bool trailingSlash);
+    void BuildPath(const std::vector<String> &segments, bool leadingSlash,
+                   bool trailingSlash);
 
 private:
     /// @brief

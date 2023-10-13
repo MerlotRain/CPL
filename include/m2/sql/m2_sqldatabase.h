@@ -95,7 +95,8 @@ struct SqlField
     SqlField(const char *strName, Type eType, const char *strAliasName = 0,
              const Variant &defaultVal = Variant());
     SqlField(const char *strName, Type eType, int nPrecision, int nScale = 0,
-             const char *strAliasName = 0, const Variant &defaultVal = Variant());
+             const char *strAliasName = 0,
+             const Variant &defaultVal = Variant());
 
     String toXml() const;
     String toJson() const;
@@ -139,7 +140,8 @@ public:
 
     static void registerSqlDrivers(SqlDatabaseDriver_Handle_t t);
 
-    static String createTableSql(const SqlFields &fields, const char *tablename, SqlDataSourceType datasource);
+    static String createTableSql(const SqlFields &fields, const char *tablename,
+                                 SqlDataSourceType datasource);
 
 private:
     SqlDatabasePrivate *d;

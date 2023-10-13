@@ -89,7 +89,7 @@ public:
 
     static Timestamp FromEpochTime(std::time_t t);
     static Timestamp FromUTCTime(long long utc);
-static long long Resolution();
+    static long long Resolution();
 
 private:
     long long tstamp;

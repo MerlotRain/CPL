@@ -39,7 +39,8 @@ public:
 
     virtual void Cancel();
 
-    static SharedPointer<BackgroundTask> Create(std::function<void()> funcationTask);
+    static SharedPointer<BackgroundTask>
+    Create(std::function<void()> funcationTask);
 
 protected:
     BackgroundTask();

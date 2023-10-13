@@ -131,7 +131,8 @@ public:
     void getCmyk(int *c, int *m, int *y, int *k, int *a = nullptr) const;
     void setCmyk(int c, int m, int y, int k, int a = 255);
 
-    void getCmykF(float *c, float *m, float *y, float *k, float *a = nullptr) const;
+    void getCmykF(float *c, float *m, float *y, float *k,
+                  float *a = nullptr) const;
     void setCmykF(float c, float m, float y, float k, float a = 1.0);
 
     int hslHue() const noexcept;
@@ -452,8 +453,11 @@ private:
     union CS
     {
         CS() {}
-        constexpr explicit CS(uint16_t a1, uint16_t a2, uint16_t a3, uint16_t a4, uint16_t a5) noexcept
-            : array{a1, a2, a3, a4, a5} {}
+        constexpr explicit CS(uint16_t a1, uint16_t a2, uint16_t a3,
+                              uint16_t a4, uint16_t a5) noexcept
+            : array{a1, a2, a3, a4, a5}
+        {
+        }
 
         struct
         {

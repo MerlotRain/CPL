@@ -293,19 +293,25 @@ constexpr inline const T &qound(const T &min, const T &val, const T &max)
 
 constexpr inline int qRound(double d)
 {
-    return d >= 0.0 ? int(d + 0.5) : int(d - double(int(d - 1)) + 0.5) + int(d - 1);
+    return d >= 0.0 ? int(d + 0.5)
+                    : int(d - double(int(d - 1)) + 0.5) + int(d - 1);
 }
 constexpr inline int qRound(float d)
 {
-    return d >= 0.0f ? int(d + 0.5f) : int(d - float(int(d - 1)) + 0.5f) + int(d - 1);
+    return d >= 0.0f ? int(d + 0.5f)
+                     : int(d - float(int(d - 1)) + 0.5f) + int(d - 1);
 }
 constexpr inline long long qRound64(double d)
 {
-    return d >= 0.0 ? (long long) (d + 0.5) : (long long) (d - double((long long) (d - 1)) + 0.5) + (long long) (d - 1);
+    return d >= 0.0 ? (long long) (d + 0.5)
+                    : (long long) (d - double((long long) (d - 1)) + 0.5) +
+                              (long long) (d - 1);
 }
 constexpr inline long long qRound64(float d)
 {
-    return d >= 0.0f ? (long long) (d + 0.5f) : (long long) (d - float((long long) (d - 1)) + 0.5f) + (long long) (d - 1);
+    return d >= 0.0f ? (long long) (d + 0.5f)
+                     : (long long) (d - float((long long) (d - 1)) + 0.5f) +
+                               (long long) (d - 1);
 }
 
 template<typename T>
@@ -346,23 +352,15 @@ constexpr inline Int qMod(Int a, unsigned b)
     return a - qDiv(a, b) * b;
 }
 
-constexpr static inline bool qIsNull(double x) noexcept
-{
-    return x == 0.0;
-}
-constexpr static inline bool qIsNull(float x) noexcept
-{
-    return x == 0.0f;
-}
+constexpr static inline bool qIsNull(double x) noexcept { return x == 0.0; }
+constexpr static inline bool qIsNull(float x) noexcept { return x == 0.0f; }
 
-inline bool qIsEqual(double a, double b, double epsilon = 4 * DBL_EPSILON) noexcept
+inline bool qIsEqual(double a, double b,
+                     double epsilon = 4 * DBL_EPSILON) noexcept
 {
     const bool aIsNan = std::isnan(a);
     const bool bIsNan = std::isnan(b);
-    if (aIsNan || bIsNan)
-    {
-        return aIsNan && bIsNan;
-    }
+    if (aIsNan || bIsNan) { return aIsNan && bIsNan; }
 
     const double diff = a - b;
     return diff > -epsilon && diff <= epsilon;
@@ -372,10 +370,7 @@ inline bool qIsEqual(float a, float b, float epsilon = 4 * FLT_EPSILON) noexcept
 {
     const bool aIsNan = std::isnan(a);
     const bool bIsNan = std::isnan(b);
-    if (aIsNan || bIsNan)
-    {
-        return aIsNan && bIsNan;
-    }
+    if (aIsNan || bIsNan) { return aIsNan && bIsNan; }
 
     const float diff = a - b;
     return diff > -epsilon && diff <= epsilon;
@@ -385,16 +380,15 @@ inline bool qIsEqualSignificant(double a, double b, int significantDigits = 10)
 {
     const bool aIsNan = std::isnan(a);
     const bool bIsNan = std::isnan(b);
-    if (aIsNan || bIsNan)
-    {
-        return aIsNan && bIsNan;
-    }
+    if (aIsNan || bIsNan) { return aIsNan && bIsNan; }
 
     int aexp, bexp;
     const double ar = std::frexp(a, &aexp);
     const double br = std::frexp(b, &bexp);
 
-    return aexp == bexp && std::round(ar * std::pow(10.0, significantDigits)) == std::round(br * std::pow(10.0, significantDigits));
+    return aexp == bexp &&
+           std::round(ar * std::pow(10.0, significantDigits)) ==
+                   std::round(br * std::pow(10.0, significantDigits));
 }
 
 }// namespace m2

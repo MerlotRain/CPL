@@ -74,7 +74,8 @@ public:
     void setPoints(int nPoints, int firstx, int firsty, ...);
     void putPoints(int index, int nPoints, const int *points);
     void putPoints(int index, int nPoints, int firstx, int firsty, ...);
-    void putPoints(int index, int nPoints, const Polygon &from, int fromIndex = 0);
+    void putPoints(int index, int nPoints, const Polygon &from,
+                   int fromIndex = 0);
 
     bool containsPoint(const Point &pt, FillRule fillRule) const;
 
@@ -122,10 +123,7 @@ inline void Polygon::setPoint(int index, const Point &pt)
     setPoint(index, pt.x(), pt.y());
 }
 
-inline Point Polygon::point(int index) const
-{
-    return at(index);
-}
+inline Point Polygon::point(int index) const { return at(index); }
 
 inline void Polygon::translate(const Point &offset)
 {

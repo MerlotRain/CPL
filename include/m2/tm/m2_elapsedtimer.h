@@ -65,16 +65,19 @@ public:
     long long msecsTo(const QElapsedTimer &other) const noexcept;
     long long secsTo(const QElapsedTimer &other) const noexcept;
 
-    friend bool operator==(const QElapsedTimer &lhs, const QElapsedTimer &rhs) noexcept
+    friend bool operator==(const QElapsedTimer &lhs,
+                           const QElapsedTimer &rhs) noexcept
     {
         return lhs.t1 == rhs.t1 && lhs.t2 == rhs.t2;
     }
-    friend bool operator!=(const QElapsedTimer &lhs, const QElapsedTimer &rhs) noexcept
+    friend bool operator!=(const QElapsedTimer &lhs,
+                           const QElapsedTimer &rhs) noexcept
     {
         return !(lhs == rhs);
     }
 
-    friend bool operator<(const QElapsedTimer &lhs, const QElapsedTimer &rhs) noexcept;
+    friend bool operator<(const QElapsedTimer &lhs,
+                          const QElapsedTimer &rhs) noexcept;
 
 private:
     long long t1;

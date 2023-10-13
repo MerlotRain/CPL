@@ -50,22 +50,24 @@ template<typename Enum>
 class Flags
 {
     static_assert(sizeof(Enum) <= sizeof(int), "Enum value is overflows");
-    static_assert((std::is_enum<Enum>::value), "Flags is only usable on enumeration types");
+    static_assert((std::is_enum<Enum>::value),
+                  "Flags is only usable on enumeration types");
 
 public:
     typedef Enum enum_type;
 
     typedef typename std::conditional<
             std::is_unsigned<typename std::underlying_type<Enum>::type>::value,
-            unsigned int,
-            signed int>::type Integer;
+            unsigned int, signed int>::type Integer;
 
     constexpr inline Flags() noexcept : i(0) {}
     constexpr inline explicit Flags(Enum flags) noexcept : i(Integer(flags)) {}
     constexpr inline explicit Flags(Flag flag) noexcept : i(flag) {}
 
     constexpr inline Flags(std::initializer_list<Enum> flags) noexcept
-        : i(initializer_list_helper(flags.begin(), flags.end())) {}
+        : i(initializer_list_helper(flags.begin(), flags.end()))
+    {
+    }
 
     constexpr inline Flags &operator&=(int mask) const noexcept
     {
@@ -104,28 +106,59 @@ public:
     }
 
     constexpr inline operator Integer() const noexcept { return i; }
-    constexpr inline Flags operator|(Flags other) const noexcept { return Flags(Flag(i | other.i)); }
-    constexpr inline Flags operator|(Enum other) const noexcept { return Flags(Flag(i | Integer(other))); }
-    constexpr inline Flags operator^(Flags other) const noexcept { return Flags(Flag(i ^ other.i)); }
-    constexpr inline Flags operator^(Enum other) const noexcept { return Flags(Flag(i ^ Integer(other))); }
-    constexpr inline Flags operator&(int mask) const noexcept { return Flags(Flag(i & mask)); }
-    constexpr inline Flags operator&(unsigned int mask) const noexcept { return Flags(Flag(i & mask)); }
-    constexpr inline Flags operator&(Enum other) const noexcept { return Flags(Flag(i & Integer(other))); }
-    constexpr inline Flags operator~() const noexcept { return Flags(Flag(~i)); }
+    constexpr inline Flags operator|(Flags other) const noexcept
+    {
+        return Flags(Flag(i | other.i));
+    }
+    constexpr inline Flags operator|(Enum other) const noexcept
+    {
+        return Flags(Flag(i | Integer(other)));
+    }
+    constexpr inline Flags operator^(Flags other) const noexcept
+    {
+        return Flags(Flag(i ^ other.i));
+    }
+    constexpr inline Flags operator^(Enum other) const noexcept
+    {
+        return Flags(Flag(i ^ Integer(other)));
+    }
+    constexpr inline Flags operator&(int mask) const noexcept
+    {
+        return Flags(Flag(i & mask));
+    }
+    constexpr inline Flags operator&(unsigned int mask) const noexcept
+    {
+        return Flags(Flag(i & mask));
+    }
+    constexpr inline Flags operator&(Enum other) const noexcept
+    {
+        return Flags(Flag(i & Integer(other)));
+    }
+    constexpr inline Flags operator~() const noexcept
+    {
+        return Flags(Flag(~i));
+    }
 
     constexpr inline bool operator!() const noexcept { return !i; }
 
-    constexpr inline bool testFlag(Enum flag) const noexcept { return (i & Integer(flag)) == Integer(flag) && (Integer(flag) != 0 || i == Integer(flag)); }
+    constexpr inline bool testFlag(Enum flag) const noexcept
+    {
+        return (i & Integer(flag)) == Integer(flag) &&
+               (Integer(flag) != 0 || i == Integer(flag));
+    }
     constexpr inline Flags &setFlag(Enum flag, bool on = true) const noexcept
     {
         return on ? (*this |= flag) : (*this &= ~Integer(flag));
     }
 
 private:
-    constexpr static inline Integer initializer_list_helper(typename std::initializer_list<Enum>::const_iterator it,
-                                                            typename std::initializer_list<Enum>::const_iterator end) noexcept
+    constexpr static inline Integer initializer_list_helper(
+            typename std::initializer_list<Enum>::const_iterator it,
+            typename std::initializer_list<Enum>::const_iterator end) noexcept
     {
-        return (it == end ? Integer(0) : (Integer(*it) | initializer_list_helper(it + 1, end)));
+        return (it == end ? Integer(0)
+                          : (Integer(*it) |
+                             initializer_list_helper(it + 1, end)));
     }
 
 private:

@@ -65,13 +65,15 @@ public:
     int bindValue(int nIndex, const char *pStr);
     int bindValue(int nIndex, long long nValue, bool bIsDateTime = false);
 
-    int bindValue(const String &placeholder, const unsigned char *pBlob, int nLen);
+    int bindValue(const String &placeholder, const unsigned char *pBlob,
+                  int nLen);
     int bindValue(const String &placeholder, int nValue);
     int bindValue(const String &placeholder, double nValue);
     int bindValue(const String &placeholder, unsigned long long nValue);
     int bindValue(const String &placeholder);
     int bindValue(const String &placeholder, const char *pStr);
-    int bindValue(const String &placeholder, long long nValue, bool bIsDateTime = false);
+    int bindValue(const String &placeholder, long long nValue,
+                  bool bIsDateTime = false);
 
 public:
     bool exec();

@@ -45,7 +45,8 @@ class Bezier
 public:
     static Bezier fromPoints(const PointF &p1, const PointF &p2,
                              const PointF &p3, const PointF &p4);
-    static void coefficients(double t, double &a, double &b, double &c, double &d);
+    static void coefficients(double t, double &a, double &b, double &c,
+                             double &d);
 
     inline PointF pointAt(double t) const;
     inline PointF normalVector(double t) const;
@@ -54,7 +55,8 @@ public:
     inline PointF secondDerivedAt(double t) const;
 
     PolygonF toPolygon(double bezier_flattening_threshold = 0.5) const;
-    void addToPolygon(PolygonF *p, double bezier_flattening_threshold = 0.5) const;
+    void addToPolygon(PolygonF *p,
+                      double bezier_flattening_threshold = 0.5) const;
 
     RectF bounds() const;
     double length(double error = 0.01) const;
@@ -79,8 +81,8 @@ public:
     inline void parameterSplitLeft(double t, Bezier *left);
     inline std::pair<Bezier, Bezier> split() const;
 
-    int shifted(Bezier *curveSegments, int maxSegmets,
-                double offset, float threshold) const;
+    int shifted(Bezier *curveSegments, int maxSegmets, double offset,
+                float threshold) const;
 
     Bezier bezierOnInterval(double t0, double t1) const;
     Bezier getSubRange(double t0, double t1) const;

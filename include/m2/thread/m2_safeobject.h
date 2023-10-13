@@ -56,12 +56,8 @@ template<class T, class L = RWLock>
 class SafeType : public L
 {
 public:
-    SafeType()
-    {
-    }
-    SafeType(T v) : Value(v)
-    {
-    }
+    SafeType() {}
+    SafeType(T v) : Value(v) {}
     template<class FUN>
     void LockOn(FUN f)
     {

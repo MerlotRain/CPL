@@ -48,7 +48,8 @@ public:
 
     template<class T, class Period>
     explicit TimeSpan(const std::chrono::duration<T, Period> &time)
-        : TimeSpan(std::chrono::duration_cast<std::chrono::microseconds(time).count()>)
+        : TimeSpan(std::chrono::duration_cast<
+                   std::chrono::microseconds(time).count()>)
     {
     }
 
@@ -57,13 +58,15 @@ public:
     TimeSpan &operator=(const TimeSpan &rhs);
     TimeSpan &operator=(long long microseconds);
 
-    TimeSpan &assign(int days, int hours, int minutes, int seconds, int microSeconds);
+    TimeSpan &assign(int days, int hours, int minutes, int seconds,
+                     int microSeconds);
     TimeSpan &assign(long seconds, long microseconds);
 
     template<class T, class Period>
     TimeSpan &assign(const std::chrono::duration<T, Period> &time)
     {
-        TimeSpan = std::chrono::duration_cast<std::chrono::microseconds>(time).count();
+        TimeSpan = std::chrono::duration_cast<std::chrono::microseconds>(time)
+                           .count();
         return *this;
     }
 

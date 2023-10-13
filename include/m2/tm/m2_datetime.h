@@ -97,14 +97,16 @@ public:
     DateTime();
     explicit DateTime(const tm &_tm);
     explicit DateTime(const Timestamp &timestamp);
-    DateTime(int year, int month, int day, int hour = 0, int minute = 0, int second = 0, int millisecond = 0, int microsecond = 0);
+    DateTime(int year, int month, int day, int hour = 0, int minute = 0,
+             int second = 0, int millisecond = 0, int microsecond = 0);
     DateTime(long long utcTime, long long diff);
     DateTime(const DateTime &dateTime);
     ~DateTime();
 
     DateTime &operator=(const DateTime &dateTime);
     DateTime &operator=(const Timestamp &timestamp);
-    DateTime &Assign(int year, int month, int day, int hour = 0, int minute = 0, int second = 0, int millisecond = 0, int microseconds = 0);
+    DateTime &Assign(int year, int month, int day, int hour = 0, int minute = 0,
+                     int second = 0, int millisecond = 0, int microseconds = 0);
     void swap(DateTime &dateTime) noexcept;
 
     int year() const;
@@ -146,25 +148,37 @@ public:
 
     static bool isLeapYear(int year);
     static int daysOfMonth(int year, int month);
-    static bool isValid(int year, int month, int day, int hour = 0, int minute = 0, int second = 0, int millisecond = 0, int microsecond = 0);
+    static bool isValid(int year, int month, int day, int hour = 0,
+                        int minute = 0, int second = 0, int millisecond = 0,
+                        int microsecond = 0);
     static double toJulianDay(long long utcTime);
-    static double toJulianDay(int year, int month, int day, int hour = 0, int minute = 0, int second = 0, int millisecond = 0, int microsecond = 0);
+    static double toJulianDay(int year, int month, int day, int hour = 0,
+                              int minute = 0, int second = 0,
+                              int millisecond = 0, int microsecond = 0);
 
     static long long toUTCTime(double julianDay);
     void computeGregorian(double julianDay);
     void computeDaytime();
 
-    static DateTime parse(const String &fmt, const String &str, int &timeZoneDifferential);
-    static DateTime parse(DateTimeFormat fmt, const String &str, int &timeZoneDifferential);
+    static DateTime parse(const String &fmt, const String &str,
+                          int &timeZoneDifferential);
+    static DateTime parse(DateTimeFormat fmt, const String &str,
+                          int &timeZoneDifferential);
 
-    static bool tryParse(const String &fmt, const String &str, DateTime &dateTime, int &timeZoneDifferential);
-    static bool tryParse(DateTimeFormat fmt, const String &str, DateTime &dateTime, int &timeZoneDifferential);
+    static bool tryParse(const String &fmt, const String &str,
+                         DateTime &dateTime, int &timeZoneDifferential);
+    static bool tryParse(DateTimeFormat fmt, const String &str,
+                         DateTime &dateTime, int &timeZoneDifferential);
 
     static DateTime parse(const String &str, int &timeZoneDifferential);
-    static bool tryParse(const String &str, DateTime &dateTime, int &timeZoneDifferential);
-    static String toString(const DateTime &dateTime, const String &fmt, int timeZoneDifferential = UTC);
-    static String toString(const Timestamp &tsp, const String &fmt, int timeZoneDifferential = UTC);
-    static String toString(const TimeSpan &rhs, const String &fmt = "%dd %H:%M:%S.%i");
+    static bool tryParse(const String &str, DateTime &dateTime,
+                         int &timeZoneDifferential);
+    static String toString(const DateTime &dateTime, const String &fmt,
+                           int timeZoneDifferential = UTC);
+    static String toString(const Timestamp &tsp, const String &fmt,
+                           int timeZoneDifferential = UTC);
+    static String toString(const TimeSpan &rhs,
+                           const String &fmt = "%dd %H:%M:%S.%i");
     static unsigned long long tickCount();
 
 private:

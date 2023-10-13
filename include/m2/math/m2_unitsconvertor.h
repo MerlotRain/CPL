@@ -87,7 +87,8 @@ public:
     inline Length toMeter() const;
     static Length toMeter(double len, LengthUnits units);
     inline Length convertTo(LengthUnits units) const;
-    static Length convertTo(double len, LengthUnits srcUnit, LengthUnits tagUnit);
+    static Length convertTo(double len, LengthUnits srcUnit,
+                            LengthUnits tagUnit);
     static double convertScale(LengthUnits from, LengthUnits to);
 
 private:
@@ -203,8 +204,10 @@ public:
     inline double meter3Volume() const;
 
     static Volume toCubicMeters(double vol, VolumeUnits units);
-    static Volume convertTo(double vol, VolumeUnits srcUnit, VolumeUnits tagUnit);
-    static double meter3Volume(double a, VolumeUnits srcUnit, VolumeUnits tagUnit);
+    static Volume convertTo(double vol, VolumeUnits srcUnit,
+                            VolumeUnits tagUnit);
+    static double meter3Volume(double a, VolumeUnits srcUnit,
+                               VolumeUnits tagUnit);
     static double convertScale(VolumeUnits from, VolumeUnits to);
 
 private:
@@ -216,10 +219,7 @@ private:
   Length inline functions
  *****************************************************************************/
 
-inline Length Length::toMeter() const
-{
-    return Length::toMeter(length, unit);
-}
+inline Length Length::toMeter() const { return Length::toMeter(length, unit); }
 
 inline Length Length::convertTo(LengthUnits units) const
 {
@@ -230,10 +230,7 @@ inline Length Length::convertTo(LengthUnits units) const
   Area inline functions
  *****************************************************************************/
 
-inline Area Area::toMeter2() const
-{
-    return Area::toMeter2(area, unit);
-}
+inline Area Area::toMeter2() const { return Area::toMeter2(area, unit); }
 
 inline Area Area::convertTo(AreaUnits units) const
 {

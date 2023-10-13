@@ -67,7 +67,9 @@ enum class AngularDirection
     CounterClockwise,
 };
 
-typedef Color (*InterpolateColorFunc)(const Color &c1, const Color &c2, const double value, AngularDirection direction);
+typedef Color (*InterpolateColorFunc)(const Color &c1, const Color &c2,
+                                      const double value,
+                                      AngularDirection direction);
 struct GradientStop
 {
     double offset;
@@ -90,8 +92,6 @@ public:
                       const Color &color2 = Color(188, 220, 60),
                       bool discrete = false,
                       const GradientStopsList &stops = GradientStopsList());
-
-    
 };
 
 class LimitedRandomColorRamp : public ColorRamp

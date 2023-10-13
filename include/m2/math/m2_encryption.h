@@ -30,78 +30,11 @@
 **
 ****************************************************************************/
 
-#pragma once
-
-#include "memorymanager.h"
-#include "object.h"
+#ifndef M2_ENCRYPTION_H_
+#define M2_ENCRYPTION_H_
 
 namespace m2 {
 
-/// @brief hash算法库
-class CryptographicHashData;
-class CryptographicHash
-{
-public:
-    enum HashAlgorithm
-    {
-        eMD4,
-        eMD5,
-        eSHA1,
-
-        eSHA224,
-        eSHA256,
-        eSHA384,
-        eSHA512,
-
-        eKECCAK_224 = 7,
-        eKECCAK_256,
-        eKECCAK_384,
-        eKECCAK_512,
-        eREALSHA3_224 = 11,
-        eREALSHA3_256,
-        eREALSHA3_384,
-        eREALSHA3_512,
-        eSHA3_224 = eREALSHA3_224,
-        eSHA3_256 = eREALSHA3_256,
-        eSHA3_384 = eREALSHA3_384,
-        eSHA3_512 = eREALSHA3_512
-
-    };
-
-public:
-    /// @brief 根据算法类型构造hash函数
-    /// @param algorithm
-    explicit CryptographicHash(HashAlgorithm algorithm);
-
-    /// @brief 默认析构
-    ~CryptographicHash();
-
-    /// @brief 重置hash结果
-    void Reset();
-
-    /// @brief 添加hash数据
-    /// @param data
-    /// @param length
-    void AddData(const char *data, int length);
-    void AddData(const ByteBuffer &data);
-    void AddData(const String &str);
-
-    /// @brief 求hash结果
-    /// @return
-    ByteBuffer Result() const;
-
-    /// @brief 求hash结果
-    /// @param data
-    /// @param algorithm
-    /// @return
-    static ByteBuffer Hash(const ByteBuffer &data, HashAlgorithm algorithm);
-
-    /// @brief 获取hash长度
-    /// @param algorithm 算法
-    static int HashLength(HashAlgorithm algorithm);
-
-private:
-    CryptographicHashData *m_Data;
-};
-
 }// namespace m2
+
+#endif//M2_ENCRYPTION_H_

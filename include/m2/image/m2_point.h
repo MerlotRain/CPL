@@ -73,19 +73,23 @@ public:
         return p1.xp * p2.xp + p1.yp * p2.yp;
     }
 
-    friend constexpr inline bool operator==(const Point &p1, const Point &p2) noexcept
+    friend constexpr inline bool operator==(const Point &p1,
+                                            const Point &p2) noexcept
     {
         return p1.xp == p2.xp && p1.yp == p2.yp;
     }
-    friend constexpr inline bool operator!=(const Point &p1, const Point &p2) noexcept
+    friend constexpr inline bool operator!=(const Point &p1,
+                                            const Point &p2) noexcept
     {
         return p1.xp != p2.xp || p1.yp != p2.yp;
     }
-    friend constexpr inline Point operator+(const Point &p1, const Point &p2) noexcept
+    friend constexpr inline Point operator+(const Point &p1,
+                                            const Point &p2) noexcept
     {
         return Point(p1.xp + p2.xp, p1.yp + p2.yp);
     }
-    friend constexpr inline Point operator-(const Point &p1, const Point &p2) noexcept
+    friend constexpr inline Point operator-(const Point &p1,
+                                            const Point &p2) noexcept
     {
         return Point(p1.xp - p2.xp, p1.yp - p2.yp);
     }
@@ -159,15 +163,18 @@ public:
     constexpr inline PointF &operator*=(double c);
     constexpr inline PointF &operator/=(double c);
 
-    constexpr static inline double dotProduct(const PointF &p1, const PointF &p2)
+    constexpr static inline double dotProduct(const PointF &p1,
+                                              const PointF &p2)
     {
         return p1.xp * p2.xp + p1.yp * p2.yp;
     }
 
     friend constexpr inline bool operator==(const PointF &p1, const PointF &p2)
     {
-        return ((!p1.xp || !p2.xp) ? qFuzzyIsNull(p1.xp - p2.xp) : qFuzzyCompare(p1.xp, p2.xp)) &&
-               ((!p1.yp || !p2.yp) ? qFuzzyIsNull(p1.yp - p2.yp) : qFuzzyCompare(p1.yp, p2.yp));
+        return ((!p1.xp || !p2.xp) ? qFuzzyIsNull(p1.xp - p2.xp)
+                                   : qFuzzyCompare(p1.xp, p2.xp)) &&
+               ((!p1.yp || !p2.yp) ? qFuzzyIsNull(p1.yp - p2.yp)
+                                   : qFuzzyCompare(p1.yp, p2.yp));
     }
     friend constexpr inline bool operator!=(const PointF &p1, const PointF &p2)
     {
@@ -189,10 +196,7 @@ public:
     {
         return PointF(p.xp * c, p.yp * c);
     }
-    friend constexpr inline PointF operator+(const PointF &p)
-    {
-        return p;
-    }
+    friend constexpr inline PointF operator+(const PointF &p) { return p; }
     friend constexpr inline PointF operator-(const PointF &p)
     {
         return PointF(-p.xp, -p.yp);
@@ -217,47 +221,31 @@ typedef std::list<PointF> PointSequence;
 
 constexpr inline Point::Point() noexcept : xp(0), yp(0) {}
 
-constexpr inline Point::Point(int xpos, int ypos) noexcept : xp(xpos), yp(ypos) {}
+constexpr inline Point::Point(int xpos, int ypos) noexcept : xp(xpos), yp(ypos)
+{
+}
 
 constexpr inline bool Point::isNull() const noexcept
 {
     return xp == 0 && yp == 0;
 }
 
-constexpr inline int Point::x() const noexcept
-{
-    return xp;
-}
+constexpr inline int Point::x() const noexcept { return xp; }
 
-constexpr inline int Point::y() const noexcept
-{
-    return yp;
-}
+constexpr inline int Point::y() const noexcept { return yp; }
 
-constexpr inline void Point::setX(int xpos) noexcept
-{
-    xp = xpos;
-}
+constexpr inline void Point::setX(int xpos) noexcept { xp = xpos; }
 
-constexpr inline void Point::setY(int ypos) noexcept
-{
-    yp = ypos;
-}
+constexpr inline void Point::setY(int ypos) noexcept { yp = ypos; }
 
 inline int constexpr Point::manhattanLength() const
 {
     return qAbs(x()) + qAbs(y());
 }
 
-constexpr inline int &Point::rx() noexcept
-{
-    return xp;
-}
+constexpr inline int &Point::rx() noexcept { return xp; }
 
-constexpr inline int &Point::ry() noexcept
-{
-    return yp;
-}
+constexpr inline int &Point::ry() noexcept { return yp; }
 
 constexpr inline Point &Point::operator+=(const Point &p)
 {
@@ -307,9 +295,14 @@ constexpr inline Point &Point::operator/=(double c)
 
 constexpr inline PointF::PointF() noexcept : xp(0), yp(0) {}
 
-constexpr inline PointF::PointF(double xpos, double ypos) noexcept : xp(xpos), yp(ypos) {}
+constexpr inline PointF::PointF(double xpos, double ypos) noexcept
+    : xp(xpos), yp(ypos)
+{
+}
 
-constexpr inline PointF::PointF(const Point &p) noexcept : xp(p.x()), yp(p.y()) {}
+constexpr inline PointF::PointF(const Point &p) noexcept : xp(p.x()), yp(p.y())
+{
+}
 
 constexpr inline double PointF::manhattanLength() const
 {
@@ -321,35 +314,17 @@ inline bool PointF::isNull() const noexcept
     return qIsNull(xp) && qIsNull(yp);
 }
 
-constexpr inline double PointF::x() const noexcept
-{
-    return xp;
-}
+constexpr inline double PointF::x() const noexcept { return xp; }
 
-constexpr inline double PointF::y() const noexcept
-{
-    return yp;
-}
+constexpr inline double PointF::y() const noexcept { return yp; }
 
-constexpr inline void PointF::setX(double xpos) noexcept
-{
-    xp = xpos;
-}
+constexpr inline void PointF::setX(double xpos) noexcept { xp = xpos; }
 
-constexpr inline void PointF::setY(double ypos) noexcept
-{
-    yp = ypos;
-}
+constexpr inline void PointF::setY(double ypos) noexcept { yp = ypos; }
 
-constexpr inline double &PointF::rx() noexcept
-{
-    return xp;
-}
+constexpr inline double &PointF::rx() noexcept { return xp; }
 
-constexpr inline double &PointF::ry() noexcept
-{
-    return yp;
-}
+constexpr inline double &PointF::ry() noexcept { return yp; }
 
 constexpr inline PointF &PointF::operator+=(const PointF &p)
 {

@@ -87,8 +87,12 @@ distribution.
     if (!((void) 0, (x))) { __debugbreak(); }
 #elif defined(ANDROID_NDK)
 #include <android/log.h>
-#define TIXMLASSERT(x) \
-    if (!(x)) { __android_log_assert("assert", "grinliz", "ASSERT in '%s' at %d.", __FILE__, __LINE__); }
+#define TIXMLASSERT(x)                                                     \
+    if (!(x))                                                              \
+    {                                                                      \
+        __android_log_assert("assert", "grinliz", "ASSERT in '%s' at %d.", \
+                             __FILE__, __LINE__);                          \
+    }
 #else
 #include <assert.h>
 #define TIXMLASSERT assert
@@ -153,10 +157,7 @@ public:
 
     const char *GetStr();
 
-    bool Empty() const
-    {
-        return _start == _end;
-    }
+    bool Empty() const { return _start == _end; }
 
     void SetInternedStr(const char *str)
     {
@@ -208,16 +209,10 @@ public:
 
     ~DynArray()
     {
-        if (_mem != _pool)
-        {
-            delete[] _mem;
-        }
+        if (_mem != _pool) { delete[] _mem; }
     }
 
-    void Clear()
-    {
-        _size = 0;
-    }
+    void Clear() { _size = 0; }
 
     void Push(T t)
     {
@@ -248,10 +243,7 @@ public:
         _size -= count;
     }
 
-    bool Empty() const
-    {
-        return _size == 0;
-    }
+    bool Empty() const { return _size == 0; }
 
     T &operator[](int i)
     {
@@ -307,11 +299,10 @@ private:
             TIXMLASSERT(cap <= INT_MAX / 2);
             int newAllocated = cap * 2;
             T *newMem = new T[newAllocated];
-            memcpy(newMem, _mem, sizeof(T) * _size);// warning: not using constructors, only works for PODs
-            if (_mem != _pool)
-            {
-                delete[] _mem;
-            }
+            memcpy(newMem, _mem,
+                   sizeof(T) *
+                           _size);// warning: not using constructors, only works for PODs
+            if (_mem != _pool) { delete[] _mem; }
             _mem = newMem;
             _allocated = newAllocated;
         }
@@ -349,11 +340,12 @@ template<int SIZE>
 class MemPoolT : public MemPool
 {
 public:
-    MemPoolT() : _root(0), _currentAllocs(0), _nAllocs(0), _maxAllocs(0), _nUntracked(0) {}
-    ~MemPoolT()
+    MemPoolT()
+        : _root(0), _currentAllocs(0), _nAllocs(0), _maxAllocs(0),
+          _nUntracked(0)
     {
-        Clear();
     }
+    ~MemPoolT() { Clear(); }
 
     void Clear()
     {
@@ -370,14 +362,8 @@ public:
         _nUntracked = 0;
     }
 
-    virtual int ItemSize() const
-    {
-        return SIZE;
-    }
-    int CurrentAllocs() const
-    {
-        return _currentAllocs;
-    }
+    virtual int ItemSize() const { return SIZE; }
+    int CurrentAllocs() const { return _currentAllocs; }
 
     virtual void *Alloc()
     {
@@ -398,10 +384,7 @@ public:
         _root = _root->next;
 
         ++_currentAllocs;
-        if (_currentAllocs > _maxAllocs)
-        {
-            _maxAllocs = _currentAllocs;
-        }
+        if (_currentAllocs > _maxAllocs) { _maxAllocs = _currentAllocs; }
         _nAllocs++;
         _nUntracked++;
         return result;
@@ -409,10 +392,7 @@ public:
 
     virtual void Free(void *mem)
     {
-        if (!mem)
-        {
-            return;
-        }
+        if (!mem) { return; }
         --_currentAllocs;
         Chunk *chunk = static_cast<Chunk *>(mem);
 #ifdef DEBUG
@@ -423,19 +403,15 @@ public:
     }
     void Trace(const char *name)
     {
-        printf("Mempool %s watermark=%d [%dk] current=%d size=%d nAlloc=%d blocks=%d\n",
-               name, _maxAllocs, _maxAllocs * SIZE / 1024, _currentAllocs, SIZE, _nAllocs, _blockPtrs.Size());
+        printf("Mempool %s watermark=%d [%dk] current=%d size=%d nAlloc=%d "
+               "blocks=%d\n",
+               name, _maxAllocs, _maxAllocs * SIZE / 1024, _currentAllocs, SIZE,
+               _nAllocs, _blockPtrs.Size());
     }
 
-    void SetTracked()
-    {
-        _nUntracked--;
-    }
+    void SetTracked() { _nUntracked--; }
 
-    int Untracked() const
-    {
-        return _nUntracked;
-    }
+    int Untracked() const { return _nUntracked; }
 
     // This number is perf sensitive. 4k seems like a good tradeoff on my machine.
     // The test file is large, 170k.
@@ -499,47 +475,27 @@ public:
     virtual ~XMLVisitor() {}
 
     /// Visit a document.
-    virtual bool VisitEnter(const XXMLDocument & /*doc*/)
-    {
-        return true;
-    }
+    virtual bool VisitEnter(const XXMLDocument & /*doc*/) { return true; }
     /// Visit a document.
-    virtual bool VisitExit(const XXMLDocument & /*doc*/)
-    {
-        return true;
-    }
+    virtual bool VisitExit(const XXMLDocument & /*doc*/) { return true; }
 
     /// Visit an element.
-    virtual bool VisitEnter(const XMLElement & /*element*/, const XMLAttribute * /*firstAttribute*/)
+    virtual bool VisitEnter(const XMLElement & /*element*/,
+                            const XMLAttribute * /*firstAttribute*/)
     {
         return true;
     }
     /// Visit an element.
-    virtual bool VisitExit(const XMLElement & /*element*/)
-    {
-        return true;
-    }
+    virtual bool VisitExit(const XMLElement & /*element*/) { return true; }
 
     /// Visit a declaration.
-    virtual bool Visit(const XMLDeclaration & /*declaration*/)
-    {
-        return true;
-    }
+    virtual bool Visit(const XMLDeclaration & /*declaration*/) { return true; }
     /// Visit a text node.
-    virtual bool Visit(const XMLText & /*text*/)
-    {
-        return true;
-    }
+    virtual bool Visit(const XMLText & /*text*/) { return true; }
     /// Visit a comment node.
-    virtual bool Visit(const XMLComment & /*comment*/)
-    {
-        return true;
-    }
+    virtual bool Visit(const XMLComment & /*comment*/) { return true; }
     /// Visit an unknown node.
-    virtual bool Visit(const XMLUnknown & /*unknown*/)
-    {
-        return true;
-    }
+    virtual bool Visit(const XMLUnknown & /*unknown*/) { return true; }
 };
 
 // WARNING: must match XXMLDocument::_errorNames[]
@@ -579,10 +535,7 @@ public:
     static const char *SkipWhiteSpace(const char *p)
     {
         TIXMLASSERT(p);
-        while (IsWhiteSpace(*p))
-        {
-            ++p;
-        }
+        while (IsWhiteSpace(*p)) { ++p; }
         TIXMLASSERT(p);
         return p;
     }
@@ -605,10 +558,7 @@ public:
             // This is a heuristic guess in attempt to not implement Unicode-aware isalpha()
             return true;
         }
-        if (isalpha(ch))
-        {
-            return true;
-        }
+        if (isalpha(ch)) { return true; }
         return ch == ':' || ch == '_';
     }
 
@@ -617,25 +567,21 @@ public:
         return IsNameStartChar(ch) || isdigit(ch) || ch == '.' || ch == '-';
     }
 
-    inline static bool StringEqual(const char *p, const char *q, int nChar = INT_MAX)
+    inline static bool StringEqual(const char *p, const char *q,
+                                   int nChar = INT_MAX)
     {
-        if (p == q)
-        {
-            return true;
-        }
+        if (p == q) { return true; }
         return strncmp(p, q, nChar) == 0;
     }
 
-    inline static bool IsUTF8Continuation(char p)
-    {
-        return (p & 0x80) != 0;
-    }
+    inline static bool IsUTF8Continuation(char p) { return (p & 0x80) != 0; }
 
     static const char *ReadBOM(const char *p, bool *hasBOM);
     // p is the starting location,
     // the UTF-8 value of the entity will be placed in value, and length filled in.
     static const char *GetCharacterRef(const char *p, char *value, int *length);
-    static void ConvertUTF32ToUTF8(unsigned long input, char *output, int *length);
+    static void ConvertUTF32ToUTF8(unsigned long input, char *output,
+                                   int *length);
 
     // converts primitive types to strings
     static void ToStr(int v, char *buffer, int bufferSize);
@@ -700,60 +646,24 @@ public:
     }
 
     /// Safely cast to an Element, or null.
-    virtual XMLElement *ToElement()
-    {
-        return 0;
-    }
+    virtual XMLElement *ToElement() { return 0; }
     /// Safely cast to Text, or null.
-    virtual XMLText *ToText()
-    {
-        return 0;
-    }
+    virtual XMLText *ToText() { return 0; }
     /// Safely cast to a Comment, or null.
-    virtual XMLComment *ToComment()
-    {
-        return 0;
-    }
+    virtual XMLComment *ToComment() { return 0; }
     /// Safely cast to a Document, or null.
-    virtual XXMLDocument *ToDocument()
-    {
-        return 0;
-    }
+    virtual XXMLDocument *ToDocument() { return 0; }
     /// Safely cast to a Declaration, or null.
-    virtual XMLDeclaration *ToDeclaration()
-    {
-        return 0;
-    }
+    virtual XMLDeclaration *ToDeclaration() { return 0; }
     /// Safely cast to an Unknown, or null.
-    virtual XMLUnknown *ToUnknown()
-    {
-        return 0;
-    }
+    virtual XMLUnknown *ToUnknown() { return 0; }
 
-    virtual const XMLElement *ToElement() const
-    {
-        return 0;
-    }
-    virtual const XMLText *ToText() const
-    {
-        return 0;
-    }
-    virtual const XMLComment *ToComment() const
-    {
-        return 0;
-    }
-    virtual const XXMLDocument *ToDocument() const
-    {
-        return 0;
-    }
-    virtual const XMLDeclaration *ToDeclaration() const
-    {
-        return 0;
-    }
-    virtual const XMLUnknown *ToUnknown() const
-    {
-        return 0;
-    }
+    virtual const XMLElement *ToElement() const { return 0; }
+    virtual const XMLText *ToText() const { return 0; }
+    virtual const XMLComment *ToComment() const { return 0; }
+    virtual const XXMLDocument *ToDocument() const { return 0; }
+    virtual const XMLDeclaration *ToDeclaration() const { return 0; }
+    virtual const XMLUnknown *ToUnknown() const { return 0; }
 
     /** The meaning of 'value' changes for the specific type.
     	@verbatim
@@ -772,32 +682,17 @@ public:
     void SetValue(const char *val, bool staticMem = false);
 
     /// Get the parent of this node on the DOM.
-    const XMLNode *Parent() const
-    {
-        return _parent;
-    }
+    const XMLNode *Parent() const { return _parent; }
 
-    XMLNode *Parent()
-    {
-        return _parent;
-    }
+    XMLNode *Parent() { return _parent; }
 
     /// Returns true if this node has no children.
-    bool NoChildren() const
-    {
-        return !_firstChild;
-    }
+    bool NoChildren() const { return !_firstChild; }
 
     /// Get the first child node, or null if none exists.
-    const XMLNode *FirstChild() const
-    {
-        return _firstChild;
-    }
+    const XMLNode *FirstChild() const { return _firstChild; }
 
-    XMLNode *FirstChild()
-    {
-        return _firstChild;
-    }
+    XMLNode *FirstChild() { return _firstChild; }
 
     /** Get the first child element, or optionally the first child
         element with the specified name.
@@ -806,19 +701,14 @@ public:
 
     XMLElement *FirstChildElement(const char *name = 0)
     {
-        return const_cast<XMLElement *>(const_cast<const XMLNode *>(this)->FirstChildElement(name));
+        return const_cast<XMLElement *>(
+                const_cast<const XMLNode *>(this)->FirstChildElement(name));
     }
 
     /// Get the last child node, or null if none exists.
-    const XMLNode *LastChild() const
-    {
-        return _lastChild;
-    }
+    const XMLNode *LastChild() const { return _lastChild; }
 
-    XMLNode *LastChild()
-    {
-        return _lastChild;
-    }
+    XMLNode *LastChild() { return _lastChild; }
 
     /** Get the last child element or optionally the last child
         element with the specified name.
@@ -827,45 +717,37 @@ public:
 
     XMLElement *LastChildElement(const char *name = 0)
     {
-        return const_cast<XMLElement *>(const_cast<const XMLNode *>(this)->LastChildElement(name));
+        return const_cast<XMLElement *>(
+                const_cast<const XMLNode *>(this)->LastChildElement(name));
     }
 
     /// Get the previous (left) sibling node of this node.
-    const XMLNode *PreviousSibling() const
-    {
-        return _prev;
-    }
+    const XMLNode *PreviousSibling() const { return _prev; }
 
-    XMLNode *PreviousSibling()
-    {
-        return _prev;
-    }
+    XMLNode *PreviousSibling() { return _prev; }
 
     /// Get the previous (left) sibling element of this node, with an optionally supplied name.
     const XMLElement *PreviousSiblingElement(const char *name = 0) const;
 
     XMLElement *PreviousSiblingElement(const char *name = 0)
     {
-        return const_cast<XMLElement *>(const_cast<const XMLNode *>(this)->PreviousSiblingElement(name));
+        return const_cast<XMLElement *>(
+                const_cast<const XMLNode *>(this)->PreviousSiblingElement(
+                        name));
     }
 
     /// Get the next (right) sibling node of this node.
-    const XMLNode *NextSibling() const
-    {
-        return _next;
-    }
+    const XMLNode *NextSibling() const { return _next; }
 
-    XMLNode *NextSibling()
-    {
-        return _next;
-    }
+    XMLNode *NextSibling() { return _next; }
 
     /// Get the next (right) sibling element of this node, with an optionally supplied name.
     const XMLElement *NextSiblingElement(const char *name = 0) const;
 
     XMLElement *NextSiblingElement(const char *name = 0)
     {
-        return const_cast<XMLElement *>(const_cast<const XMLNode *>(this)->NextSiblingElement(name));
+        return const_cast<XMLElement *>(
+                const_cast<const XMLNode *>(this)->NextSiblingElement(name));
     }
 
     /**
@@ -877,10 +759,7 @@ public:
     */
     XMLNode *InsertEndChild(XMLNode *addThis);
 
-    XMLNode *LinkEndChild(XMLNode *addThis)
-    {
-        return InsertEndChild(addThis);
-    }
+    XMLNode *LinkEndChild(XMLNode *addThis) { return InsertEndChild(addThis); }
     /**
     	Add a child node as the first (left) child.
 		If the child node is already part of the document,
@@ -1014,25 +893,13 @@ class TINYXML2_LIB XMLText : public XMLNode
 public:
     virtual bool Accept(XMLVisitor *visitor) const;
 
-    virtual XMLText *ToText()
-    {
-        return this;
-    }
-    virtual const XMLText *ToText() const
-    {
-        return this;
-    }
+    virtual XMLText *ToText() { return this; }
+    virtual const XMLText *ToText() const { return this; }
 
     /// Declare whether this should be CDATA or standard text.
-    void SetCData(bool isCData)
-    {
-        _isCData = isCData;
-    }
+    void SetCData(bool isCData) { _isCData = isCData; }
     /// Returns true if this is a CDATA text element.
-    bool CData() const
-    {
-        return _isCData;
-    }
+    bool CData() const { return _isCData; }
 
     virtual XMLNode *ShallowClone(XXMLDocument *document) const;
     virtual bool ShallowEqual(const XMLNode *compare) const;
@@ -1057,14 +924,8 @@ class TINYXML2_LIB XMLComment : public XMLNode
     friend class XXMLDocument;
 
 public:
-    virtual XMLComment *ToComment()
-    {
-        return this;
-    }
-    virtual const XMLComment *ToComment() const
-    {
-        return this;
-    }
+    virtual XMLComment *ToComment() { return this; }
+    virtual const XMLComment *ToComment() const { return this; }
 
     virtual bool Accept(XMLVisitor *visitor) const;
 
@@ -1099,14 +960,8 @@ class TINYXML2_LIB XMLDeclaration : public XMLNode
     friend class XXMLDocument;
 
 public:
-    virtual XMLDeclaration *ToDeclaration()
-    {
-        return this;
-    }
-    virtual const XMLDeclaration *ToDeclaration() const
-    {
-        return this;
-    }
+    virtual XMLDeclaration *ToDeclaration() { return this; }
+    virtual const XMLDeclaration *ToDeclaration() const { return this; }
 
     virtual bool Accept(XMLVisitor *visitor) const;
 
@@ -1137,14 +992,8 @@ class TINYXML2_LIB XMLUnknown : public XMLNode
     friend class XXMLDocument;
 
 public:
-    virtual XMLUnknown *ToUnknown()
-    {
-        return this;
-    }
-    virtual const XMLUnknown *ToUnknown() const
-    {
-        return this;
-    }
+    virtual XMLUnknown *ToUnknown() { return this; }
+    virtual const XMLUnknown *ToUnknown() const { return this; }
 
     virtual bool Accept(XMLVisitor *visitor) const;
 
@@ -1181,10 +1030,7 @@ public:
     const char *Value() const;
 
     /// The next attribute in the list.
-    const XMLAttribute *Next() const
-    {
-        return _next;
-    }
+    const XMLAttribute *Next() const { return _next; }
 
     /** IntValue interprets the attribute as an integer, and returns the value.
         If the value isn't an integer, 0 will be returned. There is no error checking;
@@ -1296,24 +1142,15 @@ class TINYXML2_LIB XMLElement : public XMLNode
 
 public:
     /// Get the name of an element (which is the Value() of the node.)
-    const char *Name() const
-    {
-        return Value();
-    }
+    const char *Name() const { return Value(); }
     /// Set the name of the element.
     void SetName(const char *str, bool staticMem = false)
     {
         SetValue(str, staticMem);
     }
 
-    virtual XMLElement *ToElement()
-    {
-        return this;
-    }
-    virtual const XMLElement *ToElement() const
-    {
-        return this;
-    }
+    virtual XMLElement *ToElement() { return this; }
+    virtual const XMLElement *ToElement() const { return this; }
     virtual bool Accept(XMLVisitor *visitor) const;
 
     /** Given an attribute name, Attribute() returns the value
@@ -1407,10 +1244,7 @@ public:
     XMLError QueryIntAttribute(const char *name, int *value) const
     {
         const XMLAttribute *a = FindAttribute(name);
-        if (!a)
-        {
-            return XML_NO_ATTRIBUTE;
-        }
+        if (!a) { return XML_NO_ATTRIBUTE; }
         return a->QueryIntValue(value);
     }
 
@@ -1418,10 +1252,7 @@ public:
     XMLError QueryUnsignedAttribute(const char *name, unsigned int *value) const
     {
         const XMLAttribute *a = FindAttribute(name);
-        if (!a)
-        {
-            return XML_NO_ATTRIBUTE;
-        }
+        if (!a) { return XML_NO_ATTRIBUTE; }
         return a->QueryUnsignedValue(value);
     }
 
@@ -1429,10 +1260,7 @@ public:
     XMLError QueryInt64Attribute(const char *name, int64_t *value) const
     {
         const XMLAttribute *a = FindAttribute(name);
-        if (!a)
-        {
-            return XML_NO_ATTRIBUTE;
-        }
+        if (!a) { return XML_NO_ATTRIBUTE; }
         return a->QueryInt64Value(value);
     }
 
@@ -1440,30 +1268,21 @@ public:
     XMLError QueryBoolAttribute(const char *name, bool *value) const
     {
         const XMLAttribute *a = FindAttribute(name);
-        if (!a)
-        {
-            return XML_NO_ATTRIBUTE;
-        }
+        if (!a) { return XML_NO_ATTRIBUTE; }
         return a->QueryBoolValue(value);
     }
     /// See QueryIntAttribute()
     XMLError QueryDoubleAttribute(const char *name, double *value) const
     {
         const XMLAttribute *a = FindAttribute(name);
-        if (!a)
-        {
-            return XML_NO_ATTRIBUTE;
-        }
+        if (!a) { return XML_NO_ATTRIBUTE; }
         return a->QueryDoubleValue(value);
     }
     /// See QueryIntAttribute()
     XMLError QueryFloatAttribute(const char *name, float *value) const
     {
         const XMLAttribute *a = FindAttribute(name);
-        if (!a)
-        {
-            return XML_NO_ATTRIBUTE;
-        }
+        if (!a) { return XML_NO_ATTRIBUTE; }
         return a->QueryFloatValue(value);
     }
 
@@ -1566,10 +1385,7 @@ public:
     void DeleteAttribute(const char *name);
 
     /// Return the first attribute in the list.
-    const XMLAttribute *FirstAttribute() const
-    {
-        return _rootAttribute;
-    }
+    const XMLAttribute *FirstAttribute() const { return _rootAttribute; }
     /// Query a specific attribute in the list.
     const XMLAttribute *FindAttribute(const char *name) const;
 
@@ -1696,10 +1512,7 @@ public:
         CLOSED,// <foo/>
         CLOSING// </foo>
     };
-    int ClosingType() const
-    {
-        return _closingType;
-    }
+    int ClosingType() const { return _closingType; }
     virtual XMLNode *ShallowClone(XXMLDocument *document) const;
     virtual bool ShallowEqual(const XMLNode *compare) const;
 
@@ -1714,7 +1527,8 @@ private:
 
     XMLAttribute *FindAttribute(const char *name)
     {
-        return const_cast<XMLAttribute *>(const_cast<const XMLElement *>(this)->FindAttribute(name));
+        return const_cast<XMLAttribute *>(
+                const_cast<const XMLElement *>(this)->FindAttribute(name));
     }
     XMLAttribute *FindOrCreateAttribute(const char *name);
     //void LinkAttribute( XMLAttribute* attrib );
@@ -1813,40 +1627,22 @@ public:
     */
     XMLError SaveFile(FILE *fp, bool compact = false);
 
-    bool ProcessEntities() const
-    {
-        return _processEntities;
-    }
-    Whitespace WhitespaceMode() const
-    {
-        return _whitespace;
-    }
+    bool ProcessEntities() const { return _processEntities; }
+    Whitespace WhitespaceMode() const { return _whitespace; }
 
     /**
     	Returns true if this document has a leading Byte Order Mark of UTF8.
     */
-    bool HasBOM() const
-    {
-        return _writeBOM;
-    }
+    bool HasBOM() const { return _writeBOM; }
     /** Sets whether to write the BOM when writing the file.
     */
-    void SetBOM(bool useBOM)
-    {
-        _writeBOM = useBOM;
-    }
+    void SetBOM(bool useBOM) { _writeBOM = useBOM; }
 
     /** Return the root element of DOM. Equivalent to FirstChildElement().
         To get the first node, use FirstChild().
     */
-    XMLElement *RootElement()
-    {
-        return FirstChildElement();
-    }
-    const XMLElement *RootElement() const
-    {
-        return FirstChildElement();
-    }
+    XMLElement *RootElement() { return FirstChildElement(); }
+    const XMLElement *RootElement() const { return FirstChildElement(); }
 
     /** Print the Document. If the Printer is not provided, it will
         print to stdout. If you provide Printer, this can print to a file:
@@ -1911,27 +1707,15 @@ public:
     void SetError(XMLError error, const char *str1, const char *str2);
 
     /// Return true if there was an error parsing the document.
-    bool Error() const
-    {
-        return _errorID != XML_SUCCESS;
-    }
+    bool Error() const { return _errorID != XML_SUCCESS; }
     /// Return the errorID.
-    XMLError ErrorID() const
-    {
-        return _errorID;
-    }
+    XMLError ErrorID() const { return _errorID; }
     const char *ErrorName() const;
 
     /// Return a possibly helpful diagnostic location or string.
-    const char *GetErrorStr1() const
-    {
-        return _errorStr1;
-    }
+    const char *GetErrorStr1() const { return _errorStr1; }
     /// Return a possibly helpful secondary diagnostic location or string.
-    const char *GetErrorStr2() const
-    {
-        return _errorStr2;
-    }
+    const char *GetErrorStr2() const { return _errorStr2; }
     /// If there is an error, print it to stdout.
     void PrintError() const;
 
@@ -2032,20 +1816,11 @@ class TINYXML2_LIB XMLHandle
 {
 public:
     /// Create a handle from any node (at any depth of the tree.) This can be a null pointer.
-    XMLHandle(XMLNode *node)
-    {
-        _node = node;
-    }
+    XMLHandle(XMLNode *node) { _node = node; }
     /// Create a handle from a node.
-    XMLHandle(XMLNode &node)
-    {
-        _node = &node;
-    }
+    XMLHandle(XMLNode &node) { _node = &node; }
     /// Copy constructor
-    XMLHandle(const XMLHandle &ref)
-    {
-        _node = ref._node;
-    }
+    XMLHandle(const XMLHandle &ref) { _node = ref._node; }
     /// Assignment
     XMLHandle &operator=(const XMLHandle &ref)
     {
@@ -2064,10 +1839,7 @@ public:
         return XMLHandle(_node ? _node->FirstChildElement(name) : 0);
     }
     /// Get the last child of this handle.
-    XMLHandle LastChild()
-    {
-        return XMLHandle(_node ? _node->LastChild() : 0);
-    }
+    XMLHandle LastChild() { return XMLHandle(_node ? _node->LastChild() : 0); }
     /// Get the last child element of this handle.
     XMLHandle LastChildElement(const char *name = 0)
     {
@@ -2095,25 +1867,13 @@ public:
     }
 
     /// Safe cast to XMLNode. This can return null.
-    XMLNode *ToNode()
-    {
-        return _node;
-    }
+    XMLNode *ToNode() { return _node; }
     /// Safe cast to XMLElement. This can return null.
-    XMLElement *ToElement()
-    {
-        return ((_node == 0) ? 0 : _node->ToElement());
-    }
+    XMLElement *ToElement() { return ((_node == 0) ? 0 : _node->ToElement()); }
     /// Safe cast to XMLText. This can return null.
-    XMLText *ToText()
-    {
-        return ((_node == 0) ? 0 : _node->ToText());
-    }
+    XMLText *ToText() { return ((_node == 0) ? 0 : _node->ToText()); }
     /// Safe cast to XMLUnknown. This can return null.
-    XMLUnknown *ToUnknown()
-    {
-        return ((_node == 0) ? 0 : _node->ToUnknown());
-    }
+    XMLUnknown *ToUnknown() { return ((_node == 0) ? 0 : _node->ToUnknown()); }
     /// Safe cast to XMLDeclaration. This can return null.
     XMLDeclaration *ToDeclaration()
     {
@@ -2132,18 +1892,9 @@ private:
 class TINYXML2_LIB XMLConstHandle
 {
 public:
-    XMLConstHandle(const XMLNode *node)
-    {
-        _node = node;
-    }
-    XMLConstHandle(const XMLNode &node)
-    {
-        _node = &node;
-    }
-    XMLConstHandle(const XMLConstHandle &ref)
-    {
-        _node = ref._node;
-    }
+    XMLConstHandle(const XMLNode *node) { _node = node; }
+    XMLConstHandle(const XMLNode &node) { _node = &node; }
+    XMLConstHandle(const XMLConstHandle &ref) { _node = ref._node; }
 
     XMLConstHandle &operator=(const XMLConstHandle &ref)
     {
@@ -2185,10 +1936,7 @@ public:
     }
 
 
-    const XMLNode *ToNode() const
-    {
-        return _node;
-    }
+    const XMLNode *ToNode() const { return _node; }
     const XMLElement *ToElement() const
     {
         return ((_node == 0) ? 0 : _node->ToElement());
@@ -2303,12 +2051,10 @@ public:
     void PushUnknown(const char *value);
 
     virtual bool VisitEnter(const XXMLDocument & /*doc*/);
-    virtual bool VisitExit(const XXMLDocument & /*doc*/)
-    {
-        return true;
-    }
+    virtual bool VisitExit(const XXMLDocument & /*doc*/) { return true; }
 
-    virtual bool VisitEnter(const XMLElement &element, const XMLAttribute *attribute);
+    virtual bool VisitEnter(const XMLElement &element,
+                            const XMLAttribute *attribute);
     virtual bool VisitExit(const XMLElement &element);
 
     virtual bool Visit(const XMLText &text);
@@ -2320,19 +2066,13 @@ public:
     	If in print to memory mode, return a pointer to
     	the XML file in memory.
     */
-    const char *CStr() const
-    {
-        return _buffer.Mem();
-    }
+    const char *CStr() const { return _buffer.Mem(); }
     /**
     	If in print to memory mode, return the size
     	of the XML file in memory. (Note the size returned
     	includes the terminating null.)
     */
-    int CStrSize() const
-    {
-        return _buffer.Size();
-    }
+    int CStrSize() const { return _buffer.Size(); }
     /**
     	If in print to memory mode, reset the buffer to the
     	beginning.
@@ -2357,7 +2097,9 @@ protected:
     DynArray<const char *, 10> _stack;
 
 private:
-    void PrintString(const char *, bool restrictedEntitySet);// prints out, after detecting entities.
+    void PrintString(
+            const char *,
+            bool restrictedEntitySet);// prints out, after detecting entities.
 
     bool _firstElement;
     FILE *_fp;

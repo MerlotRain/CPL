@@ -35,16 +35,33 @@
 
 namespace m2 {
 
+class Point;
+class PointF;
+class Line;
+class LineF;
+class Polygon;
+class PolygonF;
+class Rect;
+class RectF;
+
 class Transform
 {
 public:
+    enum TransformationType
+    {
+        TxNone = 0x00,
+        TxTranslate = 0x01,
+        TxScale = 0x02,
+        TxRotate = 0x04,
+        TxShear = 0x08,
+        TxProject = 0x10
+    };
+
     Transform();
-    Transform(double h11, double h12, double h13,
-              double h21, double h22, double h23,
-              double h31, double h32, double h33);
-    Transform(double h11, double h12,
-              double h21, double h22,
-              double dx, double dy);
+    Transform(double h11, double h12, double h13, double h21, double h22,
+              double h23, double h31, double h32, double h33);
+    Transform(double h11, double h12, double h21, double h22, double dx,
+              double dy);
 
     Transform(const Transform &) noexcept = default;
     Transform(Transform &&) noexcept = default;
@@ -68,7 +85,54 @@ public:
     double m32() const;
     double m33() const;
 
+    void setMatrix(double m11, double m12, double m13, double m21, double m22,
+                   double m23, double m31, double m32, double m33);
+
+    [[nodiscard]] Transform inverted(bool *invertible = nullptr) const;
+    [[nodiscard]] Transform adjoint() const;
+    [[nodiscard]] Transform transposed() const;
+
+    Transform &translate(double dx, double dy);
+    Transform &scale(double sx, double sy);
+    Transform &shear(double sh, double sv);
+    Transform &rotate(double a);
+    Transform &rotateRadians(double a);
+
+    static bool squareToQuad(const PolygonF &square, Transform &result);
+    static bool quadToSquare(const PolygonF &quad, Transform &result);
+    static bool quadToQuad(const PolygonF &one, const PolygonF &two,
+                           Transform &result);
+
+    bool operator==(const Transform &) const;
+    bool operator!=(const Transform &) const;
+
+    Transform &operator*=(const Transform &);
+    Transform operator*(const Transform &o) const;
+
+    void reset();
+    Point map(const Point &p) const;
+    PointF map(const PointF &p) const;
+    Line map(const Line &l) const;
+    LineF map(const LineF &l) const;
+    PolygonF map(const PolygonF &a) const;
+    Polygon map(const Polygon &a) const;
+    Polygon mapToPolygon(const Rect &r) const;
+    Rect mapRect(const Rect &) const;
+    RectF mapRect(const RectF &) const;
+    void map(int x, int y, int *tx, int *ty) const;
+    void map(double x, double y, double *tx, double *ty) const;
+
+    Transform &operator*=(double div);
+    Transform &operator/=(double div);
+    Transform &operator+=(double div);
+    Transform &operator-=(double div);
+
+    static Transform fromTranslate(double dx, double dy);
+    static Transform fromScale(double dx, double dy);
+
 private:
+    inline TransformationType transType() const;
+
     double m_matrix[3][3];
     mutable unsigned int m_type;
     mutable unsigned int m_dirty;

@@ -77,29 +77,34 @@ public:
     /// \brief 获取一个配置项的所有子项
     /// \param vec
     /// \param parent
-    virtual void Children(std::vector<ConfigItem> &vec, const ConfigItem *parent = NULL) = 0;
+    virtual void Children(std::vector<ConfigItem> &vec,
+                          const ConfigItem *parent = NULL) = 0;
     /// \brief 删除一个子项
     /// \param name
     /// \param parent
-    virtual void RemoveChild(const char *name, const ConfigItem *parent = NULL) = 0;
+    virtual void RemoveChild(const char *name,
+                             const ConfigItem *parent = NULL) = 0;
 
     /// \brief 获取一个配置项的子项
     /// \param name
     /// \param parent
     /// \return
-    virtual ConfigItem Child(const char *name, const ConfigItem *parent = NULL) = 0;
+    virtual ConfigItem Child(const char *name,
+                             const ConfigItem *parent = NULL) = 0;
     /// \brief 确保一定获取到子项，没有子项则创建子项
     /// \param name
     /// \param parent
     /// \return
-    virtual ConfigItem EnsureChild(const char *name, const ConfigItem *parent = NULL);
+    virtual ConfigItem EnsureChild(const char *name,
+                                   const ConfigItem *parent = NULL);
 
 
     /// \brief 更新或者添加一个子项
     /// \param child
     /// \param parent
     /// \return
-    virtual ConfigItem UpdateChild(const ConfigItem &child, const ConfigItem *parent = NULL) = 0;
+    virtual ConfigItem UpdateChild(const ConfigItem &child,
+                                   const ConfigItem *parent = NULL) = 0;
 
     /// \brief 获取一个子项的父
     /// \param child
@@ -172,7 +177,8 @@ public:
     /// \brief 获取一个配置项的所有子项
     /// \param vec
     /// \param parent
-    virtual void Children(std::vector<ConfigItem> &vec, const ConfigItem *parent = NULL);
+    virtual void Children(std::vector<ConfigItem> &vec,
+                          const ConfigItem *parent = NULL);
     /// \brief 获取一个配置项的子项
     /// \param name
     /// \param parent
@@ -182,7 +188,8 @@ public:
     /// \param child
     /// \param parent
     /// \return
-    virtual ConfigItem UpdateChild(const ConfigItem &child, const ConfigItem *parent = NULL);
+    virtual ConfigItem UpdateChild(const ConfigItem &child,
+                                   const ConfigItem *parent = NULL);
 
     /// \brief 获取一个子项的父
     /// \param child
@@ -594,7 +601,8 @@ public:
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual String LoadStringValue(const char *key, const char *defaultValue) = 0;
+    virtual String LoadStringValue(const char *key,
+                                   const char *defaultValue) = 0;
 
     /// @brief 读取指定key的int值
     /// @param key 属性名称
@@ -606,19 +614,22 @@ public:
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual unsigned int LoadUInt32Value(const char *key, unsigned int defaultValue) = 0;
+    virtual unsigned int LoadUInt32Value(const char *key,
+                                         unsigned int defaultValue) = 0;
 
     /// @brief 读取指定key的long long值
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual long long LoadInt64Value(const char *key, long long defaultValue) = 0;
+    virtual long long LoadInt64Value(const char *key,
+                                     long long defaultValue) = 0;
 
     /// @brief 读取指定key的unsigned long long值
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual unsigned long long LoadUInt64Value(const char *key, unsigned long long defaultValue) = 0;
+    virtual unsigned long long
+    LoadUInt64Value(const char *key, unsigned long long defaultValue) = 0;
 
     /// @brief 读取指定key的bool值
     /// @param key 属性名称
@@ -642,7 +653,8 @@ public:
     /// @param key 属性名称
     /// @param defaultValue 默认值
     /// @return
-    virtual DateTime LoadDateTimeValue(const char *key, const DateTime &defaultValue) = 0;
+    virtual DateTime LoadDateTimeValue(const char *key,
+                                       const DateTime &defaultValue) = 0;
 
     /// @brief 读取指定key的对象
     /// @param key 属性名称
@@ -658,10 +670,7 @@ public:
     SharedPointer<T> LoadRefObjectValueT(const char *key)
     {
         RefObject *ref = LoadRefObjectValue(key);
-        if (!ref)
-        {
-            return 0;
-        }
+        if (!ref) { return 0; }
         T *o = dynamic_cast<T *>(ref);
         if (!o)
         {

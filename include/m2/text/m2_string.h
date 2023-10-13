@@ -60,8 +60,10 @@ public:
     String(int count, char e) noexcept;
     String(String::const_iterator first, String::const_iterator last) noexcept;
     String(String::iterator first, String::iterator last) noexcept;
-    String(String::reverse_iterator first, String::reverse_iterator last) noexcept;
-    String(String::const_reverse_iterator first, String::const_reverse_iterator last) noexcept;
+    String(String::reverse_iterator first,
+           String::reverse_iterator last) noexcept;
+    String(String::const_reverse_iterator first,
+           String::const_reverse_iterator last) noexcept;
     ~String();
 
     String &operator=(const char *str);
@@ -97,10 +99,12 @@ public:
     void split(const char *strSep, StringList &vecStr);
     String &replaceTo(char from, char to, size_type start = 0);
     String &replaceTo(const char *from, const char *to, size_type start = 0);
-    String &replaceTo(const String &from, const String &to, size_type start = 0);
+    String &replaceTo(const String &from, const String &to,
+                      size_type start = 0);
 
     inline bool isNullOrEmpty() const;
-    inline bool startsWith(const char *strHead, bool bIgnoringCase = false) const;
+    inline bool startsWith(const char *strHead,
+                           bool bIgnoringCase = false) const;
     inline bool endsWith(const char *strEnd, bool bIgnoringCase = false) const;
     inline bool contains(char c, bool bIgnoringCase = false) const;
     inline bool contains(const char *c, bool bIgnoringCase = false) const;
@@ -109,10 +113,13 @@ public:
     String &remove(const char *src);
 
     static bool isNullOrEmpty(const char *str);
-    static bool startsWith(const char *str, const char *strHead, bool bIgnoringCase = false);
-    static bool endsWith(const char *str, const char *strTail, bool bIgnoringCase = false);
+    static bool startsWith(const char *str, const char *strHead,
+                           bool bIgnoringCase = false);
+    static bool endsWith(const char *str, const char *strTail,
+                         bool bIgnoringCase = false);
     static bool contains(const char *str, char c, bool bIgnoringCase = false);
-    static bool contains(const char *str, const char *c, bool bIgnoringCase = false);
+    static bool contains(const char *str, const char *c,
+                         bool bIgnoringCase = false);
     static String remove(const char *str, const char *c);
     static int compare(const char *strA, const char *strB);
     static String escape(const char *str, bool strictJSON = false);
@@ -127,17 +134,16 @@ public:
     template<typename... Args>
     static String format(const char *f, Args &&...args)
     {
-        auto size_buf = std::snprintf(nullptr, 0, f, std::forward<Args>(args)...) + 1;
+        auto size_buf =
+                std::snprintf(nullptr, 0, f, std::forward<Args>(args)...) + 1;
         std::unique_ptr<char[]> buf(new (std::nothrow) char[size_buf]);
 
-        if (!buf)
-        {
-            return {};
-        }
+        if (!buf) { return {}; }
 
         std::snprintf(buf.get(), size_buf, f, std::forward<Args>(args)...);
         return String(buf.get(), buf.get() + size_buf - 1);
     }
+
 
 public:
     enum BoolFormat
@@ -147,27 +153,42 @@ public:
         eOnAndOff,
     };
     static String toString(bool value, BoolFormat format = eFalseAndTrue);
-    static String toString(short value, int base = 10, int width = -1, char fill = '0');
-    static String toString(unsigned short value, int base = 10, int width = -1, char fill = '0');
-    static String toString(int value, int base = 10, int width = -1, char fill = '0');
-    static String toString(unsigned int value, int base = 10, int width = -1, char fill = '0');
-    static String toString(long value, int base = 10, int width = -1, char fill = '0');
-    static String toString(unsigned long value, int base = 10, int width = -1, char fill = '0');
-    static String toString(long long value, int base = 10, int width = -1, char fill = '0');
-    static String toString(unsigned long long value, int base = 10, int width = -1, char fill = '0');
+    static String toString(short value, int base = 10, int width = -1,
+                           char fill = '0');
+    static String toString(unsigned short value, int base = 10, int width = -1,
+                           char fill = '0');
+    static String toString(int value, int base = 10, int width = -1,
+                           char fill = '0');
+    static String toString(unsigned int value, int base = 10, int width = -1,
+                           char fill = '0');
+    static String toString(long value, int base = 10, int width = -1,
+                           char fill = '0');
+    static String toString(unsigned long value, int base = 10, int width = -1,
+                           char fill = '0');
+    static String toString(long long value, int base = 10, int width = -1,
+                           char fill = '0');
+    static String toString(unsigned long long value, int base = 10,
+                           int width = -1, char fill = '0');
     static String toString(float value, char format = 'g', int precision = 6);
     static String toString(double value, char format = 'g', int precision = 6);
 
     String &appendTo(const String &str, int width = -1, char fill = ' ');
     String &appendTo(String &&str, int width = -1, char fill = ' ');
-    String &appendTo(short value, int base = 10, int width = -1, char fill = '0');
-    String &appendTo(unsigned short value, int base = 10, int width = -1, char fill = '0');
+    String &appendTo(short value, int base = 10, int width = -1,
+                     char fill = '0');
+    String &appendTo(unsigned short value, int base = 10, int width = -1,
+                     char fill = '0');
     String &appendTo(int value, int base = 10, int width = -1, char fill = '0');
-    String &appendTo(unsigned int value, int base = 10, int width = -1, char fill = '0');
-    String &appendTo(long value, int base = 10, int width = -1, char fill = '0');
-    String &appendTo(unsigned long value, int base = 10, int width = -1, char fill = '0');
-    String &appendTo(long long value, int base = 10, int width = -1, char fill = '0');
-    String &appendTo(unsigned long long value, int base = 10, int width = -1, char fill = '0');
+    String &appendTo(unsigned int value, int base = 10, int width = -1,
+                     char fill = '0');
+    String &appendTo(long value, int base = 10, int width = -1,
+                     char fill = '0');
+    String &appendTo(unsigned long value, int base = 10, int width = -1,
+                     char fill = '0');
+    String &appendTo(long long value, int base = 10, int width = -1,
+                     char fill = '0');
+    String &appendTo(unsigned long long value, int base = 10, int width = -1,
+                     char fill = '0');
     String &appendTo(float value, char format = 'g', int precision = 6);
     String &appendTo(double value, char format = 'g', int precision = 6);
 
@@ -178,9 +199,16 @@ public:
     unsigned int toUInt(bool *ok = nullptr, int base = 10) const noexcept;
     bool toBoolean(bool *ok = nullptr) const noexcept;
     long long toLongLong(bool *ok = nullptr, int base = 10) const noexcept;
-    unsigned long long toULongLong(bool *ok = nullptr, int base = 10) const noexcept;
+    unsigned long long toULongLong(bool *ok = nullptr,
+                                   int base = 10) const noexcept;
     float toFloat(bool *ok = nullptr) const noexcept;
     double toDouble(bool *ok = nullptr) const noexcept;
+
+public:
+    String toUtf8();
+    String toGB2312();
+    String toGB18030();
+    size_t utf8Length();
 };
 
 struct M2_API StringCompareIgnoreCase
@@ -193,11 +221,13 @@ inline bool String::isNullOrEmpty() const
     return String::isNullOrEmpty(this->data());
     std::string s;
 }
-inline bool String::startsWith(const char *strHead, bool bIgnoringCase = false) const
+inline bool String::startsWith(const char *strHead,
+                               bool bIgnoringCase = false) const
 {
     return String::startsWith(this->data(), strHead, bIgnoringCase);
 }
-inline bool String::endsWith(const char *strEnd, bool bIgnoringCase = false) const
+inline bool String::endsWith(const char *strEnd,
+                             bool bIgnoringCase = false) const
 {
     return String::endsWith(this->data(), strEnd, bIgnoringCase);
 }

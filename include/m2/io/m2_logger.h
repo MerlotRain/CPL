@@ -67,7 +67,8 @@ class M2_API FileLogOutput : public LogOutput
 public:
     virtual bool OnLog(const char *log);
     virtual void OnFlush();
-    FileLogOutput(const char *strFileName, bool bAppend = false, bool ShowInConsole = false);
+    FileLogOutput(const char *strFileName, bool bAppend = false,
+                  bool ShowInConsole = false);
 };
 
 class M2_API Logger
@@ -92,7 +93,8 @@ class M2_API Logger
 public:
     Logger();
     Logger(const char *strLogName);
-    static void addGlobalLogger(Logger *logger, unsigned long long nUniqueKey, bool bManagePointer = false);
+    static void addGlobalLogger(Logger *logger, unsigned long long nUniqueKey,
+                                bool bManagePointer = false);
     static Logger &globalLogger(unsigned long long nUniqueKey);
     static Logger *removeGlobalLogger(unsigned long long nUniqueKey);
     static bool isDebuging();

@@ -57,7 +57,10 @@ public:
     typedef std::ptrdiff_t difference_type;
 
     Allocator() {}
-    pointer allocate(size_type n) { return static_cast<pointer>(Allocate(n * sizeof(T))); }
+    pointer allocate(size_type n)
+    {
+        return static_cast<pointer>(Allocate(n * sizeof(T)));
+    }
     void deallocate(pointer p, size_type n) { Deallocate(p, n * sizeof(T)); }
     size_type max_size() const { return size_t(-1) / sizeof(T); }
     pointer address(reference x) const { return std::addressof(x); }
@@ -93,7 +96,10 @@ bool operator!=(const Allocator<T> &, const Allocator<U> &)
     return false;
 }
 
-typedef std::basic_string<char, std::char_traits<char>, m2::Allocator<char>> StlString;
-typedef std::basic_string<wchar_t, std::char_traits<wchar_t>, m2::Allocator<wchar_t>> StlWString;
+typedef std::basic_string<char, std::char_traits<char>, m2::Allocator<char>>
+        StlString;
+typedef std::basic_string<wchar_t, std::char_traits<wchar_t>,
+                          m2::Allocator<wchar_t>>
+        StlWString;
 
 }// namespace m2

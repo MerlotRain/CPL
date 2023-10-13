@@ -90,8 +90,10 @@ public:
 
     constexpr inline void translate(int dx, int dy) noexcept;
     constexpr inline void translate(const Point &p) noexcept;
-    [[nodiscard]] constexpr inline Rect translated(int dx, int dy) const noexcept;
-    [[nodiscard]] constexpr inline Rect translated(const Point &p) const noexcept;
+    [[nodiscard]] constexpr inline Rect translated(int dx,
+                                                   int dy) const noexcept;
+    [[nodiscard]] constexpr inline Rect
+    translated(const Point &p) const noexcept;
     [[nodiscard]] constexpr inline Rect transposed() const noexcept;
 
     constexpr inline void moveTo(int x, int t) noexcept;
@@ -104,7 +106,8 @@ public:
     constexpr inline void getCoords(int *x1, int *y1, int *x2, int *y2) const;
 
     constexpr inline void adjust(int x1, int y1, int x2, int y2) noexcept;
-    [[nodiscard]] constexpr inline Rect adjusted(int x1, int y1, int x2, int y2) const noexcept;
+    [[nodiscard]] constexpr inline Rect adjusted(int x1, int y1, int x2,
+                                                 int y2) const noexcept;
 
     constexpr inline Size size() const noexcept;
     constexpr inline int width() const noexcept;
@@ -131,15 +134,20 @@ public:
     constexpr inline Rect &operator+=(const Margins &margins) noexcept;
     constexpr inline Rect &operator-=(const Margins &margins) noexcept;
 
-    [[nodiscard]] static constexpr inline Rect span(const Point &p1, const Point &p2) noexcept;
+    [[nodiscard]] static constexpr inline Rect span(const Point &p1,
+                                                    const Point &p2) noexcept;
 
-    friend constexpr inline bool operator==(const Rect &r1, const Rect &r2) noexcept
+    friend constexpr inline bool operator==(const Rect &r1,
+                                            const Rect &r2) noexcept
     {
-        return r1.x1 == r2.x1 && r1.x2 == r2.x2 && r1.y1 == r2.y1 && r1.y2 == r2.y2;
+        return r1.x1 == r2.x1 && r1.x2 == r2.x2 && r1.y1 == r2.y1 &&
+               r1.y2 == r2.y2;
     }
-    friend constexpr inline bool operator!=(const Rect &r1, const Rect &r2) noexcept
+    friend constexpr inline bool operator!=(const Rect &r1,
+                                            const Rect &r2) noexcept
     {
-        return r1.x1 != r2.x1 || r1.x2 != r2.x2 || r1.y1 != r2.y1 || r1.y2 != r2.y2;
+        return r1.x1 != r2.x1 || r1.x2 != r2.x2 || r1.y1 != r2.y1 ||
+               r1.y2 != r2.y2;
     }
     friend constexpr inline size_t qHash(const Rect &, size_t) noexcept;
     [[nodiscard]] constexpr inline RectF toRectF() const noexcept;
@@ -157,7 +165,8 @@ public:
     constexpr RectF() noexcept : xp(0.), yp(0.), w(0.), h(0.) {}
     constexpr RectF(const PointF &topleft, const SizeF &size) noexcept;
     constexpr RectF(const PointF &topleft, const PointF &bottomRight) noexcept;
-    constexpr RectF(double left, double top, double width, double height) noexcept;
+    constexpr RectF(double left, double top, double width,
+                    double height) noexcept;
     constexpr RectF(const Rect &rect) noexcept;
 
     constexpr inline bool isNull() const noexcept;
@@ -180,9 +189,18 @@ public:
     constexpr inline void setY(double pos) noexcept { setTop(pos); }
 
     constexpr inline PointF topLeft() const noexcept { return PointF(xp, yp); }
-    constexpr inline PointF bottomRight() const noexcept { return PointF(xp + w, yp + h); }
-    constexpr inline PointF topRight() const noexcept { return PointF(xp + w, yp); }
-    constexpr inline PointF bottomLeft() const noexcept { return PointF(xp, yp + h); }
+    constexpr inline PointF bottomRight() const noexcept
+    {
+        return PointF(xp + w, yp + h);
+    }
+    constexpr inline PointF topRight() const noexcept
+    {
+        return PointF(xp + w, yp);
+    }
+    constexpr inline PointF bottomLeft() const noexcept
+    {
+        return PointF(xp, yp + h);
+    }
     constexpr inline PointF center() const noexcept;
 
     constexpr inline void setTopLeft(const PointF &p) noexcept;
@@ -203,22 +221,30 @@ public:
     constexpr inline void translate(double dx, double dy) noexcept;
     constexpr inline void translate(const PointF &p) noexcept;
 
-    [[nodiscard]] constexpr inline RectF translated(double dx, double dy) const noexcept;
-    [[nodiscard]] constexpr inline RectF translated(const PointF &p) const noexcept;
+    [[nodiscard]] constexpr inline RectF translated(double dx,
+                                                    double dy) const noexcept;
+    [[nodiscard]] constexpr inline RectF
+    translated(const PointF &p) const noexcept;
 
     [[nodiscard]] constexpr inline RectF transposed() const noexcept;
 
     constexpr inline void moveTo(double x, double y) noexcept;
     constexpr inline void moveTo(const PointF &p) noexcept;
 
-    constexpr inline void setRect(double x, double y, double w, double h) noexcept;
-    constexpr inline void getRect(double *x, double *y, double *w, double *h) const;
+    constexpr inline void setRect(double x, double y, double w,
+                                  double h) noexcept;
+    constexpr inline void getRect(double *x, double *y, double *w,
+                                  double *h) const;
 
-    constexpr inline void setCoords(double x1, double y1, double x2, double y2) noexcept;
-    constexpr inline void getCoords(double *x1, double *y1, double *x2, double *y2) const;
+    constexpr inline void setCoords(double x1, double y1, double x2,
+                                    double y2) noexcept;
+    constexpr inline void getCoords(double *x1, double *y1, double *x2,
+                                    double *y2) const;
 
-    constexpr inline void adjust(double x1, double y1, double x2, double y2) noexcept;
-    [[nodiscard]] constexpr inline RectF adjusted(double x1, double y1, double x2, double y2) const noexcept;
+    constexpr inline void adjust(double x1, double y1, double x2,
+                                 double y2) noexcept;
+    [[nodiscard]] constexpr inline RectF
+    adjusted(double x1, double y1, double x2, double y2) const noexcept;
 
     constexpr inline SizeF size() const noexcept;
     constexpr inline double width() const noexcept;
@@ -240,15 +266,18 @@ public:
     bool intersects(const RectF &r) const noexcept;
 
     constexpr inline RectF marginsAdded(const MarginsF &margins) const noexcept;
-    constexpr inline RectF marginsRemoved(const MarginsF &margins) const noexcept;
+    constexpr inline RectF
+    marginsRemoved(const MarginsF &margins) const noexcept;
     constexpr inline RectF &operator+=(const MarginsF &margins) noexcept;
     constexpr inline RectF &operator-=(const MarginsF &margins) noexcept;
 
-    friend constexpr inline bool operator==(const RectF &r1, const RectF &r2) noexcept
+    friend constexpr inline bool operator==(const RectF &r1,
+                                            const RectF &r2) noexcept
     {
         return r1.topLeft() == r2.topLeft() && r1.size() == r2.size();
     }
-    friend constexpr inline bool operator!=(const RectF &r1, const RectF &r2) noexcept
+    friend constexpr inline bool operator!=(const RectF &r1,
+                                            const RectF &r2) noexcept
     {
         return r1.topLeft() != r2.topLeft() || r1.size() != r2.size();
     }
@@ -268,14 +297,24 @@ private:
   Rect inline member functions
  *****************************************************************************/
 
-constexpr inline Rect::Rect(int aleft, int atop, int awidth, int aheight) noexcept
-    : x1(aleft), y1(atop), x2(aleft + awidth - 1), y2(atop + aheight - 1) {}
+constexpr inline Rect::Rect(int aleft, int atop, int awidth,
+                            int aheight) noexcept
+    : x1(aleft), y1(atop), x2(aleft + awidth - 1), y2(atop + aheight - 1)
+{
+}
 
-constexpr inline Rect::Rect(const Point &atopLeft, const Point &abottomRight) noexcept
-    : x1(atopLeft.x()), y1(atopLeft.y()), x2(abottomRight.x()), y2(abottomRight.y()) {}
+constexpr inline Rect::Rect(const Point &atopLeft,
+                            const Point &abottomRight) noexcept
+    : x1(atopLeft.x()), y1(atopLeft.y()), x2(abottomRight.x()),
+      y2(abottomRight.y())
+{
+}
 
 constexpr inline Rect::Rect(const Point &atopLeft, const Size &asize) noexcept
-    : x1(atopLeft.x()), y1(atopLeft.y()), x2(atopLeft.x() + asize.width() - 1), y2(atopLeft.y() + asize.height() - 1) {}
+    : x1(atopLeft.x()), y1(atopLeft.y()), x2(atopLeft.x() + asize.width() - 1),
+      y2(atopLeft.y() + asize.height() - 1)
+{
+}
 
 constexpr inline bool Rect::isNull() const noexcept
 {
@@ -292,55 +331,25 @@ constexpr inline bool Rect::isValid() const noexcept
     return x1 <= x2 && y1 <= y2;
 }
 
-constexpr inline int Rect::left() const noexcept
-{
-    return x1;
-}
+constexpr inline int Rect::left() const noexcept { return x1; }
 
-constexpr inline int Rect::top() const noexcept
-{
-    return y1;
-}
+constexpr inline int Rect::top() const noexcept { return y1; }
 
-constexpr inline int Rect::right() const noexcept
-{
-    return x2;
-}
+constexpr inline int Rect::right() const noexcept { return x2; }
 
-constexpr inline int Rect::bottom() const noexcept
-{
-    return y2;
-}
+constexpr inline int Rect::bottom() const noexcept { return y2; }
 
-constexpr inline int Rect::x() const noexcept
-{
-    return x1;
-}
+constexpr inline int Rect::x() const noexcept { return x1; }
 
-constexpr inline int Rect::y() const noexcept
-{
-    return y1;
-}
+constexpr inline int Rect::y() const noexcept { return y1; }
 
-constexpr inline void Rect::setLeft(int pos) noexcept
-{
-    x1 = pos;
-}
+constexpr inline void Rect::setLeft(int pos) noexcept { x1 = pos; }
 
-constexpr inline void Rect::setTop(int pos) noexcept
-{
-    y1 = pos;
-}
+constexpr inline void Rect::setTop(int pos) noexcept { y1 = pos; }
 
-constexpr inline void Rect::setRight(int pos) noexcept
-{
-    x2 = pos;
-}
+constexpr inline void Rect::setRight(int pos) noexcept { x2 = pos; }
 
-constexpr inline void Rect::setBottom(int pos) noexcept
-{
-    y2 = pos;
-}
+constexpr inline void Rect::setBottom(int pos) noexcept { y2 = pos; }
 
 constexpr inline void Rect::setTopLeft(const Point &p) noexcept
 {
@@ -366,30 +375,18 @@ constexpr inline void Rect::setBottomLeft(const Point &p) noexcept
     y2 = p.y();
 }
 
-constexpr inline void Rect::setX(int ax) noexcept
-{
-    x1 = ax;
-}
+constexpr inline void Rect::setX(int ax) noexcept { x1 = ax; }
 
-constexpr inline void Rect::setY(int ay) noexcept
-{
-    y1 = ay;
-}
+constexpr inline void Rect::setY(int ay) noexcept { y1 = ay; }
 
-constexpr inline Point Rect::topLeft() const noexcept
-{
-    return Point(x1, y1);
-}
+constexpr inline Point Rect::topLeft() const noexcept { return Point(x1, y1); }
 
 constexpr inline Point Rect::bottomRight() const noexcept
 {
     return Point(x2, y2);
 }
 
-constexpr inline Point Rect::topRight() const noexcept
-{
-    return Point(x2, y1);
-}
+constexpr inline Point Rect::topRight() const noexcept { return Point(x2, y1); }
 
 constexpr inline Point Rect::bottomLeft() const noexcept
 {
@@ -401,15 +398,9 @@ constexpr inline Point Rect::center() const noexcept
     return Point(int((int64_t(x1) + x2) / 2), int((int64_t(y1) + y2) / 2));
 }
 
-constexpr inline int Rect::width() const noexcept
-{
-    return x2 - x1 + 1;
-}
+constexpr inline int Rect::width() const noexcept { return x2 - x1 + 1; }
 
-constexpr inline int Rect::height() const noexcept
-{
-    return y2 - y1 + 1;
-}
+constexpr inline int Rect::height() const noexcept { return y2 - y1 + 1; }
 
 constexpr inline Size Rect::size() const noexcept
 {
@@ -537,7 +528,8 @@ constexpr inline void Rect::setRect(int ax, int ay, int aw, int ah) noexcept
     y2 = (ay + ah - 1);
 }
 
-constexpr inline void Rect::getCoords(int *xp1, int *yp1, int *xp2, int *yp2) const
+constexpr inline void Rect::getCoords(int *xp1, int *yp1, int *xp2,
+                                      int *yp2) const
 {
     *xp1 = x1;
     *yp1 = y1;
@@ -545,7 +537,8 @@ constexpr inline void Rect::getCoords(int *xp1, int *yp1, int *xp2, int *yp2) co
     *yp2 = y2;
 }
 
-constexpr inline void Rect::setCoords(int xp1, int yp1, int xp2, int yp2) noexcept
+constexpr inline void Rect::setCoords(int xp1, int yp1, int xp2,
+                                      int yp2) noexcept
 {
     x1 = xp1;
     y1 = yp1;
@@ -553,7 +546,8 @@ constexpr inline void Rect::setCoords(int xp1, int yp1, int xp2, int yp2) noexce
     y2 = yp2;
 }
 
-constexpr inline Rect Rect::adjusted(int xp1, int yp1, int xp2, int yp2) const noexcept
+constexpr inline Rect Rect::adjusted(int xp1, int yp1, int xp2,
+                                     int yp2) const noexcept
 {
     return Rect(Point(x1 + xp1, y1 + yp1), Point(x2 + xp2, y2 + yp2));
 }
@@ -566,15 +560,9 @@ constexpr inline void Rect::adjust(int dx1, int dy1, int dx2, int dy2) noexcept
     y2 += dy2;
 }
 
-constexpr inline void Rect::setWidth(int w) noexcept
-{
-    x2 = (x1 + w - 1);
-}
+constexpr inline void Rect::setWidth(int w) noexcept { x2 = (x1 + w - 1); }
 
-constexpr inline void Rect::setHeight(int h) noexcept
-{
-    y2 = (y1 + h - 1);
-}
+constexpr inline void Rect::setHeight(int h) noexcept { y2 = (y1 + h - 1); }
 
 constexpr inline void Rect::setSize(const Size &s) noexcept
 {
@@ -609,21 +597,24 @@ inline Rect Rect::intersected(const Rect &other) const noexcept
     return *this & other;
 }
 
-inline Rect Rect::united(const Rect &r) const noexcept
+inline Rect Rect::united(const Rect &r) const noexcept { return *this | r; }
+
+constexpr inline Rect operator+(const Rect &rectangle,
+                                const Margins &margins) noexcept
 {
-    return *this | r;
+    return Rect(Point(rectangle.left() - margins.left(),
+                      rectangle.top() - margins.top()),
+                Point(rectangle.right() + margins.right(),
+                      rectangle.bottom() + margins.bottom()));
 }
 
-constexpr inline Rect operator+(const Rect &rectangle, const Margins &margins) noexcept
+constexpr inline Rect operator+(const Margins &margins,
+                                const Rect &rectangle) noexcept
 {
-    return Rect(Point(rectangle.left() - margins.left(), rectangle.top() - margins.top()),
-                Point(rectangle.right() + margins.right(), rectangle.bottom() + margins.bottom()));
-}
-
-constexpr inline Rect operator+(const Margins &margins, const Rect &rectangle) noexcept
-{
-    return Rect(Point(rectangle.left() - margins.left(), rectangle.top() - margins.top()),
-                Point(rectangle.right() + margins.right(), rectangle.bottom() + margins.bottom()));
+    return Rect(Point(rectangle.left() - margins.left(),
+                      rectangle.top() - margins.top()),
+                Point(rectangle.right() + margins.right(),
+                      rectangle.bottom() + margins.bottom()));
 }
 
 constexpr inline Rect operator-(const Rect &lhs, const Margins &rhs) noexcept
@@ -638,7 +629,8 @@ constexpr inline Rect Rect::marginsAdded(const Margins &margins) const noexcept
                 Point(x2 + margins.right(), y2 + margins.bottom()));
 }
 
-constexpr inline Rect Rect::marginsRemoved(const Margins &margins) const noexcept
+constexpr inline Rect
+Rect::marginsRemoved(const Margins &margins) const noexcept
 {
     return Rect(Point(x1 + margins.left(), y1 + margins.top()),
                 Point(x2 - margins.right(), y2 - margins.bottom()));
@@ -667,19 +659,23 @@ constexpr Rect Rect::span(const Point &p1, const Point &p2) noexcept
   RectF inline member functions
  *****************************************************************************/
 
-constexpr inline RectF::RectF(double aleft, double atop, double awidth, double aheight) noexcept
+constexpr inline RectF::RectF(double aleft, double atop, double awidth,
+                              double aheight) noexcept
     : xp(aleft), yp(atop), w(awidth), h(aheight)
 {
 }
 
-constexpr inline RectF::RectF(const PointF &atopLeft, const SizeF &asize) noexcept
+constexpr inline RectF::RectF(const PointF &atopLeft,
+                              const SizeF &asize) noexcept
     : xp(atopLeft.x()), yp(atopLeft.y()), w(asize.width()), h(asize.height())
 {
 }
 
 
-constexpr inline RectF::RectF(const PointF &atopLeft, const PointF &abottomRight) noexcept
-    : xp(atopLeft.x()), yp(atopLeft.y()), w(abottomRight.x() - atopLeft.x()), h(abottomRight.y() - atopLeft.y())
+constexpr inline RectF::RectF(const PointF &atopLeft,
+                              const PointF &abottomRight) noexcept
+    : xp(atopLeft.x()), yp(atopLeft.y()), w(abottomRight.x() - atopLeft.x()),
+      h(abottomRight.y() - atopLeft.y())
 {
 }
 
@@ -703,15 +699,9 @@ constexpr inline bool RectF::isValid() const noexcept
     return w > 0. && h > 0.;
 }
 
-constexpr inline double RectF::x() const noexcept
-{
-    return xp;
-}
+constexpr inline double RectF::x() const noexcept { return xp; }
 
-constexpr inline double RectF::y() const noexcept
-{
-    return yp;
-}
+constexpr inline double RectF::y() const noexcept { return yp; }
 
 constexpr inline void RectF::setLeft(double pos) noexcept
 {
@@ -720,10 +710,7 @@ constexpr inline void RectF::setLeft(double pos) noexcept
     w -= diff;
 }
 
-constexpr inline void RectF::setRight(double pos) noexcept
-{
-    w = pos - xp;
-}
+constexpr inline void RectF::setRight(double pos) noexcept { w = pos - xp; }
 
 constexpr inline void RectF::setTop(double pos) noexcept
 {
@@ -732,10 +719,7 @@ constexpr inline void RectF::setTop(double pos) noexcept
     h -= diff;
 }
 
-constexpr inline void RectF::setBottom(double pos) noexcept
-{
-    h = pos - yp;
-}
+constexpr inline void RectF::setBottom(double pos) noexcept { h = pos - yp; }
 
 constexpr inline void RectF::setTopLeft(const PointF &p) noexcept
 {
@@ -766,25 +750,13 @@ constexpr inline PointF RectF::center() const noexcept
     return PointF(xp + w / 2, yp + h / 2);
 }
 
-constexpr inline void RectF::moveLeft(double pos) noexcept
-{
-    xp = pos;
-}
+constexpr inline void RectF::moveLeft(double pos) noexcept { xp = pos; }
 
-constexpr inline void RectF::moveTop(double pos) noexcept
-{
-    yp = pos;
-}
+constexpr inline void RectF::moveTop(double pos) noexcept { yp = pos; }
 
-constexpr inline void RectF::moveRight(double pos) noexcept
-{
-    xp = pos - w;
-}
+constexpr inline void RectF::moveRight(double pos) noexcept { xp = pos - w; }
 
-constexpr inline void RectF::moveBottom(double pos) noexcept
-{
-    yp = pos - h;
-}
+constexpr inline void RectF::moveBottom(double pos) noexcept { yp = pos - h; }
 
 constexpr inline void RectF::moveTopLeft(const PointF &p) noexcept
 {
@@ -816,20 +788,11 @@ constexpr inline void RectF::moveCenter(const PointF &p) noexcept
     yp = p.y() - h / 2;
 }
 
-constexpr inline double RectF::width() const noexcept
-{
-    return w;
-}
+constexpr inline double RectF::width() const noexcept { return w; }
 
-constexpr inline double RectF::height() const noexcept
-{
-    return h;
-}
+constexpr inline double RectF::height() const noexcept { return h; }
 
-constexpr inline SizeF RectF::size() const noexcept
-{
-    return SizeF(w, h);
-}
+constexpr inline SizeF RectF::size() const noexcept { return SizeF(w, h); }
 
 constexpr inline void RectF::translate(double dx, double dy) noexcept
 {
@@ -870,7 +833,8 @@ constexpr inline RectF RectF::transposed() const noexcept
     return RectF(topLeft(), size().transposed());
 }
 
-constexpr inline void RectF::getRect(double *ax, double *ay, double *aaw, double *aah) const
+constexpr inline void RectF::getRect(double *ax, double *ay, double *aaw,
+                                     double *aah) const
 {
     *ax = this->xp;
     *ay = this->yp;
@@ -878,7 +842,8 @@ constexpr inline void RectF::getRect(double *ax, double *ay, double *aaw, double
     *aah = this->h;
 }
 
-constexpr inline void RectF::setRect(double ax, double ay, double aaw, double aah) noexcept
+constexpr inline void RectF::setRect(double ax, double ay, double aaw,
+                                     double aah) noexcept
 {
     this->xp = ax;
     this->yp = ay;
@@ -886,7 +851,8 @@ constexpr inline void RectF::setRect(double ax, double ay, double aaw, double aa
     this->h = aah;
 }
 
-constexpr inline void RectF::getCoords(double *xp1, double *yp1, double *xp2, double *yp2) const
+constexpr inline void RectF::getCoords(double *xp1, double *yp1, double *xp2,
+                                       double *yp2) const
 {
     *xp1 = xp;
     *yp1 = yp;
@@ -894,7 +860,8 @@ constexpr inline void RectF::getCoords(double *xp1, double *yp1, double *xp2, do
     *yp2 = yp + h;
 }
 
-constexpr inline void RectF::setCoords(double xp1, double yp1, double xp2, double yp2) noexcept
+constexpr inline void RectF::setCoords(double xp1, double yp1, double xp2,
+                                       double yp2) noexcept
 {
     xp = xp1;
     yp = yp1;
@@ -902,7 +869,8 @@ constexpr inline void RectF::setCoords(double xp1, double yp1, double xp2, doubl
     h = yp2 - yp1;
 }
 
-constexpr inline void RectF::adjust(double xp1, double yp1, double xp2, double yp2) noexcept
+constexpr inline void RectF::adjust(double xp1, double yp1, double xp2,
+                                    double yp2) noexcept
 {
     xp += xp1;
     yp += yp1;
@@ -910,20 +878,15 @@ constexpr inline void RectF::adjust(double xp1, double yp1, double xp2, double y
     h += yp2 - yp1;
 }
 
-constexpr inline RectF RectF::adjusted(double xp1, double yp1, double xp2, double yp2) const noexcept
+constexpr inline RectF RectF::adjusted(double xp1, double yp1, double xp2,
+                                       double yp2) const noexcept
 {
     return RectF(xp + xp1, yp + yp1, w + xp2 - xp1, h + yp2 - yp1);
 }
 
-constexpr inline void RectF::setWidth(double aw) noexcept
-{
-    this->w = aw;
-}
+constexpr inline void RectF::setWidth(double aw) noexcept { this->w = aw; }
 
-constexpr inline void RectF::setHeight(double ah) noexcept
-{
-    this->h = ah;
-}
+constexpr inline void RectF::setHeight(double ah) noexcept { this->h = ah; }
 
 constexpr inline void RectF::setSize(const SizeF &s) noexcept
 {
@@ -953,10 +916,7 @@ inline RectF RectF::intersected(const RectF &r) const noexcept
     return *this & r;
 }
 
-inline RectF RectF::united(const RectF &r) const noexcept
-{
-    return *this | r;
-}
+inline RectF RectF::united(const RectF &r) const noexcept { return *this | r; }
 
 constexpr RectF Rect::toRectF() const noexcept { return *this; }
 
@@ -975,31 +935,38 @@ constexpr inline Rect RectF::toRect() const noexcept
 constexpr inline RectF operator+(const RectF &lhs, const MarginsF &rhs) noexcept
 {
     return RectF(PointF(lhs.left() - rhs.left(), lhs.top() - rhs.top()),
-                 SizeF(lhs.width() + rhs.left() + rhs.right(), lhs.height() + rhs.top() + rhs.bottom()));
+                 SizeF(lhs.width() + rhs.left() + rhs.right(),
+                       lhs.height() + rhs.top() + rhs.bottom()));
 }
 
 constexpr inline RectF operator+(const MarginsF &lhs, const RectF &rhs) noexcept
 {
     return RectF(PointF(rhs.left() - lhs.left(), rhs.top() - lhs.top()),
-                 SizeF(rhs.width() + lhs.left() + lhs.right(), rhs.height() + lhs.top() + lhs.bottom()));
+                 SizeF(rhs.width() + lhs.left() + lhs.right(),
+                       rhs.height() + lhs.top() + lhs.bottom()));
 }
 
 constexpr inline RectF operator-(const RectF &lhs, const MarginsF &rhs) noexcept
 {
     return RectF(PointF(lhs.left() + rhs.left(), lhs.top() + rhs.top()),
-                 SizeF(lhs.width() - rhs.left() - rhs.right(), lhs.height() - rhs.top() - rhs.bottom()));
+                 SizeF(lhs.width() - rhs.left() - rhs.right(),
+                       lhs.height() - rhs.top() - rhs.bottom()));
 }
 
-constexpr inline RectF RectF::marginsAdded(const MarginsF &margins) const noexcept
+constexpr inline RectF
+RectF::marginsAdded(const MarginsF &margins) const noexcept
 {
     return RectF(PointF(xp - margins.left(), yp - margins.top()),
-                 SizeF(w + margins.left() + margins.right(), h + margins.top() + margins.bottom()));
+                 SizeF(w + margins.left() + margins.right(),
+                       h + margins.top() + margins.bottom()));
 }
 
-constexpr inline RectF RectF::marginsRemoved(const MarginsF &margins) const noexcept
+constexpr inline RectF
+RectF::marginsRemoved(const MarginsF &margins) const noexcept
 {
     return RectF(PointF(xp + margins.left(), yp + margins.top()),
-                 SizeF(w - margins.left() - margins.right(), h - margins.top() - margins.bottom()));
+                 SizeF(w - margins.left() - margins.right(),
+                       h - margins.top() - margins.bottom()));
 }
 
 constexpr inline RectF &RectF::operator+=(const MarginsF &margins) noexcept

@@ -22,13 +22,11 @@ set(m2_include_files
     ./include/m2/io/m2_datastream.h
     ./include/m2/io/m2_dir.h
     ./include/m2/io/m2_file.h
-    ./include/m2/io/m2_filesystem.h
     ./include/m2/io/m2_inputstream.h
     ./include/m2/io/m2_iot.h
     ./include/m2/io/m2_library.h
     ./include/m2/io/m2_lockfile.h
     ./include/m2/io/m2_logger.h
-    ./include/m2/io/m2_memorymanager.h
     ./include/m2/io/m2_outputstream.h
     ./include/m2/io/m2_process.h
     ./include/m2/io/m2_qrcode.h
@@ -49,6 +47,7 @@ set(m2_include_files
     ./include/m2/math/m2_biginteger.h
     ./include/m2/math/m2_cryptographichash.h
     ./include/m2/math/m2_encryption.h
+    ./include/m2/math/m2_geometrymath.h
     ./include/m2/math/m2_math.h
     ./include/m2/math/m2_random.h
     ./include/m2/math/m2_transform.h

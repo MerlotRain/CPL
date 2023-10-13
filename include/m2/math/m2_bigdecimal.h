@@ -83,14 +83,21 @@ public:
     String decimalPart();
 
     static void scale(int scale);
-    static String divide(const String &lhs, const String &rhs, int scale = INT_MIN);
-    static String modulus(const String &lhs, const String &rhs, int scale = INT_MIN);
-    static String pow(const String &lhs, const String &rhs, int scale = INT_MIN);
-    static String add(const String &lhs, const String &rhs, int scale = INT_MIN);
-    static String subtract(const String &lhs, const String &rhs, int scale = INT_MIN);
-    static String multiply(const String &lhs, const String &rhs, int scale = INT_MIN);
+    static String divide(const String &lhs, const String &rhs,
+                         int scale = INT_MIN);
+    static String modulus(const String &lhs, const String &rhs,
+                          int scale = INT_MIN);
+    static String pow(const String &lhs, const String &rhs,
+                      int scale = INT_MIN);
+    static String add(const String &lhs, const String &rhs,
+                      int scale = INT_MIN);
+    static String subtract(const String &lhs, const String &rhs,
+                           int scale = INT_MIN);
+    static String multiply(const String &lhs, const String &rhs,
+                           int scale = INT_MIN);
     static String round(const String &lhs, int scale = INT_MIN);
-    static int compareTo(const String &lhs, const String &rhs, int scale = INT_MIN);
+    static int compareTo(const String &lhs, const String &rhs,
+                         int scale = INT_MIN);
     static String log2(const String &lhs, int scale = INT_MIN);
     static String ln(const String &lhs, int scale = INT_MIN);
     static String log(const String &lhs, int scale = INT_MIN);

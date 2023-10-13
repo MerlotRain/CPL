@@ -92,7 +92,8 @@ private:
 template<typename T>
 class SmarterPointer
 {
-    static_assert((!std::is_pointer<T>::value || !std::is_base_of<RefObject>::value),
+    static_assert((!std::is_pointer<T>::value ||
+                   !std::is_base_of<RefObject>::value),
                   "SmarterPointer's template type must not be a pointer type");
 
 public:
@@ -104,33 +105,28 @@ public:
     SmarterPointer(O *point, bool bAddRef = true) noexcept
     {
         p = dynamic_cast<T *>(point);
-        if (p != nullptr && bAddRef)
-            p->addRef();
+        if (p != nullptr && bAddRef) p->addRef();
     }
     template<typename O>
     SmarterPointer(const SmarterPointer<O> &point) noexcept
     {
         p = dynamic_cast<T *>(point.p);
-        if (p != nullptr)
-            p->addRef();
+        if (p != nullptr) p->addRef();
     }
     SmarterPointer(const SmarterPointer<T> &point) noexcept
     {
         p = point.p;
-        if (p != nullptr)
-            p->addRef();
+        if (p != nullptr) p->addRef();
     }
     SmarterPointer(const RefObject *point, bool bAddRef = true) noexcept
     {
         p = dynamic_cast<T *>(point);
-        if (p != nullptr && bAddRef)
-            p->addRef();
+        if (p != nullptr && bAddRef) p->addRef();
     }
     SmarterPointer(T *point, bool bAddRef = true) noexcept
     {
         p = point;
-        if (p != nullptr && bAddRef)
-            p->addRef();
+        if (p != nullptr && bAddRef) p->addRef();
     }
     ~SmarterPointer() noexcept
     {
@@ -174,10 +170,8 @@ public:
     }
     bool isEqual(RefObject *pOther) noexcept
     {
-        if (p == nullptr && pOther == nullptr)
-            return true;
-        if (p == nullptr || pOther == nullptr)
-            return false;
+        if (p == nullptr && pOther == nullptr) return true;
+        if (p == nullptr || pOther == nullptr) return false;
 
         auto *p1 = dynamic_cast<RefObject *>(p);
         return p1 == pOther;
@@ -197,29 +191,24 @@ public:
 
     bool copyTo(T **point) noexcept
     {
-        if (point == nullptr)
-            return false;
+        if (point == nullptr) return false;
         *point = p;
-        if (p)
-            p->addRef();
+        if (p) p->addRef();
         return true;
     }
     T *operator=(T *point) noexcept
     {
         if (p != nullptr)
-            if (this->p == point)
-                return *this;
+            if (this->p == point) return *this;
 
-        if (point)
-            point->addRef();
+        if (point) point->addRef();
         attach(point);
         return *this;
     }
     T *operator=(const SmarterPointer<T> &point) noexcept
     {
         if (this->p != point.p)
-            if (point)
-                point->addRef();
+            if (point) point->addRef();
         attach(point);
 
         return *this;
@@ -270,7 +259,8 @@ inline bool operator!=(std::nullptr_t, const SmarterPointer<T> &point) noexcept
 template<typename T>
 class WeakPointer
 {
-    static_assert((!std::is_pointer<T>::value || !std::is_base_of<RefObject>::value),
+    static_assert((!std::is_pointer<T>::value ||
+                   !std::is_base_of<RefObject>::value),
                   "SmarterPointer's template type must not be a pointer type");
 
 public:
@@ -290,7 +280,10 @@ public:
         m_WeakRef = new WeakRefObject(obj.p);
         m_WeakRef->addRef();
     }
-    WeakPointer(const WeakPointer<T> &weak) : m_WeakRef(nullptr) { reset(weak); }
+    WeakPointer(const WeakPointer<T> &weak) : m_WeakRef(nullptr)
+    {
+        reset(weak);
+    }
     ~WeakPointer()
     {
         if (m_WeakRef) m_WeakRef->release();
@@ -318,10 +311,7 @@ public:
     void reset(T *obj)
     {
         reset();
-        if (!obj)
-        {
-            return;
-        }
+        if (!obj) { return; }
         m_WeakRef = new WeakRefObject(obj);
         m_WeakRef->addRef();
     }
@@ -357,7 +347,8 @@ class M2_API ClassFactory
 {
 public:
     typedef RefObject *(*FactoryCreateFun)();
-    static void registerFactoryCreate(FactoryCreateFun fun, const char *className,
+    static void registerFactoryCreate(FactoryCreateFun fun,
+                                      const char *className,
                                       const char *category = nullptr);
 
     template<typename T>
@@ -409,14 +400,16 @@ private:
 
 #define REGISTER_CLASS_CREATE(ClassName) \
     m2::ClassFactory::registerFactoryCreate(CreateClass##ClassName, #ClassName);
-#define REGISTER_CLASS_CREATE_NAMESPACE(ClassName, NS) \
-    m2::ClassFactory::registerFactoryCreate(NS::CreateClass##ClassName, #ClassName);
+#define REGISTER_CLASS_CREATE_NAMESPACE(ClassName, NS)                  \
+    m2::ClassFactory::registerFactoryCreate(NS::CreateClass##ClassName, \
+                                            #ClassName);
 
-#define REGISTER_CLASS_CREATE_CATEGORY(ClassName, category) \
-    m2::ClassFactory::registerFactoryCreate(CreateClass##ClassName, #ClassName, #category);
-#define REGISTER_CLASS_CREATE_NAMESPACE_CATEGORY(ClassName, category, NS)           \
-    m2::ClassFactory::registerFactoryCreate(NS::CreateClass##ClassName, #ClassName, \
-                                            #category);
+#define REGISTER_CLASS_CREATE_CATEGORY(ClassName, category)         \
+    m2::ClassFactory::registerFactoryCreate(CreateClass##ClassName, \
+                                            #ClassName, #category);
+#define REGISTER_CLASS_CREATE_NAMESPACE_CATEGORY(ClassName, category, NS) \
+    m2::ClassFactory::registerFactoryCreate(NS::CreateClass##ClassName,   \
+                                            #ClassName, #category);
 
 }// namespace m2
 

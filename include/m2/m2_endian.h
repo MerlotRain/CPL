@@ -56,15 +56,9 @@ inline Endian osEndian()
 #endif
 }
 /// @brief 是否是高字节序
-inline bool IsBigEndian()
-{
-    return osEndian() == Endian::BigEndian;
-}
+inline bool IsBigEndian() { return osEndian() == Endian::BigEndian; }
 /// @brief 是否是低字节序
-inline bool isLittleEndian()
-{
-    return osEndian() == Endian::LittleEndian;
-}
+inline bool isLittleEndian() { return osEndian() == Endian::LittleEndian; }
 
 template<typename T>
 M2_ALWAYS_INLINE void toUnaligned(const T src, void *dest)
@@ -88,8 +82,7 @@ T byteSwap(T source);
 template<>
 inline uint64_t byteSwap<uint64_t>(uint64_t source)
 {
-    return 0 |
-           ((source & M2_UINT64_C(0x00000000000000ff)) << 56) |
+    return 0 | ((source & M2_UINT64_C(0x00000000000000ff)) << 56) |
            ((source & M2_UINT64_C(0x000000000000ff00)) << 40) |
            ((source & M2_UINT64_C(0x0000000000ff0000)) << 24) |
            ((source & M2_UINT64_C(0x00000000ff000000)) << 8) |
@@ -101,18 +94,13 @@ inline uint64_t byteSwap<uint64_t>(uint64_t source)
 template<>
 inline uint32_t byteSwap<uint32_t>(uint32_t source)
 {
-    return 0 |
-           ((source & 0x000000ff) << 24) |
-           ((source & 0x0000ff00) << 8) |
-           ((source & 0x00ff0000) >> 8) |
-           ((source & 0xff000000) >> 24);
+    return 0 | ((source & 0x000000ff) << 24) | ((source & 0x0000ff00) << 8) |
+           ((source & 0x00ff0000) >> 8) | ((source & 0xff000000) >> 24);
 }
 template<>
 inline uint16_t byteSwap<uint16_t>(uint16_t source)
 {
-    return uint16_t(0 |
-                    ((source & 0x00ff) << 8) |
-                    ((source & 0xff00) >> 8));
+    return uint16_t(0 | ((source & 0x00ff) << 8) | ((source & 0xff00) >> 8));
 }
 template<>
 inline uint8_t byteSwap<uint8_t>(uint8_t source)
@@ -212,10 +200,7 @@ inline void toLittleEndian(T src, void *dest)
 template<typename T>
 inline void toBigEndian(const void *source, int64_t count, void *dest)
 {
-    if (source != dest)
-    {
-        memcpy(dest, source, count * sizeof(T));
-    }
+    if (source != dest) { memcpy(dest, source, count * sizeof(T)); }
 }
 template<typename T>
 inline void toLittleEndian(const void *source, int64_t count, void *dest)
@@ -225,10 +210,7 @@ inline void toLittleEndian(const void *source, int64_t count, void *dest)
 template<typename T>
 inline void fromBigEndian(const void *source, int64_t count, void *dest)
 {
-    if (source != dest)
-    {
-        memcpy(dest, source, count * sizeof(T));
-    }
+    if (source != dest) { memcpy(dest, source, count * sizeof(T)); }
 }
 template<typename T>
 inline void fromLittleEndian(const void *source, int64_t count, void *dest)
@@ -277,10 +259,7 @@ inline void toBigEndian(const void *source, int64_t count, void *dest)
 template<typename T>
 inline void toLittleEndian(const void *source, int64_t count, void *dest)
 {
-    if (source != dest)
-    {
-        memcpy(dest, source, count * sizeof(T));
-    }
+    if (source != dest) { memcpy(dest, source, count * sizeof(T)); }
 }
 template<typename T>
 inline void fromBigEndian(const void *source, int64_t count, void *dest)
@@ -290,10 +269,7 @@ inline void fromBigEndian(const void *source, int64_t count, void *dest)
 template<typename T>
 inline void fromLittleEndian(const void *source, int64_t count, void *dest)
 {
-    if (source != dest)
-    {
-        memcpy(dest, source, count * sizeof(T));
-    }
+    if (source != dest) { memcpy(dest, source, count * sizeof(T)); }
 }
 #endif
 

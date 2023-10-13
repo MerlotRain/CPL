@@ -65,7 +65,7 @@ public:
     PointF circumscribedCenter() const;
     double circumscribedRadius() const;
     Circle circumscribedCircle() const;
-    
+
     PointF inscribedCenter() const;
     double inscribedRadius() const;
     Circle inscribedCircle() const;

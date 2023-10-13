@@ -40,114 +40,263 @@ namespace m2 {
 class M2_API ByteBuffer
 {
 public:
-    ByteBuffer(unsigned int len = 0);
-    ByteBuffer(unsigned char *buffer);
-    ByteBuffer(unsigned char *buffer, int len);
-    ByteBuffer(const char *str);
+    ByteBuffer() noexcept;
+    ByteBuffer(const char *, uint64_t size = -1);
+    ByteBuffer(uint64_t size, char c);
     ByteBuffer(const ByteBuffer &rhs);
     ByteBuffer(ByteBuffer &&rhs) noexcept;
-    virtual ~ByteBuffer();
+    ByteBuffer &operator=(const ByteBuffer &) noexcept;
+    ByteBuffer &operator=(const char *str);
+    inline ByteBuffer(ByteBuffer &&other) noexcept = default;
+    ~ByteBuffer();
 
-    void Attach(unsigned char *buffer);
-    unsigned char *Detach();
+    void swap(ByteBuffer &other) noexcept;
 
-    explicit operator unsigned char *() const;
-    explicit operator char *() const;
-    explicit operator int *() const;
-    explicit operator unsigned int *() const;
-    explicit operator short *() const;
-    explicit operator unsigned short *() const;
-    explicit operator long long *() const;
-    explicit operator unsigned long long *() const;
-    explicit operator double *() const;
-    explicit operator float *() const;
-    explicit operator bool *() const;
+    bool isEmpty() const noexcept;
+    void resize(uint64_t size);
+    void resize(uint64_t size, char c);
+    inline uint64_t size() const noexcept;
 
-    unsigned char *Ptr() const;
-    virtual unsigned char *EndPtr() const;
-    template<typename T>
-    T *PtrT() const
+    ByteBuffer &fill(char c, uint64_t size = -1);
+
+    inline uint64_t capacity() const;
+    inline void reserve(uint64_t size);
+    inline void squeeze();
+
+    inline char *data();
+    inline const char *data() const noexcept;
+    const char *constData() const noexcept { return data(); }
+    inline void detach();
+    inline char at(uint64_t i) const;
+    inline char operator[](uint64_t i) const;
+    [[nodiscard]] inline char &operator[](uint64_t i);
+    [[nodiscard]] char front() const;
+    [[nodiscard]] inline char &front();
+    [[nodiscard]] char back() const;
+    [[nodiscard]] inline char &back();
+
+    ByteBuffer &prepend(char c);
+    inline ByteBuffer &prepend(uint64_t count, char c);
+    ByteBuffer &prepend(const char *s);
+    ByteBuffer &prepend(const char *s, uint64_t len);
+    ByteBuffer &prepend(const ByteBuffer &a);
+
+    ByteBuffer &append(char c);
+    inline ByteBuffer &append(uint64_t count, char c);
+    ByteBuffer &append(const char *s) { return append(s, -1); }
+    ByteBuffer &append(const char *s, uint64_t len);
+    ByteBuffer &append(const ByteBuffer &a);
+
+    inline ByteBuffer &insert(uint64_t i, const char *s);
+    inline ByteBuffer &insert(uint64_t i, const ByteBuffer &data);
+    ByteBuffer &insert(uint64_t i, uint64_t count, char c);
+    ByteBuffer &insert(uint64_t i, char c);
+    ByteBuffer &insert(uint64_t i, const char *s, uint64_t len);
+
+    ByteBuffer &remove(uint64_t index, uint64_t len);
+
+    ByteBuffer &replace(uint64_t index, uint64_t len, const char *s,
+                        uint64_t alen);
+    ByteBuffer &replace(const char *before, uint64_t bsize, const char *after,
+                        uint64_t asize);
+    ByteBuffer &replace(char before, char after);
+
+    ByteBuffer toBase64() const;
+    ByteBuffer toHex() const;
+
+    template<class T>
+    uint64_t sizeT() const;
+    template<class T>
+    T *dataT() const;
+
+    operator unsigned char *() const;
+    operator short *() const;
+    operator unsigned short *() const;
+    operator int *() const;
+    operator unsigned int *() const;
+    operator long long *() const;
+    operator unsigned long long *() const;
+    operator double *() const;
+    operator float *() const;
+
+public:
+    typedef char *iterator;
+    typedef const char *const_iterator;
+    typedef iterator Iterator;
+    typedef const_iterator ConstIterator;
+    typedef std::reverse_iterator<iterator> reverse_iterator;
+    typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+    iterator begin() { return data(); }
+    const_iterator begin() const noexcept { return data(); }
+    const_iterator cbegin() const noexcept { return begin(); }
+    const_iterator constBegin() const noexcept { return begin(); }
+    iterator end() { return data() + size(); }
+    const_iterator end() const noexcept { return data() + size(); }
+    const_iterator cend() const noexcept { return end(); }
+    const_iterator constEnd() const noexcept { return end(); }
+    reverse_iterator rbegin() { return reverse_iterator(end()); }
+    reverse_iterator rend() { return reverse_iterator(begin()); }
+    const_reverse_iterator rbegin() const noexcept
     {
-        return (T *) (Ptr());
+        return const_reverse_iterator(end());
     }
-    template<typename T>
-    T *EndPtrT() const
+    const_reverse_iterator rend() const noexcept
     {
-        return (T *) (EndPtr());
+        return const_reverse_iterator(begin());
     }
+    const_reverse_iterator crbegin() const noexcept { return rbegin(); }
+    const_reverse_iterator crend() const noexcept { return rend(); }
 
-    unsigned char *BufferHead() const;
-    unsigned int BufferSize() const;
-    template<typename T>
-    unsigned int BufferSizeT() const
-    {
-        return BufferSize() / sizeof(T);
-    }
+public:
+    typedef uint64_t size_type;
+    typedef ptrdiff_t difference_type;
+    typedef const char &const_reference;
+    typedef char &reference;
+    typedef char *pointer;
+    typedef const char *const_pointer;
+    typedef char value_type;
+    void push_back(char c) { append(c); }
+    void push_back(const char *s) { append(s); }
+    void push_back(const ByteBuffer &a) { append(a); }
+    void push_front(char c) { prepend(c); }
+    void push_front(const char *c) { prepend(c); }
+    void push_front(const ByteBuffer &a) { prepend(a); }
+    void shrink_to_fit() { squeeze(); }
+    iterator erase(const_iterator first, const_iterator last);
 
-    unsigned int BufferLength() const;
-    unsigned char *SetBufferValue(int nValue);
-
-    template<typename T>
-    T *SetBufferValueT(const T &val)
-    {
-        const auto *pByte = (const unsigned char *) &val;
-        bool bIsEqual = true;
-        for (int i = 1; i < sizeof(val); i++)
-        {
-            if (pByte[i] != pByte[0])
-            {
-                bIsEqual = false;
-                break;
-            }
-        }
-        if (bIsEqual)
-        {
-            return (T *) SetBufferValue(pByte[0]);
-        }
-        T *pHead = PtrT<T>();
-        T *pEnd = EndPtrT<T>();
-        for (; pHead < pEnd; pHead++)
-        {
-            pHead[0] = val;
-        }
-        return PtrT<T>();
-    }
-
-    unsigned char *Append(const unsigned char *pBuff, int nLen);
-    unsigned char *Append(const char *pStr);
-
-    template<typename T>
-    unsigned char *AppendT(const T &pBuff)
-    {
-        return Append((const unsigned char *) &pBuff, sizeof(T));
-    }
-
-    unsigned char *Insert(unsigned int nPos, const unsigned char *pStr, int nLen);
-    unsigned char *Allocate(unsigned int nLen);
-    template<typename T>
-    T *AllocateT(int nLen)
-    {
-        Allocate(sizeof(T) * nLen);
-        return PtrT<T>();
-    }
-
-    virtual void Clear();
-    virtual void Reset();
-    unsigned char *Copy(const unsigned char *pBuff, int nLen);
-    ByteBuffer ReadSize(int nLen);
-    void Resize(int nLen);
-    ByteBuffer *Swap(ByteBuffer &rhs);
-    ByteBuffer *Swap(unsigned char *pBuff);
-    bool IsEmpty() const;
-    ByteBuffer &operator=(const ByteBuffer &rsh);
-    ByteBuffer &operator=(ByteBuffer &&rsh) noexcept;
-    String ToBase64() const;
-    bool FromBase64(const char *strBase64);
-    static bool IsBase64(const char *strBase64);
+public:
+    static ByteBuffer compress(const uint8_t *data, uint64_t nbytes,
+                               int compressionLevel = -1);
+    static ByteBuffer uncompress(const uint8_t *data, uint64_t nbytes);
+    static ByteBuffer compress(const ByteBuffer &data,
+                               int compressionLevel = -1);
+    static ByteBuffer uncompress(const ByteBuffer &data);
 
 private:
-    unsigned char *m_Buffer;
+    uint64_t alloc;
+    uint64_t used;
+    char *d;
 };
+
+inline bool operator==(const ByteBuffer &a1, const ByteBuffer &a2) noexcept
+{
+    return a1 == a2;
+}
+inline bool operator==(const ByteBuffer &a1, const char *a2) noexcept {}
+inline bool operator==(const char *a1, const ByteBuffer &a2) noexcept
+{
+    return false;
+}
+inline bool operator!=(const ByteBuffer &a1, const ByteBuffer &a2) noexcept
+{
+    return !(a1 == a2);
+}
+inline bool operator!=(const ByteBuffer &a1, const char *a2) noexcept
+{
+    return false;
+}
+inline bool operator!=(const char *a1, const ByteBuffer &a2) noexcept
+{
+    return false;
+}
+inline bool operator<(const ByteBuffer &a1, const ByteBuffer &a2) noexcept
+{
+    return false;
+}
+inline bool operator<(const ByteBuffer &a1, const char *a2) noexcept
+{
+    return false;
+}
+inline bool operator<(const char *a1, const ByteBuffer &a2) noexcept
+{
+    return false;
+}
+inline bool operator<=(const ByteBuffer &a1, const ByteBuffer &a2) noexcept
+{
+    return false;
+}
+inline bool operator<=(const ByteBuffer &a1, const char *a2) noexcept
+{
+    return false;
+}
+inline bool operator<=(const char *a1, const ByteBuffer &a2) noexcept
+{
+    return false;
+}
+inline bool operator>(const ByteBuffer &a1, const ByteBuffer &a2) noexcept
+{
+    return false;
+}
+inline bool operator>(const ByteBuffer &a1, const char *a2) noexcept
+{
+    return false;
+}
+inline bool operator>(const char *a1, const ByteBuffer &a2) noexcept
+{
+    return false;
+}
+inline bool operator>=(const ByteBuffer &a1, const ByteBuffer &a2) noexcept
+{
+    return false;
+}
+inline bool operator>=(const ByteBuffer &a1, const char *a2) noexcept
+{
+    return false;
+}
+inline bool operator>=(const char *a1, const ByteBuffer &a2) noexcept
+{
+    return false;
+}
+
+inline bool operator==(const ByteBuffer &a1, std::nullptr_t) noexcept
+{
+    return a1.isEmpty();
+}
+inline bool operator!=(const ByteBuffer &a1, std::nullptr_t) noexcept
+{
+    return !a1.isEmpty();
+}
+inline bool operator<(const ByteBuffer &, std::nullptr_t) noexcept
+{
+    return false;
+}
+inline bool operator>(const ByteBuffer &a1, std::nullptr_t) noexcept
+{
+    return !a1.isEmpty();
+}
+inline bool operator<=(const ByteBuffer &a1, std::nullptr_t) noexcept
+{
+    return a1.isEmpty();
+}
+inline bool operator>=(const ByteBuffer &, std::nullptr_t) noexcept
+{
+    return true;
+}
+
+inline bool operator==(std::nullptr_t, const ByteBuffer &a2) noexcept
+{
+    return a2 == nullptr;
+}
+inline bool operator!=(std::nullptr_t, const ByteBuffer &a2) noexcept
+{
+    return a2 != nullptr;
+}
+inline bool operator<(std::nullptr_t, const ByteBuffer &a2) noexcept
+{
+    return a2 > nullptr;
+}
+inline bool operator>(std::nullptr_t, const ByteBuffer &a2) noexcept
+{
+    return a2 < nullptr;
+}
+inline bool operator<=(std::nullptr_t, const ByteBuffer &a2) noexcept
+{
+    return a2 >= nullptr;
+}
+inline bool operator>=(std::nullptr_t, const ByteBuffer &a2) noexcept
+{
+    return a2 <= nullptr;
+}
 
 }// namespace m2
 

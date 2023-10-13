@@ -29,3 +29,17 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_OUTPUTSTREAM_H_
+#define M2_OUTPUTSTREAM_H_
+
+#include <fstream>
+namespace m2 {
+
+class OutputStream
+{
+};
+
+}// namespace m2
+
+#endif//M2_OUTPUTSTREAM_H_

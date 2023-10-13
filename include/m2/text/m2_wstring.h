@@ -55,9 +55,12 @@ public:
     WString(const wchar_t *start, const wchar_t *end) noexcept;
     WString(int count, wchar_t e) noexcept;
     WString(WString::iterator first, WString::iterator last) noexcept;
-    WString(WString::const_iterator first, WString::const_iterator last) noexcept;
-    WString(WString::reverse_iterator first, WString::reverse_iterator last) noexcept;
-    WString(WString::const_reverse_iterator first, WString::const_reverse_iterator last) noexcept;
+    WString(WString::const_iterator first,
+            WString::const_iterator last) noexcept;
+    WString(WString::reverse_iterator first,
+            WString::reverse_iterator last) noexcept;
+    WString(WString::const_reverse_iterator first,
+            WString::const_reverse_iterator last) noexcept;
     ~WString();
 
     WString &operator=(const wchar_t *str);
@@ -95,13 +98,11 @@ public:
     template<typename... Args>
     static WString format(const wchar_t *f, Args &&...args)
     {
-        auto size_buf = std::snprintf(nullptr, 0, f, std::forward<Args>(args)...) + 1;
+        auto size_buf =
+                std::snprintf(nullptr, 0, f, std::forward<Args>(args)...) + 1;
         std::unique_ptr<char[]> buf(new (std::nothrow) char[size_buf]);
 
-        if (!buf)
-        {
-            return {};
-        }
+        if (!buf) { return {}; }
 
         std::snprintf(buf.get(), size_buf, f, std::forward<Args>(args)...);
         return WString(buf.get(), buf.get() + size_buf - 1);

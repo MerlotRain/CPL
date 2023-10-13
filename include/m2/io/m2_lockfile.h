@@ -53,9 +53,15 @@ public:
     void setStaleLockTime(int);
     int staleLockTime() const;
 
-    bool tryLock(std::chrono::milliseconds timeout) { return tryLock(int(timeout.count())); }
+    bool tryLock(std::chrono::milliseconds timeout)
+    {
+        return tryLock(int(timeout.count()));
+    }
 
-    void setStaleLockTime(std::chrono::milliseconds value) { setStaleLockTime(int(value.count())); }
+    void setStaleLockTime(std::chrono::milliseconds value)
+    {
+        setStaleLockTime(int(value.count()));
+    }
 
     std::chrono::milliseconds staleLockTimeAsDuration() const
     {

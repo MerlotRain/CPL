@@ -29,3 +29,12 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_ZIPPER_H_
+#define M2_ZIPPER_H_
+
+class ZipReader
+{
+};
+
+#endif//M2_ZIPPER_H_

@@ -109,8 +109,7 @@ inline RBTree<T>::~RBTree()
 template<class T>
 inline void RBTree<T>::clear()
 {
-    if (root)
-        delete root;
+    if (root) delete root;
     root = nullptr;
 }
 
@@ -124,7 +123,10 @@ void RBTree<T>::rotateLeft(Node *node)
     //    / \      / \       //
     //   C   D    A   C      //
 
-    Node *&ref = (node->parent ? (node == node->parent->left ? node->parent->left : node->parent->right) : root);
+    Node *&ref =
+            (node->parent ? (node == node->parent->left ? node->parent->left
+                                                        : node->parent->right)
+                          : root);
     ref = node->right;
     node->right->parent = node->parent;
 
@@ -136,8 +138,7 @@ void RBTree<T>::rotateLeft(Node *node)
     //   C   D    //
 
     node->right = ref->left;
-    if (ref->left)
-        ref->left->parent = node;
+    if (ref->left) ref->left->parent = node;
 
     //   :   |     //
     //   N   B     //
@@ -165,13 +166,15 @@ void RBTree<T>::rotateRight(Node *node)
     //  / \              / \     //
     // C   D            D   B    //
 
-    Node *&ref = (node->parent ? (node == node->parent->left ? node->parent->left : node->parent->right) : root);
+    Node *&ref =
+            (node->parent ? (node == node->parent->left ? node->parent->left
+                                                        : node->parent->right)
+                          : root);
     ref = node->left;
     node->left->parent = node->parent;
 
     node->left = ref->right;
-    if (ref->right)
-        ref->right->parent = node;
+    if (ref->right) ref->right->parent = node;
 
     ref->right = node;
     node->parent = ref;
@@ -192,14 +195,14 @@ void RBTree<T>::update(Node *node)// call this after inserting a node
         }
 
         // if the parent is black, the node can be left red
-        if (!parent->red)
-            return;
+        if (!parent->red) return;
 
         // at this point, the parent is red and cannot be the root
         Node *grandpa = parent->parent;
         assert(grandpa);
 
-        Node *uncle = (parent == grandpa->left ? grandpa->right : grandpa->left);
+        Node *uncle =
+                (parent == grandpa->left ? grandpa->right : grandpa->left);
         if (uncle && uncle->red)
         {
             // grandpa's black, parent and uncle are red.
@@ -256,8 +259,7 @@ inline void RBTree<T>::attachRight(Node *parent, Node *child)
 template<class T>
 void RBTree<T>::attachBefore(Node *parent, Node *child)
 {
-    if (!root)
-        update(root = child);
+    if (!root) update(root = child);
     else if (!parent)
         attachRight(back(root), child);
     else if (parent->left)
@@ -269,8 +271,7 @@ void RBTree<T>::attachBefore(Node *parent, Node *child)
 template<class T>
 void RBTree<T>::attachAfter(Node *parent, Node *child)
 {
-    if (!root)
-        update(root = child);
+    if (!root) update(root = child);
     else if (!parent)
         attachLeft(front(root), child);
     else if (parent->right)
@@ -293,10 +294,7 @@ void RBTree<T>::swapNodes(Node *n1, Node *n2)
         n2->parent = n1->parent;
         n1->parent = n2;
     }
-    else
-    {
-        std::swap(n1->parent, n2->parent);
-    }
+    else { std::swap(n1->parent, n2->parent); }
 
     std::swap(n1->left, n2->left);
     std::swap(n1->right, n2->right);
@@ -304,59 +302,47 @@ void RBTree<T>::swapNodes(Node *n1, Node *n2)
 
     if (n1->parent)
     {
-        if (n1->parent->left == n2)
-            n1->parent->left = n1;
+        if (n1->parent->left == n2) n1->parent->left = n1;
         else
             n1->parent->right = n1;
     }
-    else
-    {
-        root = n1;
-    }
+    else { root = n1; }
 
     if (n2->parent)
     {
-        if (n2->parent->left == n1)
-            n2->parent->left = n2;
+        if (n2->parent->left == n1) n2->parent->left = n2;
         else
             n2->parent->right = n2;
     }
-    else
-    {
-        root = n2;
-    }
+    else { root = n2; }
 
-    if (n1->left)
-        n1->left->parent = n1;
-    if (n1->right)
-        n1->right->parent = n1;
+    if (n1->left) n1->left->parent = n1;
+    if (n1->right) n1->right->parent = n1;
 
-    if (n2->left)
-        n2->left->parent = n2;
-    if (n2->right)
-        n2->right->parent = n2;
+    if (n2->left) n2->left->parent = n2;
+    if (n2->right) n2->right->parent = n2;
 }
 
 template<class T>
 void RBTree<T>::detach(Node *node)// call this before removing a node.
 {
-    if (node->right)
-        swapNodes(node, front(node->right));
+    if (node->right) swapNodes(node, front(node->right));
 
     Node *child = (node->left ? node->left : node->right);
 
     if (!node->red)
     {
-        if (child && child->red)
-            child->red = false;
+        if (child && child->red) child->red = false;
         else
             rebalance(node);
     }
 
-    Node *&ref = (node->parent ? (node == node->parent->left ? node->parent->left : node->parent->right) : root);
+    Node *&ref =
+            (node->parent ? (node == node->parent->left ? node->parent->left
+                                                        : node->parent->right)
+                          : root);
     ref = child;
-    if (child)
-        child->parent = node->parent;
+    if (child) child->parent = node->parent;
     node->left = node->right = node->parent = nullptr;
 }
 
@@ -367,35 +353,35 @@ void RBTree<T>::rebalance(Node *node)
     assert(!node->red);
     for (;;)
     {
-        if (!node->parent)
-            return;
+        if (!node->parent) return;
 
         // at this point, node is not a parent, it is black, thus it must have a sibling.
-        Node *sibling = (node == node->parent->left ? node->parent->right : node->parent->left);
+        Node *sibling = (node == node->parent->left ? node->parent->right
+                                                    : node->parent->left);
         assert(sibling);
 
         if (sibling->red)
         {
             sibling->red = false;
             node->parent->red = true;
-            if (node == node->parent->left)
-                rotateLeft(node->parent);
+            if (node == node->parent->left) rotateLeft(node->parent);
             else
                 rotateRight(node->parent);
-            sibling = (node == node->parent->left ? node->parent->right : node->parent->left);
+            sibling = (node == node->parent->left ? node->parent->right
+                                                  : node->parent->left);
             assert(sibling);
         }
 
         // at this point, the sibling is black.
         assert(!sibling->red);
 
-        if ((!sibling->left || !sibling->left->red) && (!sibling->right || !sibling->right->red))
+        if ((!sibling->left || !sibling->left->red) &&
+            (!sibling->right || !sibling->right->red))
         {
             bool parentWasRed = node->parent->red;
             sibling->red = true;
             node->parent->red = false;
-            if (parentWasRed)
-                return;
+            if (parentWasRed) return;
             node = node->parent;
             continue;
         }
@@ -447,63 +433,52 @@ void RBTree<T>::rebalance(Node *node)
 template<class T>
 inline typename RBTree<T>::Node *RBTree<T>::front(Node *node) const
 {
-    while (node->left)
-        node = node->left;
+    while (node->left) node = node->left;
     return node;
 }
 
 template<class T>
 inline typename RBTree<T>::Node *RBTree<T>::back(Node *node) const
 {
-    while (node->right)
-        node = node->right;
+    while (node->right) node = node->right;
     return node;
 }
 
 template<class T>
 typename RBTree<T>::Node *RBTree<T>::next(Node *node) const
 {
-    if (node->right)
-        return front(node->right);
-    while (node->parent && node == node->parent->right)
-        node = node->parent;
+    if (node->right) return front(node->right);
+    while (node->parent && node == node->parent->right) node = node->parent;
     return node->parent;
 }
 
 template<class T>
 typename RBTree<T>::Node *RBTree<T>::previous(Node *node) const
 {
-    if (node->left)
-        return back(node->left);
-    while (node->parent && node == node->parent->left)
-        node = node->parent;
+    if (node->left) return back(node->left);
+    while (node->parent && node == node->parent->left) node = node->parent;
     return node->parent;
 }
 
 template<class T>
 int RBTree<T>::blackDepth(Node *top) const
 {
-    if (!top)
-        return 0;
+    if (!top) return 0;
     int leftDepth = blackDepth(top->left);
     int rightDepth = blackDepth(top->right);
-    if (leftDepth != rightDepth)
-        return -1;
-    if (!top->red)
-        ++leftDepth;
+    if (leftDepth != rightDepth) return -1;
+    if (!top->red) ++leftDepth;
     return leftDepth;
 }
 
 template<class T>
 bool RBTree<T>::checkRedBlackProperty(Node *top) const
 {
-    if (!top)
-        return true;
-    if (top->left && !checkRedBlackProperty(top->left))
-        return false;
-    if (top->right && !checkRedBlackProperty(top->right))
-        return false;
-    return !(top->red && ((top->left && top->left->red) || (top->right && top->right->red)));
+    if (!top) return true;
+    if (top->left && !checkRedBlackProperty(top->left)) return false;
+    if (top->right && !checkRedBlackProperty(top->right)) return false;
+    return !(top->red && ((top->left && top->left->red) ||
+                          (top->right && top->right->red)));
 }
 
 template<class T>
@@ -542,8 +517,7 @@ template<class T>
 int RBTree<T>::order(Node *left, Node *right)
 {
     assert(left && right);
-    if (left == right)
-        return 0;
+    if (left == right) return 0;
 
     std::list<Node *> leftAncestors;
     std::list<Node *> rightAncestors;
@@ -559,17 +533,21 @@ int RBTree<T>::order(Node *left, Node *right)
     }
     assert(leftAncestors.back() == root && rightAncestors.back() == root);
 
-    while (!leftAncestors.empty() && !rightAncestors.empty() && leftAncestors.back() == rightAncestors.back())
+    while (!leftAncestors.empty() && !rightAncestors.empty() &&
+           leftAncestors.back() == rightAncestors.back())
     {
         leftAncestors.pop_back();
         rightAncestors.pop_back();
     }
 
     if (!leftAncestors.empty())
-        return (leftAncestors.back() == leftAncestors.back()->parent->left ? -1 : 1);
+        return (leftAncestors.back() == leftAncestors.back()->parent->left ? -1
+                                                                           : 1);
 
     if (!rightAncestors.empty())
-        return (rightAncestors.back() == rightAncestors.back()->parent->right ? -1 : 1);
+        return (rightAncestors.back() == rightAncestors.back()->parent->right
+                        ? -1
+                        : 1);
 
     // The code should never reach this point.
     assert(!leftAncestors.empty() || !rightAncestors.empty());

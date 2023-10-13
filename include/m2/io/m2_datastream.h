@@ -55,9 +55,12 @@ private:
 
     protected:
         virtual std::streamsize xsputn(const char *s, std::streamsize num);
-        virtual pos_type seekpos(pos_type _Pos, ios_base::openmode mode = ios_base::in | ios_base::out);
+        virtual pos_type seekpos(pos_type _Pos,
+                                 ios_base::openmode mode = ios_base::in |
+                                                           ios_base::out);
         virtual pos_type seekoff(off_type, ios_base::seekdir,
-                                 ios_base::openmode = ios_base::in | ios_base::out);
+                                 ios_base::openmode = ios_base::in |
+                                                      ios_base::out);
     };
     ByteStreamBuf *m_buf;
 };
@@ -90,7 +93,8 @@ public:
     /// @param nLen
     /// @param pointer
     /// @return
-    virtual int Read(unsigned char *buff, int nLen, const unsigned char **pointer);
+    virtual int Read(unsigned char *buff, int nLen,
+                     const unsigned char **pointer);
     /// @brief
     /// @return
     virtual long long Length() const;
@@ -124,10 +128,7 @@ public:
         T v;
         unsigned char *tmp = (unsigned char *) &v;
         n = Read(tmp, nSize);
-        if (n == nSize)
-        {
-            return v;
-        }
+        if (n == nSize) { return v; }
         memset(&v, 0, nSize);
         return v;
     }
@@ -216,7 +217,8 @@ public:
     /// @param buffer
     /// @param nLen
     /// @param bCopy
-    MemoryInputStream(const unsigned char *buffer, int nLen, bool bCopy = false);
+    MemoryInputStream(const unsigned char *buffer, int nLen,
+                      bool bCopy = false);
     /// @brief
     /// @param buffer
     /// @param bCopy
@@ -234,7 +236,8 @@ public:
     /// @param buff 要存储读取数据的缓冲区，buff和pointer二者只允许一个为空
     /// @param nLen 要读取的数据长度
     /// @param pointer 返回存储数据的指针，对于文件则返回空指针，对于固定内存返回内存地址
-    virtual int RawRead(unsigned char *buff, int nLen, const unsigned char **pointer);
+    virtual int RawRead(unsigned char *buff, int nLen,
+                        const unsigned char **pointer);
     /// @brief 获取数据流的长度
     /// @details 如果流不支持eLength能力，则长度为-1，如果流支持eLength能力，则派生类应该覆盖此方法。
     virtual long long Length() const;
@@ -277,7 +280,8 @@ public:
     /// @param file 文件句柄
     /// @param nLen 文件的长度
     /// @param bCloseFile 在对象析构时是否关闭文件
-    FileInputStream(FILE *file, unsigned long long nLen, bool bCloseFile = false);
+    FileInputStream(FILE *file, unsigned long long nLen,
+                    bool bCloseFile = false);
 
     virtual ~FileInputStream();
 
@@ -418,7 +422,8 @@ public:
     /// @param path 文件路径
     /// @param bBinary 是否以二进制方式打开文件
     /// @param bAppend 是否以追加的方式打开文件,如果为false，当文件存在时会被覆盖。
-    FileOutputStream(const char *path, bool bBinary = true, bool bAppend = false);
+    FileOutputStream(const char *path, bool bBinary = true,
+                     bool bAppend = false);
     /// @brief 从已有的文件句柄构造
     /// @param f 已经打开的文件句柄
     /// @param bCloseOnEnd 在输出流关闭的是否是否自动关闭文件句柄

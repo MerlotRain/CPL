@@ -73,7 +73,10 @@ public:
     inline void setLine(int x1, int y1, int x2, int y2);
 
     constexpr inline bool operator==(const Line &d) const noexcept;
-    constexpr inline bool operator!=(const Line &d) const noexcept { return !(*this == d); }
+    constexpr inline bool operator!=(const Line &d) const noexcept
+    {
+        return !(*this == d);
+    }
 
     [[nodiscard]] constexpr inline LineF toLineF() const noexcept;
 
@@ -124,7 +127,8 @@ public:
     [[nodiscard]] LineF unitVector() const;
     [[nodiscard]] constexpr inline LineF normalVector() const;
 
-    IntersectionType intersects(const LineF &l, PointF *intersectionPoint = nullptr) const;
+    IntersectionType intersects(const LineF &l,
+                                PointF *intersectionPoint = nullptr) const;
 
     constexpr inline PointF pointAt(double t) const;
     inline void translate(const PointF &p);
@@ -141,7 +145,10 @@ public:
     inline void setLine(double x1, double y1, double x2, double y2);
 
     constexpr inline bool operator==(const LineF &d) const;
-    constexpr inline bool operator!=(const LineF &d) const { return !(*this == d); }
+    constexpr inline bool operator!=(const LineF &d) const
+    {
+        return !(*this == d);
+    }
 
     constexpr Line toLine() const;
 
@@ -155,54 +162,33 @@ private:
 
 constexpr inline Line::Line() {}
 
-constexpr inline Line::Line(const Point &pt1_, const Point &pt2_) : pt1(pt1_), pt2(pt2_) {}
-
-constexpr inline Line::Line(int x1pos, int y1pos, int x2pos, int y2pos) : pt1(Point(x1pos, y1pos)), pt2(Point(x2pos, y2pos)) {}
-
-constexpr inline bool Line::isNull() const
+constexpr inline Line::Line(const Point &pt1_, const Point &pt2_)
+    : pt1(pt1_), pt2(pt2_)
 {
-    return pt1 == pt2;
 }
 
-constexpr inline int Line::x1() const
+constexpr inline Line::Line(int x1pos, int y1pos, int x2pos, int y2pos)
+    : pt1(Point(x1pos, y1pos)), pt2(Point(x2pos, y2pos))
 {
-    return pt1.x();
 }
 
-constexpr inline int Line::y1() const
-{
-    return pt1.y();
-}
+constexpr inline bool Line::isNull() const { return pt1 == pt2; }
 
-constexpr inline int Line::x2() const
-{
-    return pt2.x();
-}
+constexpr inline int Line::x1() const { return pt1.x(); }
 
-constexpr inline int Line::y2() const
-{
-    return pt2.y();
-}
+constexpr inline int Line::y1() const { return pt1.y(); }
 
-constexpr inline Point Line::p1() const
-{
-    return pt1;
-}
+constexpr inline int Line::x2() const { return pt2.x(); }
 
-constexpr inline Point Line::p2() const
-{
-    return pt2;
-}
+constexpr inline int Line::y2() const { return pt2.y(); }
 
-constexpr inline int Line::dx() const
-{
-    return pt2.x() - pt1.x();
-}
+constexpr inline Point Line::p1() const { return pt1; }
 
-constexpr inline int Line::dy() const
-{
-    return pt2.y() - pt1.y();
-}
+constexpr inline Point Line::p2() const { return pt2; }
+
+constexpr inline int Line::dx() const { return pt2.x() - pt1.x(); }
+
+constexpr inline int Line::dy() const { return pt2.y() - pt1.y(); }
 
 inline void Line::translate(const Point &point)
 {
@@ -227,18 +213,13 @@ constexpr inline Line Line::translated(int adx, int ady) const
 
 constexpr inline Point Line::center() const
 {
-    return Point(int((int64_t(pt1.x()) + pt2.x()) / 2), int((int64_t(pt1.y()) + pt2.y()) / 2));
+    return Point(int((int64_t(pt1.x()) + pt2.x()) / 2),
+                 int((int64_t(pt1.y()) + pt2.y()) / 2));
 }
 
-inline void Line::setP1(const Point &aP1)
-{
-    pt1 = aP1;
-}
+inline void Line::setP1(const Point &aP1) { pt1 = aP1; }
 
-inline void Line::setP2(const Point &aP2)
-{
-    pt2 = aP2;
-}
+inline void Line::setP2(const Point &aP2) { pt2 = aP2; }
 
 inline void Line::setPoints(const Point &aP1, const Point &aP2)
 {
@@ -262,64 +243,39 @@ constexpr inline bool Line::operator==(const Line &d) const noexcept
  * class LineF inline members
  *******************************************************************************/
 
-constexpr inline LineF::LineF()
-{
-}
+constexpr inline LineF::LineF() {}
 
 constexpr inline LineF::LineF(const PointF &apt1, const PointF &apt2)
     : pt1(apt1), pt2(apt2)
 {
 }
 
-constexpr inline LineF::LineF(double x1pos, double y1pos, double x2pos, double y2pos)
+constexpr inline LineF::LineF(double x1pos, double y1pos, double x2pos,
+                              double y2pos)
     : pt1(x1pos, y1pos), pt2(x2pos, y2pos)
 {
 }
 
-constexpr inline double LineF::x1() const
-{
-    return pt1.x();
-}
+constexpr inline double LineF::x1() const { return pt1.x(); }
 
-constexpr inline double LineF::y1() const
-{
-    return pt1.y();
-}
+constexpr inline double LineF::y1() const { return pt1.y(); }
 
-constexpr inline double LineF::x2() const
-{
-    return pt2.x();
-}
+constexpr inline double LineF::x2() const { return pt2.x(); }
 
-constexpr inline double LineF::y2() const
-{
-    return pt2.y();
-}
+constexpr inline double LineF::y2() const { return pt2.y(); }
 
 constexpr inline bool LineF::isNull() const
 {
     return qFuzzyCompare(pt1.x(), pt2.x()) && qFuzzyCompare(pt1.y(), pt2.y());
 }
 
-constexpr inline PointF LineF::p1() const
-{
-    return pt1;
-}
+constexpr inline PointF LineF::p1() const { return pt1; }
 
-constexpr inline PointF LineF::p2() const
-{
-    return pt2;
-}
+constexpr inline PointF LineF::p2() const { return pt2; }
 
-constexpr inline double LineF::dx() const
-{
-    return pt2.x() - pt1.x();
-}
+constexpr inline double LineF::dx() const { return pt2.x() - pt1.x(); }
 
-constexpr inline double LineF::dy() const
-{
-    return pt2.y() - pt1.y();
-}
+constexpr inline double LineF::dy() const { return pt2.y() - pt1.y(); }
 
 constexpr inline LineF LineF::normalVector() const
 {
@@ -358,12 +314,14 @@ inline void LineF::setLength(double len)
     const double oldLength = length();
     assert(std::isfinite(oldLength));
     if (oldLength > 0)
-        pt2 = PointF(pt1.x() + len * (dx() / oldLength), pt1.y() + len * (dy() / oldLength));
+        pt2 = PointF(pt1.x() + len * (dx() / oldLength),
+                     pt1.y() + len * (dy() / oldLength));
 }
 
 constexpr inline PointF LineF::pointAt(double t) const
 {
-    return PointF(pt1.x() + (pt2.x() - pt1.x()) * t, pt1.y() + (pt2.y() - pt1.y()) * t);
+    return PointF(pt1.x() + (pt2.x() - pt1.x()) * t,
+                  pt1.y() + (pt2.y() - pt1.y()) * t);
 }
 
 constexpr inline LineF Line::toLineF() const noexcept { return *this; }
@@ -373,15 +331,9 @@ constexpr inline Line LineF::toLine() const
     return Line(pt1.toPoint(), pt2.toPoint());
 }
 
-inline void LineF::setP1(const PointF &aP1)
-{
-    pt1 = aP1;
-}
+inline void LineF::setP1(const PointF &aP1) { pt1 = aP1; }
 
-inline void LineF::setP2(const PointF &aP2)
-{
-    pt2 = aP2;
-}
+inline void LineF::setP2(const PointF &aP2) { pt2 = aP2; }
 
 inline void LineF::setPoints(const PointF &aP1, const PointF &aP2)
 {

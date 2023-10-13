@@ -41,7 +41,8 @@ namespace m2 {
 template<typename Enum>
 class EnumMaskFlag
 {
-    static_assert((std::is_enum<Enum>::value), "EnumMaskFlag is only usable on enumeration types");
+    static_assert((std::is_enum<Enum>::value),
+                  "EnumMaskFlag is only usable on enumeration types");
 
 public:
     virtual bool markFlag(Enum enumVal) = 0;
@@ -55,7 +56,8 @@ public:
 template<typename Enum>
 class BitMaskFlag : public EnumMaskFlag<Enum>
 {
-    static_assert((std::is_enum<Enum>::value), "BitMaskFlag is only usable on enumeration types");
+    static_assert((std::is_enum<Enum>::value),
+                  "BitMaskFlag is only usable on enumeration types");
     unsigned long long m_BitMask = 0;
 
 public:
@@ -125,42 +127,33 @@ public:
     virtual bool markFlag(Enum enumVal)
     {
         int val = static_cast<int>(enumVal);
-        if (val < 0 || val >= sizeof(m_BitMask) * 8)
-        {
-            return false;
-        }
+        if (val < 0 || val >= sizeof(m_BitMask) * 8) { return false; }
         m_BitMask |= (1ull << val);
         return true;
     }
     virtual bool eraseMarkFlag(Enum enumVal)
     {
         int val = static_cast<int>(enumVal);
-        if (val < 0 || val >= sizeof(m_BitMask) * 8)
-        {
-            return false;
-        }
+        if (val < 0 || val >= sizeof(m_BitMask) * 8) { return false; }
         m_BitMask &= ~(1ull << val);
         return true;
     }
     virtual bool testFlag(Enum enumVal) const
     {
         int val = static_cast<int>(enumVal);
-        if (val < 0 || val >= sizeof(m_BitMask) * 8)
-        {
-            return false;
-        }
+        if (val < 0 || val >= sizeof(m_BitMask) * 8) { return false; }
         return m_BitMask & (1ull << val) ? true : false;
     }
 
     virtual int markDataByteLength() const { return 8; }
-    virtual const unsigned char *markData() const { return (const unsigned char *) &m_BitMask; }
+    virtual const unsigned char *markData() const
+    {
+        return (const unsigned char *) &m_BitMask;
+    }
 
     virtual int assign(const unsigned char *markData, int nLen)
     {
-        if (!markData || nLen <= 0)
-        {
-            return 0;
-        }
+        if (!markData || nLen <= 0) { return 0; }
         nLen = std::min(nLen, 8);
         memcpy(&m_BitMask, markData, nLen);
         return nLen;
@@ -170,18 +163,29 @@ public:
 template<class Enum, const int LEN = 128>
 class LongBitMaskFlag : public EnumMaskFlag<Enum>
 {
-    static_assert((std::is_enum<Enum>::value), "LongBitMaskFlag is only usable on enumeration types");
+    static_assert((std::is_enum<Enum>::value),
+                  "LongBitMaskFlag is only usable on enumeration types");
     std::bitset<LEN> m_MarkData;
 
 public:
     LongBitMaskFlag() = default;
     explicit LongBitMaskFlag(Enum flag) { markFlag(flag); }
-    LongBitMaskFlag(const LongBitMaskFlag<Enum, LEN> &flag) { m_MarkData = flag.m_MarkData; }
+    LongBitMaskFlag(const LongBitMaskFlag<Enum, LEN> &flag)
+    {
+        m_MarkData = flag.m_MarkData;
+    }
     LongBitMaskFlag(LongBitMaskFlag<Enum, LEN> &&flag) noexcept { swap(flag); }
-    void swap(LongBitMaskFlag<Enum, LEN> &flag) { std::swap(m_MarkData, flag.m_MarkData); }
-    virtual const unsigned char *markData() const { return (const unsigned char *) &m_MarkData; }
+    void swap(LongBitMaskFlag<Enum, LEN> &flag)
+    {
+        std::swap(m_MarkData, flag.m_MarkData);
+    }
+    virtual const unsigned char *markData() const
+    {
+        return (const unsigned char *) &m_MarkData;
+    }
 
-    LongBitMaskFlag<Enum, LEN> &operator=(const LongBitMaskFlag<Enum, LEN> &flag)
+    LongBitMaskFlag<Enum, LEN> &
+    operator=(const LongBitMaskFlag<Enum, LEN> &flag)
     {
         m_MarkData = flag.m_MarkData;
         return *this;
@@ -194,48 +198,33 @@ public:
     virtual bool markFlag(Enum enumVal)
     {
         int val = static_cast<int>(enumVal);
-        if (val < 0 || val >= LEN)
-        {
-            return false;
-        }
+        if (val < 0 || val >= LEN) { return false; }
         m_MarkData.set(val, true);
         return true;
     }
     virtual bool eraseMarkFlag(Enum enumVal)
     {
         int val = static_cast<int>(enumVal);
-        if (val < 0 || val >= LEN)
-        {
-            return false;
-        }
+        if (val < 0 || val >= LEN) { return false; }
         m_MarkData.set(val, false);
         return true;
     }
     virtual bool testFlag(Enum enumVal) const
     {
         int val = static_cast<int>(enumVal);
-        if (val < 0 || val >= LEN)
-        {
-            return false;
-        }
+        if (val < 0 || val >= LEN) { return false; }
         return m_MarkData.test(val);
     }
 
     virtual int markDataByteLength() const
     {
         int nLen = LEN / 8;
-        if (LEN & 8)
-        {
-            nLen++;
-        }
+        if (LEN & 8) { nLen++; }
         return nLen;
     }
     virtual int assign(const unsigned char *markData, int nLen)
     {
-        if (!markData || nLen <= 0)
-        {
-            return 0;
-        }
+        if (!markData || nLen <= 0) { return 0; }
         nLen = std::min(nLen, markDataByteLength());
         memcpy(&m_MarkData, markData, nLen);
         return nLen;

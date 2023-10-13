@@ -31,15 +31,13 @@
 ****************************************************************************/
 
 #ifndef M2_THREAD_H_
+#define M2_THREAD_H_
 
-/// @brief 对平台线程的封装
-/// @details 封装一种可以继承的线程，使其使用风格类似QThread
+#include <preconfig.h>
+
 class M2_API WorkThread
 {
 public:
-    /// @brief 线程优先权
-    /// @details https://man7.org/linux/man-pages/man3/pthread_setschedprio.3.html
-    /// @details https://learn.microsoft.com/en-us/windows/win32/procthread/scheduling-priorities
     enum ThreadPriority
     {
         eTHREAD_PRIORITY_HIGHEST,
@@ -50,8 +48,6 @@ public:
         eTHREAD_PRIORITY_DEFAULT
     };
 
-    /// @brief 线程调度策略
-    /// @details https://www.man7.org/linux/man-pages/man7/sched.7.html
     enum ThreadPolicy
     {
         eTHREAD_SCHEDULE_FIFO,
@@ -60,57 +56,24 @@ public:
         eTHREAD_SCHEDULE_DEFAULT
     };
 
-    /// @brief 获取处理器的数量
-    /// @return
     static int NumberOfProcessors();
-    /// @brief 设置当前线程的处理器相关
-    /// @param cpunum
-    /// @return
     static int ProcessorAffinityOfCurrentThread(unsigned int cpunum);
-
-    /// @brief 线程休眠时间
-    /// @param microsec
-    /// @return
     static void Sleep(unsigned int);
     static void MicroSleep(unsigned int);
     static void MilliSleep(unsigned int);
-    /// @brief 获取逻辑CPU的数量，最大线程数
-    /// @return
     static int LogicCPUCount();
-    /// @brief 获取当前线程
-    /// @return
+
     static WorkThread *CurrentThread();
-
-    /// @brief 挂起当前线程
-    /// @return
     static int YieldCurrentThread();
-
-    /// @brief 获取主线程策略
-    /// @return
     static ThreadPriority MasterPriority();
 
 public:
     explicit WorkThread();
     virtual ~WorkThread();
-
-    /// @brief 获取当前线程Id
-    /// @return
     int ThreadId();
-
-    /// @brief 获取当前进程Id
-    /// @return
     size_t ProcessId();
-
-    /// @brief 开启线程
-    /// @return
     int Start();
-    /// @brief 终止线程
-    /// @return
     virtual int Cancel();
-
-    /// @brief
-    /// @param priority
-    /// @return
     int SchedulePriority(ThreadPriority priority);
 
     /// @brief

@@ -74,15 +74,15 @@ private:
     int m_right;
     int m_bottom;
 
-    friend constexpr inline bool operator==(const Margins &m1, const Margins &m2) noexcept
+    friend constexpr inline bool operator==(const Margins &m1,
+                                            const Margins &m2) noexcept
     {
-        return m1.m_left == m2.m_left &&
-               m1.m_top == m2.m_top &&
-               m1.m_right == m2.m_right &&
-               m1.m_bottom == m2.m_bottom;
+        return m1.m_left == m2.m_left && m1.m_top == m2.m_top &&
+               m1.m_right == m2.m_right && m1.m_bottom == m2.m_bottom;
     }
 
-    friend constexpr inline bool operator!=(const Margins &m1, const Margins &m2) noexcept
+    friend constexpr inline bool operator!=(const Margins &m1,
+                                            const Margins &m2) noexcept
     {
         return !(m1 == m2);
     }
@@ -92,7 +92,8 @@ class M2_API MarginsF
 {
 public:
     constexpr MarginsF() noexcept;
-    constexpr MarginsF(double left, double top, double right, double bottom) noexcept;
+    constexpr MarginsF(double left, double top, double right,
+                       double bottom) noexcept;
     constexpr MarginsF(const Margins &margins) noexcept;
 
     constexpr bool isNull() const noexcept;
@@ -122,12 +123,17 @@ private:
     double m_right;
     double m_bottom;
 
-    friend constexpr inline bool operator==(const MarginsF &lhs, const MarginsF &rhs) noexcept
+    friend constexpr inline bool operator==(const MarginsF &lhs,
+                                            const MarginsF &rhs) noexcept
     {
-        return qFuzzyCompare(lhs.left(), rhs.left()) && qFuzzyCompare(lhs.top(), rhs.top()) && qFuzzyCompare(lhs.right(), rhs.right()) && qFuzzyCompare(lhs.bottom(), rhs.bottom());
+        return qFuzzyCompare(lhs.left(), rhs.left()) &&
+               qFuzzyCompare(lhs.top(), rhs.top()) &&
+               qFuzzyCompare(lhs.right(), rhs.right()) &&
+               qFuzzyCompare(lhs.bottom(), rhs.bottom());
     }
 
-    friend constexpr inline bool operator!=(const MarginsF &lhs, const MarginsF &rhs) noexcept
+    friend constexpr inline bool operator!=(const MarginsF &lhs,
+                                            const MarginsF &rhs) noexcept
     {
         return !(lhs == rhs);
     }
@@ -138,46 +144,34 @@ private:
   Margins inline functions
  *****************************************************************************/
 
-constexpr inline Margins::Margins() noexcept : m_left(0), m_top(0), m_right(0), m_bottom(0) {}
+constexpr inline Margins::Margins() noexcept
+    : m_left(0), m_top(0), m_right(0), m_bottom(0)
+{
+}
 
-constexpr inline Margins::Margins(int aleft, int atop, int aright, int abottom) noexcept
-    : m_left(aleft), m_top(atop), m_right(aright), m_bottom(abottom) {}
+constexpr inline Margins::Margins(int aleft, int atop, int aright,
+                                  int abottom) noexcept
+    : m_left(aleft), m_top(atop), m_right(aright), m_bottom(abottom)
+{
+}
 
 constexpr inline bool Margins::isNull() const noexcept
 {
     return m_left == 0 && m_top == 0 && m_right == 0 && m_bottom == 0;
 }
 
-constexpr inline int Margins::left() const noexcept
-{
-    return m_left;
-}
+constexpr inline int Margins::left() const noexcept { return m_left; }
 
-constexpr inline int Margins::top() const noexcept
-{
-    return m_top;
-}
+constexpr inline int Margins::top() const noexcept { return m_top; }
 
-constexpr inline int Margins::right() const noexcept
-{
-    return m_right;
-}
+constexpr inline int Margins::right() const noexcept { return m_right; }
 
-constexpr inline int Margins::bottom() const noexcept
-{
-    return m_bottom;
-}
+constexpr inline int Margins::bottom() const noexcept { return m_bottom; }
 
 
-constexpr inline void Margins::setLeft(int aleft) noexcept
-{
-    m_left = aleft;
-}
+constexpr inline void Margins::setLeft(int aleft) noexcept { m_left = aleft; }
 
-constexpr inline void Margins::setTop(int atop) noexcept
-{
-    m_top = atop;
-}
+constexpr inline void Margins::setTop(int atop) noexcept { m_top = atop; }
 
 constexpr inline void Margins::setRight(int aright) noexcept
 {
@@ -189,13 +183,15 @@ constexpr inline void Margins::setBottom(int abottom) noexcept
     m_bottom = abottom;
 }
 
-constexpr inline Margins operator+(const Margins &m1, const Margins &m2) noexcept
+constexpr inline Margins operator+(const Margins &m1,
+                                   const Margins &m2) noexcept
 {
     return Margins(m1.left() + m2.left(), m1.top() + m2.top(),
                    m1.right() + m2.right(), m1.bottom() + m2.bottom());
 }
 
-constexpr inline Margins operator-(const Margins &m1, const Margins &m2) noexcept
+constexpr inline Margins operator-(const Margins &m1,
+                                   const Margins &m2) noexcept
 {
     return Margins(m1.left() - m2.left(), m1.top() - m2.top(),
                    m1.right() - m2.right(), m1.bottom() - m2.bottom());
@@ -203,20 +199,20 @@ constexpr inline Margins operator-(const Margins &m1, const Margins &m2) noexcep
 
 constexpr inline Margins operator+(const Margins &lhs, int rhs) noexcept
 {
-    return Margins(lhs.left() + rhs, lhs.top() + rhs,
-                   lhs.right() + rhs, lhs.bottom() + rhs);
+    return Margins(lhs.left() + rhs, lhs.top() + rhs, lhs.right() + rhs,
+                   lhs.bottom() + rhs);
 }
 
 constexpr inline Margins operator+(int lhs, const Margins &rhs) noexcept
 {
-    return Margins(rhs.left() + lhs, rhs.top() + lhs,
-                   rhs.right() + lhs, rhs.bottom() + lhs);
+    return Margins(rhs.left() + lhs, rhs.top() + lhs, rhs.right() + lhs,
+                   rhs.bottom() + lhs);
 }
 
 constexpr inline Margins operator-(const Margins &lhs, int rhs) noexcept
 {
-    return Margins(lhs.left() - rhs, lhs.top() - rhs,
-                   lhs.right() - rhs, lhs.bottom() - rhs);
+    return Margins(lhs.left() - rhs, lhs.top() - rhs, lhs.right() - rhs,
+                   lhs.bottom() - rhs);
 }
 
 constexpr inline Margins operator*(const Margins &margins, int factor) noexcept
@@ -231,16 +227,22 @@ constexpr inline Margins operator*(int factor, const Margins &margins) noexcept
                    margins.right() * factor, margins.bottom() * factor);
 }
 
-constexpr inline Margins operator*(const Margins &margins, double factor) noexcept
+constexpr inline Margins operator*(const Margins &margins,
+                                   double factor) noexcept
 {
-    return Margins(qRound(margins.left() * factor), qRound(margins.top() * factor),
-                   qRound(margins.right() * factor), qRound(margins.bottom() * factor));
+    return Margins(qRound(margins.left() * factor),
+                   qRound(margins.top() * factor),
+                   qRound(margins.right() * factor),
+                   qRound(margins.bottom() * factor));
 }
 
-constexpr inline Margins operator*(double factor, const Margins &margins) noexcept
+constexpr inline Margins operator*(double factor,
+                                   const Margins &margins) noexcept
 {
-    return Margins(qRound(margins.left() * factor), qRound(margins.top() * factor),
-                   qRound(margins.right() * factor), qRound(margins.bottom() * factor));
+    return Margins(qRound(margins.left() * factor),
+                   qRound(margins.top() * factor),
+                   qRound(margins.right() * factor),
+                   qRound(margins.bottom() * factor));
 }
 
 constexpr inline Margins operator/(const Margins &margins, int divisor)
@@ -251,14 +253,18 @@ constexpr inline Margins operator/(const Margins &margins, int divisor)
 
 constexpr inline Margins operator/(const Margins &margins, double divisor)
 {
-    return Margins(qRound(margins.left() / divisor), qRound(margins.top() / divisor),
-                   qRound(margins.right() / divisor), qRound(margins.bottom() / divisor));
+    return Margins(qRound(margins.left() / divisor),
+                   qRound(margins.top() / divisor),
+                   qRound(margins.right() / divisor),
+                   qRound(margins.bottom() / divisor));
 }
 
-constexpr inline Margins operator|(const Margins &m1, const Margins &m2) noexcept
+constexpr inline Margins operator|(const Margins &m1,
+                                   const Margins &m2) noexcept
 {
     return Margins(qMax(m1.left(), m2.left()), qMax(m1.top(), m2.top()),
-                   qMax(m1.right(), m2.right()), qMax(m1.bottom(), m2.bottom()));
+                   qMax(m1.right(), m2.right()),
+                   qMax(m1.bottom(), m2.bottom()));
 }
 
 constexpr inline Margins &Margins::operator+=(const Margins &margins) noexcept
@@ -316,7 +322,8 @@ constexpr inline Margins operator+(const Margins &margins) noexcept
 
 constexpr inline Margins operator-(const Margins &margins) noexcept
 {
-    return Margins(-margins.left(), -margins.top(), -margins.right(), -margins.bottom());
+    return Margins(-margins.left(), -margins.top(), -margins.right(),
+                   -margins.bottom());
 }
 
 
@@ -325,38 +332,35 @@ constexpr inline Margins operator-(const Margins &margins) noexcept
  *****************************************************************************/
 
 constexpr inline MarginsF::MarginsF() noexcept
-    : m_left(0), m_top(0), m_right(0), m_bottom(0) {}
+    : m_left(0), m_top(0), m_right(0), m_bottom(0)
+{
+}
 
-constexpr inline MarginsF::MarginsF(double aleft, double atop, double aright, double abottom) noexcept
-    : m_left(aleft), m_top(atop), m_right(aright), m_bottom(abottom) {}
+constexpr inline MarginsF::MarginsF(double aleft, double atop, double aright,
+                                    double abottom) noexcept
+    : m_left(aleft), m_top(atop), m_right(aright), m_bottom(abottom)
+{
+}
 
 constexpr inline MarginsF::MarginsF(const Margins &margins) noexcept
-    : m_left(margins.left()), m_top(margins.top()), m_right(margins.right()), m_bottom(margins.bottom()) {}
+    : m_left(margins.left()), m_top(margins.top()), m_right(margins.right()),
+      m_bottom(margins.bottom())
+{
+}
 
 constexpr inline bool MarginsF::isNull() const noexcept
 {
-    return qFuzzyIsNull(m_left) && qFuzzyIsNull(m_top) && qFuzzyIsNull(m_right) && qFuzzyIsNull(m_bottom);
+    return qFuzzyIsNull(m_left) && qFuzzyIsNull(m_top) &&
+           qFuzzyIsNull(m_right) && qFuzzyIsNull(m_bottom);
 }
 
-constexpr inline double MarginsF::left() const noexcept
-{
-    return m_left;
-}
+constexpr inline double MarginsF::left() const noexcept { return m_left; }
 
-constexpr inline double MarginsF::top() const noexcept
-{
-    return m_top;
-}
+constexpr inline double MarginsF::top() const noexcept { return m_top; }
 
-constexpr inline double MarginsF::right() const noexcept
-{
-    return m_right;
-}
+constexpr inline double MarginsF::right() const noexcept { return m_right; }
 
-constexpr inline double MarginsF::bottom() const noexcept
-{
-    return m_bottom;
-}
+constexpr inline double MarginsF::bottom() const noexcept { return m_bottom; }
 
 
 constexpr inline void MarginsF::setLeft(double aleft) noexcept
@@ -364,10 +368,7 @@ constexpr inline void MarginsF::setLeft(double aleft) noexcept
     m_left = aleft;
 }
 
-constexpr inline void MarginsF::setTop(double atop) noexcept
-{
-    m_top = atop;
-}
+constexpr inline void MarginsF::setTop(double atop) noexcept { m_top = atop; }
 
 constexpr inline void MarginsF::setRight(double aright) noexcept
 {
@@ -379,13 +380,15 @@ constexpr inline void MarginsF::setBottom(double abottom) noexcept
     m_bottom = abottom;
 }
 
-constexpr inline MarginsF operator+(const MarginsF &lhs, const MarginsF &rhs) noexcept
+constexpr inline MarginsF operator+(const MarginsF &lhs,
+                                    const MarginsF &rhs) noexcept
 {
     return MarginsF(lhs.left() + rhs.left(), lhs.top() + rhs.top(),
                     lhs.right() + rhs.right(), lhs.bottom() + rhs.bottom());
 }
 
-constexpr inline MarginsF operator-(const MarginsF &lhs, const MarginsF &rhs) noexcept
+constexpr inline MarginsF operator-(const MarginsF &lhs,
+                                    const MarginsF &rhs) noexcept
 {
     return MarginsF(lhs.left() - rhs.left(), lhs.top() - rhs.top(),
                     lhs.right() - rhs.right(), lhs.bottom() - rhs.bottom());
@@ -393,32 +396,32 @@ constexpr inline MarginsF operator-(const MarginsF &lhs, const MarginsF &rhs) no
 
 constexpr inline MarginsF operator+(const MarginsF &lhs, double rhs) noexcept
 {
-    return MarginsF(lhs.left() + rhs, lhs.top() + rhs,
-                    lhs.right() + rhs, lhs.bottom() + rhs);
+    return MarginsF(lhs.left() + rhs, lhs.top() + rhs, lhs.right() + rhs,
+                    lhs.bottom() + rhs);
 }
 
 constexpr inline MarginsF operator+(double lhs, const MarginsF &rhs) noexcept
 {
-    return MarginsF(rhs.left() + lhs, rhs.top() + lhs,
-                    rhs.right() + lhs, rhs.bottom() + lhs);
+    return MarginsF(rhs.left() + lhs, rhs.top() + lhs, rhs.right() + lhs,
+                    rhs.bottom() + lhs);
 }
 
 constexpr inline MarginsF operator-(const MarginsF &lhs, double rhs) noexcept
 {
-    return MarginsF(lhs.left() - rhs, lhs.top() - rhs,
-                    lhs.right() - rhs, lhs.bottom() - rhs);
+    return MarginsF(lhs.left() - rhs, lhs.top() - rhs, lhs.right() - rhs,
+                    lhs.bottom() - rhs);
 }
 
 constexpr inline MarginsF operator*(const MarginsF &lhs, double rhs) noexcept
 {
-    return MarginsF(lhs.left() * rhs, lhs.top() * rhs,
-                    lhs.right() * rhs, lhs.bottom() * rhs);
+    return MarginsF(lhs.left() * rhs, lhs.top() * rhs, lhs.right() * rhs,
+                    lhs.bottom() * rhs);
 }
 
 constexpr inline MarginsF operator*(double lhs, const MarginsF &rhs) noexcept
 {
-    return MarginsF(rhs.left() * lhs, rhs.top() * lhs,
-                    rhs.right() * lhs, rhs.bottom() * lhs);
+    return MarginsF(rhs.left() * lhs, rhs.top() * lhs, rhs.right() * lhs,
+                    rhs.bottom() * lhs);
 }
 
 constexpr inline MarginsF operator/(const MarginsF &lhs, double divisor)
@@ -428,18 +431,22 @@ constexpr inline MarginsF operator/(const MarginsF &lhs, double divisor)
                     lhs.right() / divisor, lhs.bottom() / divisor);
 }
 
-constexpr inline MarginsF operator|(const MarginsF &m1, const MarginsF &m2) noexcept
+constexpr inline MarginsF operator|(const MarginsF &m1,
+                                    const MarginsF &m2) noexcept
 {
     return MarginsF(qMax(m1.left(), m2.left()), qMax(m1.top(), m2.top()),
-                    qMax(m1.right(), m2.right()), qMax(m1.bottom(), m2.bottom()));
+                    qMax(m1.right(), m2.right()),
+                    qMax(m1.bottom(), m2.bottom()));
 }
 
-constexpr inline MarginsF &MarginsF::operator+=(const MarginsF &margins) noexcept
+constexpr inline MarginsF &
+MarginsF::operator+=(const MarginsF &margins) noexcept
 {
     return *this = *this + margins;
 }
 
-constexpr inline MarginsF &MarginsF::operator-=(const MarginsF &margins) noexcept
+constexpr inline MarginsF &
+MarginsF::operator-=(const MarginsF &margins) noexcept
 {
     return *this = *this - margins;
 }
@@ -479,14 +486,16 @@ constexpr inline MarginsF operator+(const MarginsF &margins) noexcept
 
 constexpr inline MarginsF operator-(const MarginsF &margins) noexcept
 {
-    return MarginsF(-margins.left(), -margins.top(), -margins.right(), -margins.bottom());
+    return MarginsF(-margins.left(), -margins.top(), -margins.right(),
+                    -margins.bottom());
 }
 
 constexpr MarginsF Margins::toMarginsF() const noexcept { return *this; }
 
 constexpr inline Margins MarginsF::toMargins() const noexcept
 {
-    return Margins(qRound(m_left), qRound(m_top), qRound(m_right), qRound(m_bottom));
+    return Margins(qRound(m_left), qRound(m_top), qRound(m_right),
+                   qRound(m_bottom));
 }
 
 }// namespace m2

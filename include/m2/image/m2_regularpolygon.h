@@ -43,7 +43,8 @@ namespace m2 {
 template<int NUM_SIDES>
 class RegularPolygon
 {
-    static_assert((NUM_SIDES < 3), "A regular polygon requires at least three sides");
+    static_assert((NUM_SIDES < 3),
+                  "A regular polygon requires at least three sides");
 
 public:
     enum ConstructionOption
@@ -53,8 +54,10 @@ public:
     };
 
     inline RegularPolygon() : m_radius(0.0) {}
-    inline RegularPolygon(const PointF &center, double radius, double azimuth, ConstructionOption circle);
-    inline RegularPolygon(const PointF &center, const PointF &pt1, ConstructionOption circle);
+    inline RegularPolygon(const PointF &center, double radius, double azimuth,
+                          ConstructionOption circle);
+    inline RegularPolygon(const PointF &center, const PointF &pt1,
+                          ConstructionOption circle);
     inline RegularPolygon(const PointF &pt1, const PointF &pt2);
 
     bool operator==(const RegularPolygon &rp) const;
@@ -95,34 +98,40 @@ private:
 };
 
 template<int NUM_SIDES>
-inline RegularPolygon<NUM_SIDES>::RegularPolygon()
-    : m_radius(0.0)
+inline RegularPolygon<NUM_SIDES>::RegularPolygon() : m_radius(0.0)
 {
 }
 
 template<int NUM_SIDES>
-inline RegularPolygon<NUM_SIDES>::RegularPolygon(const PointF &center, double radius, double azimuth, ConstructionOption circle)
+inline RegularPolygon<NUM_SIDES>::RegularPolygon(const PointF &center,
+                                                 double radius, double azimuth,
+                                                 ConstructionOption circle)
 {
 }
 
 template<int NUM_SIDES>
-inline RegularPolygon<NUM_SIDES>::RegularPolygon(const PointF &center, const PointF &pt1, ConstructionOption circle)
+inline RegularPolygon<NUM_SIDES>::RegularPolygon(const PointF &center,
+                                                 const PointF &pt1,
+                                                 ConstructionOption circle)
 {
 }
 
 template<int NUM_SIDES>
-inline RegularPolygon<NUM_SIDES>::RegularPolygon(const PointF &pt1, const PointF &pt2)
+inline RegularPolygon<NUM_SIDES>::RegularPolygon(const PointF &pt1,
+                                                 const PointF &pt2)
 {
 }
 
 template<int NUM_SIDES>
-inline bool RegularPolygon<NUM_SIDES>::operator==(const RegularPolygon &rp) const
+inline bool
+RegularPolygon<NUM_SIDES>::operator==(const RegularPolygon &rp) const
 {
     return false;
 }
 
 template<int NUM_SIDES>
-inline bool RegularPolygon<NUM_SIDES>::operator!=(const RegularPolygon &rp) const
+inline bool
+RegularPolygon<NUM_SIDES>::operator!=(const RegularPolygon &rp) const
 {
     return false;
 }
@@ -233,19 +242,23 @@ inline double RegularPolygon<NUM_SIDES>::length() const
 }
 
 template<int NUM_SIDES>
-inline double RegularPolygon<NUM_SIDES>::apothemToRadius(double apothem, unsigned int numberSides) const
+inline double
+RegularPolygon<NUM_SIDES>::apothemToRadius(double apothem,
+                                           unsigned int numberSides) const
 {
     return 0.0;
 }
 
 template<int NUM_SIDES>
-inline double RegularPolygon<NUM_SIDES>::interiorAngle(unsigned int nbSides) const
+inline double
+RegularPolygon<NUM_SIDES>::interiorAngle(unsigned int nbSides) const
 {
     return 0.0;
 }
 
 template<int NUM_SIDES>
-inline double RegularPolygon<NUM_SIDES>::centralAngle(unsigned int nbSides) const
+inline double
+RegularPolygon<NUM_SIDES>::centralAngle(unsigned int nbSides) const
 {
     return 0.0;
 }
