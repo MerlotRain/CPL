@@ -63,8 +63,9 @@ public:
     bool operator==(const RegularPolygon &rp) const;
     bool operator!=(const RegularPolygon &rp) const;
 
-    PointF center() const;
+    bool isEmpty() const;
 
+    PointF center() const;
     double radius() const;
     PointF firstVertex() const;
 
@@ -106,64 +107,118 @@ template<int NUM_SIDES>
 inline RegularPolygon<NUM_SIDES>::RegularPolygon(const PointF &center,
                                                  double radius, double azimuth,
                                                  ConstructionOption circle)
+    : m_center(center)
 {
+    switch (circle)
+    {
+        case InscribedCircle:
+            {
+                m_radius = qAbs(radius);
+                m_firstVertex = m_center.project(m_radius, azimuth);
+            }
+            break;
+        case CircumscribedCircle:
+            {
+                m_radius = apothemToRadius(qAbs(m_radius), NUM_SIDES);
+                m_firstVertex = m_center.project(
+                        m_radius, azimuth - centralAngle(NUM_SIDES) / 2);
+            }
+        default:
+            break;
+    }
 }
 
 template<int NUM_SIDES>
 inline RegularPolygon<NUM_SIDES>::RegularPolygon(const PointF &center,
                                                  const PointF &pt1,
                                                  ConstructionOption circle)
+    : m_center(center)
 {
+    switch (circle)
+    {
+        case InscribedCircle:
+            {
+                m_firstVertex = pt1;
+                m_center = center.distance(pt1);
+                break;
+            }
+        case CircumscribedCircle:
+            {
+                m_center = apothemToRadius(center.distance(pt1), NUM_SIDES);
+                const double azimuth = center.azimuth(pt1);
+                m_firstVertex = mCenter.project(
+                        m_center, azimuth - centralAngle(NUM_SIDES) / 2);
+                break;
+            }
+    }
 }
 
 template<int NUM_SIDES>
 inline RegularPolygon<NUM_SIDES>::RegularPolygon(const PointF &pt1,
                                                  const PointF &pt2)
 {
+    const double azimuth = pt1.azimuth(pt2);
+    const PointF pm =
+            PointF((pt1.x() + pt2.x()) / 2.0, (pt1.y() + pt2.y()) / 2.0);
+    const double length = pt1.distance(pm);
+
+    const double angle = (180 - (360 / numSides)) / 2.0;
+    const double hypothenuse = length / std::cos(angle * M_PI / 180);
+    m_center = pt1.project(hypothenuse, azimuth + angle);
+    m_firstVertex = pt1;
+    m_radius = std::fabs(hypothenuse);
 }
 
 template<int NUM_SIDES>
 inline bool
 RegularPolygon<NUM_SIDES>::operator==(const RegularPolygon &rp) const
 {
-    return false;
+    return (m_center == rp.m_center) && (m_firstVertex == rp.m_firstVertex) &&
+           (m_radius == rp.m_radius);
 }
 
 template<int NUM_SIDES>
 inline bool
 RegularPolygon<NUM_SIDES>::operator!=(const RegularPolygon &rp) const
 {
-    return false;
+    return !operator==(rp);
+}
+
+template<int NUM_SIDES>
+inline bool RegularPolygon<NUM_SIDES>::isEmpty() const
+{
+    return m_center.isValid() || m_firstVertex.isValid() ||
+           (m_center == m_firstVertex);
 }
 
 template<int NUM_SIDES>
 inline PointF RegularPolygon<NUM_SIDES>::center() const
 {
-    return PointF();
+    return m_center;
 }
 
 template<int NUM_SIDES>
 inline double RegularPolygon<NUM_SIDES>::radius() const
 {
-    return 0.0;
+    return m_radius;
 }
 
 template<int NUM_SIDES>
 inline PointF RegularPolygon<NUM_SIDES>::firstVertex() const
 {
-    return PointF();
+    return m_firstVertex;
 }
 
 template<int NUM_SIDES>
 inline double RegularPolygon<NUM_SIDES>::apothem() const
 {
-    return 0.0;
+    return m_radius * std::cos(M_PI / NUM_SIDES);
 }
 
 template<int NUM_SIDES>
 inline unsigned int RegularPolygon<NUM_SIDES>::numberSides() const
 {
-    return 0;
+    return NUM_SIDES;
 }
 
 template<int NUM_SIDES>

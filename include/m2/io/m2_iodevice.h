@@ -30,16 +30,19 @@
 **
 ****************************************************************************/
 
-#ifndef M2_OUTPUTSTREAM_H_
-#define M2_OUTPUTSTREAM_H_
+#ifndef M2_IODEVICE_H_
+#define M2_IODEVICE_H_
 
-#include <fstream>
+#include <sstream>
+
 namespace m2 {
 
-class OutputStream
+class IODevice
 {
+public:
+    IODevice(std::ios_base::_Openmode mode);
 };
 
 }// namespace m2
 
-#endif//M2_OUTPUTSTREAM_H_
+#endif//M2_IODEVICE_H_

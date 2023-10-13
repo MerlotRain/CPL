@@ -33,6 +33,7 @@
 #ifndef M2_BYTEBUFFER_H_
 #define M2_BYTEBUFFER_H_
 
+#include <m2_math.h>
 #include <m2_string.h>
 
 namespace m2 {
@@ -52,6 +53,7 @@ public:
 
     void swap(ByteBuffer &other) noexcept;
 
+    bool isNull() const noexcept;
     bool isEmpty() const noexcept;
     void resize(uint64_t size);
     void resize(uint64_t size, char c);
@@ -178,9 +180,70 @@ private:
     char *d;
 };
 
+class M2_API ByteBufferView
+{
+public:
+    constexpr ByteBufferView() noexcept;
+    constexpr ByteBufferView(std::nullptr_t) noexcept;
+    constexpr ByteBufferView(const char *data, uint64_t len);
+    constexpr ByteBufferView(const char *first, const char *end);
+    constexpr ByteBufferView(const ByteBuffer &data);
+    constexpr ByteBufferView(const char *data);
+
+    [[nodiscard]] constexpr uint64_t size() const noexcept { return m_size; }
+    [[nodiscard]] constexpr const char *data() const noexcept { return m_data; }
+    [[nodiscard]] constexpr bool isNull() const noexcept { return !m_data; }
+
+private:
+    uint64_t m_size;
+    char *m_data;
+};
+
+/*****************************************************************************
+  ByteBufferView functions
+ *****************************************************************************/
+
+inline int compareMemory(ByteBufferView lhs, ByteBufferView rhs)
+{
+    if (!lhs.isNull() && !rhs.isNull())
+    {
+        int ret = memcmp(lhs.data(), rhs.data(), qMin(lhs.size(), rhs.size()));
+        if (ret != 0) return ret;
+    }
+    return lhs.size() == rhs.size() ? 0 : lhs.size() > rhs.size() ? 1 : -1;
+}
+inline bool operator==(ByteBufferView lhs, ByteBufferView rhs) noexcept
+{
+    return lhs.size() == rhs.size() && compareMemory(lhs, rhs) == 0;
+}
+inline bool operator!=(ByteBufferView lhs, ByteBufferView rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+inline bool operator<(ByteBufferView lhs, ByteBufferView rhs) noexcept
+{
+    return compareMemory(lhs, rhs) < 0;
+}
+inline bool operator<=(ByteBufferView lhs, ByteBufferView rhs) noexcept
+{
+    return compareMemory(lhs, rhs) <= 0;
+}
+inline bool operator>(ByteBufferView lhs, ByteBufferView rhs) noexcept
+{
+    return !(lhs <= rhs);
+}
+inline bool operator>=(ByteBufferView lhs, ByteBufferView rhs) noexcept
+{
+    return !(lhs < rhs);
+}
+
+/*****************************************************************************
+  ByteBuffer functions
+ *****************************************************************************/
+
 inline bool operator==(const ByteBuffer &a1, const ByteBuffer &a2) noexcept
 {
-    return a1 == a2;
+    return ByteBufferView(a1) == ByteBufferView(a2);
 }
 inline bool operator==(const ByteBuffer &a1, const char *a2) noexcept {}
 inline bool operator==(const char *a1, const ByteBuffer &a2) noexcept

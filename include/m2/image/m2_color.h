@@ -33,12 +33,12 @@
 #ifndef M2_COLOR_H_
 #define M2_COLOR_H_
 
-#include <preconfig.h>
+#include <m2_string.h>
 
 namespace m2 {
 
-class String;
 typedef unsigned int rgb32;
+
 class M2_API Color
 {
 public:

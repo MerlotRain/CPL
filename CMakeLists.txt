@@ -23,12 +23,12 @@ set(m2_include_files
     ./include/m2/io/m2_dir.h
     ./include/m2/io/m2_file.h
     ./include/m2/io/m2_fileinfo.h
-    ./include/m2/io/m2_inputstream.h
+    ./include/m2/io/m2_iobase.h
+    ./include/m2/io/m2_iodevice.h
     ./include/m2/io/m2_iot.h
     ./include/m2/io/m2_library.h
     ./include/m2/io/m2_lockfile.h
     ./include/m2/io/m2_logger.h
-    ./include/m2/io/m2_outputstream.h
     ./include/m2/io/m2_process.h
     ./include/m2/io/m2_qrcode.h
     ./include/m2/io/m2_serialize.h

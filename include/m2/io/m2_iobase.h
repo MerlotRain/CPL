@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2023 MerlotRain
+** Copyright (C 2023 MerlotRain
 ** Github:https://github.com/MerlotRain
 **
 ** M2 is a cross platform C++basic library that encapsulates commonly 
@@ -9,7 +9,7 @@
 **
 ** $M2_BEGIN_LICENSE:MIT$
 ** Permission is hereby granted, free of charge, to any person obtaining a 
-** copy of this software and associated documentation files (the “Software”), 
+** copy of this software and associated documentation files (the “Software”, 
 ** to deal in the Software without restriction, including without limitation 
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense, 
 ** and/or sell copies of the Software, and to permit persons to whom the 
@@ -30,17 +30,23 @@
 **
 ****************************************************************************/
 
-#ifndef M2_INPUTSTREAM_H_
-#define M2_INPUTSTREAM_H_
+#pragma once
+
+#include <m2_flags.h>
 
 namespace m2 {
 
-class InputStream
+enum OpenMode
 {
-public:
-    
+    in = 0x01,
+    out = 0x02,
+    ate = 0x04,
+    app = 0x08,
+    trunc = 0x10,
+    nocreate = 0x40,
+    noreplace = 0x80,
+    binary = 0x20,
 };
+M2_DECLARE_FLAGS(OpenModes, OpenMode)
 
 }// namespace m2
-
-#endif//M2_INPUTSTREAM_H_

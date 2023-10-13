@@ -34,31 +34,27 @@
 
 #if defined(_WIN32)
 #define M2_OS_WIN 1
-#define M2_OS_STRING "windows"
+#define M2_OS_STRING "Windows"
 #elif defined(__ANDROID__)
 #define M2_OS_ANDROID 1
 #define M2_OS_LINUX 1
 #define M2_OS_POSIX 1
-#define M2_OS_STRING "android"
+#define M2_OS_STRING "Android"
 #elif defined(__APPLE__)
 #define M2_OS_POSIX 1
 #define M2_OS_BSD 1
 #define M2_OS_DARWIN 1
 #if defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE
 #define M2_OS_IOS 1
-#define M2_OS_STRING "ios"
+#define M2_OS_STRING "IOS"
 #else
 #define M2_OS_MACOS 1
-#define M2_OS_STRING "macos"
+#define M2_OS_STRING "MacOS"
 #endif
-#elif defined(__CYGWIN__)
-#define M2_OS_CYGWIN 1
-#define M2_OS_POSIX 1
-#define M2_OS_STRING "cygwin"
 #elif defined(__linux__)
 #define M2_OS_LINUX 1
 #define M2_OS_POSIX 1
-#define M2_OS_STRING "linux"
+#define M2_OS_STRING "Linux"
 #endif
 
 
@@ -218,6 +214,7 @@
 #include <condition_variable>
 #include <cstdlib>
 #include <deque>
+#include <filesystem>
 #include <float.h>
 #include <forward_list>
 #include <functional>
@@ -231,6 +228,7 @@
 #include <memory>
 #include <mutex>
 #include <numeric>
+#include <optional>
 #include <queue>
 #include <set>
 #include <sstream>
@@ -242,7 +240,3 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#if _HAS_CXX17
-#include <filesystem>
-#include <optional>
-#endif

@@ -49,7 +49,6 @@ public:
     Ellipse &operator=(Ellipse &&);
     Ellipse(const PointF &center, double semiMajorAxis, double semiMinorAxis,
             double azimuth = 90);
-
     ~Ellipse();
 
     static Ellipse fromFoci(const PointF &pt1, const PointF &pt2,

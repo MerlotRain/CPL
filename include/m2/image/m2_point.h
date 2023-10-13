@@ -45,6 +45,7 @@ public:
     constexpr Point() noexcept;
     constexpr Point(int xpos, int ypos) noexcept;
 
+    inline bool isValid() const noexcept;
     constexpr inline bool isNull() const noexcept;
 
     constexpr inline int x() const noexcept;
@@ -67,7 +68,7 @@ public:
     constexpr inline Point &operator*=(int factor);
 
     constexpr inline Point &operator/=(double divisor);
-
+    PointF project(double distance, double azimuth, double inclination);
     constexpr static inline int dotProduct(const Point &p1, const Point &p2)
     {
         return p1.xp * p2.xp + p1.yp * p2.yp;
@@ -145,8 +146,11 @@ public:
     constexpr PointF(double xpos, double ypos) noexcept;
 
     constexpr inline double manhattanLength() const;
+    constexpr inline double distance(const PointF &other) const;
+    constexpr inline double azimuth(const PointF &other) const;
 
     inline bool isNull() const noexcept;
+    inline bool isValid() const noexcept;
 
     constexpr inline double x() const noexcept;
     constexpr inline double y() const noexcept;
@@ -163,6 +167,7 @@ public:
     constexpr inline PointF &operator*=(double c);
     constexpr inline PointF &operator/=(double c);
 
+    PointF project(double distance, double azimuth, double inclination);
     constexpr static inline double dotProduct(const PointF &p1,
                                               const PointF &p2)
     {
@@ -206,7 +211,6 @@ public:
         assert(divisor < 0 || divisor > 0);
         return PointF(p.xp / divisor, p.yp / divisor);
     }
-
     constexpr Point toPoint() const;
 
 private:
@@ -223,6 +227,11 @@ constexpr inline Point::Point() noexcept : xp(0), yp(0) {}
 
 constexpr inline Point::Point(int xpos, int ypos) noexcept : xp(xpos), yp(ypos)
 {
+}
+
+inline bool Point::isValid() const noexcept
+{
+    return std::isfinite(xp) || std::isfinite(yp);
 }
 
 constexpr inline bool Point::isNull() const noexcept
@@ -309,9 +318,27 @@ constexpr inline double PointF::manhattanLength() const
     return qAbs(x()) + qAbs(y());
 }
 
+inline constexpr double PointF::distance(const PointF &other) const
+{
+    return std::sqrt((xp - other.x()) * (xp - other.x()) +
+                     (yp - other.y()) * (yp - other.y()));
+}
+
+inline constexpr double PointF::azimuth(const PointF &other) const
+{
+    const double dx = other.x() - xp;
+    const double dy = other.y() - yp;
+    return (std::atan2(dx, dy) * 180.0 / M_PI);
+}
+
 inline bool PointF::isNull() const noexcept
 {
     return qIsNull(xp) && qIsNull(yp);
+}
+
+inline bool PointF::isValid() const noexcept
+{
+    return std::isfinite(xp) || std::isfinite(yp);
 }
 
 constexpr inline double PointF::x() const noexcept { return xp; }

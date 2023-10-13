@@ -36,17 +36,13 @@
 #include <preconfig.h>
 
 namespace m2 {
-namespace EndianConverter {
 
-/// @brief 字节序枚举
 enum class Endian
 {
     BigEndian,
     LittleEndian,
 };
 
-/// @brief 判断字节序类型
-/// @return
 inline Endian osEndian()
 {
 #if (__CPP_LIB_ENDIAN == BIG_ENDIAN)
@@ -55,9 +51,7 @@ inline Endian osEndian()
     return Endian::LittleEndian;
 #endif
 }
-/// @brief 是否是高字节序
-inline bool IsBigEndian() { return osEndian() == Endian::BigEndian; }
-/// @brief 是否是低字节序
+inline bool isBigEndian() { return osEndian() == Endian::BigEndian; }
 inline bool isLittleEndian() { return osEndian() == Endian::LittleEndian; }
 
 template<typename T>
@@ -309,7 +303,6 @@ inline int8_t fromBigEndian<int8_t>(const void *src)
     return static_cast<const int8_t *>(src)[0];
 }
 
-}// namespace EndianConverter
 }// namespace m2
 
 #endif//M2_ENDIAN_H_
