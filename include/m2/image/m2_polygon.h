@@ -39,6 +39,8 @@
 namespace m2 {
 
 class Rect;
+class RectF;
+class PolygonF;
 
 enum FillRule
 {
@@ -46,16 +48,15 @@ enum FillRule
     WindingFill
 };
 
-class PolygonF;
 class Polygon : public std::vector<Point>
 {
 public:
     Polygon() = default;
-    Polygon(const std::vector<Point> &v) : std::vector<Point>(v) {}
-    Polygon(std::vector<Point> &&v) noexcept : std::vector<Point>(std::move(v)) {}
+    Polygon(const std::vector<Point> &v);
+    Polygon(std::vector<Point> &&v) noexcept;
     Polygon(const Rect &r, bool closed = false);
     Polygon(int nPoints, const int *points);
-    void swap(Polygon &other) noexcept { std::vector<Point>::swap(other); }
+    void swap(Polygon &other) noexcept;
 
     void translate(int dx, int dy);
     void translate(const Point &offset);
@@ -86,6 +87,35 @@ public:
     [[nodiscard]] inline PolygonF toPolygonF() const;
 };
 
+class PolygonF : public std::vector<PointF>
+{
+public:
+    PolygonF() = default;
+    PolygonF(const std::vector<PointF> &v);
+    PolygonF(std::vector<PointF> &&v) noexcept;
+    PolygonF(const RectF &r);
+    PolygonF(const Polygon &a);
+    inline void swap(PolygonF &other);
+
+    inline void translate(double dx, double dy);
+    void translate(const PointF &offset);
+
+    inline PolygonF translated(double dx, double dy) const;
+    [[nodiscard]] PolygonF translated(const PointF &offset) const;
+
+    Polygon toPolygon() const;
+
+    bool isClosed() const;
+    RectF boundingRect() const;
+    bool containsPoint(const PointF &pt, FillRule fillRule) const;
+
+    [[nodiscard]] PolygonF united(const PolygonF &r) const;
+    [[nodiscard]] PolygonF intersected(const PolygonF &r) const;
+    [[nodiscard]] PolygonF subtracted(const PolygonF &r) const;
+
+    bool intersects(const PolygonF &r) const;
+};
+
 
 inline void Polygon::setPoint(int index, const Point &pt)
 {
@@ -106,38 +136,6 @@ inline Polygon Polygon::translated(const Point &offset) const
 {
     return translated(offset.x(), offset.y());
 }
-
-class QRectF;
-
-class PolygonF : public std::vector<PointF>
-{
-public:
-    PolygonF() = default;
-    PolygonF(const std::vector<PointF> &v) : std::vector<PointF>(v) {}
-    PolygonF(std::vector<PointF> &&v) noexcept : std::vector<PointF>(std::move(v)) {}
-    PolygonF(const QRectF &r);
-    PolygonF(const Polygon &a);
-    inline void swap(PolygonF &other) { std::vector<PointF>::swap(other); }
-
-    inline void translate(double dx, double dy);
-    void translate(const PointF &offset);
-
-    inline PolygonF translated(double dx, double dy) const;
-    [[nodiscard]] PolygonF translated(const PointF &offset) const;
-
-    Polygon toPolygon() const;
-
-    bool isClosed() const { return !empty() && front() == back(); }
-    QRectF boundingRect() const;
-    bool containsPoint(const PointF &pt, FillRule fillRule) const;
-
-    [[nodiscard]] PolygonF united(const PolygonF &r) const;
-    [[nodiscard]] PolygonF intersected(const PolygonF &r) const;
-    [[nodiscard]] PolygonF subtracted(const PolygonF &r) const;
-
-    bool intersects(const PolygonF &r) const;
-};
-
 
 inline void PolygonF::translate(double dx, double dy)
 {

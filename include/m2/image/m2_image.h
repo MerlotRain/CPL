@@ -37,7 +37,6 @@
 
 namespace m2 {
 
-/// @brief 图像基类
 class M2_API Image
 {
 public:

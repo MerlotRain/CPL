@@ -30,21 +30,50 @@
 **
 ****************************************************************************/
 
-#ifndef M2_MATRIX4X4_H_
-#define M2_MATRIX4X4_H_
+#ifndef M2_TRIANGLE_H_
+#define M2_TRIANGLE_H_
+
+#include <m2_line.h>
+#include <m2_point.h>
 
 namespace m2 {
 
-class Matrix4x4
+class Circle;
+class Triangle
 {
 public:
-    inline Matrix4x4();
-    explicit Matrix4x4(const float* values);
+    Triangle();
+    Triangle(const PointF &p1, const PointF &p2, const PointF &p3);
+    bool operator==(const Triangle &other) const;
+    bool operator!=(const Triangle &other) const;
+
+    std::vector<double> lengths() const;
+    std::vector<double> angles() const;
+
+    bool isDegenerate() const;
+    bool isIsocele(double lengthTolerance = 0.0001) const;
+    bool isEquilateral(double lengthTolerance = 0.0001) const;
+    bool isRight(double angleTolerance = 0.0001) const;
+    bool isScalene(double lengthTolerance = 0.0001) const;
+
+    std::vector<LineF> altitudes() const;
+    std::vector<LineF> medians() const;
+    std::vector<LineF> bisectors(double lengthTolerance = 0.0001) const;
+
+    Triangle medial() const;
+    PointF orthocenter(double lengthTolerance = 0.0001) const;
+    PointF circumscribedCenter() const;
+    double circumscribedRadius() const;
+    Circle circumscribedCircle() const;
     
+    PointF inscribedCenter() const;
+    double inscribedRadius() const;
+    Circle inscribedCircle() const;
+
 private:
-    float m[4][4];
+    PointF m_points[3];
 };
 
 }// namespace m2
 
-#endif//M2_MATRIX4X4_H_
+#endif//M2_TRIANGLE_H_

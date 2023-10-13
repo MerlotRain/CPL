@@ -9,8 +9,6 @@ set(m2_include_files
     ./include/preconfig.h
     ./include/m2.h
     ./include/m2/m2_allocator.h
-    ./include/m2/m2_delegate.h
-    ./include/m2/m2_delegateT.h
     ./include/m2/m2_endian.h
     ./include/m2/m2_enummaskflag.h
     ./include/m2/m2_error.h
@@ -52,7 +50,6 @@ set(m2_include_files
     ./include/m2/math/m2_cryptographichash.h
     ./include/m2/math/m2_encryption.h
     ./include/m2/math/m2_math.h
-    ./include/m2/math/m2_matrix4x4.h
     ./include/m2/math/m2_random.h
     ./include/m2/math/m2_transform.h
     ./include/m2/math/m2_unitsconvertor.h
@@ -60,17 +57,22 @@ set(m2_include_files
     ./include/m2/math/m2_vector.h
 
     ./include/m2/image/m2_bezier.h
+    ./include/m2/image/m2_circle.h
     ./include/m2/image/m2_color.h
     ./include/m2/image/m2_colorramp.h
     ./include/m2/image/m2_colorscheme.h
+    ./include/m2/image/m2_ellipse.h
     ./include/m2/image/m2_image.h
     ./include/m2/image/m2_line.h
     ./include/m2/image/m2_margins.h
     ./include/m2/image/m2_pagesize.h
     ./include/m2/image/m2_point.h
     ./include/m2/image/m2_polygon.h
+    ./include/m2/image/m2_rbtree.h
     ./include/m2/image/m2_rect.h
+    ./include/m2/image/m2_regularpolygon.h
     ./include/m2/image/m2_size.h
+    ./include/m2/image/m2_triangle.h
 
     ./include/m2/thread/m2_backgroundtask.h
     ./include/m2/thread/m2_mutex.h
@@ -93,6 +95,8 @@ set(m2_include_files
     )
 
 set(m2_source_files 
+    ./src/image/m2_pagesize.cpp
+    
     ./src/text/m2_string.cpp
 
     ./src/sql/m2_sqldatabase.cpp
@@ -138,6 +142,7 @@ endif ()
 
 target_include_directories(libm2 PRIVATE
     ./include
+    ./include/help
     ./include/m2
     ./include/m2/image
     ./include/m2/io

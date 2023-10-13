@@ -38,7 +38,6 @@
 
 namespace m2 {
 
-/// @brief hash算法库
 class CryptographicHashPrivate;
 class CryptographicHash
 {

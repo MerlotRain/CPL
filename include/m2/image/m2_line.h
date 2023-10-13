@@ -90,7 +90,7 @@ public:
         BoundedIntersection,
         UnboundedIntersection
     };
-    using IntersectType = IntersectionType;// deprecated name
+    using IntersectType = IntersectionType;
 
     constexpr inline LineF();
     constexpr inline LineF(const PointF &pt1, const PointF &pt2);

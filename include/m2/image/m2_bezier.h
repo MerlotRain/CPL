@@ -37,7 +37,6 @@
 #include <m2_point.h>
 #include <m2_polygon.h>
 
-
 namespace m2 {
 
 class RectF;

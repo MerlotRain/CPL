@@ -3,11 +3,6 @@
 ** Copyright (C) 2023 MerlotRain
 ** Github:https://github.com/MerlotRain
 **
-** M2 is a cross platform C++basic library that encapsulates commonly 
-** used C++ classes and functional modules, shields system functions from 
-** the outside, and provides a unified interface.
-**
-** $M2_BEGIN_LICENSE:MIT$
 ** Permission is hereby granted, free of charge, to any person obtaining a 
 ** copy of this software and associated documentation files (the “Software”), 
 ** to deal in the Software without restriction, including without limitation 
@@ -26,15 +21,12 @@
 ** FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ** DEALINGS IN THE SOFTWARE.
 ** 
-** $M2_END_LICENSE$
 **
 ****************************************************************************/
 
 #pragma once
 
 #include <typeinfo>
-
-namespace m2 {
 
 template<typename Return, typename... Args>
 class StaticDelegateT;
@@ -136,5 +128,3 @@ inline ClassMemberDelegateT<T, Fun> *_newDelegate(T *_object, Fun _fun)
 {
     return new ClassMemberDelegateT<T, Fun>(_object, _fun);
 }
-
-}// namespace m2

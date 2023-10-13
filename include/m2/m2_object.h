@@ -33,7 +33,7 @@
 #ifndef M2_OBJECT_H_
 #define M2_OBJECT_H_
 
-#include <m2_delegate.h>
+#include <delegate.h>
 #include <preconfig.h>
 
 namespace m2 {
@@ -79,9 +79,9 @@ public:
     WeakRefObject(RefObject *obj);
     virtual ~WeakRefObject() override;
     RefObject *lock();
-    void OnDestroy(RefObject *obj);
+    void onDestroy(RefObject *obj);
     bool expired() const noexcept;
-    void Unlink() noexcept;
+    void unlink() noexcept;
 
 private:
     RefObject *m_RefObject;
@@ -92,7 +92,7 @@ private:
 template<typename T>
 class SmarterPointer
 {
-    static_assert(!std::is_pointer<T>::value,
+    static_assert((!std::is_pointer<T>::value || !std::is_base_of<RefObject>::value),
                   "SmarterPointer's template type must not be a pointer type");
 
 public:
@@ -270,7 +270,7 @@ inline bool operator!=(std::nullptr_t, const SmarterPointer<T> &point) noexcept
 template<typename T>
 class WeakPointer
 {
-    static_assert(!std::is_pointer<T>::value,
+    static_assert((!std::is_pointer<T>::value || !std::is_base_of<RefObject>::value),
                   "SmarterPointer's template type must not be a pointer type");
 
 public:
@@ -348,25 +348,9 @@ public:
         return *this;
     }
 };
-
-
 #define M2_SMARTER_PTR(Class)                     \
     typedef m2::SmarterPointer<Class> Class##Ptr; \
     typedef m2::WeakPointer<Class> Class##WPtr;
-
-#define STD_SHARED_POINTER(Class)              \
-    typedef std::shared_ptr<Class> Class##Ptr; \
-    typedef std::weak_ptr<Class> Class##WPtr;
-
-
-template<class T>
-class SingletonRef
-{
-public:
-    SingletonRef()
-    {
-    }
-};
 
 
 class M2_API ClassFactory
@@ -410,19 +394,15 @@ private:
 };
 
 
-class M2_API Singleton
-{
-};
-
 #ifdef _WIN32
-#define GS_MODULE_EXPORT __declspec(dllexport)
+#define M2_MODULE_EXPORT __declspec(dllexport)
 #else
-#define GS_MODULE_EXPORT __attribute__((visibility("default")))
+#define M2_MODULE_EXPORT __attribute__((visibility("default")))
 #endif
 #define DECLARE_CLASS_CREATE(ClassName) \
-    extern "C" GS_MODULE_EXPORT m2::RefObject *createClass##ClassName();
+    extern "C" M2_MODULE_EXPORT m2::RefObject *createClass##ClassName();
 #define DECLARE_CLASS_CREARE_IMPL(ClassName)                            \
-    extern "C" GS_MODULE_EXPORT m2::RefObject *createClass##ClassName() \
+    extern "C" M2_MODULE_EXPORT m2::RefObject *createClass##ClassName() \
     {                                                                   \
         return new ClassName();                                         \
     }
@@ -437,13 +417,6 @@ class M2_API Singleton
 #define REGISTER_CLASS_CREATE_NAMESPACE_CATEGORY(ClassName, category, NS)           \
     m2::ClassFactory::registerFactoryCreate(NS::CreateClass##ClassName, #ClassName, \
                                             #category);
-
-#define DECLARE_CLASS_NAME(class_name)  \
-    virtual m2::String fullClassName()  \
-    {                                   \
-        return m2::String(#class_name); \
-    }
-
 
 }// namespace m2
 
