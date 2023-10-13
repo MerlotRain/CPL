@@ -10,8 +10,8 @@ namespace m2 {
 static std::map<String, std::map<String, ClassFactory::FactoryCreateFun>> g_RegisterClasses;
 
 void ClassFactory::RegisterFactoryCreate(FactoryCreateFun fun,
-                                           const char *className,
-                                           const char *category)
+                                         const char *className,
+                                         const char *category)
 {
     if (!className || !fun)
     {

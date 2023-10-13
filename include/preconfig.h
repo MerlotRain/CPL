@@ -62,19 +62,20 @@
 #endif
 
 
-#ifdef M2_OS_WIN
-#define M2_DECL_EXPORT __declspec(dllexport)
-#define M2_DECL_IMPORT __declspec(dllimport)
+#ifndef M2_API
+#if defined(M2_DLL)
+#if defined(_WIN32)
+#if M2_IMPLEMENTATION
+#define M2_API __declspec(dllexport)
 #else
-#define M2_DECL_EXPORT __attribute__((visibility("default")))
-#define M2_DECL_IMPORT __attribute__((visibility("default")))
+#define M2_API __declspec(dllimport)
 #endif
-
-
-#if defined(M2_LIBRARY)
-#define M2_API M2_DECL_EXPORT
 #else
-#define M2_API M2_DECL_IMPORT
+#define M2_API __attribute__((visibility("default")))
+#endif
+#else
+#define M2_API
+#endif
 #endif
 
 
@@ -100,7 +101,6 @@
 #define M2_DEBUG_END_PACKED __pragma(pack(pop))
 #define M2_DEBUG_PACKED_ALIGN_N(N)
 #endif
-
 
 
 #if defined(__ORDER_BIG_ENDIAN__)
@@ -159,6 +159,23 @@
 #define M2_ALWAYS_INLINE inline
 #endif
 
+
+#if defined(__cplusplus)
+#if __has_cpp_attribute(clang::fallthrough)
+#define M2_FALLTHROUGH() [[clang::fallthrough]]
+#elif __has_cpp_attribute(gnu::fallthrough)
+#define M2_FALLTHROUGH() [[gnu::fallthrough]]
+#elif __has_cpp_attribute(fallthrough)
+#define M2_FALLTHROUGH() [[fallthrough]]
+#endif
+#endif
+#ifndef M2_FALLTHROUGH
+#if defined(__GNUC__) && ((__GNUC__ * 100 + __GNUC_MINOR__) >= 700)
+#define M2_FALLTHROUGH() __attribute__((fallthrough))
+#else
+#define M2_FALLTHROUGH() (void) 0
+#endif
+#endif
 
 
 #ifdef _MSC_VER
