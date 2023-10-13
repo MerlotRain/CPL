@@ -30,17 +30,30 @@
 **
 ****************************************************************************/
 
-#ifndef M2_FILE_H_
-#define M2_FILE_H_
+#ifndef M2_FILEINFO_H_
+#define M2_FILEINFO_H_
+
+#include <m2_string.h>
 
 namespace m2 {
 
-class File
+class Dir;
+class FileInfo
 {
 public:
-    
+    FileInfo();
+    explicit FileInfo(const String &file);
+    explicit FileInfo(const String &dir, const String &file);
+    FileInfo(const std::filesystem::path &file);
+    FileInfo(const FileInfo &);
+    FileInfo &operator=(const FileInfo &);
+
+    bool operator==(const FileInfo &) const;
+    bool operator!=(const FileInfo &) const;
 };
+
+typedef std::list<FileInfo> FileInfoList;
 
 }// namespace m2
 
-#endif//M2_FILE_H_
+#endif//M2_FILEINFO_H_

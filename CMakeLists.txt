@@ -22,6 +22,7 @@ set(m2_include_files
     ./include/m2/io/m2_datastream.h
     ./include/m2/io/m2_dir.h
     ./include/m2/io/m2_file.h
+    ./include/m2/io/m2_fileinfo.h
     ./include/m2/io/m2_inputstream.h
     ./include/m2/io/m2_iot.h
     ./include/m2/io/m2_library.h

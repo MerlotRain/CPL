@@ -114,13 +114,15 @@
 #define LITTLE_ENDIAN 1234
 #endif
 
-#if defined(__x86_64) || defined(__x86_64__) || defined(__amd64) || defined(_M_X64)
+#if defined(__x86_64) || defined(__x86_64__) || defined(__amd64) || \
+        defined(_M_X64)
 #define __CPP_LIB_ENDIAN LITTLE_ENDIAN
 #elif defined(__arm64__) || defined(__arm64) || defined(_M_ARM64)
 #define M2_ARCH M2_ARCH_ARM64
 #if defined(__ARMEB__)
 #define __CPP_LIB_ENDIAN BIG_ENDIAN
-#elif defined(__BYTE_ORDER__) && defined(__ORDER_BIG_ENDIAN__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+#elif defined(__BYTE_ORDER__) && defined(__ORDER_BIG_ENDIAN__) && \
+        __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
 #define __CPP_LIB_ENDIAN BIG_ENDIAN
 #else
 #define __CPP_LIB_ENDIAN LITTLE_ENDIAN
@@ -240,3 +242,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#if _HAS_CXX17
+#include <filesystem>
+#include <optional>
+#endif

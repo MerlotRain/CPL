@@ -29,3 +29,18 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_INPUTSTREAM_H_
+#define M2_INPUTSTREAM_H_
+
+namespace m2 {
+
+class InputStream
+{
+public:
+    
+};
+
+}// namespace m2
+
+#endif//M2_INPUTSTREAM_H_

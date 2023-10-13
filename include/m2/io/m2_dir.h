@@ -29,3 +29,31 @@
 ** $M2_END_LICENSE$
 **
 ****************************************************************************/
+
+#ifndef M2_DIR_H_
+#define M2_DIR_H_
+
+#include <m2_string.h>
+
+namespace m2 {
+
+class Dir
+{
+public:
+    Dir(const Dir &);
+    Dir(const String &path = String());
+    Dir(const String &path, const String &nameFilter);
+    Dir(const std::filesystem::path &path);
+    Dir(const std::filesystem::path &path, const String &nameFilter);
+
+    bool mkdir(const String& dirname) const;
+    bool rmdir();
+    bool mkpath();
+    bool rmpath();
+
+    
+};
+
+}// namespace m2
+
+#endif//M2_DIR_H_
