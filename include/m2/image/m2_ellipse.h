@@ -39,14 +39,15 @@ namespace m2 {
 
 class PolygonF;
 class RectF;
-class Ellipse
+class PointF;
+class M2_API Ellipse
 {
 public:
     Ellipse();
     Ellipse(const Ellipse &);
     Ellipse &operator=(const Ellipse &);
-    Ellipse(Ellipse &&);
-    Ellipse &operator=(Ellipse &&);
+    Ellipse(Ellipse &&) noexcept;
+    Ellipse &operator=(Ellipse &&) noexcept;
     Ellipse(const PointF &center, double semiMajorAxis, double semiMinorAxis,
             double azimuth = 90);
     ~Ellipse();

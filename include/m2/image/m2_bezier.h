@@ -33,14 +33,16 @@
 #ifndef M2_BEZIER_H_
 #define M2_BEZIER_H_
 
-#include <m2_line.h>
-#include <m2_point.h>
-#include <m2_polygon.h>
+#include <preconfig.h>
 
 namespace m2 {
 
 class RectF;
-class Bezier
+class PolygonF;
+class PointF;
+class LineF;
+
+class M2_API Bezier
 {
 public:
     static Bezier fromPoints(const PointF &p1, const PointF &p2,
@@ -48,11 +50,11 @@ public:
     static void coefficients(double t, double &a, double &b, double &c,
                              double &d);
 
-    inline PointF pointAt(double t) const;
-    inline PointF normalVector(double t) const;
+    PointF pointAt(double t) const;
+    PointF normalVector(double t) const;
 
-    inline PointF derivedAt(double t) const;
-    inline PointF secondDerivedAt(double t) const;
+    PointF derivedAt(double t) const;
+    PointF secondDerivedAt(double t) const;
 
     PolygonF toPolygon(double bezier_flattening_threshold = 0.5) const;
     void addToPolygon(PolygonF *p,
@@ -67,19 +69,19 @@ public:
     int stationaryYPoints(double &t0, double &t1) const;
     double tForY(double t0, double t1, double y) const;
 
-    PointF pt1() const { return PointF(x1, y1); }
-    PointF pt2() const { return PointF(x2, y2); }
-    PointF pt3() const { return PointF(x3, y3); }
-    PointF pt4() const { return PointF(x4, y4); }
+    PointF pt1() const;
+    PointF pt2() const;
+    PointF pt3() const;
+    PointF pt4() const;
 
-    inline PointF midPoint() const;
-    inline LineF midTangent() const;
+    PointF midPoint() const;
+    LineF midTangent() const;
 
-    inline LineF startTangent() const;
-    inline LineF endTangent() const;
+    LineF startTangent() const;
+    LineF endTangent() const;
 
-    inline void parameterSplitLeft(double t, Bezier *left);
-    inline std::pair<Bezier, Bezier> split() const;
+    void parameterSplitLeft(double t, Bezier *left);
+    std::pair<Bezier, Bezier> split() const;
 
     int shifted(Bezier *curveSegments, int maxSegmets, double offset,
                 float threshold) const;
@@ -87,6 +89,7 @@ public:
     Bezier bezierOnInterval(double t0, double t1) const;
     Bezier getSubRange(double t0, double t1) const;
 
+private:
     double x1, y1, x2, y2, x3, y3, x4, y4;
 };
 
