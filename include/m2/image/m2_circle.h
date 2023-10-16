@@ -44,34 +44,43 @@ public:
     Circle(const PointF &center, double radius, double azimuth = 0);
 
     static Circle from2Points(const PointF &pt1, const PointF &pt2);
+    
     static Circle
     from3Points(const PointF &pt1, const PointF &pt2, const PointF &pt3,
                 double epsilon = std::numeric_limits<double>::epsilon());
+
     static Circle fromCenterDiameter(const PointF &center, double diameter,
                                      double azimuth = 0);
     static Circle fromCenterPoint(const PointF &center, const PointF &pt1);
+
     static Circle
     from3Tangents(const PointF &pt1_tg1, const PointF &pt2_tg1,
                   const PointF &pt1_tg2, const PointF &pt2_tg2,
                   const PointF &pt1_tg3, const PointF &pt2_tg3,
                   double epsilon = std::numeric_limits<double>::epsilon(),
                   const PointF &pos = PointF());
+
     static std::vector<Circle>
     from3TangentsMulti(const PointF &pt1_tg1, const PointF &pt2_tg1,
                        const PointF &pt1_tg2, const PointF &pt2_tg2,
                        const PointF &pt1_tg3, const PointF &pt2_tg3,
                        double epsilon = std::numeric_limits<double>::epsilon(),
                        const PointF &pos = PointF());
+
     static Circle fromExtent(const PointF &pt1, const PointF &pt2);
+
     static Circle minimalCircleFrom3Points(
             const PointF &pt1, const PointF &pt2, const PointF &pt3,
             double epsilon = std::numeric_limits<double>::epsilon());
 
     int intersections(const Circle &other, PointF &intersection1,
                       PointF &intersection2, bool useZ = false) const;
+
     bool tangentToPoint(const PointF &p, PointF &pt1, PointF &pt2) const;
+
     int outerTangents(const Circle &other, PointF &line1P1, PointF &line1P2,
                       PointF &line2P1, PointF &line2P2) const;
+
     int innerTangents(const Circle &other, PointF &line1P1, PointF &line1P2,
                       PointF &line2P1, PointF &line2P2) const;
 

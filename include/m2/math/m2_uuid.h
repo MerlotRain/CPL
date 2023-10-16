@@ -74,9 +74,9 @@ public:
                    uint8_t b8) noexcept;
 
     String toString(StringFormat mode = WithBraces) const;
-    ByteBuffer toByteArray(StringFormat mode = WithBraces) const;
-    ByteBuffer toRfc4122() const;
-    static UUID fromRfc4122(const ByteBuffer &);
+    ByteArray toByteArray(StringFormat mode = WithBraces) const;
+    ByteArray toRfc4122() const;
+    static UUID fromRfc4122(const ByteArray &);
     bool isNull() const noexcept;
 
     constexpr bool operator==(const UUID &orig) const noexcept;

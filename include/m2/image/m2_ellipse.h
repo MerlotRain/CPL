@@ -39,14 +39,15 @@ namespace m2 {
 
 class PolygonF;
 class RectF;
-class Ellipse
+class PointF;
+class M2_API Ellipse
 {
 public:
     Ellipse();
     Ellipse(const Ellipse &);
     Ellipse &operator=(const Ellipse &);
-    Ellipse(Ellipse &&);
-    Ellipse &operator=(Ellipse &&);
+    Ellipse(Ellipse &&) noexcept;
+    Ellipse &operator=(Ellipse &&) noexcept;
     Ellipse(const PointF &center, double semiMajorAxis, double semiMinorAxis,
             double azimuth = 90);
     ~Ellipse();
@@ -87,10 +88,10 @@ public:
     virtual RectF boundingBox() const;
 
 protected:
-    PointF m_Center;
-    double m_SemiMajorAxis;
-    double m_SemiMinorAxis;
-    double m_Azimuth;
+    PointF m_center;
+    double m_semiMajorAxis;
+    double m_semiMinorAxis;
+    double m_azimuth;
 
 private:
     void normalizeAxis();

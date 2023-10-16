@@ -30,16 +30,39 @@
 **
 ****************************************************************************/
 
-#ifndef M2_SHAREDMEMORY_H_
-#define M2_SHAREDMEMORY_H_
+#ifndef M2_BUFFER_H_
+#define M2_BUFFER_H_
+
+#include <m2_iodevice.h>
 
 namespace m2 {
 
-class SharedMemory
+class ByteArray;
+class Buffer : public IODevice
 {
 public:
+    Buffer();
+    explicit Buffer(ByteArray *buf);
+    ~Buffer();
+
+    ByteArray &buffer();
+    const ByteArray &buffer() const;
+    void setBuffer(ByteArray *a);
+
+    void setData(const ByteArray &data);
+
+    void setData(const char *data, uint64_t len);
+    const ByteArray &data() const;
+
+    bool open(OpenModes openMode) override;
+
+    void close() override;
+    int64_t size() const override;
+    int64_t pos() const override;
+    bool seek(int64_t off) override;
+    bool atEnd() const override;
 };
 
 }// namespace m2
 
-#endif//M2_SHAREDMEMORY_H_
+#endif//M2_BUFFER_H_

@@ -33,14 +33,51 @@
 #ifndef M2_IODEVICE_H_
 #define M2_IODEVICE_H_
 
-#include <sstream>
+#include <m2_iobase.h>
+#include <m2_string.h>
 
 namespace m2 {
 
+class ByteArray;
 class IODevice
 {
 public:
-    IODevice(std::ios_base::_Openmode mode);
+    IODevice();
+    IODevice(OpenModes mode);
+
+    OpenModes openMode() const;
+    virtual bool open(OpenModes mode);
+    virtual void close();
+
+    bool isOpen() const;
+    bool isReadable() const;
+    bool isWritable() const;
+
+    virtual int64_t pos() const;
+    virtual int64_t size() const;
+    virtual bool seek(int64_t pos);
+    virtual bool atEnd() const;
+    virtual bool reset();
+
+    int64_t read(char *data, int64_t maxlen);
+    ByteArray read(int64_t maxlen);
+    ByteArray readAll();
+    int64_t readLine(char *data, int64_t maxlen);
+    ByteArray readLine(int64_t maxlen);
+
+    void ungetChar(char c);
+    bool putChar(char c);
+    bool getChar(char *c);
+
+    int64_t write(const char *data, int64_t len);
+    int64_t write(const char *data);
+    int64_t write(const ByteArray &data);
+
+    int64_t peek(char *data, int64_t maxlen);
+    ByteArray peek(int64_t maxlen);
+    int64_t skip(int64_t maxSize);
+
+    String errorMessage() const;
 };
 
 }// namespace m2

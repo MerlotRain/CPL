@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-class ByteBuffer;
+class ByteArray;
 class SqlStatementPrivate;
 class SqlStatement
 {

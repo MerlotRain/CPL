@@ -156,10 +156,10 @@ static UUID __uuidFromHex(const char *src)
     return UUID();
 }
 
-static UUID createFromName(const UUID &ns, const ByteBuffer &baseData,
+static UUID createFromName(const UUID &ns, const ByteArray &baseData,
                              CryptographicHash::HashAlgorithm algorithm, int version)
 {
-    ByteBuffer hashResult;
+    ByteArray hashResult;
 
     {
         CryptographicHash hash(algorithm);
@@ -272,12 +272,12 @@ UUID UUID::CreateUuid()
 
 UUID UUID::CreateUuidV3(const UUID &ns, const String &baseData)
 {
-    return createFromName(ns, ByteBuffer(baseData.c_str()), CryptographicHash::eMD5, 3);
+    return createFromName(ns, ByteArray(baseData.c_str()), CryptographicHash::eMD5, 3);
 }
 
 UUID UUID::CreateUuidV5(const UUID &ns, const String &baseData)
 {
-    return createFromName(ns, ByteBuffer(baseData.c_str()), CryptographicHash::eSHA1, 5);
+    return createFromName(ns, ByteArray(baseData.c_str()), CryptographicHash::eSHA1, 5);
 }
 
 String UUID::ToString(StringFormat format)
@@ -317,9 +317,9 @@ UUID::UUIDVersion UUID::Version() const noexcept
     return ver;
 }
 
-ByteBuffer UUID::ToRfc4122() const
+ByteArray UUID::ToRfc4122() const
 {
-    ByteBuffer buf(16);
+    ByteArray buf(16);
     unsigned char *data = reinterpret_cast<unsigned char *>(buf.BufferHead());
 
     EndianConverter::ToBigEndian(Data1, data);
@@ -339,7 +339,7 @@ ByteBuffer UUID::ToRfc4122() const
     return buf;
 }
 
-UUID UUID::FromRfc4122(const ByteBuffer &bytes)
+UUID UUID::FromRfc4122(const ByteArray &bytes)
 {
     if (bytes.IsEmpty() || bytes.BufferLength() != 16)
         return UUID();

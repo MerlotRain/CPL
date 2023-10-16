@@ -33,12 +33,13 @@
 #ifndef M2_FILE_H_
 #define M2_FILE_H_
 
+#include <m2_iodevice.h>
+
 namespace m2 {
 
-class File
+class File : public IODevice
 {
 public:
-    
 };
 
 }// namespace m2

@@ -30,81 +30,84 @@
 **
 ****************************************************************************/
 
-#ifndef M2_BYTEBUFFER_H_
-#define M2_BYTEBUFFER_H_
+#ifndef M2_BYTEARRAY_H_
+#define M2_BYTEARRAY_H_
 
 #include <m2_math.h>
 #include <m2_string.h>
 
 namespace m2 {
 
-class M2_API ByteBuffer
+class ByteArrayView;
+class M2_API ByteArray
 {
 public:
-    ByteBuffer() noexcept;
-    ByteBuffer(const char *, uint64_t size = -1);
-    ByteBuffer(uint64_t size, char c);
-    ByteBuffer(const ByteBuffer &rhs);
-    ByteBuffer(ByteBuffer &&rhs) noexcept;
-    ByteBuffer &operator=(const ByteBuffer &) noexcept;
-    ByteBuffer &operator=(const char *str);
-    inline ByteBuffer(ByteBuffer &&other) noexcept = default;
-    ~ByteBuffer();
+    ByteArray() noexcept;
+    ByteArray(const char *, uint64_t size = -1);
+    ByteArray(uint64_t size, char c);
+    ByteArray(const ByteArray &rhs);
+    ByteArray(ByteArray &&rhs) noexcept;
+    ByteArray &operator=(const ByteArray &) noexcept;
+    ByteArray &operator=(const char *str);
+    ~ByteArray();
 
-    void swap(ByteBuffer &other) noexcept;
+    void swap(ByteArray &other) noexcept;
 
     bool isNull() const noexcept;
     bool isEmpty() const noexcept;
     void resize(uint64_t size);
     void resize(uint64_t size, char c);
-    inline uint64_t size() const noexcept;
+    inline uint64_t size() const noexcept { return used; }
 
-    ByteBuffer &fill(char c, uint64_t size = -1);
+    ByteArray &fill(char c, uint64_t size = -1);
 
-    inline uint64_t capacity() const;
-    inline void reserve(uint64_t size);
-    inline void squeeze();
+    inline uint64_t capacity() const { return alloc; }
+    void reserve(uint64_t size);
+    void squeeze();
 
-    inline char *data();
-    inline const char *data() const noexcept;
+    inline char *data() { return d; }
+    inline const char *data() const noexcept { return d; }
     const char *constData() const noexcept { return data(); }
-    inline void detach();
-    inline char at(uint64_t i) const;
-    inline char operator[](uint64_t i) const;
-    [[nodiscard]] inline char &operator[](uint64_t i);
+    void detach();
+    char at(uint64_t i) const;
+    char operator[](uint64_t i) const;
+    [[nodiscard]] char &operator[](uint64_t i);
     [[nodiscard]] char front() const;
-    [[nodiscard]] inline char &front();
+    [[nodiscard]] char &front();
     [[nodiscard]] char back() const;
-    [[nodiscard]] inline char &back();
+    [[nodiscard]] char &back();
 
-    ByteBuffer &prepend(char c);
-    inline ByteBuffer &prepend(uint64_t count, char c);
-    ByteBuffer &prepend(const char *s);
-    ByteBuffer &prepend(const char *s, uint64_t len);
-    ByteBuffer &prepend(const ByteBuffer &a);
+    ByteArray &prepend(char c);
+    ByteArray &prepend(uint64_t count, char c);
+    ByteArray &prepend(const char *s);
+    ByteArray &prepend(const char *s, uint64_t len);
+    ByteArray &prepend(const ByteArray &a);
+    ByteArray &prepend(const ByteArrayView &a);
 
-    ByteBuffer &append(char c);
-    inline ByteBuffer &append(uint64_t count, char c);
-    ByteBuffer &append(const char *s) { return append(s, -1); }
-    ByteBuffer &append(const char *s, uint64_t len);
-    ByteBuffer &append(const ByteBuffer &a);
+    ByteArray &append(char c);
+    ByteArray &append(uint64_t count, char c);
+    ByteArray &append(const char *s) { return append(s, -1); }
+    ByteArray &append(const char *s, uint64_t len);
+    ByteArray &append(const ByteArray &a);
+    ByteArray &append(const ByteArrayView &a);
 
-    inline ByteBuffer &insert(uint64_t i, const char *s);
-    inline ByteBuffer &insert(uint64_t i, const ByteBuffer &data);
-    ByteBuffer &insert(uint64_t i, uint64_t count, char c);
-    ByteBuffer &insert(uint64_t i, char c);
-    ByteBuffer &insert(uint64_t i, const char *s, uint64_t len);
+    ByteArray &insert(uint64_t i, const ByteArrayView &a);
+    ByteArray &insert(uint64_t i, const char *s);
+    ByteArray &insert(uint64_t i, const ByteArray &data);
+    ByteArray &insert(uint64_t i, uint64_t count, char c);
+    ByteArray &insert(uint64_t i, char c);
+    ByteArray &insert(uint64_t i, const char *s, uint64_t len);
 
-    ByteBuffer &remove(uint64_t index, uint64_t len);
+    ByteArray &remove(uint64_t index, uint64_t len);
 
-    ByteBuffer &replace(uint64_t index, uint64_t len, const char *s,
-                        uint64_t alen);
-    ByteBuffer &replace(const char *before, uint64_t bsize, const char *after,
-                        uint64_t asize);
-    ByteBuffer &replace(char before, char after);
+    ByteArray &replace(uint64_t index, uint64_t len, const char *s,
+                       uint64_t alen);
+    ByteArray &replace(const char *before, uint64_t bsize, const char *after,
+                       uint64_t asize);
+    ByteArray &replace(char before, char after);
 
-    ByteBuffer toBase64() const;
-    ByteBuffer toHex() const;
+    ByteArray toBase64() const;
+    ByteArray toHex() const;
 
     template<class T>
     uint64_t sizeT() const;
@@ -159,20 +162,19 @@ public:
     typedef char value_type;
     void push_back(char c) { append(c); }
     void push_back(const char *s) { append(s); }
-    void push_back(const ByteBuffer &a) { append(a); }
+    void push_back(const ByteArray &a) { append(a); }
     void push_front(char c) { prepend(c); }
     void push_front(const char *c) { prepend(c); }
-    void push_front(const ByteBuffer &a) { prepend(a); }
+    void push_front(const ByteArray &a) { prepend(a); }
     void shrink_to_fit() { squeeze(); }
     iterator erase(const_iterator first, const_iterator last);
 
 public:
-    static ByteBuffer compress(const uint8_t *data, uint64_t nbytes,
-                               int compressionLevel = -1);
-    static ByteBuffer uncompress(const uint8_t *data, uint64_t nbytes);
-    static ByteBuffer compress(const ByteBuffer &data,
-                               int compressionLevel = -1);
-    static ByteBuffer uncompress(const ByteBuffer &data);
+    static ByteArray compress(const uint8_t *data, uint64_t nbytes,
+                              int compressionLevel = -1);
+    static ByteArray uncompress(const uint8_t *data, uint64_t nbytes);
+    static ByteArray compress(const ByteArray &data, int compressionLevel = -1);
+    static ByteArray uncompress(const ByteArray &data);
 
 private:
     uint64_t alloc;
@@ -180,15 +182,15 @@ private:
     char *d;
 };
 
-class M2_API ByteBufferView
+class M2_API ByteArrayView
 {
 public:
-    constexpr ByteBufferView() noexcept;
-    constexpr ByteBufferView(std::nullptr_t) noexcept;
-    constexpr ByteBufferView(const char *data, uint64_t len);
-    constexpr ByteBufferView(const char *first, const char *end);
-    constexpr ByteBufferView(const ByteBuffer &data);
-    constexpr ByteBufferView(const char *data);
+    constexpr ByteArrayView() noexcept;
+    constexpr ByteArrayView(std::nullptr_t) noexcept;
+    constexpr ByteArrayView(const char *data, uint64_t len);
+    constexpr ByteArrayView(const char *first, const char *end);
+    constexpr ByteArrayView(const ByteArray &data);
+    constexpr ByteArrayView(const char *data);
 
     [[nodiscard]] constexpr uint64_t size() const noexcept { return m_size; }
     [[nodiscard]] constexpr const char *data() const noexcept { return m_data; }
@@ -200,10 +202,10 @@ private:
 };
 
 /*****************************************************************************
-  ByteBufferView functions
+  ByteArrayView functions
  *****************************************************************************/
 
-inline int compareMemory(ByteBufferView lhs, ByteBufferView rhs)
+inline int compareMemory(ByteArrayView lhs, ByteArrayView rhs)
 {
     if (!lhs.isNull() && !rhs.isNull())
     {
@@ -212,155 +214,167 @@ inline int compareMemory(ByteBufferView lhs, ByteBufferView rhs)
     }
     return lhs.size() == rhs.size() ? 0 : lhs.size() > rhs.size() ? 1 : -1;
 }
-inline bool operator==(ByteBufferView lhs, ByteBufferView rhs) noexcept
+inline bool operator==(ByteArrayView lhs, ByteArrayView rhs) noexcept
 {
     return lhs.size() == rhs.size() && compareMemory(lhs, rhs) == 0;
 }
-inline bool operator!=(ByteBufferView lhs, ByteBufferView rhs) noexcept
+inline bool operator!=(ByteArrayView lhs, ByteArrayView rhs) noexcept
 {
     return !(lhs == rhs);
 }
-inline bool operator<(ByteBufferView lhs, ByteBufferView rhs) noexcept
+inline bool operator<(ByteArrayView lhs, ByteArrayView rhs) noexcept
 {
     return compareMemory(lhs, rhs) < 0;
 }
-inline bool operator<=(ByteBufferView lhs, ByteBufferView rhs) noexcept
+inline bool operator<=(ByteArrayView lhs, ByteArrayView rhs) noexcept
 {
     return compareMemory(lhs, rhs) <= 0;
 }
-inline bool operator>(ByteBufferView lhs, ByteBufferView rhs) noexcept
+inline bool operator>(ByteArrayView lhs, ByteArrayView rhs) noexcept
 {
     return !(lhs <= rhs);
 }
-inline bool operator>=(ByteBufferView lhs, ByteBufferView rhs) noexcept
+inline bool operator>=(ByteArrayView lhs, ByteArrayView rhs) noexcept
 {
     return !(lhs < rhs);
 }
 
 /*****************************************************************************
-  ByteBuffer functions
+  ByteArray functions
  *****************************************************************************/
 
-inline bool operator==(const ByteBuffer &a1, const ByteBuffer &a2) noexcept
+inline bool operator==(const ByteArray &a1, const ByteArray &a2) noexcept
 {
-    return ByteBufferView(a1) == ByteBufferView(a2);
+    return ByteArrayView(a1) == ByteArrayView(a2);
 }
-inline bool operator==(const ByteBuffer &a1, const char *a2) noexcept {}
-inline bool operator==(const char *a1, const ByteBuffer &a2) noexcept
+inline bool operator==(const ByteArray &a1, const char *a2) noexcept {}
+inline bool operator==(const char *a1, const ByteArray &a2) noexcept
 {
     return false;
 }
-inline bool operator!=(const ByteBuffer &a1, const ByteBuffer &a2) noexcept
+inline bool operator!=(const ByteArray &a1, const ByteArray &a2) noexcept
 {
     return !(a1 == a2);
 }
-inline bool operator!=(const ByteBuffer &a1, const char *a2) noexcept
+inline bool operator!=(const ByteArray &a1, const char *a2) noexcept
 {
     return false;
 }
-inline bool operator!=(const char *a1, const ByteBuffer &a2) noexcept
+inline bool operator!=(const char *a1, const ByteArray &a2) noexcept
 {
     return false;
 }
-inline bool operator<(const ByteBuffer &a1, const ByteBuffer &a2) noexcept
+inline bool operator<(const ByteArray &a1, const ByteArray &a2) noexcept
 {
     return false;
 }
-inline bool operator<(const ByteBuffer &a1, const char *a2) noexcept
+inline bool operator<(const ByteArray &a1, const char *a2) noexcept
 {
     return false;
 }
-inline bool operator<(const char *a1, const ByteBuffer &a2) noexcept
+inline bool operator<(const char *a1, const ByteArray &a2) noexcept
 {
     return false;
 }
-inline bool operator<=(const ByteBuffer &a1, const ByteBuffer &a2) noexcept
+inline bool operator<=(const ByteArray &a1, const ByteArray &a2) noexcept
 {
     return false;
 }
-inline bool operator<=(const ByteBuffer &a1, const char *a2) noexcept
+inline bool operator<=(const ByteArray &a1, const char *a2) noexcept
 {
     return false;
 }
-inline bool operator<=(const char *a1, const ByteBuffer &a2) noexcept
+inline bool operator<=(const char *a1, const ByteArray &a2) noexcept
 {
     return false;
 }
-inline bool operator>(const ByteBuffer &a1, const ByteBuffer &a2) noexcept
+inline bool operator>(const ByteArray &a1, const ByteArray &a2) noexcept
 {
     return false;
 }
-inline bool operator>(const ByteBuffer &a1, const char *a2) noexcept
+inline bool operator>(const ByteArray &a1, const char *a2) noexcept
 {
     return false;
 }
-inline bool operator>(const char *a1, const ByteBuffer &a2) noexcept
+inline bool operator>(const char *a1, const ByteArray &a2) noexcept
 {
     return false;
 }
-inline bool operator>=(const ByteBuffer &a1, const ByteBuffer &a2) noexcept
+inline bool operator>=(const ByteArray &a1, const ByteArray &a2) noexcept
 {
     return false;
 }
-inline bool operator>=(const ByteBuffer &a1, const char *a2) noexcept
+inline bool operator>=(const ByteArray &a1, const char *a2) noexcept
 {
     return false;
 }
-inline bool operator>=(const char *a1, const ByteBuffer &a2) noexcept
+inline bool operator>=(const char *a1, const ByteArray &a2) noexcept
 {
     return false;
 }
 
-inline bool operator==(const ByteBuffer &a1, std::nullptr_t) noexcept
+inline bool operator==(const ByteArray &a1, std::nullptr_t) noexcept
 {
     return a1.isEmpty();
 }
-inline bool operator!=(const ByteBuffer &a1, std::nullptr_t) noexcept
+inline bool operator!=(const ByteArray &a1, std::nullptr_t) noexcept
 {
     return !a1.isEmpty();
 }
-inline bool operator<(const ByteBuffer &, std::nullptr_t) noexcept
+inline bool operator<(const ByteArray &, std::nullptr_t) noexcept
 {
     return false;
 }
-inline bool operator>(const ByteBuffer &a1, std::nullptr_t) noexcept
+inline bool operator>(const ByteArray &a1, std::nullptr_t) noexcept
 {
     return !a1.isEmpty();
 }
-inline bool operator<=(const ByteBuffer &a1, std::nullptr_t) noexcept
+inline bool operator<=(const ByteArray &a1, std::nullptr_t) noexcept
 {
     return a1.isEmpty();
 }
-inline bool operator>=(const ByteBuffer &, std::nullptr_t) noexcept
+inline bool operator>=(const ByteArray &, std::nullptr_t) noexcept
 {
     return true;
 }
 
-inline bool operator==(std::nullptr_t, const ByteBuffer &a2) noexcept
+inline bool operator==(std::nullptr_t, const ByteArray &a2) noexcept
 {
     return a2 == nullptr;
 }
-inline bool operator!=(std::nullptr_t, const ByteBuffer &a2) noexcept
+inline bool operator!=(std::nullptr_t, const ByteArray &a2) noexcept
 {
     return a2 != nullptr;
 }
-inline bool operator<(std::nullptr_t, const ByteBuffer &a2) noexcept
+inline bool operator<(std::nullptr_t, const ByteArray &a2) noexcept
 {
     return a2 > nullptr;
 }
-inline bool operator>(std::nullptr_t, const ByteBuffer &a2) noexcept
+inline bool operator>(std::nullptr_t, const ByteArray &a2) noexcept
 {
     return a2 < nullptr;
 }
-inline bool operator<=(std::nullptr_t, const ByteBuffer &a2) noexcept
+inline bool operator<=(std::nullptr_t, const ByteArray &a2) noexcept
 {
     return a2 >= nullptr;
 }
-inline bool operator>=(std::nullptr_t, const ByteBuffer &a2) noexcept
+inline bool operator>=(std::nullptr_t, const ByteArray &a2) noexcept
 {
     return a2 <= nullptr;
 }
 
+template<class T>
+inline uint64_t ByteArray::sizeT() const
+{
+    return 0;
+}
+
+template<class T>
+inline T *ByteArray::dataT() const
+{
+    return nullptr;
+}
+
 }// namespace m2
 
-#endif//M2_BYTEBUFFER_H_
+#endif//M2_BYTEARRAY_H_

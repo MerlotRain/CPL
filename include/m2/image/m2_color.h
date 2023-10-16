@@ -51,7 +51,7 @@ public:
         Hsl,
         ExtendedRgb
     };
-
+    
     Color() noexcept;
     Color(rgb32 c) noexcept;
     Color(int r, int g, int b, int a = 255) noexcept;
@@ -170,8 +170,8 @@ public:
     static Color fromHsl(int h, int s, int l, int a = 255);
     static Color fromHslF(float h, float s, float l, float a = 1.0);
 
-    [[nodiscard]] Color lighter(int f = 150) const noexcept;
-    [[nodiscard]] Color darker(int f = 200) const noexcept;
+    Color lighter(int f = 150) const noexcept;
+    Color darker(int f = 200) const noexcept;
 
     bool operator==(const Color &c) const noexcept;
     bool operator!=(const Color &c) const noexcept;

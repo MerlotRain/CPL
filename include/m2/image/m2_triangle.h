@@ -44,6 +44,8 @@ class Triangle
 public:
     Triangle();
     Triangle(const PointF &p1, const PointF &p2, const PointF &p3);
+    Triangle(const Triangle &other);
+    Triangle &operator=(const Triangle &other);
     bool operator==(const Triangle &other) const;
     bool operator!=(const Triangle &other) const;
 

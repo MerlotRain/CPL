@@ -51,7 +51,7 @@ enum FillRule
 class Polygon : public std::vector<Point>
 {
 public:
-    Polygon() = default;
+    Polygon();
     Polygon(const std::vector<Point> &v);
     Polygon(std::vector<Point> &&v) noexcept;
     Polygon(const Rect &r, bool closed = false);
@@ -62,14 +62,14 @@ public:
     void translate(const Point &offset);
 
     [[nodiscard]] Polygon translated(int dx, int dy) const;
-    [[nodiscard]] inline Polygon translated(const Point &offset) const;
+    [[nodiscard]] Polygon translated(const Point &offset) const;
 
     Rect boundingRect() const;
 
     void point(int i, int *x, int *y) const;
     Point point(int i) const;
     void setPoint(int index, int x, int y);
-    inline void setPoint(int index, const Point &p);
+    void setPoint(int index, const Point &p);
     void setPoints(int nPoints, const int *points);
     void setPoints(int nPoints, int firstx, int firsty, ...);
     void putPoints(int index, int nPoints, const int *points);
@@ -85,7 +85,7 @@ public:
 
     bool intersects(const Polygon &r) const;
 
-    [[nodiscard]] inline PolygonF toPolygonF() const;
+    [[nodiscard]] PolygonF toPolygonF() const;
 };
 
 class PolygonF : public std::vector<PointF>
@@ -96,16 +96,15 @@ public:
     PolygonF(std::vector<PointF> &&v) noexcept;
     PolygonF(const RectF &r);
     PolygonF(const Polygon &a);
-    inline void swap(PolygonF &other);
+    void swap(PolygonF &other);
 
-    inline void translate(double dx, double dy);
+    void translate(double dx, double dy);
     void translate(const PointF &offset);
 
-    inline PolygonF translated(double dx, double dy) const;
+    PolygonF translated(double dx, double dy) const;
     [[nodiscard]] PolygonF translated(const PointF &offset) const;
 
     Polygon toPolygon() const;
-
     bool isClosed() const;
     RectF boundingRect() const;
     bool containsPoint(const PointF &pt, FillRule fillRule) const;
@@ -116,34 +115,6 @@ public:
 
     bool intersects(const PolygonF &r) const;
 };
-
-
-inline void Polygon::setPoint(int index, const Point &pt)
-{
-    setPoint(index, pt.x(), pt.y());
-}
-
-inline Point Polygon::point(int index) const { return at(index); }
-
-inline void Polygon::translate(const Point &offset)
-{
-    translate(offset.x(), offset.y());
-}
-
-inline Polygon Polygon::translated(const Point &offset) const
-{
-    return translated(offset.x(), offset.y());
-}
-
-inline void PolygonF::translate(double dx, double dy)
-{
-    translate(PointF(dx, dy));
-}
-
-inline PolygonF PolygonF::translated(double dx, double dy) const
-{
-    return translated(PointF(dx, dy));
-}
 
 }// namespace m2
 

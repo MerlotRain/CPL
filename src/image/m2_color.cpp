@@ -1,445 +1,242 @@
-﻿#include <color.h>
-#include <mathhelp.h>
+#include "m2_color.h"
 
 namespace m2 {
-Color::Color() noexcept
-{
-    A = 0xff;
-    R = 00;
-    G = 00;
-    B = 00;
-}
+/**
+ * @brief Construct a new Color:: Color object
+ * 
+ */
+Color::Color() noexcept {}
 
-Color::Color(unsigned int c) noexcept
-{
-    A = 0xff;
-    R = c >> 16;
-    G = c >> 8;
-    B = c & 0xff;
-}
+/**
+ * @brief Construct a new Color:: Color object
+ * 
+ * @param c 
+ */
+Color::Color(rgb32 c) noexcept {}
 
-Color::Color(int c) noexcept
-{
-    A = c >> 24;
-    R = c >> 16;
-    G = c >> 8;
-    B = c & 0xff;
-}
+/**
+ * @brief Construct a new Color:: Color object
+ * 
+ * @param r 
+ * @param g 
+ * @param b 
+ * @param a 
+ */
+Color::Color(int r, int g, int b, int a) noexcept {}
 
-Color::Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a) noexcept
-{
-    R = r;
-    G = g;
-    B = b;
-    A = a;
-}
+/**
+ * @brief Construct a new Color:: Color object
+ * 
+ * @param name 
+ */
+Color::Color(const char *name) {}
 
-Color::Color(const Color &color) noexcept
-{
-    Argb = color.Argb;
-}
+/**
+ * @brief Construct a new Color:: Color object
+ * 
+ * @param color 
+ */
+Color::Color(const Color &color) noexcept {}
 
+/**
+ * @brief 
+ * 
+ * @param color 
+ * @return Color& 
+ */
 Color &Color::operator=(const Color &color) noexcept
 {
-    Argb = color.Argb;
-    return *this;
+    // TODO: insert return statement here
 }
 
-Color Color::Random()
+/**
+ * @brief Construct a new Color:: Color object
+ * 
+ * @param color 
+ */
+Color::Color(Color &&color) noexcept {}
+
+/**
+ * @brief 
+ * 
+ * @param color 
+ * @return Color& 
+ */
+Color &Color::operator=(Color &&color) noexcept
+{
+    // TODO: insert return statement here
+}
+
+/**
+ * @brief Generate a random color
+ * 
+ * @return Color 
+ */
+Color Color::random() { return Color(); }
+
+String Color::name() const { return String(); }
+
+Color::Spec Color::spec() const noexcept { return Spec(); }
+
+int Color::alpha() const noexcept { return 0; }
+
+void Color::setAlpha(int alpha) {}
+
+float Color::alphaF() const noexcept { return 0.0f; }
+
+void Color::setAlphaF(float alpha) {}
+
+int Color::red() const noexcept { return 0; }
+
+int Color::green() const noexcept { return 0; }
+
+int Color::blue() const noexcept { return 0; }
+
+void Color::setRed(int red) {}
+
+void Color::setGreen(int green) {}
+
+void Color::setBlue(int blue) {}
+
+float Color::redF() const noexcept { return 0.0f; }
+
+float Color::greenF() const noexcept { return 0.0f; }
+
+float Color::blueF() const noexcept { return 0.0f; }
+
+void Color::setRedF(float red) {}
+
+void Color::setGreenF(float green) {}
+
+void Color::setBlueF(float blue) {}
+
+void Color::getRgb(int *r, int *g, int *b, int *a) const {}
+
+void Color::setRgb(int r, int g, int b, int a) {}
+
+void Color::getRgbF(float *r, float *g, float *b, float *a) const {}
+
+void Color::setRgbF(float r, float g, float b, float a) {}
+
+rgb32 Color::rgba() const noexcept { return rgb32(); }
+
+void Color::setRgba(rgb32 rgba) noexcept {}
+
+rgb32 Color::rgb() const noexcept { return rgb32(); }
+
+void Color::setRgb(rgb32 rgb) noexcept {}
+
+int Color::hue() const noexcept { return 0; }
+
+int Color::saturation() const noexcept { return 0; }
+
+int Color::hsvHue() const noexcept { return 0; }
+
+int Color::hsvSaturation() const noexcept { return 0; }
+
+int Color::value() const noexcept { return 0; }
+
+float Color::hueF() const noexcept { return 0.0f; }
+
+float Color::saturationF() const noexcept { return 0.0f; }
+
+float Color::hsvHueF() const noexcept { return 0.0f; }
+
+float Color::hsvSaturationF() const noexcept { return 0.0f; }
+
+float Color::valueF() const noexcept { return 0.0f; }
+
+void Color::getHsv(int *h, int *s, int *v, int *a) const {}
+
+void Color::setHsv(int h, int s, int v, int a) {}
+
+void Color::getHsvF(float *h, float *s, float *v, float *a) const {}
+
+void Color::setHsvF(float h, float s, float v, float a) {}
+
+int Color::cyan() const noexcept { return 0; }
+
+int Color::magenta() const noexcept { return 0; }
+
+int Color::yellow() const noexcept { return 0; }
+
+int Color::black() const noexcept { return 0; }
+
+float Color::cyanF() const noexcept { return 0.0f; }
+
+float Color::magentaF() const noexcept { return 0.0f; }
+
+float Color::yellowF() const noexcept { return 0.0f; }
+
+float Color::blackF() const noexcept { return 0.0f; }
+
+void Color::getCmyk(int *c, int *m, int *y, int *k, int *a) const {}
+
+void Color::setCmyk(int c, int m, int y, int k, int a) {}
+
+void Color::getCmykF(float *c, float *m, float *y, float *k, float *a) const {}
+
+void Color::setCmykF(float c, float m, float y, float k, float a) {}
+
+int Color::hslHue() const noexcept { return 0; }
+
+int Color::hslSaturation() const noexcept { return 0; }
+
+int Color::lightness() const noexcept { return 0; }
+
+float Color::hslHueF() const noexcept { return 0.0f; }
+
+float Color::hslSaturationF() const noexcept { return 0.0f; }
+
+float Color::lightnessF() const noexcept { return 0.0f; }
+
+void Color::getHsl(int *h, int *s, int *l, int *a) const {}
+
+void Color::setHsl(int h, int s, int l, int a) {}
+
+void Color::getHslF(float *h, float *s, float *l, float *a) const {}
+
+void Color::setHslF(float h, float s, float l, float a) {}
+
+Color Color::toRgb() const noexcept { return Color(); }
+
+Color Color::toHsv() const noexcept { return Color(); }
+
+Color Color::toCmyk() const noexcept { return Color(); }
+
+Color Color::toHsl() const noexcept { return Color(); }
+
+Color Color::toExtendedRgb() const noexcept { return Color(); }
+
+Color Color::fromRgb(rgb32 rgb) noexcept { return Color(); }
+
+Color Color::fromRgba(rgb32 rgba) noexcept { return Color(); }
+
+Color Color::fromRgb(int r, int g, int b, int a) { return Color(); }
+
+Color Color::fromRgbF(float r, float g, float b, float a) { return Color(); }
+
+Color Color::fromHsv(int h, int s, int v, int a) { return Color(); }
+
+Color Color::fromHsvF(float h, float s, float v, float a) { return Color(); }
+
+Color Color::fromCmyk(int c, int m, int y, int k, int a) { return Color(); }
+
+Color Color::fromCmykF(float c, float m, float y, float k, float a)
 {
     return Color();
 }
 
-Color Color::RandomHSV()
-{
-    return Color();
-}
+Color Color::fromHsl(int h, int s, int l, int a) { return Color(); }
 
-Color Color::FromCSS(const char *css)
-{
-    return Color();
-}
+Color Color::fromHslF(float h, float s, float l, float a) { return Color(); }
 
-Color Color::FromARGB(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
-{
-    Color col;
-    col.R = r;
-    col.G = g;
-    col.B = b;
-    col.A = a;
-    return col;
-}
+Color Color::lighter(int f) const noexcept { return Color(); }
 
-Color Color::FromARGBF(double r, double g, double b, double a)
-{
-    Color color;
-    if (a < 0.0 || a > 1.0)
-    {
-        return Color::White;
-    }
+Color Color::darker(int f) const noexcept { return Color(); }
 
-    color.R = Math::Round(r * 0xff);
-    color.G = Math::Round(g * 0xff);
-    color.B = Math::Round(b * 0xff);
-    color.A = Math::Round(a * 0xff);
+bool Color::operator==(const Color &c) const noexcept { return false; }
 
-    return color;
-}
-
-Color Color::FromCMYK(unsigned char c, unsigned char m, unsigned char y, unsigned char k)
-{
-    if (c < 0 || c > 255 || m < 0 || m > 255 || y < 0 || y > 255 || k < 0 || k > 255)
-    {
-        return Color();
-    }
-    // 换算成0-1.0
-    const double cyan = c / double(0xff);
-    const double magenta = m / double(0xff);
-    const double yellow = y / double(0xff);
-    const double black = k / double(0xff);
-
-    Color color;
-    color.R = Math::Round((double(1.0) - (cyan * (double(1.0) - black) + black)) * 0xff);
-    color.G = Math::Round((double(1.0) - (magenta * (double(1.0) - black) + black)) * 0xff);
-    color.B = Math::Round((double(1.0) - (yellow * (double(1.0) - black) + black)) * 0xff);
-    color.A = 0xff;
-    return color;
-}
-
-Color Color::FromCMYKF(double c, double m, double y, double k)
-{
-    if (c < double(0.0) || c > double(1.0) || m < double(0.0) || m > double(1.0) || y < double(0.0) ||
-        y > double(1.0) || k < double(0.0) || k > double(1.0))
-    {
-        return Color();
-    }
-
-    // 换算成255
-    const unsigned char _cyan = Math::Round(c * 0xff);
-    const unsigned char _magenta = Math::Round(m * 0xff);
-    const unsigned char _yellow = Math::Round(y * 0xff);
-    const unsigned char _black = Math::Round(k * 0xff);
-
-    // 重新规划为0-1.0
-    const double cyan = _cyan / double(0xff);
-    const double magenta = _magenta / double(0xff);
-    const double yellow = _yellow / double(0xff);
-    const double black = _black / double(0xff);
-
-    Color color;
-    color.R = Math::Round((double(1.0) - (cyan * (double(1.0) - black) + black)) * 0xff);
-    color.G = Math::Round((double(1.0) - (magenta * (double(1.0) - black) + black)) * 0xff);
-    color.B = Math::Round((double(1.0) - (yellow * (double(1.0) - black) + black)) * 0xff);
-    color.A = 0xff;
-    return color;
-}
-
-Color Color::FromHSV(int h, int s, int v, unsigned char a)
-{
-    if (((h < 0 || h >= 360) && h != -1) || s < 0 || s > 255 || v < 0 || v > 255 || a < 0 || a > 255)
-    {
-        return Color();
-    }
-
-    unsigned char _alpha = a;
-    unsigned char _hue = h == -1 ? 0xff : (h % 360) * 100;
-    unsigned char _saturation = s;
-    unsigned char _value = v;
-}
-
-Color Color::FromHSV(float h, float s, float v, float a)
-{
-    if (((h < double(0.0) || h > double(1.0)) && h != double(-1.0)) ||
-        (s < double(0.0) || s > double(1.0)) || (v < double(0.0) || v > double(1.0)) ||
-        (a < double(0.0) || a > double(1.0)))
-    {
-        return Color();
-    }
-
-    unsigned char _alpha = Math::Round(a * 0xff);
-    unsigned char _hue = h == double(-1.0) ? 0xff : Math::Round(h * 36000);
-    unsigned char _saturation = Math::Round(s * 0xff);
-    unsigned char _value = Math::Round(v * 0xff);
-}
-
-int Color::ToGray(unsigned char r, unsigned char g, unsigned char b)
-{
-    return (r * 11 + g * 16 + b * 5) / 32;
-}
-
-bool Color::ToHSV(float *h, float *s, float *v) const
-{
-    const double r = R / double(0xff);
-    const double g = G / double(0xff);
-    const double b = B / double(0xff);
-    const double max = Math::Max3(r, g, b);
-    const double min = Math::Min3(r, g, b);
-    const double delta = max - min;
-
-    unsigned char value = Math::Round(max * 0xff);
-    unsigned char hue = 0;
-    unsigned char saturation = 0;
-    if (Math::FuzzyIsNull(delta))
-    {
-        hue = 0xff;
-        saturation = 0;
-    }
-    else
-    {
-        double th = 0;
-        saturation = Math::Round((delta / max) * 0xff);
-        if (Math::FuzzyCompare(r, max))
-            th = (g - b) / delta;
-        else if (Math::FuzzyCompare(g, max))
-            th = (double(2.0) + (b - r)) / delta;
-        else if (Math::FuzzyCompare(b, max))
-            th = (double(4.0) + (r - g)) / delta;
-        th *= double(60.0);
-        if (th < double(0.0))
-            th += double(360.0);
-        hue = Math::Round(th * 100);
-    }
-
-    *h = hue == 0xff ? double(-1.0) : hue / double(36000.0);
-    *s = saturation / double(0xff);
-    *v = value / double(0xff);
-
-    return true;
-}
-
-static unsigned int div_257_floor(unsigned int x)
-{
-    return (x - (x >> 8)) >> 8;
-}
-static unsigned int div_257(unsigned int x)
-{
-    return div_257_floor(x + 128);
-}
-
-bool Color::ToCMKY(unsigned int *c, unsigned int *m, unsigned int *y, unsigned int *k) const
-{
-    unsigned short cyan, magenta, yellow, black;
-    if (!R && !G && !B)
-    {
-        cyan = 0;
-        magenta = 0;
-        yellow = 0;
-        black = 0xffff;
-    }
-    else
-    {
-        const double r = R / double(0xff);
-        const double g = G / double(0xff);
-        const double b = B / double(0xff);
-        double c = double(1.0) - r;
-        double m = double(1.0) - g;
-        double y = double(1.0) - b;
-
-        // cmy -> cmyk
-        const double k = Math::Min(c, Math::Min(m, y));
-        c = (c - k) / (double(1.0) - k);
-        m = (m - k) / (double(1.0) - k);
-        y = (y - k) / (double(1.0) - k);
-
-        cyan = Math::Round(c * 0xff);
-        magenta = Math::Round(m * 0xff);
-        yellow = Math::Round(y * 0xff);
-        black = Math::Round(k * 0xff);
-    }
-
-    *c = div_257(cyan);
-    *m = div_257(magenta);
-    *y = div_257(yellow);
-    *k = div_257(black);
-
-    return true;
-}
-
-bool Color::ToHSL(float *h, float *s, float *l, int *a) const
-{
-    return true;
-}
-
-void Color::SetCOLORREF(unsigned int rgb, unsigned char a)
-{
-}
-
-unsigned int Color::ToCOLORREF() const
-{
-    return 0;
-}
-
-float Color::RedF() const noexcept
-{
-    return R / double(0xff);
-}
-
-float Color::GreenF() const noexcept
-{
-    return G / double(0xff);
-}
-
-float Color::BlueF() const noexcept
-{
-    return B / double(0xff);
-}
-
-float Color::AlphaF() const noexcept
-{
-    return A / double(0xff);
-}
-
-Color &Color::RedF(float r) noexcept
-{
-    if (r >= double(0.0) && r <= double(1.0))
-    {
-        R = Math::Round(r * 0xff);
-    }
-    return *this;
-}
-
-Color &Color::GreenF(float g) noexcept
-{
-    if (g >= double(0.0) && g <= double(1.0))
-    {
-        G = Math::Round(g * 0xff);
-    }
-    return *this;
-}
-
-Color &Color::BlueF(float b) noexcept
-{
-    if (b >= double(0.0) && b <= double(1.0))
-    {
-        B = Math::Round(b * 0xff);
-    }
-    return *this;
-}
-
-Color &Color::AlphaF(float a) noexcept
-{
-    if (a >= double(0.0) && a <= double(1.0))
-    {
-        A = Math::Round(a * 0xff);
-    }
-    return *this;
-}
-
-Color &Color::operator=(unsigned int &argb) noexcept
-{
-    A = 0xff;
-    R = argb >> 16;
-    G = argb >> 8;
-    B = argb & 0xff;
-    return *this;
-}
-
-Color &Color::operator=(int &argb) noexcept
-{
-    A = argb >> 24;
-    R = argb >> 16;
-    G = argb >> 8;
-    B = argb & 0xff;
-    return *this;
-}
-
-bool Color::operator==(const Color &color) const noexcept
-{
-    return Argb == color.Argb;
-}
-
-bool Color::operator!=(const Color &color) const noexcept
-{
-    return Argb != color.Argb;
-}
-
-Color::operator unsigned int() const noexcept
-{
-    return Argb;
-}
-
-Color::operator int() const noexcept
-{
-    return int(Argb);
-}
-
-Color &Color::Blend(const Color &color, PorterDuffBlendMode mode)
-{
-    switch (mode)
-    {
-        case eCLEAR:
-            {
-                break;
-            }
-        case eSRC:
-            {
-                break;
-            }
-        case eDST:
-            {
-                break;
-            }
-        case eSRC_OVER:
-            {
-                break;
-            }
-        case eDST_OVER:
-            {
-                break;
-            }
-        case eSRC_IN:
-            {
-                break;
-            }
-        case eDST_IN:
-            {
-                break;
-            }
-        case eSRC_OUT:
-            {
-                break;
-            }
-        case eDST_OUT:
-            {
-                break;
-            }
-        case eSRC_ATOP:
-            {
-                break;
-            }
-        case eDST_ATOP:
-            {
-                break;
-            }
-        case eXOR:
-            {
-                break;
-            }
-        case eDARKEN:
-            {
-                break;
-            }
-        case eLIGHTEN:
-            {
-                break;
-            }
-        case eMULTIPLY:
-            {
-                break;
-            }
-        case eSCREEN:
-            {
-                break;
-            }
-
-        default:
-            break;
-    }
-    return *this;
-}
-Color &Color::Blend(const Color &color, PhotoShopColorBlendMode mode)
-{
-    return *this;
-}
+bool Color::operator!=(const Color &c) const noexcept { return false; }
 
 }// namespace m2

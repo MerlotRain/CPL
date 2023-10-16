@@ -108,7 +108,7 @@ public:
         Keccak
     };
     void sha3Finish(int bitCount, Sha3Variant sha3Variant);
-    ByteBuffer result;
+    ByteArray result;
 };
 
 void CryptographicHashData::sha3Finish(int bitCount, Sha3Variant sha3Variant)
@@ -240,7 +240,7 @@ void CryptographicHash::AddData(const char *data, int length)
     m_Data->result.Clear();
 }
 
-void CryptographicHash::AddData(const ByteBuffer &data)
+void CryptographicHash::AddData(const ByteArray &data)
 {
     AddData(reinterpret_cast<const char *>(data.BufferHead()), data.BufferLength());
 }
@@ -250,7 +250,7 @@ void CryptographicHash::AddData(const String &str)
     AddData(str.data(), str.length());
 }
 
-ByteBuffer CryptographicHash::Result() const
+ByteArray CryptographicHash::Result() const
 {
     if (!m_Data->result.IsEmpty())
         return m_Data->result;
@@ -351,7 +351,7 @@ ByteBuffer CryptographicHash::Result() const
     return m_Data->result;
 }
 
-ByteBuffer CryptographicHash::Hash(const ByteBuffer &data, HashAlgorithm method)
+ByteArray CryptographicHash::Hash(const ByteArray &data, HashAlgorithm method)
 {
     CryptographicHash hash(method);
     hash.AddData(data);
