@@ -1,9 +1,8 @@
 #ifndef NUMERICSTRING_H
 #define NUMERICSTRING_H
 
-
-#include "preconfig.h"
-#include "stringhelp.h"
+#include <m2_string.h>
+#include <preconfig.h>
 
 namespace m2 {
 
@@ -12,18 +11,12 @@ struct is_negative;
 template<typename T>
 struct is_negative<true, T>
 {
-    bool operator()(T t)
-    {
-        return t < 0;
-    }
+    bool operator()(T t) { return t < 0; }
 };
 template<typename T>
 struct is_negative<false, T>
 {
-    bool operator()(T)
-    {
-        return false;
-    }
+    bool operator()(T) { return false; }
 };
 template<typename T>
 inline bool isNegative(T value)
@@ -73,8 +66,9 @@ static constexpr auto FLOAT_EXP = 'e';
 /// @param sep
 /// @return
 template<typename T>
-bool intToString(T value, unsigned short base, char *result, size_t &size, bool prefix = false,
-                 int width = -1, char fill = ' ', char sep = 0)
+bool intToString(T value, unsigned short base, char *result, size_t &size,
+                 bool prefix = false, int width = -1, char fill = ' ',
+                 char sep = 0)
 {
     if (base < 2 || base > 0x10)
     {
@@ -85,11 +79,11 @@ bool intToString(T value, unsigned short base, char *result, size_t &size, bool 
     CharPointer ptr(result, size);
     int count = 0;
     T tmpVal;
-    do
-    {
+    do {
         tmpVal = value;
         value /= base;
-        *ptr++ = "FEDCBA9876543210123456789ABCDEF"[15 + (tmpVal - value * base)];
+        *ptr++ =
+                "FEDCBA9876543210123456789ABCDEF"[15 + (tmpVal - value * base)];
         if (sep && (base == 10) && (++count == 3))
         {
             *ptr++ = sep;
@@ -99,45 +93,24 @@ bool intToString(T value, unsigned short base, char *result, size_t &size, bool 
 
     if ('0' == fill)
     {
-        if (tmpVal < 0)
-        {
-            --width;
-        }
-        if (prefix && base == 010)
-        {
-            --width;
-        }
-        if (prefix && base == 0x10)
-        {
-            width -= 2;
-        }
-        while ((ptr - result) < width)
-        {
-            *ptr++ = fill;
-        }
+        if (tmpVal < 0) { --width; }
+        if (prefix && base == 010) { --width; }
+        if (prefix && base == 0x10) { width -= 2; }
+        while ((ptr - result) < width) { *ptr++ = fill; }
     }
 
-    if (prefix && base == 010)
-    {
-        *ptr++ = '0';
-    }
+    if (prefix && base == 010) { *ptr++ = '0'; }
     else if (prefix && base == 0x10)
     {
         *ptr++ = 'x';
         *ptr++ = '0';
     }
 
-    if (tmpVal < 0)
-    {
-        *ptr++ = '-';
-    }
+    if (tmpVal < 0) { *ptr++ = '-'; }
 
     if ('0' != fill)
     {
-        while ((ptr - result) < width)
-        {
-            *ptr++ = fill;
-        }
+        while ((ptr - result) < width) { *ptr++ = fill; }
     }
 
     size = ptr - result;
@@ -157,8 +130,9 @@ bool intToString(T value, unsigned short base, char *result, size_t &size, bool 
 }
 
 template<typename T>
-bool intToString(T value, unsigned short base, String &result, bool prefix = false, int width = -1,
-                 char fill = ' ', char sep = 0)
+bool intToString(T value, unsigned short base, String &result,
+                 bool prefix = false, int width = -1, char fill = ' ',
+                 char sep = 0)
 {
     char res[MAX_INT_STRING_LENGHT] = {0};
     std::size_t size = MAX_INT_STRING_LENGHT;
@@ -179,8 +153,9 @@ bool intToString(T value, unsigned short base, String &result, bool prefix = fal
 /// @param sep
 /// @return
 template<typename T>
-bool unsignedIntToString(T value, unsigned short base, char *result, size_t &size, bool prefix = false,
-                         int width = -1, char fill = ' ', char sep = 0)
+bool unsignedIntToString(T value, unsigned short base, char *result,
+                         size_t &size, bool prefix = false, int width = -1,
+                         char fill = ' ', char sep = 0)
 {
     if (base < 2 || base > 0x10)
     {
@@ -191,11 +166,11 @@ bool unsignedIntToString(T value, unsigned short base, char *result, size_t &siz
     CharPointer ptr(result, size);
     int thCount = 0;
     T tmpVal;
-    do
-    {
+    do {
         tmpVal = value;
         value /= base;
-        *ptr++ = "FEDCBA9876543210123456789ABCDEF"[15 + (tmpVal - value * base)];
+        *ptr++ =
+                "FEDCBA9876543210123456789ABCDEF"[15 + (tmpVal - value * base)];
         if (sep && (base == 10) && (++thCount == 3))
         {
             *ptr++ = sep;
@@ -205,24 +180,12 @@ bool unsignedIntToString(T value, unsigned short base, char *result, size_t &siz
 
     if ('0' == fill)
     {
-        if (prefix && base == 010)
-        {
-            --width;
-        }
-        if (prefix && base == 0x10)
-        {
-            width -= 2;
-        }
-        while ((ptr - result) < width)
-        {
-            *ptr++ = fill;
-        }
+        if (prefix && base == 010) { --width; }
+        if (prefix && base == 0x10) { width -= 2; }
+        while ((ptr - result) < width) { *ptr++ = fill; }
     }
 
-    if (prefix && base == 010)
-    {
-        *ptr++ = '0';
-    }
+    if (prefix && base == 010) { *ptr++ = '0'; }
     else if (prefix && base == 0x10)
     {
         *ptr++ = 'x';
@@ -231,10 +194,7 @@ bool unsignedIntToString(T value, unsigned short base, char *result, size_t &siz
 
     if ('0' != fill)
     {
-        while ((ptr - result) < width)
-        {
-            *ptr++ = fill;
-        }
+        while ((ptr - result) < width) { *ptr++ = fill; }
     }
 
     size = ptr - result;
@@ -255,12 +215,14 @@ bool unsignedIntToString(T value, unsigned short base, char *result, size_t &siz
 }
 
 template<typename T>
-bool unsignedIntToString(T value, unsigned short base, String &result, bool prefix = false,
-                         int width = -1, char fill = ' ', char sep = 0)
+bool unsignedIntToString(T value, unsigned short base, String &result,
+                         bool prefix = false, int width = -1, char fill = ' ',
+                         char sep = 0)
 {
     char res[MAX_INT_STRING_LENGHT] = {0};
     std::size_t size = MAX_INT_STRING_LENGHT;
-    bool ret = unsignedIntToString(value, base, res, size, prefix, width, fill, thSep);
+    bool ret = unsignedIntToString(value, base, res, size, prefix, width, fill,
+                                   thSep);
     result.assign(res, size);
     return ret;
 }
@@ -274,11 +236,11 @@ bool unsignedIntToString(T value, unsigned short base, String &result, bool pref
 void floatToString(char *buff, int buffSize, float value,
                    int low = -std::numeric_limits<float>::digits10,
                    int high = std::numeric_limits<float>::digits10);
-String floatToString(String &str, float value, int precision = -1, int width = 0, char thSep = 0,
-                       char decSep = 0);
+String floatToString(String &str, float value, int precision = -1,
+                     int width = 0, char thSep = 0, char decSep = 0);
 void floatToFixedString(char *buff, int buffSize, float value, int precision);
-String floatToFixedString(String &str, float value, int precision, int width = 0, char thSep = 0,
-                            char decSep = 0);
+String floatToFixedString(String &str, float value, int precision,
+                          int width = 0, char thSep = 0, char decSep = 0);
 
 /// @brief double模块
 /// @param buff
@@ -289,11 +251,11 @@ String floatToFixedString(String &str, float value, int precision, int width = 0
 void doubleToString(char *buff, int buffSize, double value,
                     int low = -std::numeric_limits<double>::digits10,
                     int high = std::numeric_limits<double>::digits10);
-String doubleToString(String &str, double value, int precision = -1, int width = 0, char thSep = 0,
-                        char decSep = 0);
+String doubleToString(String &str, double value, int precision = -1,
+                      int width = 0, char thSep = 0, char decSep = 0);
 void doubleToFixedString(char *buff, int buffSize, double value, int precision);
-String doubleToFixedString(String &str, double value, int precision, int width = 0, char thSep = 0,
-                             char decSep = 0);
+String doubleToFixedString(String &str, double value, int precision,
+                           int width = 0, char thSep = 0, char decSep = 0);
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -314,58 +276,32 @@ bool stringToInt(const char *str, T &out, unsigned short base, char sep = ',')
 {
     assert(base == 2 || base == 8 || base == 10 || base == 16);
 
-    if (!str)
-    {
-        return false;
-    }
-    while (std::isspace(*str))
-    {
-        ++str;
-    }
-    if (*str == '\0')
-    {
-        return false;
-    }
+    if (!str) { return false; }
+    while (std::isspace(*str)) { ++str; }
+    if (*str == '\0') { return false; }
     bool negative = false;
     if ((base == 10) && (*str == '-'))
     {
-        if (!std::numeric_limits<T>::is_signed)
-        {
-            return false;
-        }
+        if (!std::numeric_limits<T>::is_signed) { return false; }
         negative = true;
         ++str;
     }
-    else if (*str == '+')
-    {
-        ++str;
-    }
+    else if (*str == '+') { ++str; }
 
     uintmax_t limitCheck = std::numeric_limits<T>::max();
-    if (negative)
-    {
-        ++limitCheck;
-    }
+    if (negative) { ++limitCheck; }
     uintmax_t result = 0;
     unsigned char add = 0;
     for (; *str != '\0'; ++str)
     {
         if (*str == thSep)
         {
-            if (base == 10)
-            {
-                continue;
-            }
-            throw std::runtime_error("thousand separators only allowed for base 10");
+            if (base == 10) { continue; }
+            throw std::runtime_error(
+                    "thousand separators only allowed for base 10");
         }
-        if (result > (limitCheck / base))
-        {
-            return false;
-        }
-        if (!safeMultiply(result, result, base))
-        {
-            return false;
-        }
+        if (result > (limitCheck / base)) { return false; }
+        if (!safeMultiply(result, result, base)) { return false; }
         switch (*str)
         {
             case '0':
@@ -381,14 +317,8 @@ bool stringToInt(const char *str, T &out, unsigned short base, char sep = ',')
 
             case '8':
             case '9':
-                if ((base == 10) || (base == 0x10))
-                {
-                    add = (*pStr - '0');
-                }
-                else
-                {
-                    return false;
-                }
+                if ((base == 10) || (base == 0x10)) { add = (*pStr - '0'); }
+                else { return false; }
                 break;
 
             case 'a':
@@ -397,10 +327,7 @@ bool stringToInt(const char *str, T &out, unsigned short base, char sep = ',')
             case 'd':
             case 'e':
             case 'f':
-                if (base != 0x10)
-                {
-                    return false;
-                }
+                if (base != 0x10) { return false; }
                 add = (*str - 'a') + 10;
                 break;
 
@@ -410,10 +337,7 @@ bool stringToInt(const char *str, T &out, unsigned short base, char sep = ',')
             case 'D':
             case 'E':
             case 'F':
-                if (base != 0x10)
-                {
-                    return false;
-                }
+                if (base != 0x10) { return false; }
                 add = (*str - 'A') + 10;
                 break;
 
@@ -427,14 +351,8 @@ bool stringToInt(const char *str, T &out, unsigned short base, char sep = ',')
         result += add;
     }
 
-    if (negative && (base == 10))
-    {
-        out = static_cast<T>(-result);
-    }
-    else
-    {
-        out = static_cast<T>(result);
-    }
+    if (negative && (base == 10)) { out = static_cast<T>(-result); }
+    else { out = static_cast<T>(result); }
 
     return true;
 }
@@ -450,9 +368,11 @@ bool stringToInt(String &str, T &result, unsigned short base, char sep = ',')
 /// @param inf
 /// @param nan
 /// @return
-float stringToFloat(const char *str, const char *inf = FLOAT_INF, const char *nan = FLOAT_NAN);
-bool stringToFloat(const String &str, float &result, char decSep = '.', char thSep = ',',
-                   const char *inf = FLOAT_INF, const char *nan = FLOAT_NAN);
+float stringToFloat(const char *str, const char *inf = FLOAT_INF,
+                    const char *nan = FLOAT_NAN);
+bool stringToFloat(const String &str, float &result, char decSep = '.',
+                   char thSep = ',', const char *inf = FLOAT_INF,
+                   const char *nan = FLOAT_NAN);
 
 
 /// @brief
@@ -460,9 +380,11 @@ bool stringToFloat(const String &str, float &result, char decSep = '.', char thS
 /// @param inf
 /// @param nan
 /// @return
-double stringToDouble(const char *str, const char *inf = FLOAT_INF, const char *nan = FLOAT_NAN);
-bool stringToDouble(const String &str, double &result, char decSep = '.', char thSep = ',',
-                    const char *inf = FLOAT_INF, const char *nan = FLOAT_NAN);
+double stringToDouble(const char *str, const char *inf = FLOAT_INF,
+                      const char *nan = FLOAT_NAN);
+bool stringToDouble(const String &str, double &result, char decSep = '.',
+                    char thSep = ',', const char *inf = FLOAT_INF,
+                    const char *nan = FLOAT_NAN);
 
 
 }// namespace m2

@@ -59,7 +59,6 @@ set(m2_include_files
     ./include/m2/image/m2_circle.h
     ./include/m2/image/m2_color.h
     ./include/m2/image/m2_colorramp.h
-    ./include/m2/image/m2_colorscheme.h
     ./include/m2/image/m2_ellipse.h
     ./include/m2/image/m2_image.h
     ./include/m2/image/m2_line.h
@@ -94,12 +93,74 @@ set(m2_include_files
     )
 
 set(m2_source_files 
+    ./src/image/imagehandler/m2_bmpimagehandler.cpp
+    ./src/image/imagehandler/m2_bmpimagehandler.h
+    ./src/image/imagehandler/m2_ddsimagehandler.cpp
+    ./src/image/imagehandler/m2_ddsimagehandler.h
+    ./src/image/imagehandler/m2_gifimagehandler.cpp
+    ./src/image/imagehandler/m2_gifimagehandler.h
+    ./src/image/imagehandler/m2_icoimagehandler.cpp
+    ./src/image/imagehandler/m2_icoimagehandler.h
+    ./src/image/imagehandler/m2_pngimagehandler.cpp
+    ./src/image/imagehandler/m2_pngimagehandler.h
+    ./src/image/imagehandler/m2_ppmimagehandler.cpp
+    ./src/image/imagehandler/m2_ppmimagehandler.h
+    ./src/image/imagehandler/m2_svgimagehandler.cpp
+    ./src/image/imagehandler/m2_svgimagehandler.h
+    ./src/image/imagehandler/m2_tgaimagehandler.cpp
+    ./src/image/imagehandler/m2_tgaimagehandler.h
+    ./src/image/imagehandler/m2_tiffimagehandler.cpp
+    ./src/image/imagehandler/m2_tiffimagehandler.h
+    ./src/image/imagehandler/m2_wbmpimagehandler.cpp
+    ./src/image/imagehandler/m2_wbmpimagehandler.h
+    ./src/image/imagehandler/m2_webpimagehandler.cpp
+    ./src/image/imagehandler/m2_webpimagehandler.h
+    ./src/image/imagehandler/m2_xbmimagehandler.cpp
+    ./src/image/imagehandler/m2_xbmimagehandler.h
+    ./src/image/imagehandler/m2_xpmimagehandler.cpp
+    ./src/image/imagehandler/m2_xpmimagehandler.h
+    ./src/image/m2_bezier.cpp
+    ./src/image/m2_circle.cpp
+    ./src/image/m2_color.cpp
+    ./src/image/m2_colorramp.cpp
+    ./src/image/m2_ellipse.cpp
+    ./src/image/m2_image.cpp
+    ./src/image/m2_imagehandler.cpp
+    ./src/image/m2_imagehandler.h
+    ./src/image/m2_line.cpp
+    ./src/image/m2_margins.cpp
     ./src/image/m2_pagesize.cpp
+    ./src/image/m2_point.cpp
+    ./src/image/m2_polygon.cpp
+    ./src/image/m2_rbtree.cpp
+    ./src/image/m2_rect.cpp
+    ./src/image/m2_regularpolygon.cpp
+    ./src/image/m2_size.cpp
+    ./src/image/m2_triangle.cpp
+
+    ./src/math/m2_bigdecimal.cpp
+    ./src/math/m2_biginteger.cpp
+    ./src/math/m2_cryptographichash.cpp
+    ./src/math/m2_geometrymath.cpp
+    ./src/math/m2_math.cpp
+    ./src/math/m2_random.cpp
+    ./src/math/m2_unitsconvertor.cpp
+    ./src/math/m2_uuid.cpp
+    ./src/math/m2_vector.cpp
     
     ./src/io/m2_buffer.cpp
     ./src/io/m2_bytearray.cpp
     
+    ./src/text/m2_ascii.cpp
+    ./src/text/m2_numericstring.cpp
+    ./src/text/m2_numericstring.h
+    ./src/text/m2_regularexpression.cpp
     ./src/text/m2_string.cpp
+    ./src/text/m2_stringlist.cpp
+    ./src/text/m2_stringstream.cpp
+    ./src/text/m2_stringtokenizer.cpp
+    ./src/text/m2_textconverter.cpp
+    ./src/text/m2_wstring.cpp
 
     ./src/sql/m2_sqldatabase.cpp
     ./src/sql/m2_sqldriver.cpp

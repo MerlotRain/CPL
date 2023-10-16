@@ -154,41 +154,43 @@ public:
     };
     static String toString(bool value, BoolFormat format = eFalseAndTrue);
     static String toString(short value, int base = 10, int width = -1,
-                           char fill = '0');
+                           char fill = '0', bool prefix = false);
     static String toString(unsigned short value, int base = 10, int width = -1,
-                           char fill = '0');
+                           char fill = '0', bool prefix = false);
     static String toString(int value, int base = 10, int width = -1,
-                           char fill = '0');
+                           char fill = '0', bool prefix = false);
     static String toString(unsigned int value, int base = 10, int width = -1,
-                           char fill = '0');
+                           char fill = '0', bool prefix = false);
     static String toString(long value, int base = 10, int width = -1,
-                           char fill = '0');
+                           char fill = '0', bool prefix = false);
     static String toString(unsigned long value, int base = 10, int width = -1,
-                           char fill = '0');
+                           char fill = '0', bool prefix = false);
     static String toString(long long value, int base = 10, int width = -1,
-                           char fill = '0');
+                           char fill = '0', bool prefix = false);
     static String toString(unsigned long long value, int base = 10,
-                           int width = -1, char fill = '0');
+                           int width = -1, char fill = '0',
+                           bool prefix = false);
     static String toString(float value, char format = 'g', int precision = 6);
     static String toString(double value, char format = 'g', int precision = 6);
 
     String &appendTo(const String &str, int width = -1, char fill = ' ');
     String &appendTo(String &&str, int width = -1, char fill = ' ');
     String &appendTo(short value, int base = 10, int width = -1,
-                     char fill = '0');
+                     char fill = '0', bool prefix = false);
     String &appendTo(unsigned short value, int base = 10, int width = -1,
-                     char fill = '0');
-    String &appendTo(int value, int base = 10, int width = -1, char fill = '0');
+                     char fill = '0', bool prefix = false);
+    String &appendTo(int value, int base = 10, int width = -1, char fill = '0',
+                     bool prefix = false);
     String &appendTo(unsigned int value, int base = 10, int width = -1,
-                     char fill = '0');
-    String &appendTo(long value, int base = 10, int width = -1,
-                     char fill = '0');
+                     char fill = '0', bool prefix = false);
+    String &appendTo(long value, int base = 10, int width = -1, char fill = '0',
+                     bool prefix = false);
     String &appendTo(unsigned long value, int base = 10, int width = -1,
-                     char fill = '0');
+                     char fill = '0', bool prefix = false);
     String &appendTo(long long value, int base = 10, int width = -1,
-                     char fill = '0');
+                     char fill = '0', bool prefix = false);
     String &appendTo(unsigned long long value, int base = 10, int width = -1,
-                     char fill = '0');
+                     char fill = '0', bool prefix = false);
     String &appendTo(float value, char format = 'g', int precision = 6);
     String &appendTo(double value, char format = 'g', int precision = 6);
 
@@ -209,11 +211,6 @@ public:
     String toGB2312();
     String toGB18030();
     size_t utf8Length();
-};
-
-struct M2_API StringCompareIgnoreCase
-{
-    bool operator()(const String &l, const String &r) const;
 };
 
 inline bool String::isNullOrEmpty() const
