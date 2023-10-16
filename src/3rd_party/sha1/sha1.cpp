@@ -1,48 +1,9 @@
-/****************************************************************************
-**
-** Copyright (C) 2016 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:LGPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 3 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL3 included in the
-** packaging of this file. Please review the following information to
-** ensure the GNU Lesser General Public License version 3 requirements
-** will be met: https://www.gnu.org/licenses/lgpl-3.0.html.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 2.0 or (at your option) the GNU General
-** Public license version 3 or any later version approved by the KDE Free
-** Qt Foundation. The licenses are as published by the Free Software
-** Foundation and appearing in the file LICENSE.GPL2 and LICENSE.GPL3
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-2.0.html and
-** https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
-
 /*
   Based on the public domain implementation of the SHA-1 algorithm
   Copyright (C) Dominik Reichl <dominik.reichl@t-online.de>
 */
 
-#include "endian.h"
+#include "m2_endian.h"
 #include "preconfig.h"
 
 #ifdef _MSC_VER
@@ -98,45 +59,59 @@ static inline uint32_t rol32(uint32_t value, unsigned int shift)
 
 static inline uint32_t sha1Word(Sha1Chunk *chunk, const unsigned int position)
 {
-    return (chunk->words[position & 0xf] = rol32(chunk->words[(position + 13) & 0xf] ^ chunk->words[(position + 8) & 0xf] ^ chunk->words[(position + 2) & 0xf] ^ chunk->words[(position) &0xf], 1));
+    return (chunk->words[position & 0xf] =
+                    rol32(chunk->words[(position + 13) & 0xf] ^
+                                  chunk->words[(position + 8) & 0xf] ^
+                                  chunk->words[(position + 2) & 0xf] ^
+                                  chunk->words[(position) &0xf],
+                          1));
 }
 
 static inline void sha1Round0(Sha1Chunk *chunk, const unsigned int position,
-                              uint32_t &v, uint32_t &w, uint32_t &x, uint32_t &y, uint32_t &z)
+                              uint32_t &v, uint32_t &w, uint32_t &x,
+                              uint32_t &y, uint32_t &z)
 {
-    z += (((w & (x ^ y)) ^ y) + chunk->words[position] + 0x5A827999 + rol32(v, 5));
+    z += (((w & (x ^ y)) ^ y) + chunk->words[position] + 0x5A827999 +
+          rol32(v, 5));
     w = rol32(w, 30);
 }
 
 static inline void sha1Round1(Sha1Chunk *chunk, const unsigned int position,
-                              uint32_t &v, uint32_t &w, uint32_t &x, uint32_t &y, uint32_t &z)
+                              uint32_t &v, uint32_t &w, uint32_t &x,
+                              uint32_t &y, uint32_t &z)
 {
-    z += (((w & (x ^ y)) ^ y) + sha1Word(chunk, position) + 0x5A827999 + rol32(v, 5));
+    z += (((w & (x ^ y)) ^ y) + sha1Word(chunk, position) + 0x5A827999 +
+          rol32(v, 5));
     w = rol32(w, 30);
 }
 
 static inline void sha1Round2(Sha1Chunk *chunk, const unsigned int position,
-                              uint32_t &v, uint32_t &w, uint32_t &x, uint32_t &y, uint32_t &z)
+                              uint32_t &v, uint32_t &w, uint32_t &x,
+                              uint32_t &y, uint32_t &z)
 {
     z += ((w ^ x ^ y) + sha1Word(chunk, position) + 0x6ED9EBA1 + rol32(v, 5));
     w = rol32(w, 30);
 }
 
 static inline void sha1Round3(Sha1Chunk *chunk, const unsigned int position,
-                              uint32_t &v, uint32_t &w, uint32_t &x, uint32_t &y, uint32_t &z)
+                              uint32_t &v, uint32_t &w, uint32_t &x,
+                              uint32_t &y, uint32_t &z)
 {
-    z += ((((w | x) & y) | (w & x)) + sha1Word(chunk, position) + 0x8F1BBCDC + rol32(v, 5));
+    z += ((((w | x) & y) | (w & x)) + sha1Word(chunk, position) + 0x8F1BBCDC +
+          rol32(v, 5));
     w = rol32(w, 30);
 }
 
 static inline void sha1Round4(Sha1Chunk *chunk, const unsigned int position,
-                              uint32_t &v, uint32_t &w, uint32_t &x, uint32_t &y, uint32_t &z)
+                              uint32_t &v, uint32_t &w, uint32_t &x,
+                              uint32_t &y, uint32_t &z)
 {
     z += ((w ^ x ^ y) + sha1Word(chunk, position) + 0xCA62C1D6 + rol32(v, 5));
     w = rol32(w, 30);
 }
 
-static inline void sha1ProcessChunk(Sha1State *state, const unsigned char *buffer)
+static inline void sha1ProcessChunk(Sha1State *state,
+                                    const unsigned char *buffer)
 {
     // Copy state[] to working vars
     uint32_t a = state->h0;
@@ -151,7 +126,8 @@ static inline void sha1ProcessChunk(Sha1State *state, const unsigned char *buffe
     Sha1Chunk *chunk = reinterpret_cast<Sha1Chunk *>(&chunkBuffer);
 
     for (int i = 0; i < 16; ++i)
-        chunk->words[i] = Lite::Utility::EndianConverter::FromBigEndian(chunk->words[i]);
+        chunk->words[i] =
+                Lite::Utility::EndianConverter::FromBigEndian(chunk->words[i]);
 
     sha1Round0(chunk, 0, a, b, c, d, e);
     sha1Round0(chunk, 1, e, a, b, c, d);
@@ -259,11 +235,13 @@ static inline void sha1InitState(Sha1State *state)
     state->messageSize = 0;
 }
 
-static inline void sha1Update(Sha1State *state, const unsigned char *data, int64_t len)
+static inline void sha1Update(Sha1State *state, const unsigned char *data,
+                              int64_t len)
 {
     uint32_t rest = static_cast<uint32_t>(state->messageSize & GS_UINT64_C(63));
 
-    uint64_t availableData = static_cast<uint64_t>(len) + static_cast<uint64_t>(rest);
+    uint64_t availableData =
+            static_cast<uint64_t>(len) + static_cast<uint64_t>(rest);
     state->messageSize += len;
 
     if (availableData < GS_UINT64_C(64))
@@ -277,8 +255,7 @@ static inline void sha1Update(Sha1State *state, const unsigned char *data, int64
         sha1ProcessChunk(state, state->buffer);
 
         int64_t lastI = len - ((len + rest) & GS_UINT64_C(63));
-        for (; i < lastI; i += 64)
-            sha1ProcessChunk(state, &data[i]);
+        for (; i < lastI; i += 64) sha1ProcessChunk(state, &data[i]);
 
         memcpy(&state->buffer[0], &data[i], len - i);
     }
@@ -301,7 +278,8 @@ static inline void sha1FinalizeState(Sha1State *state)
     }
     else
     {
-        sha1Update(state, zero, 64 - 1 - 8 - static_cast<int>(messageSize & 63));
+        sha1Update(state, zero,
+                   64 - 1 - 8 - static_cast<int>(messageSize & 63));
     }
 
     sha1Update(state, sizeInBits, 8);

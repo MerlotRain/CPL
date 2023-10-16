@@ -88,9 +88,7 @@ public:
     double length() const;
 
 private:
-    double apothemToRadius(double apothem, unsigned int numberSides) const;
-    double interiorAngle(unsigned int nbSides) const;
-    double centralAngle(unsigned int nbSides) const;
+    double apothemToRadius(double apothem) const;
 
 private:
     PointF m_center;
@@ -146,7 +144,7 @@ inline RegularPolygon<NUM_SIDES>::RegularPolygon(const PointF &center,
             {
                 m_center = apothemToRadius(center.distance(pt1), NUM_SIDES);
                 const double azimuth = center.azimuth(pt1);
-                m_firstVertex = mCenter.project(
+                m_firstVertex = m_center.project(
                         m_center, azimuth - centralAngle(NUM_SIDES) / 2);
                 break;
             }
@@ -224,98 +222,135 @@ inline unsigned int RegularPolygon<NUM_SIDES>::numberSides() const
 template<int NUM_SIDES>
 inline void RegularPolygon<NUM_SIDES>::setCenter(const PointF &center)
 {
+    const double azimuth =
+            m_firstVertex.isEmpty() ? 0 : m_center.azimuth(m_firstVertex);
+    m_center = center;
+    m_firstVertex = center.project(m_radius, azimuth);
 }
 
 template<int NUM_SIDES>
 inline void RegularPolygon<NUM_SIDES>::setRadius(double radius)
 {
+    m_radius = std::fabs(radius);
+    const double azimuth =
+            m_firstVertex.isEmpty() ? 0 : m_center.azimuth(m_firstVertex);
+    m_firstVertex = m_center.project(m_radius, azimuth);
 }
 
 template<int NUM_SIDES>
 inline void RegularPolygon<NUM_SIDES>::setFirstVertex(const PointF &firstVertex)
 {
+    const double azimuth = m_center.azimuth(m_firstVertex);
+    m_firstVertex = firstVertex;
+    m_center = m_firstVertex.project(m_radius, azimuth);
 }
 
 template<int NUM_SIDES>
 inline PointSequence RegularPolygon<NUM_SIDES>::points() const
 {
-    return PointSequence();
+    PointSequence pts;
+    if (isEmpty()) { return pts; }
+
+    double azimuth = m_center.azimuth(m_firstVertex);
+    const double azimuth_add = centralAngle();
+    unsigned int n = 1;
+    while (n <= NUM_SIDES)
+    {
+        pts.push_back(m_center.project(m_radius, azimuth));
+        azimuth += azimuth_add;
+        if ((azimuth_add > 0) && (azimuth > 180.0)) { azimuth -= 360.0; }
+
+        n++;
+    }
+
+    return pts;
 }
 
 template<int NUM_SIDES>
 inline Triangle RegularPolygon<NUM_SIDES>::toTriangle() const
 {
-    return Triangle();
+    if (isEmpty() || (NUM_SIDES != 3)) { return Triangle(); }
+
+    PointSequence pts;
+    pts = points();
+
+    return Triangle(pts.at(0), pts.at(1), pts.at(2));
 }
 
 template<int NUM_SIDES>
 inline std::vector<Triangle> RegularPolygon<NUM_SIDES>::triangulate() const
 {
-    return std::vector<Triangle>();
+    std::vector<Triangle> l_tri;
+    if (isEmpty()) { return l_tri; }
+
+    PointSequence pts;
+    pts = points();
+
+    unsigned int n = 0;
+    while (n < NUM_SIDES - 1)
+    {
+        l_tri.append(Triangle(pts.at(n), pts.at(n + 1), m_center));
+        n++;
+    }
+    l_tri.append(Triangle(pts.at(n), pts.at(0), m_center));
+
+    return l_tri;
 }
 
 template<int NUM_SIDES>
 inline Circle RegularPolygon<NUM_SIDES>::inscribedCircle() const
 {
-    return Circle();
+    return Circle(m_center, apothem());
 }
 
 template<int NUM_SIDES>
 inline Circle RegularPolygon<NUM_SIDES>::circumscribedCircle() const
 {
-    return Circle();
+    return Circle(m_center, m_radius);
 }
 
 template<int NUM_SIDES>
 inline double RegularPolygon<NUM_SIDES>::interiorAngle() const
 {
-    return 0.0;
+    return (NUM_SIDES - 2) * 180 / NUM_SIDES;
 }
 
 template<int NUM_SIDES>
 inline double RegularPolygon<NUM_SIDES>::centralAngle() const
 {
-    return 0.0;
+    return 360.0 / NUM_SIDES;
 }
 
 template<int NUM_SIDES>
 inline double RegularPolygon<NUM_SIDES>::area() const
 {
-    return 0.0;
+    if (isEmpty()) { return 0.0; }
+
+    return (m_radius * m_radius * NUM_SIDES *
+            std::sin(centralAngle() * M_PI / 180.0)) /
+           2;
 }
 
 template<int NUM_SIDES>
 inline double RegularPolygon<NUM_SIDES>::perimeter() const
 {
-    return 0.0;
+    if (isEmpty()) { return 0.0; }
+
+    return length() * NUM_SIDES;
 }
 
 template<int NUM_SIDES>
 inline double RegularPolygon<NUM_SIDES>::length() const
 {
-    return 0.0;
+    if (isEmpty()) { return 0.0; }
+
+    return m_radius * 2 * std::sin(M_PI / NUM_SIDES);
 }
 
 template<int NUM_SIDES>
-inline double
-RegularPolygon<NUM_SIDES>::apothemToRadius(double apothem,
-                                           unsigned int numberSides) const
+inline double RegularPolygon<NUM_SIDES>::apothemToRadius(double apothem) const
 {
-    return 0.0;
-}
-
-template<int NUM_SIDES>
-inline double
-RegularPolygon<NUM_SIDES>::interiorAngle(unsigned int nbSides) const
-{
-    return 0.0;
-}
-
-template<int NUM_SIDES>
-inline double
-RegularPolygon<NUM_SIDES>::centralAngle(unsigned int nbSides) const
-{
-    return 0.0;
+    return apothem / std::cos(M_PI / NUM_SIDES);
 }
 
 }// namespace m2

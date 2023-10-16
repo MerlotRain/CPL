@@ -273,4 +273,9 @@ PolygonF Ellipse::orientedBoundingBox() const { return PolygonF(); }
  */
 RectF Ellipse::boundingBox() const { return RectF(); }
 
+/**
+ * @brief 
+ */
+void Ellipse::normalizeAxis() {}
+
 }// namespace m2

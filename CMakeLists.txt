@@ -125,8 +125,8 @@ set(m2_source_files
     ./src/image/m2_colorramp.cpp
     ./src/image/m2_ellipse.cpp
     ./src/image/m2_image.cpp
-    ./src/image/m2_imagehandler.cpp
-    ./src/image/m2_imagehandler.h
+    ./src/image/m2_imageiohandler.cpp
+    ./src/image/m2_imageiohandler.h
     ./src/image/m2_line.cpp
     ./src/image/m2_margins.cpp
     ./src/image/m2_pagesize.cpp

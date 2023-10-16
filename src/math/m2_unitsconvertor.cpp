@@ -1,190 +1,655 @@
-﻿#include <m2_unitsconvertor.h>
+﻿#include <m2_math.h>
+#include <m2_unitsconvertor.h>
 
 namespace m2 {
 
-/// @brief 平方米转平方公里
+/*******************************************************************************
+ * class Length functions
+ *******************************************************************************/
+
+static constexpr auto MeterToKilometer = 0.001;
+static constexpr auto MeterToDecimetre = 10;
+static constexpr auto MeterToCentimeter = 100;
+static constexpr auto MeterToMillimeter = 1000;
+static constexpr auto MeterToMicron = 1000000;
+static constexpr auto MeterToNanometer = 1000000000;
+static constexpr auto MeterToInche = 39.3700787;
+static constexpr auto MeterToMile = 0.0006214;
+static constexpr auto MeterToFeet = 3.2808;
+static constexpr auto MeterToYard = 1.0936;
+static constexpr auto MeterToNauticalMile = 0.00054;
+static constexpr auto MeterToZhang = 0.3;
+static constexpr auto MeterToChi = 3;
+static constexpr auto MeterToCun = 30;
+static constexpr auto MeterToFen = 300;
+static constexpr auto MeterToDegree = 1.0 / 111319.49079327358;
+
+static constexpr auto KilometerToMeter = 1000;
+static constexpr auto DecimetreToMeter = 0.1;
+static constexpr auto CentimeterToMeter = 0.01;
+static constexpr auto MillimeterToMeter = 0.001;
+static constexpr auto MicronToMeter = 0.000001;
+static constexpr auto NanometerToMeter = 0.000000001;
+static constexpr auto IncheToMeter = 0.0254;
+static constexpr auto MileToMeter = 1609.344;
+static constexpr auto FeetToMeter = 0.3048;
+static constexpr auto YardToMeter = 0.9144;
+static constexpr auto NauticalMileToMeter = 1852;
+static constexpr auto ZhangToMeter = 3.3333;
+static constexpr auto ChiToMeter = 0.3333;
+static constexpr auto CunToMeter = 0.0333;
+static constexpr auto FenToMeter = 0.0033;
+static constexpr auto DegreeToMeter = 111319.49079327358;
+
+/**
+ * @brief Construct a new Length:: Length object
+ */
+Length::Length() noexcept {}
+
+/**
+ * @brief Construct a new Length:: Length object
+ * @param  rhs              
+ */
+Length::Length(const Length &rhs) noexcept : length(rhs.length), unit(rhs.unit)
+{
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Length& 
+ */
+Length &Length::operator=(const Length &rhs) noexcept
+{
+    length = rhs.length;
+    unit = rhs.unit;
+    return *this;
+}
+
+/**
+ * @brief Construct a new Length:: Length object
+ * @param  len              
+ * @param  uints            
+ */
+Length::Length(double len, LengthUnits uints) noexcept
+    : length(len), unit(uints)
+{
+}
+
+/**
+ * @brief Construct a new Length:: Length object
+ * @param  rhs              
+ */
+Length::Length(Length &&rhs) noexcept
+{
+    length = std::move(rhs.length);
+    unit = std::move(rhs.unit);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Length& 
+ */
+Length &Length::operator=(Length &&rhs) noexcept
+{
+    length = std::move(rhs.length);
+    unit = std::move(rhs.unit);
+    return *this;
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ */
+void Length::swap(Length &rhs) noexcept
+{
+    std::swap(length, rhs.length);
+    std::swap(unit, rhs.unit);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
+bool Length::operator==(const Length &rhs) const noexcept
+{
+    return qFuzzyCompare(length,
+                         rhs.length * Length::convertScale(rhs.unit, unit));
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
+bool Length::operator!=(const Length &rhs) const noexcept
+{
+    return !(*this == rhs);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
+bool Length::operator<(const Length &rhs) const noexcept
+{
+    return length < rhs.length * Length::convertScale(rhs.unit, unit);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
+bool Length::operator<=(const Length &rhs) const noexcept
+{
+    return length <= rhs.length * Length::convertScale(rhs.unit, unit);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
+bool Length::operator>(const Length &rhs) const noexcept
+{
+    return length > rhs.length * Length::convertScale(rhs.unit, unit);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
+bool Length::operator>=(const Length &rhs) const noexcept
+{
+    return length >= rhs.length * Length::convertScale(rhs.unit, unit);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Length 
+ */
+Length Length::operator-(const Length &rhs) const noexcept
+{
+    Length other;
+    other.length = length - rhs.length * Length::convertScale(rhs.unit, unit);
+    other.unit = unit;
+    return other;
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Length 
+ */
+Length Length::operator+(const Length &rhs) const noexcept
+{
+    Length other;
+    other.length = length + rhs.length * Length::convertScale(rhs.unit, unit);
+    other.unit = unit;
+    return other;
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Length& 
+ */
+Length &Length::operator+=(const Length &rhs) noexcept
+{
+    length += rhs.length * Length::convertScale(rhs.unit, unit);
+    return *this;
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Length& 
+ */
+Length &Length::operator-=(const Length &rhs) noexcept
+{
+    length -= rhs.length * Length::convertScale(rhs.unit, unit);
+    return *this;
+}
+
+/**
+ * @brief 
+ * @return double 
+ */
+Length::operator double() const { return length; }
+
+/**
+ * @brief 
+ * @param  l                
+ * @param  units            
+ * @return Length 
+ */
+Length Length::toMeter(double l, LengthUnits units)
+{
+    Length other;
+    other.length = l * Length::convertScale(units, LengthUnits::eMeter);
+    other.unit = LengthUnits::eMeter;
+    return other;
+}
+
+/**
+ * @brief 
+ * @param  l                
+ * @param  srcUnit          
+ * @param  tagUnit          
+ * @return Length 
+ */
+Length Length::convertTo(double l, LengthUnits srcUnit, LengthUnits tagUnit)
+{
+    Length other;
+    other.length = l * Length::convertScale(srcUnit, tagUnit);
+    other.unit = tagUnit;
+    return other;
+}
+
+/**
+ * @brief 
+ * @param  from             
+ * @param  to               
+ * @return double 
+ */
+double Length::convertScale(LengthUnits from, LengthUnits to)
+{
+    double factor1 = 1.0, factor2 = 1.0;
+    switch (from)
+    {
+        case LengthUnits::eKilometer:
+            factor1 = KilometerToMeter;
+            break;
+        case LengthUnits::eDecimetre:
+            factor1 = DecimetreToMeter;
+            break;
+        case LengthUnits::eCentimeter:
+            factor1 = CentimeterToMeter;
+            break;
+        case LengthUnits::eMillimeter:
+            factor1 = MillimeterToMeter;
+            break;
+        case LengthUnits::eMicron:
+            factor1 = MicronToMeter;
+            break;
+        case LengthUnits::eNanometer:
+            factor1 = NanometerToMeter;
+            break;
+        case LengthUnits::eInche:
+            factor1 = IncheToMeter;
+            break;
+        case LengthUnits::eMile:
+            factor1 = MileToMeter;
+            break;
+        case LengthUnits::eFeet:
+            factor1 = FeetToMeter;
+            break;
+        case LengthUnits::eYard:
+            factor1 = YardToMeter;
+            break;
+        case LengthUnits::eNauticalMile:
+            factor1 = NauticalMileToMeter;
+            break;
+        case LengthUnits::eZhang:
+            factor1 = ZhangToMeter;
+            break;
+        case LengthUnits::eChi:
+            factor1 = ChiToMeter;
+            break;
+        case LengthUnits::eCun:
+            factor1 = CunToMeter;
+            break;
+        case LengthUnits::eFen:
+            factor1 = FenToMeter;
+            break;
+#ifdef SPATIAL_FEATURE
+        case LengthUnits::eDegree:
+            factor1 = DegreeToMeter;
+            break;
+#endif
+        default:
+            break;
+    }
+
+    switch (to)
+    {
+        case LengthUnits::eKilometer:
+            factor2 = MeterToKilometer;
+            break;
+        case LengthUnits::eDecimetre:
+            factor2 = MeterToDecimetre;
+            break;
+        case LengthUnits::eCentimeter:
+            factor2 = MeterToCentimeter;
+            break;
+        case LengthUnits::eMillimeter:
+            factor2 = MeterToMillimeter;
+            break;
+        case LengthUnits::eMicron:
+            factor2 = MeterToMicron;
+            break;
+        case LengthUnits::eNanometer:
+            factor2 = MeterToNanometer;
+            break;
+        case LengthUnits::eInche:
+            factor2 = MeterToInche;
+            break;
+        case LengthUnits::eMile:
+            factor2 = MeterToMile;
+            break;
+        case LengthUnits::eFeet:
+            factor2 = MeterToFeet;
+            break;
+        case LengthUnits::eYard:
+            factor2 = MeterToYard;
+            break;
+        case LengthUnits::eNauticalMile:
+            factor2 = MeterToNauticalMile;
+            break;
+        case LengthUnits::eZhang:
+            factor2 = MeterToZhang;
+            break;
+        case LengthUnits::eChi:
+            factor2 = MeterToChi;
+            break;
+        case LengthUnits::eCun:
+            factor2 = MeterToCun;
+            break;
+        case LengthUnits::eFen:
+            factor2 = MeterToFen;
+            break;
+#ifdef SPATIAL_FEATURE
+        case LengthUnits::eDegree:
+            factor2 = MeterToDegree;
+            break;
+#endif
+        default:
+            break;
+    }
+    return factor1 * factor2;
+}
+
+/*******************************************************************************
+ * class Area functions
+ *******************************************************************************/
+
 static constexpr auto Meter2ToKilemeter2 = 0.000001;
-/// @brief 平方米转公顷
 static constexpr auto Meter2ToHm2 = 0.0001;
-/// @brief 平方米转公亩
 static constexpr auto Meter2ToAre = 0.01;
-/// @brief 平方米转平方分米
 static constexpr auto Meter2ToDecimetre2 = 100.0;
-/// @brief 平方米转平方厘米
 static constexpr auto Meter2ToCentimeter2 = 10000.0;
-/// @brief 平方米转平方毫米
 static constexpr auto Meter2ToMillimeter2 = 1000000.0;
-/// @brief 平方米转平方英亩
 static constexpr auto Meter2ToAcre = 0.00025;
-/// @brief 平方米转平方英里
 static constexpr auto Meter2ToMile2 = 0.00000039;
-/// @brief 平方米转平方码
 static constexpr auto Meter2ToYard2 = 1.196;
-/// @brief 平方米转平方英尺
 static constexpr auto Meter2ToFeet2 = 10.7639;
-/// @brief 平方米转平方英寸
 static constexpr auto Meter2ToInche2 = 1550.0031;
-/// @brief 平方米转平方竿
 static constexpr auto Meter2ToRd2 = 0.0395;
-/// @brief 平方米转中国顷
 static constexpr auto Meter2Toqing = 0.000015;
-/// @brief 平方米转中国亩
 static constexpr auto Meter2Tomu = 0.0015;
-/// @brief 平方米转中国分
 static constexpr auto Meter2Tofen = 0.015;
-/// @brief 空间平方米转平方度
 static constexpr auto Meter2TofenDegrees = 1.0 / 12392029030.5;
 
 
-/// @brief 平方公里转平方米
 static constexpr auto Kilemeter2ToMeter2 = 1000000.0;
-/// @brief 公顷转平方米
 static constexpr auto Hm2ToMeter2 = 10000.0;
-/// @brief 公亩转平方米
 static constexpr auto AreToMeter2 = 100.0;
-/// @brief 平方分米转平方米
 static constexpr auto Decimetre2ToMeter2 = 0.01;
-/// @brief 平方厘米转平方米
 static constexpr auto Centimeter2ToMeter2 = 0.0001;
-/// @brief 平方毫米转平方米
 static constexpr auto Millimeter2ToMeter2 = 0.000001;
-/// @brief 平方英亩转平方米
 static constexpr auto AcreToMeter2 = 4046.8648;
-/// @brief 平方英里转平方米
 static constexpr auto Mile2ToMeter2 = 2589988.1103;
-/// @brief 平方码转平方米
 static constexpr auto Yard2ToMeter2 = 0.8361;
-/// @brief 平方英尺转平方米
 static constexpr auto Feet2ToMeter2 = 0.0929;
-/// @brief 平方英寸转平方米
 static constexpr auto Inche2ToMeter2 = 0.00065;
-/// @brief 平方竿转平方米
 static constexpr auto Rd2ToMeter2 = 25.2929;
-/// @brief 中国顷转平方米
 static constexpr auto qingToMeter2 = 66666.6667;
-/// @brief 中国亩转平方米
 static constexpr auto muToMeter2 = 666.6667;
-/// @brief 中国分转平方米
 static constexpr auto fenToMeter2 = 66.6667;
-/// @brief 空间平方度转平方米
 static constexpr auto DegreesToMeter2 = 12392029030.5;
 
-
+/**
+ * @brief Construct a new Area:: Area object
+ */
 Area::Area() noexcept {}
 
-Area::Area(const Area &rhs) noexcept : Area(rhs.Area), Unit(rhs.Unit) {}
+/**
+ * @brief Construct a new Area:: Area object
+ * @param  rhs              
+ */
+Area::Area(const Area &rhs) noexcept : area(rhs.area), unit(rhs.unit) {}
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Area& 
+ */
 Area &Area::operator=(const Area &rhs) noexcept
 {
-    Area = rhs.Area;
-    Unit = rhs.Unit;
+    area = rhs.area;
+    unit = rhs.unit;
     return *this;
 }
 
-Area::Area(double a, AreaUnits unit) noexcept : Area(a), Unit(unit) {}
+/**
+ * @brief Construct a new Area:: Area object
+ * @param  a                
+ * @param  unit             
+ */
+Area::Area(double a, AreaUnits unit) noexcept : area(a), unit(unit) {}
 
+/**
+ * @brief Construct a new Area:: Area object
+ * @param  rhs              
+ */
 Area::Area(Area &&rhs) noexcept
 {
-    Area = std::move(rhs.Area);
-    Unit = std::move(rhs.Unit);
+    area = std::move(rhs.area);
+    unit = std::move(rhs.unit);
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Area& 
+ */
 Area &Area::operator=(Area &&rhs) noexcept
 {
-    Area = std::move(rhs.Area);
-    Unit = std::move(rhs.Unit);
+    area = std::move(rhs.area);
+    unit = std::move(rhs.unit);
     return *this;
 }
 
-void Area::Swap(Area &rhs) noexcept
+/**
+ * @brief 
+ * @param  rhs              
+ */
+void Area::swap(Area &rhs) noexcept
 {
-    std::swap(Area, rhs.Area);
-    std::swap(Unit, rhs.Unit);
+    std::swap(area, rhs.area);
+    std::swap(unit, rhs.unit);
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
 bool Area::operator==(const Area &rhs) const noexcept
 {
-    return Math::FuzzyCompare(Area,
-                              rhs.Area * Area::ConvertScale(rhs.Unit, Unit));
+    return qFuzzyCompare(area, rhs.area * Area::convertScale(rhs.unit, unit));
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
 bool Area::operator!=(const Area &rhs) const noexcept
 {
     return !(*this == rhs);
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
 bool Area::operator<(const Area &rhs) const noexcept
 {
-    return Area < rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
+    return area < rhs.area * Area::convertScale(rhs.unit, unit);
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
 bool Area::operator<=(const Area &rhs) const noexcept
 {
-    return Area <= rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
+    return area <= rhs.area * Area::convertScale(rhs.unit, unit);
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
 bool Area::operator>(const Area &rhs) const noexcept
 {
-    return Area > rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
+    return area > rhs.area * Area::convertScale(rhs.unit, unit);
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
 bool Area::operator>=(const Area &rhs) const noexcept
 {
-    return Area >= rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
+    return area >= rhs.area * Area::convertScale(rhs.unit, unit);
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Area 
+ */
 Area Area::operator-(const Area &rhs) const noexcept
 {
-    Area area;
-    area.Area = Area - rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
-    area.Unit = Unit;
-    return area;
+    Area other;
+    other.area = area - rhs.area * Area::convertScale(rhs.unit, unit);
+    other.unit = unit;
+    return other;
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Area 
+ */
 Area Area::operator+(const Area &rhs) const noexcept
 {
-    Area area;
-    area.Area = Area + rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
-    area.Unit = Unit;
-    return area;
+    Area other;
+    other.area = area + rhs.area * Area::convertScale(rhs.unit, unit);
+    other.unit = unit;
+    return other;
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Area& 
+ */
 Area &Area::operator+=(const Area &rhs) noexcept
 {
-    Area += rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
+    area += rhs.area * Area::convertScale(rhs.unit, unit);
     return *this;
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Area& 
+ */
 Area &Area::operator-=(const Area &rhs) noexcept
 {
-    Area -= rhs.Area * Area::ConvertScale(rhs.Unit, Unit);
+    area -= rhs.area * Area::convertScale(rhs.unit, unit);
     return *this;
 }
 
-Area::operator double() const { return Area; }
+/**
+ * @brief 
+ * @return double 
+ */
+Area::operator double() const { return area; }
 
-Area Area::ToMeter2(double a, AreaUnits units)
+/**
+ * @brief 
+ * @param  a                
+ * @param  units            
+ * @return Area 
+ */
+Area Area::toMeter2(double a, AreaUnits units)
 {
     Area area;
-    area.Area = a * Area::ConvertScale(units, AreaUnits::eMeter2);
-    area.Unit = AreaUnits::eMeter2;
+    area.area = a * Area::convertScale(units, AreaUnits::eMeter2);
+    area.unit = AreaUnits::eMeter2;
     return area;
 }
 
-Area Area::ConvertTo(double a, AreaUnits srcUnit, AreaUnits tagUnit)
+/**
+ * @brief 
+ * @param  a                
+ * @param  srcUnit          
+ * @param  tagUnit          
+ * @return Area 
+ */
+Area Area::convertTo(double a, AreaUnits srcUnit, AreaUnits tagUnit)
 {
     Area area;
-    area.Area = a * Area::ConvertScale(srcUnit, tagUnit);
-    area.Unit = tagUnit;
+    area.area = a * Area::convertScale(srcUnit, tagUnit);
+    area.unit = tagUnit;
     return area;
 }
 
-double Area::Meter2Area(double a, AreaUnits srcUnit, AreaUnits tagUnit)
+/**
+ * @brief 
+ * @param  a                
+ * @param  srcUnit          
+ * @param  tagUnit          
+ * @return double 
+ */
+double Area::meter2Area(double a, AreaUnits srcUnit, AreaUnits tagUnit)
 {
-    return ConvertTo(a, srcUnit, tagUnit).Area;
+    return convertTo(a, srcUnit, tagUnit).area;
 }
 
-double Area::ConvertScale(AreaUnits from, AreaUnits to)
+/**
+ * @brief 
+ * @param  from             
+ * @param  to               
+ * @return double 
+ */
+double Area::convertScale(AreaUnits from, AreaUnits to)
 {
     double fromToMeter2 = 1.0;
     double Meter2ToTo = 1.0;
@@ -303,481 +768,274 @@ double Area::ConvertScale(AreaUnits from, AreaUnits to)
     return fromToMeter2 * Meter2ToTo;
 }
 
+/*******************************************************************************
+ * class Volume functions
+ *******************************************************************************/
 
-/// @brief 米转千米
-static constexpr auto MeterToKilometer = 0.001;
-/// @brief 米转分米
-static constexpr auto MeterToDecimetre = 10;
-/// @brief 米转厘米
-static constexpr auto MeterToCentimeter = 100;
-/// @brief 米转毫米
-static constexpr auto MeterToMillimeter = 1000;
-/// @brief 米转微米
-static constexpr auto MeterToMicron = 1000000;
-/// @brief 米转纳米
-static constexpr auto MeterToNanometer = 1000000000;
-/// @brief 米转英寸
-static constexpr auto MeterToInche = 39.3700787;
-/// @brief 米转英里
-static constexpr auto MeterToMile = 0.0006214;
-/// @brief 米转英尺
-static constexpr auto MeterToFeet = 3.2808;
-/// @brief 米转码
-static constexpr auto MeterToYard = 1.0936;
-/// @brief 米转海里
-static constexpr auto MeterToNauticalMile = 0.00054;
-/// @brief 米转中国单位丈
-static constexpr auto MeterToZhang = 0.3;
-/// @brief 米转中国单位尺
-static constexpr auto MeterToChi = 3;
-/// @brief 米转中国单位寸
-static constexpr auto MeterToCun = 30;
-/// @brief 米转中国单位分
-static constexpr auto MeterToFen = 300;
-/// @brief 米转空间度
-static constexpr auto MeterToDegree = 1.0 / 111319.49079327358;
-
-/// @brief 千米转米
-static constexpr auto KilometerToMeter = 1000;
-/// @brief 分米转米
-static constexpr auto DecimetreToMeter = 0.1;
-/// @brief 厘米转米
-static constexpr auto CentimeterToMeter = 0.01;
-/// @brief 毫米转米
-static constexpr auto MillimeterToMeter = 0.001;
-/// @brief 微米转米
-static constexpr auto MicronToMeter = 0.000001;
-/// @brief 纳米转米
-static constexpr auto NanometerToMeter = 0.000000001;
-/// @brief 英寸转米
-static constexpr auto IncheToMeter = 0.0254;
-/// @brief 英里转米
-static constexpr auto MileToMeter = 1609.344;
-/// @brief 英尺转米
-static constexpr auto FeetToMeter = 0.3048;
-/// @brief 码转米
-static constexpr auto YardToMeter = 0.9144;
-/// @brief 海里转米
-static constexpr auto NauticalMileToMeter = 1852;
-/// @brief 中国单位丈转米
-static constexpr auto ZhangToMeter = 3.3333;
-/// @brief 中国单位尺转米
-static constexpr auto ChiToMeter = 0.3333;
-/// @brief 中国单位寸转米
-static constexpr auto CunToMeter = 0.0333;
-/// @brief 中国单位分转米
-static constexpr auto FenToMeter = 0.0033;
-/// @brief 空间度转米
-static constexpr auto DegreeToMeter = 111319.49079327358;
-
-
-Length::Length() noexcept {}
-
-Length::Length(const Length &rhs) noexcept : Length(rhs.Length), Unit(rhs.Unit)
-{
-}
-
-Length &Length::operator=(const Length &rhs) noexcept
-{
-    Length = rhs.Length;
-    Unit = rhs.Unit;
-    return *this;
-}
-
-Length::Length(double len, LengthUnits uints) noexcept
-    : Length(len), Unit(uints)
-{
-}
-
-Length::Length(Length &&rhs) noexcept
-{
-    Length = std::move(rhs.Length);
-    Unit = std::move(rhs.Unit);
-}
-
-Length &Length::operator=(Length &&rhs) noexcept
-{
-    Length = std::move(rhs.Length);
-    Unit = std::move(rhs.Unit);
-    return *this;
-}
-
-void Length::Swap(Length &rhs) noexcept
-{
-    std::swap(Length, rhs.Length);
-    std::swap(Unit, rhs.Unit);
-}
-
-bool Length::operator==(const Length &rhs) const noexcept
-{
-    return Math::FuzzyCompare(
-            Length, rhs.Length * Length::ConvertScale(rhs.Unit, Unit));
-}
-
-bool Length::operator!=(const Length &rhs) const noexcept
-{
-    return !(*this == rhs);
-}
-
-bool Length::operator<(const Length &rhs) const noexcept
-{
-    return Length < rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
-}
-
-bool Length::operator<=(const Length &rhs) const noexcept
-{
-    return Length <= rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
-}
-
-bool Length::operator>(const Length &rhs) const noexcept
-{
-    return Length > rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
-}
-
-bool Length::operator>=(const Length &rhs) const noexcept
-{
-    return Length >= rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
-}
-
-Length Length::operator-(const Length &rhs) const noexcept
-{
-    Length area;
-    area.Length = Length - rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
-    area.Unit = Unit;
-    return area;
-}
-
-Length Length::operator+(const Length &rhs) const noexcept
-{
-    Length area;
-    area.Length = Length + rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
-    area.Unit = Unit;
-    return area;
-}
-
-Length &Length::operator+=(const Length &rhs) noexcept
-{
-    Length += rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
-    return *this;
-}
-
-Length &Length::operator-=(const Length &rhs) noexcept
-{
-    Length -= rhs.Length * Length::ConvertScale(rhs.Unit, Unit);
-    return *this;
-}
-
-Length::operator double() const { return Length; }
-
-Length Length::ToMeter(double l, LengthUnits units)
-{
-    Length length;
-    length.Length = l * Length::ConvertScale(units, LengthUnits::eMeter);
-    length.Unit = LengthUnits::eMeter;
-    return length;
-}
-
-Length Length::ConvertTo(double l, LengthUnits srcUnit, LengthUnits tagUnit)
-{
-    Length length;
-    length.Length = l * Length::ConvertScale(srcUnit, tagUnit);
-    length.Unit = tagUnit;
-    return length;
-}
-
-double Length::ConvertScale(LengthUnits from, LengthUnits to)
-{
-    double factor1 = 1.0, factor2 = 1.0;
-    switch (from)
-    {
-        case LengthUnits::eKilometer:
-            factor1 = KilometerToMeter;
-            break;
-        case LengthUnits::eDecimetre:
-            factor1 = DecimetreToMeter;
-            break;
-        case LengthUnits::eCentimeter:
-            factor1 = CentimeterToMeter;
-            break;
-        case LengthUnits::eMillimeter:
-            factor1 = MillimeterToMeter;
-            break;
-        case LengthUnits::eMicron:
-            factor1 = MicronToMeter;
-            break;
-        case LengthUnits::eNanometer:
-            factor1 = NanometerToMeter;
-            break;
-        case LengthUnits::eInche:
-            factor1 = IncheToMeter;
-            break;
-        case LengthUnits::eMile:
-            factor1 = MileToMeter;
-            break;
-        case LengthUnits::eFeet:
-            factor1 = FeetToMeter;
-            break;
-        case LengthUnits::eYard:
-            factor1 = YardToMeter;
-            break;
-        case LengthUnits::eNauticalMile:
-            factor1 = NauticalMileToMeter;
-            break;
-        case LengthUnits::eZhang:
-            factor1 = ZhangToMeter;
-            break;
-        case LengthUnits::eChi:
-            factor1 = ChiToMeter;
-            break;
-        case LengthUnits::eCun:
-            factor1 = CunToMeter;
-            break;
-        case LengthUnits::eFen:
-            factor1 = FenToMeter;
-            break;
-#ifdef SPATIAL_FEATURE
-        case LengthUnits::eDegree:
-            factor1 = DegreeToMeter;
-            break;
-#endif
-        default:
-            break;
-    }
-
-    switch (to)
-    {
-        case LengthUnits::eKilometer:
-            factor2 = MeterToKilometer;
-            break;
-        case LengthUnits::eDecimetre:
-            factor2 = MeterToDecimetre;
-            break;
-        case LengthUnits::eCentimeter:
-            factor2 = MeterToCentimeter;
-            break;
-        case LengthUnits::eMillimeter:
-            factor2 = MeterToMillimeter;
-            break;
-        case LengthUnits::eMicron:
-            factor2 = MeterToMicron;
-            break;
-        case LengthUnits::eNanometer:
-            factor2 = MeterToNanometer;
-            break;
-        case LengthUnits::eInche:
-            factor2 = MeterToInche;
-            break;
-        case LengthUnits::eMile:
-            factor2 = MeterToMile;
-            break;
-        case LengthUnits::eFeet:
-            factor2 = MeterToFeet;
-            break;
-        case LengthUnits::eYard:
-            factor2 = MeterToYard;
-            break;
-        case LengthUnits::eNauticalMile:
-            factor2 = MeterToNauticalMile;
-            break;
-        case LengthUnits::eZhang:
-            factor2 = MeterToZhang;
-            break;
-        case LengthUnits::eChi:
-            factor2 = MeterToChi;
-            break;
-        case LengthUnits::eCun:
-            factor2 = MeterToCun;
-            break;
-        case LengthUnits::eFen:
-            factor2 = MeterToFen;
-            break;
-#ifdef SPATIAL_FEATURE
-        case LengthUnits::eDegree:
-            factor2 = MeterToDegree;
-            break;
-#endif
-        default:
-            break;
-    }
-    return factor1 * factor2;
-}
-
-
-/// @brief 立方米转立方千米
 static constexpr auto CubicMeterToCubicKilometers = 0;
-/// @brief 立方米转立方分米
 static constexpr auto CubicMeterToCubicDecimeter = 0;
-/// @brief 立方米转立方厘米
 static constexpr auto CubicMeterToCubicCentimeter = 0;
-/// @brief 立方米转立方毫米
 static constexpr auto CubicMeterToCubicMillimeter = 0;
-/// @brief 立方米转升
 static constexpr auto CubicMeterToLiter = 0;
-/// @brief 立方米转分升
 static constexpr auto CubicMeterToDeciLiter = 0;
-/// @brief 立方米转毫升
 static constexpr auto CubicMeterToMillLiter = 0;
-/// @brief 立方米转亩英尺
 static constexpr auto CubicMeterToAcreFoot = 0;
-/// @brief 立方米转立方码
 static constexpr auto CubicMeterToCubicYard = 0;
-/// @brief 立方米转立方英尺
 static constexpr auto CubicMeterToCubicFeet = 0;
-/// @brief 立方米转立方英寸
 static constexpr auto CubicMeterToCubicInch = 0;
-/// @brief 立方米转桶
 static constexpr auto CubicMeterToBarrel = 0;
-/// @brief 立方米转加仑
 static constexpr auto CubicMeterToGallonUS = 0;
 
-/// @brief 立方千米转立方米
 static constexpr auto CubicKilometersToCubicMeter = 0;
-/// @brief 立方分米转立方米
 static constexpr auto CubicDecimeterToCubicMeter = 0;
-/// @brief 立方厘米转立方米
 static constexpr auto CubicCentimeterToCubicMeter = 0;
-/// @brief 立方毫米转立方米
 static constexpr auto CubicMillimeterToCubicMeter = 0;
-/// @brief 升转立方米
 static constexpr auto LiterToCubicMeter = 0;
-/// @brief 分升转立方米
 static constexpr auto DeciLiterToCubicMeter = 0;
-/// @brief 毫升转立方米
 static constexpr auto MillLiterToCubicMeter = 0;
-/// @brief 亩英尺转立方米
 static constexpr auto AcreFootToCubicMeter = 0;
-/// @brief 立方码转立方米
 static constexpr auto CubicYardToCubicMeter = 0;
-/// @brief 立方英尺转立方米
 static constexpr auto CubicFeetToCubicMeter = 0;
-/// @brief  立方英寸转立方米
 static constexpr auto CubicInchToCubicMeter = 0;
-/// @brief 桶转立方米
 static constexpr auto BarrelToCubicMeter = 0;
-/// @brief 加仑转立方米
 static constexpr auto GallonUSToCubicMeter = 0;
 
+/**
+ * @brief Construct a new Volume:: Volume object
+ */
 Volume::Volume() noexcept {}
 
-Volume::Volume(const Volume &rhs) noexcept : Volume(rhs.Volume), Unit(rhs.Unit)
+/**
+ * @brief Construct a new Volume:: Volume object
+ * @param  rhs              
+ */
+Volume::Volume(const Volume &rhs) noexcept : volume(rhs.volume), unit(rhs.unit)
 {
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Volume& 
+ */
 Volume &Volume::operator=(const Volume &rhs) noexcept
 {
-    Volume = rhs.Volume;
-    Unit = rhs.Unit;
+    volume = rhs.volume;
+    unit = rhs.unit;
     return *this;
 }
 
+/**
+ * @brief Construct a new Volume:: Volume object
+ * @param  vol              
+ * @param  uints            
+ */
 Volume::Volume(double vol, VolumeUnits uints) noexcept
-    : Volume(vol), Unit(uints)
+    : volume(vol), unit(uints)
 {
 }
 
+/**
+ * @brief Construct a new Volume:: Volume object
+ * @param  rhs              
+ */
 Volume::Volume(Volume &&rhs) noexcept
 {
-    Volume = std::move(rhs.Volume);
-    Unit = std::move(rhs.Unit);
+    volume = std::move(rhs.volume);
+    unit = std::move(rhs.unit);
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Volume& 
+ */
 Volume &Volume::operator=(Volume &&rhs) noexcept
 {
-    Volume = std::move(rhs.Volume);
-    Unit = std::move(rhs.Unit);
+    volume = std::move(rhs.volume);
+    unit = std::move(rhs.unit);
     return *this;
 }
 
-void Volume::Swap(Volume &rhs) noexcept
+/**
+ * @brief 
+ * @param  rhs              
+ */
+void Volume::swap(Volume &rhs) noexcept
 {
-    std::swap(Volume, rhs.Volume);
-    std::swap(Unit, rhs.Unit);
+    std::swap(volume, rhs.volume);
+    std::swap(unit, rhs.unit);
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
 bool Volume::operator==(const Volume &rhs) const noexcept
 {
-    return Math::FuzzyCompare(
-            Volume, rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit));
+    return qFuzzyCompare(volume,
+                         rhs.volume * Volume::convertScale(rhs.unit, unit));
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
 bool Volume::operator!=(const Volume &rhs) const noexcept
 {
     return !(*this == rhs);
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
 bool Volume::operator<(const Volume &rhs) const noexcept
 {
-    return Volume < rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
+    return volume < rhs.volume * Volume::convertScale(rhs.unit, unit);
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
 bool Volume::operator<=(const Volume &rhs) const noexcept
 {
-    return Volume <= rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
+    return volume <= rhs.volume * Volume::convertScale(rhs.unit, unit);
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
 bool Volume::operator>(const Volume &rhs) const noexcept
 {
-    return Volume > rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
+    return volume > rhs.volume * Volume::convertScale(rhs.unit, unit);
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
 bool Volume::operator>=(const Volume &rhs) const noexcept
 {
-    return Volume >= rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
+    return volume >= rhs.volume * Volume::convertScale(rhs.unit, unit);
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Volume 
+ */
 Volume Volume::operator-(const Volume &rhs) const noexcept
 {
-    Volume volume;
-    volume.Volume = Volume - rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
-    volume.Unit = Unit;
-    return volume;
+    Volume other;
+    other.volume = volume - rhs.volume * Volume::convertScale(rhs.unit, unit);
+    other.unit = unit;
+    return other;
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Volume 
+ */
 Volume Volume::operator+(const Volume &rhs) const noexcept
 {
-    Volume volume;
-    volume.Volume = Volume + rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
-    volume.Unit = Unit;
-    return volume;
+    Volume other;
+    other.volume = volume + rhs.volume * Volume::convertScale(rhs.unit, unit);
+    other.unit = unit;
+    return other;
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Volume& 
+ */
 Volume &Volume::operator+=(const Volume &rhs) noexcept
 {
-    Volume += rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
+    volume += rhs.volume * Volume::convertScale(rhs.unit, unit);
     return *this;
 }
 
+/**
+ * @brief 
+ * @param  rhs              
+ * @return Volume& 
+ */
 Volume &Volume::operator-=(const Volume &rhs) noexcept
 {
-    Volume -= rhs.Volume * Volume::ConvertScale(rhs.Unit, Unit);
+    volume -= rhs.volume * Volume::convertScale(rhs.unit, unit);
     return *this;
 }
 
-Volume::operator double() const { return Volume; }
+/**
+ * @brief 
+ * @return double 
+ */
+Volume::operator double() const { return volume; }
 
-Volume Volume::ToCubicMeters(double vol, VolumeUnits units)
+/**
+ * @brief 
+ * @param  vol              
+ * @param  units            
+ * @return Volume 
+ */
+Volume Volume::toCubicMeters(double vol, VolumeUnits units)
 {
-    Volume volume;
-    volume.Volume =
-            vol * Volume::ConvertScale(units, VolumeUnits::eCubicMeters);
-    volume.Unit = VolumeUnits::eCubicMeters;
-    return volume;
+    Volume other;
+    other.volume = vol * Volume::convertScale(units, VolumeUnits::eCubicMeters);
+    other.unit = VolumeUnits::eCubicMeters;
+    return other;
 }
 
-Volume Volume::ConvertTo(double vol, VolumeUnits srcUnit, VolumeUnits tagUnit)
+/**
+ * @brief 
+ * @param  vol              
+ * @param  srcUnit          
+ * @param  tagUnit          
+ * @return Volume 
+ */
+Volume Volume::convertTo(double vol, VolumeUnits srcUnit, VolumeUnits tagUnit)
 {
-    Volume volume;
-    volume.Volume = vol * Volume::ConvertScale(srcUnit, tagUnit);
-    volume.Unit = tagUnit;
-    return volume;
+    Volume other;
+    other.volume = vol * Volume::convertScale(srcUnit, tagUnit);
+    other.unit = tagUnit;
+    return other;
 }
 
-double Volume::Meter3Volume(double a, VolumeUnits srcUnit, VolumeUnits tagUnit)
+/**
+ * @brief 
+ * @param  a                
+ * @param  srcUnit          
+ * @param  tagUnit          
+ * @return double 
+ */
+double Volume::meter3Volume(double a, VolumeUnits srcUnit, VolumeUnits tagUnit)
 {
-    return ConvertTo(a, srcUnit, tagUnit).Volume;
+    return convertTo(a, srcUnit, tagUnit).volume;
 }
 
-double Volume::ConvertScale(VolumeUnits from, VolumeUnits to)
+/**
+ * @brief 
+ * @param  from             
+ * @param  to               
+ * @return double 
+ */
+double Volume::convertScale(VolumeUnits from, VolumeUnits to)
 {
     double factor1 = 1.0, factor2 = 1.0;
     switch (from)

@@ -69,6 +69,8 @@ public:
     inline const char *data() const noexcept { return d; }
     const char *constData() const noexcept { return data(); }
     void detach();
+    void clear();
+
     char at(uint64_t i) const;
     char operator[](uint64_t i) const;
     [[nodiscard]] char &operator[](uint64_t i);
@@ -169,75 +171,22 @@ public:
     void shrink_to_fit() { squeeze(); }
     iterator erase(const_iterator first, const_iterator last);
 
-public:
-    static ByteArray compress(const uint8_t *data, uint64_t nbytes,
-                              int compressionLevel = -1);
-    static ByteArray uncompress(const uint8_t *data, uint64_t nbytes);
-    static ByteArray compress(const ByteArray &data, int compressionLevel = -1);
-    static ByteArray uncompress(const ByteArray &data);
-
 private:
     uint64_t alloc;
     uint64_t used;
     char *d;
 };
 
-class M2_API ByteArrayView
-{
-public:
-    constexpr ByteArrayView() noexcept;
-    constexpr ByteArrayView(std::nullptr_t) noexcept;
-    constexpr ByteArrayView(const char *data, uint64_t len);
-    constexpr ByteArrayView(const char *first, const char *end);
-    constexpr ByteArrayView(const ByteArray &data);
-    constexpr ByteArrayView(const char *data);
+ByteArray compress(const uint8_t *data, uint64_t nbytes,
+                   int compressionLevel = -1);
+ByteArray uncompress(const uint8_t *data, uint64_t nbytes);
+ByteArray compress(const ByteArray &data, int compressionLevel = -1);
+ByteArray uncompress(const ByteArray &data);
+int bacompare(const char *str1, const char *str2);
+int bacompare(const ByteArray &str1, const ByteArray &str2);
+int bacompare(const ByteArray &str1, const char *str2);
+int bacompare(const char *str1, const ByteArray &str2);
 
-    [[nodiscard]] constexpr uint64_t size() const noexcept { return m_size; }
-    [[nodiscard]] constexpr const char *data() const noexcept { return m_data; }
-    [[nodiscard]] constexpr bool isNull() const noexcept { return !m_data; }
-
-private:
-    uint64_t m_size;
-    char *m_data;
-};
-
-/*****************************************************************************
-  ByteArrayView functions
- *****************************************************************************/
-
-inline int compareMemory(ByteArrayView lhs, ByteArrayView rhs)
-{
-    if (!lhs.isNull() && !rhs.isNull())
-    {
-        int ret = memcmp(lhs.data(), rhs.data(), qMin(lhs.size(), rhs.size()));
-        if (ret != 0) return ret;
-    }
-    return lhs.size() == rhs.size() ? 0 : lhs.size() > rhs.size() ? 1 : -1;
-}
-inline bool operator==(ByteArrayView lhs, ByteArrayView rhs) noexcept
-{
-    return lhs.size() == rhs.size() && compareMemory(lhs, rhs) == 0;
-}
-inline bool operator!=(ByteArrayView lhs, ByteArrayView rhs) noexcept
-{
-    return !(lhs == rhs);
-}
-inline bool operator<(ByteArrayView lhs, ByteArrayView rhs) noexcept
-{
-    return compareMemory(lhs, rhs) < 0;
-}
-inline bool operator<=(ByteArrayView lhs, ByteArrayView rhs) noexcept
-{
-    return compareMemory(lhs, rhs) <= 0;
-}
-inline bool operator>(ByteArrayView lhs, ByteArrayView rhs) noexcept
-{
-    return !(lhs <= rhs);
-}
-inline bool operator>=(ByteArrayView lhs, ByteArrayView rhs) noexcept
-{
-    return !(lhs < rhs);
-}
 
 /*****************************************************************************
   ByteArray functions
@@ -245,12 +194,16 @@ inline bool operator>=(ByteArrayView lhs, ByteArrayView rhs) noexcept
 
 inline bool operator==(const ByteArray &a1, const ByteArray &a2) noexcept
 {
-    return ByteArrayView(a1) == ByteArrayView(a2);
+    return (a1.size() == a2.size()) &&
+           (memcmp(a1.constData(), a2.constData(), a1.size()) == 0);
 }
-inline bool operator==(const ByteArray &a1, const char *a2) noexcept {}
+inline bool operator==(const ByteArray &a1, const char *a2) noexcept
+{
+    return a2 ? bacompare(a1, a2) == 0 : a1.isEmpty();
+}
 inline bool operator==(const char *a1, const ByteArray &a2) noexcept
 {
-    return false;
+    return a1 ? bacompare(a1, a2) == 0 : a2.isEmpty();
 }
 inline bool operator!=(const ByteArray &a1, const ByteArray &a2) noexcept
 {
@@ -258,84 +211,59 @@ inline bool operator!=(const ByteArray &a1, const ByteArray &a2) noexcept
 }
 inline bool operator!=(const ByteArray &a1, const char *a2) noexcept
 {
-    return false;
+    return a2 ? bacompare(a1, a2) != 0 : !a1.isEmpty();
 }
 inline bool operator!=(const char *a1, const ByteArray &a2) noexcept
 {
-    return false;
+    return a1 ? bacompare(a1, a2) != 0 : !a2.isEmpty();
 }
 inline bool operator<(const ByteArray &a1, const ByteArray &a2) noexcept
 {
-    return false;
+    return bacompare(a1, a2) < 0;
 }
 inline bool operator<(const ByteArray &a1, const char *a2) noexcept
 {
-    return false;
+    return bacompare(a1, a2) < 0;
 }
 inline bool operator<(const char *a1, const ByteArray &a2) noexcept
 {
-    return false;
+    return bacompare(a1, a2) < 0;
 }
 inline bool operator<=(const ByteArray &a1, const ByteArray &a2) noexcept
 {
-    return false;
+    return bacompare(a1, a2) <= 0;
 }
 inline bool operator<=(const ByteArray &a1, const char *a2) noexcept
 {
-    return false;
+    return bacompare(a1, a2) <= 0;
 }
 inline bool operator<=(const char *a1, const ByteArray &a2) noexcept
 {
-    return false;
+    return bacompare(a1, a2) <= 0;
 }
 inline bool operator>(const ByteArray &a1, const ByteArray &a2) noexcept
 {
-    return false;
+    return bacompare(a1, a2) > 0;
 }
 inline bool operator>(const ByteArray &a1, const char *a2) noexcept
 {
-    return false;
+    return bacompare(a1, a2) > 0;
 }
 inline bool operator>(const char *a1, const ByteArray &a2) noexcept
 {
-    return false;
+    return bacompare(a1, a2) > 0;
 }
 inline bool operator>=(const ByteArray &a1, const ByteArray &a2) noexcept
 {
-    return false;
+    return bacompare(a1, a2) >= 0;
 }
 inline bool operator>=(const ByteArray &a1, const char *a2) noexcept
 {
-    return false;
+    return bacompare(a1, a2) >= 0;
 }
 inline bool operator>=(const char *a1, const ByteArray &a2) noexcept
 {
-    return false;
-}
-
-inline bool operator==(const ByteArray &a1, std::nullptr_t) noexcept
-{
-    return a1.isEmpty();
-}
-inline bool operator!=(const ByteArray &a1, std::nullptr_t) noexcept
-{
-    return !a1.isEmpty();
-}
-inline bool operator<(const ByteArray &, std::nullptr_t) noexcept
-{
-    return false;
-}
-inline bool operator>(const ByteArray &a1, std::nullptr_t) noexcept
-{
-    return !a1.isEmpty();
-}
-inline bool operator<=(const ByteArray &a1, std::nullptr_t) noexcept
-{
-    return a1.isEmpty();
-}
-inline bool operator>=(const ByteArray &, std::nullptr_t) noexcept
-{
-    return true;
+    return bacompare(a1, a2) >= 0;
 }
 
 inline bool operator==(std::nullptr_t, const ByteArray &a2) noexcept

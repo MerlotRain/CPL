@@ -33,8 +33,7 @@
 #ifndef M2_CRYTOGRAPHICHASH_H_
 #define M2_CRYTOGRAPHICHASH_H_
 
-#include <m2_bytebuffer.h>
-#include <m2_string.h>
+#include <m2_bytearray.h>
 
 namespace m2 {
 
@@ -75,10 +74,14 @@ public:
     void addData(const ByteArray &data);
     void addData(const String &str);
     ByteArray result() const;
+    
     static ByteArray hash(const ByteArray &data, HashAlgorithm algorithm);
     static int hashLength(HashAlgorithm algorithm);
 
 private:
+    CryptographicHash(const CryptographicHash &) = delete;
+    CryptographicHash &operator=(const CryptographicHash &) = delete;
+
     CryptographicHashPrivate *d;
 };
 

@@ -33,13 +33,63 @@
 #ifndef M2_IMAGE_H_
 #define M2_IMAGE_H_
 
-#include <preconfig.h>
+#include <m2_color.h>
+#include <m2_rect.h>
+#include <m2_size.h>
 
 namespace m2 {
 
+class ImageData;
 class M2_API Image
 {
 public:
+    enum Format
+    {
+
+    };
+
+    Image() noexcept;
+    Image(const Size &size, Format format);
+    Image(int width, int height, Format format);
+    Image(uint8_t *data, int width, int height, Format format);
+    Image(const uint8_t *data, int width, int height, Format format);
+
+    explicit Image(const char *filename, const char *format = nullptr);
+    Image(const Image &);
+    Image(Image &&) noexcept;
+    Image &operator=(const Image &);
+    Image &operator==(const Image &);
+    void swap(Image &other) noexcept;
+    ~Image();
+
+    bool isNull();
+
+    bool operator==(const Image &) const;
+    bool operator!=(const Image &) const;
+    void detach();
+
+    int width() const;
+    int height() const;
+    int depth() const;
+    int colorCount() const;
+    int bitPlaneCount() const;
+    Size size() const;
+    Rect rect() const;
+
+    rgb32 color(int i) const;
+    void setColor(int i, rgb32);
+    void setColorCount(int);
+
+    uint8_t *bits();
+    const uint8_t *bits() const;
+    const uint8_t *constBits() const;
+
+    uint8_t *scanLine();
+    const uint8_t *scanLine(int) const;
+    const uint8_t *constScanLine(int) const;
+
+private:
+    ImageData *d;
 };
 
 }// namespace m2

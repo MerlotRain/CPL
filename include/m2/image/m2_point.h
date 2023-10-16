@@ -217,7 +217,7 @@ private:
     double xp;
     double yp;
 };
-typedef std::list<PointF> PointSequence;
+typedef std::vector<PointF> PointSequence;
 
 /*****************************************************************************
   Point inline functions

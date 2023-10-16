@@ -139,6 +139,11 @@ void ByteArray::detach() {}
 
 /**
  * @brief 
+ */
+void ByteArray::clear() {}
+
+/**
+ * @brief 
  * 
  * @param i 
  * @return char 
@@ -540,102 +545,86 @@ ByteArray::iterator ByteArray::erase(const_iterator first, const_iterator last)
     return iterator();
 }
 
-/**
- * @brief 
- * 
- * @param data 
- * @param nbytes 
- * @param compressionLevel 
- * @return ByteArray 
- */
-ByteArray ByteArray::compress(const uint8_t *data, uint64_t nbytes,
-                              int compressionLevel)
-{
-    return ByteArray();
-}
-
-/**
- * @brief 
- * 
- * @param data 
- * @param nbytes 
- * @return ByteArray 
- */
-ByteArray ByteArray::uncompress(const uint8_t *data, uint64_t nbytes)
-{
-    return ByteArray();
-}
-
-/**
- * @brief 
- * 
- * @param data 
- * @param compressionLevel 
- * @return ByteArray 
- */
-ByteArray ByteArray::compress(const ByteArray &data, int compressionLevel)
-{
-    return ByteArray();
-}
-
-/**
- * @brief 
- * 
- * @param data 
- * @return ByteArray 
- */
-ByteArray ByteArray::uncompress(const ByteArray &data) { return ByteArray(); }
-
 /****************************************************************************
-ByteArrayView functions
+ByteArray functions
 ****************************************************************************/
 
 /**
- * @brief Construct a new Byte Buffer View object
+ * @brief 
  * 
+ * @param data 
+ * @param nbytes 
+ * @param compressionLevel 
+ * @return ByteArray 
  */
-constexpr ByteArrayView::ByteArrayView() noexcept {}
+ByteArray compress(const uint8_t *data, uint64_t nbytes, int compressionLevel)
+{
+    return ByteArray();
+}
 
 /**
- * @brief Construct a new Byte Buffer View object
+ * @brief 
  * 
- * 
+ * @param data 
+ * @param nbytes 
+ * @return ByteArray 
  */
-constexpr ByteArrayView::ByteArrayView(std::nullptr_t) noexcept {}
+ByteArray uncompress(const uint8_t *data, uint64_t nbytes)
+{
+    return ByteArray();
+}
 
 /**
- * @brief Construct a new Byte Buffer View object
+ * @brief 
  * 
- * @param data
- * @param len
- * 
+ * @param data 
+ * @param compressionLevel 
+ * @return ByteArray 
  */
-constexpr ByteArrayView::ByteArrayView(const char *data, uint64_t len) {}
+ByteArray compress(const ByteArray &data, int compressionLevel)
+{
+    return ByteArray();
+}
 
 /**
- * @brief Construct a new Byte Buffer View object
+ * @brief 
  * 
- * @param first
- * @param end
- * 
+ * @param data 
+ * @return ByteArray 
  */
-constexpr ByteArrayView::ByteArrayView(const char *first, const char *end) {}
+ByteArray uncompress(const ByteArray &data) { return ByteArray(); }
 
 /**
- * @brief Construct a new Byte Buffer View object
- * 
- * @param data
- * 
+ * @brief 
+ * @param  str1             
+ * @param  str2             
+ * @return int 
  */
-constexpr ByteArrayView::ByteArrayView(const ByteArray &data) {}
+int bacompare(const char *str1, const char *str2) { return 0; }
 
 /**
- * @brief Construct a new Byte Buffer View object
- * 
- * @param data
- * 
+ * @brief 
+ * @param  str1             
+ * @param  str2             
+ * @return int 
  */
-constexpr ByteArrayView::ByteArrayView(const char *data) {}
+int bacompare(const ByteArray &str1, const ByteArray &str2) { return 0; }
+
+/**
+ * @brief 
+ * @param  str1             
+ * @param  str2             
+ * @return int 
+ */
+int bacompare(const ByteArray &str1, const char *str2) { return 0; }
+
+/**
+ * @brief 
+ * @param  str1             
+ * @param  str2             
+ * @return int 
+ */
+int bacompare(const char *str1, const ByteArray &str2) { return 0; }
 
 }// namespace m2
 // namespace m2
