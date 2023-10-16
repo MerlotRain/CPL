@@ -38,14 +38,12 @@ namespace m2 {
 
 enum OpenMode
 {
-    in = 0x01,
-    out = 0x02,
-    ate = 0x04,
-    app = 0x08,
-    trunc = 0x10,
-    nocreate = 0x40,
-    noreplace = 0x80,
-    binary = 0x20,
+    notopen = 0x0000,
+    in = 0x0001,
+    out = 0x0002,
+    append = 0x0004,
+    trunc = 0x0008,
+    text = 0x0010
 };
 M2_DECLARE_FLAGS(OpenModes, OpenMode)
 

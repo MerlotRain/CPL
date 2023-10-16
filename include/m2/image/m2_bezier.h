@@ -67,10 +67,10 @@ public:
     int stationaryYPoints(double &t0, double &t1) const;
     double tForY(double t0, double t1, double y) const;
 
-    PointF pt1() const { return PointF(x1, y1); }
-    PointF pt2() const { return PointF(x2, y2); }
-    PointF pt3() const { return PointF(x3, y3); }
-    PointF pt4() const { return PointF(x4, y4); }
+    inline PointF pt1() const { return PointF(x1, y1); }
+    inline PointF pt2() const { return PointF(x2, y2); }
+    inline PointF pt3() const { return PointF(x3, y3); }
+    inline PointF pt4() const { return PointF(x4, y4); }
 
     inline PointF midPoint() const;
     inline LineF midTangent() const;
