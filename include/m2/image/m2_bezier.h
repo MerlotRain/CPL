@@ -89,7 +89,7 @@ public:
     Bezier bezierOnInterval(double t0, double t1) const;
     Bezier getSubRange(double t0, double t1) const;
 
-private:
+
     double x1, y1, x2, y2, x3, y3, x4, y4;
 };
 

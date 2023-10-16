@@ -55,7 +55,7 @@ public:
     Color() noexcept;
     Color(Rgb32 c) noexcept;
     Color(int r, int g, int b, int a = 255) noexcept;
-    Color(const char *name);
+    Color(const String &name);
 
     Color(const Color &color) noexcept;
     Color &operator=(const Color &color) noexcept;
@@ -173,8 +173,16 @@ public:
     Color lighter(int f = 150) const noexcept;
     Color darker(int f = 200) const noexcept;
 
+    static Color fromString(const String &name) noexcept;
     bool operator==(const Color &c) const noexcept;
     bool operator!=(const Color &c) const noexcept;
+
+    void invalidate() noexcept;
+    static constexpr bool isRgbaValid(int r, int g, int b, int a = 255) noexcept
+    {
+        return uint32_t(r) <= 255 && uint32_t(g) <= 255 && uint32_t(b) <= 255 &&
+               uint32_t(a) <= 255;
+    }
 
     // clang-format off
     enum

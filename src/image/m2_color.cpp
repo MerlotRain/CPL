@@ -47,6 +47,24 @@ inline constexpr int qGray(Rgb32 rgb)
     return qGray(qRed(rgb), qGreen(rgb), qBlue(rgb));
 }
 
+inline constexpr bool qIsGray(Rgb32 rgb)
+{
+    return qRed(rgb) == qGreen(rgb) && qRed(rgb) == qBlue(rgb);
+}
+
+inline constexpr Rgb32 qPremultiply(Rgb32 x)
+{
+    const uint32_t a = qAlpha(x);
+    uint32_t t = (x & 0xff00ff) * a;
+    t = (t + ((t >> 8) & 0xff00ff) + 0x800080) >> 8;
+    t &= 0xff00ff;
+
+    x = ((x >> 8) & 0xff) * a;
+    x = (x + ((x >> 8) & 0xff) + 0x80);
+    x &= 0xff00;
+    return x | t | (a << 24);
+}
+
 /*******************************************************************************
  * Class Color functions
  *******************************************************************************/
@@ -55,14 +73,22 @@ inline constexpr int qGray(Rgb32 rgb)
  * @brief Construct a new Color:: Color object
  * 
  */
-Color::Color() noexcept {}
+Color::Color() noexcept : cspec(Invalid), cs(USHRT_MAX, 0, 0, 0, 0) {}
 
 /**
  * @brief Construct a new Color:: Color object
  * 
  * @param c 
  */
-Color::Color(Rgb32 c) noexcept {}
+Color::Color(Rgb32 c) noexcept
+{
+    cspec = Rgb;
+    cs.argb.alpha = 0xffff;
+    cs.argb.red = qRed(c) * 0x101;
+    cs.argb.green = qGreen(c) * 0x101;
+    cs.argb.blue = qBlue(c) * 0x101;
+    cs.argb.pad = 0;
+}
 
 /**
  * @brief Construct a new Color:: Color object
@@ -72,14 +98,21 @@ Color::Color(Rgb32 c) noexcept {}
  * @param b 
  * @param a 
  */
-Color::Color(int r, int g, int b, int a) noexcept {}
+Color::Color(int r, int g, int b, int a) noexcept
+    : cspec(isRgbaValid(r, g, b, a) ? Rgb : Invalid),
+      cs(uint16_t(cspec == Rgb ? a * 0x0101 : 0),
+         uint16_t(cspec == Rgb ? r * 0x0101 : 0),
+         uint16_t(cspec == Rgb ? g * 0x0101 : 0),
+         uint16_t(cspec == Rgb ? b * 0x0101 : 0), 0)
+{
+}
 
 /**
  * @brief Construct a new Color:: Color object
  * 
  * @param name 
  */
-Color::Color(const char *name) {}
+Color::Color(const String &name) : Color(fromString(name)) {}
 
 /**
  * @brief Construct a new Color:: Color object
@@ -285,8 +318,12 @@ Color Color::lighter(int f) const noexcept { return Color(); }
 
 Color Color::darker(int f) const noexcept { return Color(); }
 
+Color Color::fromString(const String &name) noexcept { return Color(); }
+
 bool Color::operator==(const Color &c) const noexcept { return false; }
 
 bool Color::operator!=(const Color &c) const noexcept { return false; }
+
+void Color::invalidate() noexcept {}
 
 }// namespace m2
