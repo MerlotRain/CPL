@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-typedef unsigned int rgb32;
+typedef unsigned int Rgb32;
 
 class M2_API Color
 {
@@ -51,9 +51,9 @@ public:
         Hsl,
         ExtendedRgb
     };
-    
+
     Color() noexcept;
-    Color(rgb32 c) noexcept;
+    Color(Rgb32 c) noexcept;
     Color(int r, int g, int b, int a = 255) noexcept;
     Color(const char *name);
 
@@ -94,11 +94,11 @@ public:
     void setRgbF(float r, float g, float b, float a = 1.0);
 
 
-    rgb32 rgba() const noexcept;
-    void setRgba(rgb32 rgba) noexcept;
+    Rgb32 rgba() const noexcept;
+    void setRgba(Rgb32 rgba) noexcept;
 
-    rgb32 rgb() const noexcept;
-    void setRgb(rgb32 rgb) noexcept;
+    Rgb32 rgb() const noexcept;
+    void setRgb(Rgb32 rgb) noexcept;
 
     int hue() const noexcept;
     int saturation() const noexcept;
@@ -155,8 +155,8 @@ public:
     Color toHsl() const noexcept;
     Color toExtendedRgb() const noexcept;
 
-    static Color fromRgb(rgb32 rgb) noexcept;
-    static Color fromRgba(rgb32 rgba) noexcept;
+    static Color fromRgb(Rgb32 rgb) noexcept;
+    static Color fromRgba(Rgb32 rgba) noexcept;
 
     static Color fromRgb(int r, int g, int b, int a = 255);
     static Color fromRgbF(float r, float g, float b, float a = 1.0);

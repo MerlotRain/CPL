@@ -167,7 +167,8 @@ public:
     constexpr inline PointF &operator*=(double c);
     constexpr inline PointF &operator/=(double c);
 
-    PointF project(double distance, double azimuth, double inclination);
+    PointF project(double distance, double azimuth,
+                   double inclination = 90.0) const;
     constexpr static inline double dotProduct(const PointF &p1,
                                               const PointF &p2)
     {

@@ -74,7 +74,7 @@ public:
             double epsilon = std::numeric_limits<double>::epsilon());
 
     int intersections(const Circle &other, PointF &intersection1,
-                      PointF &intersection2, bool useZ = false) const;
+                      PointF &intersection2) const;
 
     bool tangentToPoint(const PointF &p, PointF &pt1, PointF &pt2) const;
 

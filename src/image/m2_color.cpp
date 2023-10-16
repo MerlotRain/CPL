@@ -1,6 +1,56 @@
 #include "m2_color.h"
 
 namespace m2 {
+
+/*******************************************************************************
+ * Rgb32 functions
+ *******************************************************************************/
+
+// masks RGB values
+constexpr Rgb32 RGB_MASK = 0xffffffff;
+
+// get red part of RGB
+inline constexpr int qRed(Rgb32 rgb) { return ((rgb >> 16) & 0xff); }
+
+// get green part of RGB
+inline constexpr int qGreen(Rgb32 rgb) { return ((rgb >> 8) & 0xff); }
+
+// get blue part of RGB
+inline constexpr int qBlue(Rgb32 rgb) { return (rgb & 0xff); }
+
+// get alpha part of RGBA
+inline constexpr int qAlpha(Rgb32 rgb) { return rgb >> 24; }
+
+// set RGB value
+inline constexpr Rgb32 qRgb(int r, int g, int b)
+{
+    return (0xffu << 24) | ((r & 0xffu) << 16) | ((g & 0xffu) << 8) |
+           (b & 0xffu);
+}
+
+// set RGBA value
+inline constexpr Rgb32 qRgba(int r, int g, int b, int a)
+{
+    return ((a & 0xffu) << 24) | ((r & 0xffu) << 16) | ((g & 0xffu) << 8) |
+           (b & 0xffu);
+}
+
+// convert R,G,B to gray 0..255
+inline constexpr int qGray(int r, int g, int b)
+{
+    return (r * 11 + g * 16 + b * 5) / 32;
+}
+
+// convert RGB to gray 0..255
+inline constexpr int qGray(Rgb32 rgb)
+{
+    return qGray(qRed(rgb), qGreen(rgb), qBlue(rgb));
+}
+
+/*******************************************************************************
+ * Class Color functions
+ *******************************************************************************/
+
 /**
  * @brief Construct a new Color:: Color object
  * 
@@ -12,7 +62,7 @@ Color::Color() noexcept {}
  * 
  * @param c 
  */
-Color::Color(rgb32 c) noexcept {}
+Color::Color(Rgb32 c) noexcept {}
 
 /**
  * @brief Construct a new Color:: Color object
@@ -118,13 +168,13 @@ void Color::getRgbF(float *r, float *g, float *b, float *a) const {}
 
 void Color::setRgbF(float r, float g, float b, float a) {}
 
-rgb32 Color::rgba() const noexcept { return rgb32(); }
+Rgb32 Color::rgba() const noexcept { return Rgb32(); }
 
-void Color::setRgba(rgb32 rgba) noexcept {}
+void Color::setRgba(Rgb32 rgba) noexcept {}
 
-rgb32 Color::rgb() const noexcept { return rgb32(); }
+Rgb32 Color::rgb() const noexcept { return Rgb32(); }
 
-void Color::setRgb(rgb32 rgb) noexcept {}
+void Color::setRgb(Rgb32 rgb) noexcept {}
 
 int Color::hue() const noexcept { return 0; }
 
@@ -208,9 +258,9 @@ Color Color::toHsl() const noexcept { return Color(); }
 
 Color Color::toExtendedRgb() const noexcept { return Color(); }
 
-Color Color::fromRgb(rgb32 rgb) noexcept { return Color(); }
+Color Color::fromRgb(Rgb32 rgb) noexcept { return Color(); }
 
-Color Color::fromRgba(rgb32 rgba) noexcept { return Color(); }
+Color Color::fromRgba(Rgb32 rgba) noexcept { return Color(); }
 
 Color Color::fromRgb(int r, int g, int b, int a) { return Color(); }
 

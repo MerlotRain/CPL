@@ -34,7 +34,7 @@
 #define M2_DATASTREAM_H_
 
 #include <m2_endian.h>
-#include <m2_iobase.h>
+#include <m2_iodevice.h>
 
 namespace m2 {
 
@@ -49,12 +49,20 @@ public:
         WriteFailed
     };
 
+    DataStream();
+    explicit DataStream(IODevice *device);
+    DataStream(ByteArray *array, IODevice *device);
+    DataStream(const ByteArray &);
+    ~DataStream();
 
     bool atEnd() const;
 
     Status status() const;
     void setStatus(Status status);
     void resetStatus();
+
+    IODevice *device() const;
+    void setDevice(IODevice *);
 
     Endian byteOrder() const;
     void setByteOrder(Endian);
@@ -97,7 +105,7 @@ public:
     DataStream &writeBytes(const char *, uint32_t len);
     int writeRawData(const char *, int len);
 
-    int seek(int len);
+    int skipRawData(int len);
 };
 
 }// namespace m2
