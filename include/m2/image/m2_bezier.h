@@ -33,7 +33,7 @@
 #ifndef M2_BEZIER_H_
 #define M2_BEZIER_H_
 
-#include <preconfig.h>
+#include <m2_point.h>
 
 namespace m2 {
 
@@ -69,7 +69,11 @@ public:
     int stationaryYPoints(double &t0, double &t1) const;
     double tForY(double t0, double t1, double y) const;
 
-    PointF pt4() const { return PointF(x4, y4); }
+    inline PointF pt1() const { return PointF(x1, y1); }
+    inline PointF pt2() const { return PointF(x2, y2); }
+    inline PointF pt3() const { return PointF(x3, y3); }
+    inline PointF pt4() const { return PointF(x4, y4); }
+
     PointF midPoint() const;
     LineF midTangent() const;
 
