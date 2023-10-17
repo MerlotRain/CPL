@@ -40,12 +40,11 @@ namespace m2 {
 class M2_API BigInteger
 {
 public:
-    explicit BigInteger(String number);
-    explicit BigInteger(long long v);
-    explicit BigInteger(int v) noexcept;
-    explicit BigInteger(long long v) noexcept;
-    explicit BigInteger(unsigned int v) noexcept;
-    explicit BigInteger(unsigned long long v) noexcept;
+    BigInteger(const String &);
+    BigInteger(int v) noexcept;
+    BigInteger(long long v) noexcept;
+    BigInteger(unsigned int v) noexcept;
+    BigInteger(unsigned long long v) noexcept;
 
     BigInteger &operator=(const BigInteger &rhs);
     BigInteger &operator=(const long long &rhs);
@@ -97,9 +96,9 @@ public:
     BigInteger divide(BigInteger rhs);
     BigInteger pow(int exponent);
 
-    String toString();
+    String toString() const;
     BigInteger setString(const String &newStr);
-    BigInteger negate();
+    BigInteger negative();
     BigInteger trimLeadingZeros();
 
     bool equals(const BigInteger &rhs) const;
@@ -108,8 +107,8 @@ public:
     unsigned int digits();
     bool isNegative() const;
     bool isPositive() const;
-    bool IsEven() const;
-    bool IsOdd() const;
+    bool isEven() const;
+    bool isOdd() const;
     BigInteger abs() const;
 
 

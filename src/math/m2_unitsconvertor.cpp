@@ -44,7 +44,7 @@ static constexpr auto DegreeToMeter = 111319.49079327358;
 /**
  * @brief Construct a new Length:: Length object
  */
-Length::Length() noexcept {}
+Length::Length() noexcept : unit(Length::eMeter) {}
 
 /**
  * @brief Construct a new Length:: Length object
@@ -81,9 +81,8 @@ Length::Length(double len, LengthUnits uints) noexcept
  * @param  rhs              
  */
 Length::Length(Length &&rhs) noexcept
+    : length(std::move(rhs.length)), unit(std::move(rhs.unit))
 {
-    length = std::move(rhs.length);
-    unit = std::move(rhs.unit);
 }
 
 /**
@@ -423,7 +422,7 @@ static constexpr auto DegreesToMeter2 = 12392029030.5;
 /**
  * @brief Construct a new Area:: Area object
  */
-Area::Area() noexcept {}
+Area::Area() noexcept : unit(Area::eMeter2) {}
 
 /**
  * @brief Construct a new Area:: Area object
@@ -455,9 +454,8 @@ Area::Area(double a, AreaUnits unit) noexcept : area(a), unit(unit) {}
  * @param  rhs              
  */
 Area::Area(Area &&rhs) noexcept
+    : area(std::move(rhs.area)), unit(std::move(rhs.unit))
 {
-    area = std::move(rhs.area);
-    unit = std::move(rhs.unit);
 }
 
 /**
@@ -803,7 +801,7 @@ static constexpr auto GallonUSToCubicMeter = 0;
 /**
  * @brief Construct a new Volume:: Volume object
  */
-Volume::Volume() noexcept {}
+Volume::Volume() noexcept : unit(Volume::eCubicMeters) {}
 
 /**
  * @brief Construct a new Volume:: Volume object
@@ -840,9 +838,8 @@ Volume::Volume(double vol, VolumeUnits uints) noexcept
  * @param  rhs              
  */
 Volume::Volume(Volume &&rhs) noexcept
+    : volume(std::move(rhs.volume)), unit(std::move(rhs.unit))
 {
-    volume = std::move(rhs.volume);
-    unit = std::move(rhs.unit);
 }
 
 /**

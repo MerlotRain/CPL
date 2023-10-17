@@ -1,5 +1,5 @@
-﻿#include "trace.h"
-
+﻿#include <m2_error.h>
+#include <m2_textconvertor.h>
 #ifdef _WIN32
 #include <Windows.h>
 #else
@@ -9,12 +9,9 @@ namespace m2 {
 
 #ifdef _WIN32
 
-int Error::LastError()
-{
-    return static_cast<int>(GetLastError());
-}
+int Error::lastError() { return static_cast<int>(GetLastError()); }
 
-String Error::Message(int code)
+String Error::message(int code)
 {
     String errMsg;
     DWORD dwFlg = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
@@ -22,8 +19,7 @@ String Error::Message(int code)
     LPWSTR lpMsgBuf = 0;
     if (FormatMessageW(dwFlg, 0, (DWORD) code, 0, (LPWSTR) &lpMsgBuf, 0, NULL))
     {
-        CW2A cw2a(lpMsgBuf);
-        errMsg = cw2a.m_Str;
+        TextConverter::convert(lpMsgBuf, errMsg);
     }
     LocalFree(lpMsgBuf);
     return errMsg;
@@ -31,10 +27,7 @@ String Error::Message(int code)
 
 #else
 
-int Error::LastError()
-{
-    return errno;
-}
+int Error::lastError() { return errno; }
 
 class StrErrorHelper
 {
@@ -52,32 +45,21 @@ public:
 #endif
     }
 
-    ~StrErrorHelper()
-    {
-    }
+    ~StrErrorHelper() {}
 
-    const String &message() const
-    {
-        return _message;
-    }
+    const String &message() const { return _message; }
 
 protected:
-    void setMessage(int rc)
-    {
-        _message = _buffer;
-    }
+    void setMessage(int rc) { _message = _buffer; }
 
-    void setMessage(const char *msg)
-    {
-        _message = msg;
-    }
+    void setMessage(const char *msg) { _message = msg; }
 
 private:
     char _buffer[256];
     String _message;
 };
 
-String Error::Message(int code)
+String Error::message(int code)
 {
     StrErrorHelper helper(code);
     return helper.message();

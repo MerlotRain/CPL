@@ -83,6 +83,13 @@ endif()
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 #-----------------------------------------------------------------------------
+# Options
+#-----------------------------------------------------------------------------
+## CMake global variables
+option(BUILD_SHARED_LIBS "Build GEOS with shared libraries" ON)
+set(CMAKE_CXX_STANDARD 17 CACHE STRING "C++ standard version to use (default is 17)")
+
+#-----------------------------------------------------------------------------
 # Setup build directories
 #-----------------------------------------------------------------------------
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
@@ -126,6 +133,38 @@ add_library(libm2 "")
 add_library(M2::libm2 ALIAS libm2)
 add_subdirectory(include)
 add_subdirectory(src)
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    target_compile_definitions(libm2 PRIVATE M2_LIBRARY)
+    target_compile_definitions(libm2 PRIVATE XPCORE_EXPORTS)
+    target_compile_definitions(libm2 PRIVATE JSON_DLL_BUILD)
+    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_COLUMN_METADATA)
+    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_FTS3)
+    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_FTS3_PARENTHESIS)
+    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_FTS5)
+    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_JSON1)
+    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_RTREE)
+    target_compile_definitions(libm2 PRIVATE SQLITE_OMIT_COMPLETE)
+    target_compile_definitions(libm2 PRIVATE _NO_CVCONST_H)
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    target_compile_definitions(libm2 PRIVATE -M2_LIBRARY)
+    target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_COLUMN_METADATA)
+    target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_FTS3)
+    target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_FTS3_PARENTHESIS)
+    target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_FTS5)
+    target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_JSON1)
+    target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_RTREE)
+    target_compile_definitions(libm2 PRIVATE -SQLITE_OMIT_COMPLETE)
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    target_compile_definitions(libm2 PRIVATE M2_LIBRARY)
+    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_COLUMN_METADATA)
+    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_FTS3)
+    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_FTS3_PARENTHESIS)
+    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_FTS5)
+    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_JSON1)
+    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_RTREE)
+    target_compile_definitions(libm2 PRIVATE SQLITE_OMIT_COMPLETE)
+endif ()
 
 if(WIN32 AND NOT MINGW)
   target_link_libraries(libm2 PRIVATE

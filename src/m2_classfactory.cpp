@@ -11,6 +11,12 @@ namespace m2 {
 static std::map<String, std::map<String, ClassFactory::FactoryCreateFun>>
         g_RegisterClasses;
 
+/**
+ * @brief 
+ * @param  fun              
+ * @param  className        
+ * @param  category         
+ */
 void ClassFactory::registerFactoryCreate(FactoryCreateFun fun,
                                          const char *className,
                                          const char *category)
@@ -34,6 +40,11 @@ void ClassFactory::registerFactoryCreate(FactoryCreateFun fun,
     if (funFind == classFun.end()) { classFun.insert({className, fun}); }
 }
 
+/**
+ * @brief 
+ * @param  category         
+ * @return StringList 
+ */
 StringList ClassFactory::classNamesByCategory(const char *category)
 {
     if (!category) { category = DEFAULT_CLASS_CATEGORY; }
@@ -52,6 +63,11 @@ StringList ClassFactory::classNamesByCategory(const char *category)
     return classNames;
 }
 
+/**
+ * @brief 
+ * @param  className        
+ * @return RefObject* 
+ */
 RefObject *ClassFactory::createInstancePrivate(const char *className)
 {
     auto it = g_RegisterClasses.begin();

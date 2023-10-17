@@ -44,8 +44,8 @@ public:
     Random(int seed);
     Random(unsigned short seed[7]);
     Random(const Random &rhs);
-    Random(Random &&rhs);
-    Random &operator=(Random &&rhs);
+    Random(Random &&rhs) noexcept;
+    Random &operator=(Random &&rhs) noexcept;
     Random &operator=(const Random &rhs);
     ~Random();
 

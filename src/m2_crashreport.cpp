@@ -1,50 +1,25 @@
-#include "trace.h"
+#include <m2_trace.h>
 
 namespace m2 {
 
-CrashReport::CrashReport()
-{
-}
+CrashReport::CrashReport() {}
 
-void CrashReport::StackTrace(StackTrace *value)
-{
-}
+void CrashReport::setStackTrace(StackTrace *value) {}
 
-StackTrace *CrashReport::StackTrace() const
-{
-    return nullptr;
-}
+StackTrace *CrashReport::stackTrace() const { return nullptr; }
 
-void CrashReport::Flags(CrashReport::CrashFlags flags)
-{
-}
+void CrashReport::setFlags(CrashReport::CrashFlags flags) {}
 
-CrashReport::CrashFlags CrashReport::Flags() const
-{
-    return CrashFlags();
-}
+CrashReport::CrashFlags CrashReport::flags() const { return CrashFlags(); }
 
-const String CrashReport::ToHtml() const
-{
-    return String();
-}
+const String CrashReport::toHtml() const { return String(); }
 
-const String CrashReport::CrashID() const
-{
-    return String();
-}
+const String CrashReport::crashID() const { return String(); }
 
-void CrashReport::ExportToCrashFolder()
-{
-}
+void CrashReport::exportToCrashFolder() {}
 
-String CrashReport::CrashReportFolder()
-{
-    return String();
-}
+String CrashReport::crashReportFolder() { return String(); }
 
-void CrashReport::VersionInfo(const StringList &versionInfo)
-{
-}
+void CrashReport::versionInfo(const StringList &versionInfo) {}
 
 }// namespace m2

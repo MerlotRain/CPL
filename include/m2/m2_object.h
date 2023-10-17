@@ -43,12 +43,12 @@ class StringList;
 class M2_API NonCopyable
 {
 public:
-    NonCopyable();
-    virtual ~NonCopyable();
+    NonCopyable() = default;
+    virtual ~NonCopyable() = default;
 
 private:
-    NonCopyable(const NonCopyable &);
-    NonCopyable &operator=(const NonCopyable &);
+    NonCopyable(const NonCopyable &) = delete;
+    NonCopyable &operator=(const NonCopyable &) = delete;
 };
 
 class M2_API RefObject : public NonCopyable

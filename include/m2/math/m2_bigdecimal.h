@@ -43,7 +43,7 @@ public:
     BigDecimal() noexcept;
     explicit BigDecimal(const BigDecimal &rhs) noexcept;
     explicit BigDecimal(const char *v);
-    explicit BigDecimal(String v);
+    BigDecimal(String v);
     explicit BigDecimal(int v) noexcept;
     explicit BigDecimal(long long v) noexcept;
     explicit BigDecimal(unsigned int v) noexcept;

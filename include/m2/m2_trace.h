@@ -61,12 +61,12 @@ public:
     HANDLE process;
     HANDLE thread;
     std::vector<HANDLE> threads;
-    static StackTrace *Trace(DWORD processID, DWORD threadID,
+    static StackTrace *trace(DWORD processID, DWORD threadID,
                              struct _EXCEPTION_POINTERS *ExceptionInfo,
                              String symbolPath);
 #else
     static std::vector<StackTrace::StackLine>
-    Trace(unsigned int maxFrames = 63);
+    trace(unsigned int maxFrames = 63);
 #endif
 };
 

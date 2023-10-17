@@ -85,9 +85,9 @@ static inline int SHA384_512AddLength(SHA512Context *context,
 
 namespace m2 {
 
-//////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////
+/*******************************************************************************
+ * class CryptographicHashPrivate functions
+ *******************************************************************************/
 
 class CryptographicHashPrivate
 {
@@ -135,11 +135,14 @@ void CryptographicHashPrivate::sha3Finish(int bitCount, Sha3Variant sha3Variant)
     sha3Final(&copy, reinterpret_cast<BitSequence *>(result.data()));
 }
 
+/*******************************************************************************
+ * class CryptographicHash functions
+ *******************************************************************************/
 
-//////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////
-
+/**
+ * @brief Construct a new Cryptographic Hash:: Cryptographic Hash object
+ * @param  algorithm        
+ */
 CryptographicHash::CryptographicHash(HashAlgorithm algorithm)
     : d(new CryptographicHashPrivate)
 {
@@ -147,8 +150,18 @@ CryptographicHash::CryptographicHash(HashAlgorithm algorithm)
     reset();
 }
 
-CryptographicHash::~CryptographicHash() {}
+/**
+ * @brief Destroy the Cryptographic Hash:: Cryptographic Hash object
+ */
+CryptographicHash::~CryptographicHash()
+{
+    if (d) { delete d; }
+    d = nullptr;
+}
 
+/**
+ * @brief 
+ */
 void CryptographicHash::reset()
 {
     switch (d->method)
@@ -194,6 +207,11 @@ void CryptographicHash::reset()
     d->result.clear();
 }
 
+/**
+ * @brief 
+ * @param  data             
+ * @param  length           
+ */
 void CryptographicHash::addData(const char *data, int length)
 {
     switch (d->method)
@@ -251,16 +269,28 @@ void CryptographicHash::addData(const char *data, int length)
     d->result.clear();
 }
 
+/**
+ * @brief 
+ * @param  data             
+ */
 void CryptographicHash::addData(const ByteArray &data)
 {
     addData(reinterpret_cast<const char *>(data.constData()), data.size());
 }
 
+/**
+ * @brief 
+ * @param  str              
+ */
 void CryptographicHash::addData(const String &str)
 {
     addData(str.data(), str.length());
 }
 
+/**
+ * @brief 
+ * @return ByteArray 
+ */
 ByteArray CryptographicHash::result() const
 {
     if (!d->result.isEmpty()) return d->result;
@@ -369,6 +399,12 @@ ByteArray CryptographicHash::result() const
     return d->result;
 }
 
+/**
+ * @brief 
+ * @param  data             
+ * @param  method           
+ * @return ByteArray 
+ */
 ByteArray CryptographicHash::hash(const ByteArray &data, HashAlgorithm method)
 {
     CryptographicHash hash(method);
@@ -376,6 +412,11 @@ ByteArray CryptographicHash::hash(const ByteArray &data, HashAlgorithm method)
     return hash.result();
 }
 
+/**
+ * @brief 
+ * @param  method           
+ * @return int 
+ */
 int CryptographicHash::hashLength(HashAlgorithm method)
 {
     switch (method)
@@ -409,6 +450,5 @@ int CryptographicHash::hashLength(HashAlgorithm method)
     }
     return 0;
 }
-
 
 }// namespace m2

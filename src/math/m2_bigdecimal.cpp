@@ -1,281 +1,58 @@
-#include <mathhelp.h>
 #include <iostream>
+#include <m2_bigdecimal.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 namespace m2 {
 
-BigDecimal::BigDecimal() noexcept
-{
-}
 
-BigDecimal::BigDecimal(const BigDecimal &v) noexcept : m_Value(v.m_Value)
-{
-}
-
-BigDecimal::BigDecimal(const char *v) : m_Value(v)
-{
-}
-
-BigDecimal::BigDecimal(String v) : m_Value(v)
-{
-}
-
-BigDecimal::BigDecimal(int v) noexcept : m_Value()
-{
-    StringStream ss;
-    ss << v;
-    m_Value = ss.Str();
-}
-
-BigDecimal::BigDecimal(long long v) noexcept : m_Value()
-{
-    StringStream ss;
-    ss << v;
-    m_Value = ss.Str();
-}
-
-BigDecimal::BigDecimal(long long int v) noexcept : m_Value()
-{
-    StringStream ss;
-    ss << v;
-    m_Value = ss.Str();
-}
-
-BigDecimal::BigDecimal(unsigned int v) noexcept : m_Value()
-{
-    StringStream ss;
-    ss << v;
-    m_Value = ss.Str();
-}
-
-BigDecimal::BigDecimal(unsigned long long v) noexcept
-{
-    StringStream ss;
-    ss << v;
-    m_Value = ss.Str();
-}
-
-BigDecimal::BigDecimal(unsigned long long int v) noexcept : m_Value()
-{
-    StringStream ss;
-    ss << v;
-    m_Value = ss.Str();
-}
-
-BigDecimal::BigDecimal(float v) noexcept : m_Value()
-{
-    StringStream ss;
-    ss << v;
-    m_Value = ss.Str();
-}
-
-BigDecimal::BigDecimal(double v) noexcept : m_Value()
-{
-    StringStream ss;
-    ss << v;
-    m_Value = ss.Str();
-}
-
-BigDecimal::BigDecimal(long double v) noexcept
-{
-    StringStream ss;
-    ss << v;
-    m_Value = ss.Str();
-}
-
-BigDecimal BigDecimal::operator+(const BigDecimal &rhs)
-{
-    return BigDecimal::Add(m_Value, rhs.m_Value);
-}
-
-BigDecimal BigDecimal::operator-(const BigDecimal &rhs)
-{
-    return BigDecimal::Subtract(m_Value, rhs.m_Value);
-}
-
-BigDecimal BigDecimal::operator*(const BigDecimal &rhs)
-{
-    return BigDecimal::Multiply(m_Value, rhs.m_Value);
-}
-
-BigDecimal BigDecimal::operator/(const BigDecimal &rhs)
-{
-    return BigDecimal::Divide(m_Value, rhs.m_Value);
-}
-
-BigDecimal BigDecimal::operator%(const BigDecimal &rhs)
-{
-    return BigDecimal::Modulus(m_Value, rhs.m_Value);
-}
-
-BigDecimal BigDecimal::operator^(const BigDecimal &rhs)
-{
-    return BigDecimal::Pow(m_Value, rhs.m_Value);
-}
-
-void BigDecimal::operator+=(const BigDecimal &rhs)
-{
-    m_Value = BigDecimal::Add(m_Value, rhs.m_Value);
-}
-
-void BigDecimal::operator-=(const BigDecimal &rhs)
-{
-    m_Value = BigDecimal::Subtract(m_Value, rhs.m_Value);
-}
-
-void BigDecimal::operator*=(const BigDecimal &rhs)
-{
-    m_Value = BigDecimal::Multiply(m_Value, rhs.m_Value);
-}
-
-void BigDecimal::operator/=(const BigDecimal &rhs)
-{
-    m_Value = BigDecimal::Divide(m_Value, rhs.m_Value);
-}
-
-void BigDecimal::operator^=(const BigDecimal &rhs)
-{
-    m_Value = BigDecimal::Pow(m_Value, rhs.m_Value);
-}
-
-bool BigDecimal::operator>(const BigDecimal &rhs)
-{
-    return BigDecimal::CompareTo(m_Value, rhs.m_Value) > 0;
-}
-
-bool BigDecimal::operator>=(const BigDecimal &rhs)
-{
-    return BigDecimal::CompareTo(m_Value, rhs.m_Value) >= 0;
-}
-
-bool BigDecimal::operator==(const BigDecimal &rhs)
-{
-    return BigDecimal::CompareTo(m_Value, rhs.m_Value) == 0;
-}
-
-bool BigDecimal::operator<(const BigDecimal &rhs)
-{
-    return BigDecimal::CompareTo(m_Value, rhs.m_Value) < 0;
-}
-
-bool BigDecimal::operator<=(const BigDecimal &rhs)
-{
-    return BigDecimal::CompareTo(m_Value, rhs.m_Value) <= 0;
-}
-
-int BigDecimal::ToInt()
-{
-    IStringStream buffer(m_Value);
-    int ret;
-    buffer >> ret;
-    return ret;
-}
-
-unsigned int BigDecimal::ToUInt()
-{
-    IStringStream buffer(m_Value);
-    unsigned int ret;
-    buffer >> ret;
-    return ret;
-}
-
-long long BigDecimal::ToLongLong()
-{
-    IStringStream buffer(m_Value);
-    long long ret;
-    buffer >> ret;
-    return ret;
-}
-
-unsigned long long BigDecimal::ToULongLong()
-{
-    IStringStream buffer(m_Value);
-    unsigned long long ret;
-    buffer >> ret;
-    return ret;
-}
-
-long double BigDecimal::ToLongDouble()
-{
-    IStringStream buffer(m_Value);
-    long double ret;
-    buffer >> ret;
-    return ret;
-}
-
-double BigDecimal::ToDouble()
-{
-    IStringStream buffer(m_Value);
-    double ret;
-    buffer >> ret;
-    return ret;
-}
-
-float BigDecimal::ToFloat()
-{
-    IStringStream buffer(m_Value);
-    float ret;
-    buffer >> ret;
-    return ret;
-}
-
-String BigDecimal::ToString()
-{
-    return m_Value;
-}
-
-void BigDecimal::Round(int scale)
-{
-    if (scale >= 1)
-        m_Value = BigDecimal::Round(m_Value, scale);
-}
-
-String BigDecimal::IntPart()
-{
-    size_t dot = m_Value.find('.');
-    if (dot != String::npos)
-    {
-        if (dot == 0)
-            return String("0");
-        if (dot == 1 && m_Value[0] == '-')
-            return String("-0");
-        return m_Value.substr(0, dot);
-    }
-    else
-    {
-        return m_Value;
-    }
-}
-
-String BigDecimal::DecPart()
-{
-    size_t dot = m_Value.find('.');
-    if (dot != String::npos)
-        return m_Value.length() > dot + 1 ? m_Value.substr(dot + 1) : String("0");
-    else
-        return String("0");
-}
-
-
+/*******************************************************************************
+ * static functions
+ *******************************************************************************/
 static int _scale = 100;
 static const String ONE("1");
 static const String ZERO("0");
 static const String TEN("10");
+
+/**
+ * @brief 
+ * @param  a                
+ * @return String 
+ */
+static String fact(String a)
+{
+    String i("1");
+    String fact("1");
+    while (BigDecimal::compareTo(i, a) <= 0)
+    {
+        fact = BigDecimal::multiply(fact, String::toString(i));
+        i = BigDecimal::add(i, ONE);
+    }
+    return fact;
+}
+
+/**
+ * @brief 
+ * @param  value            
+ * @return String 
+ */
 static String LeftOfDot(String &value)
 {
     std::size_t dot = value.find('.');
     if (dot != String::npos)
     {
-        if (dot == 0)
-            return String("0");
-        if (dot == 1 && value[0] == '-')
-            return String("-0");
+        if (dot == 0) return String("0");
+        if (dot == 1 && value[0] == '-') return String("-0");
         else
             return value;
     }
 }
 
+/**
+ * @brief 
+ * @param  input            
+ * @return String 
+ */
 String trimTrailingZeros(String input)
 {
     if (input.find(".") != String::npos)
@@ -283,42 +60,39 @@ String trimTrailingZeros(String input)
         String result = "";
         std::size_t i;
         String inp(input.rbegin(), input.rend());
-        result = inp.erase(0, std::min(inp.find_first_not_of('0'), inp.size() - 1));
-        if (result.at(0) == '.')
-        {
-            result = result.erase(0, 1);
-        }
+        result = inp.erase(
+                0, std::min(inp.find_first_not_of('0'), inp.size() - 1));
+        if (result.at(0) == '.') { result = result.erase(0, 1); }
         return String(result.rbegin(), result.rend());
     }
-    else
-    {
-        return input;
-    }
+    else { return input; }
 }
 
-static int parse_number(const String &s, int &lsign, int &lint, int &ldot, int &lfrac, int &lscale)
+/**
+ * @brief 
+ * @param  s                
+ * @param  lsign            
+ * @param  lint             
+ * @param  ldot             
+ * @param  lfrac            
+ * @param  lscale           
+ * @return int 
+ */
+static int parse_number(const String &s, int &lsign, int &lint, int &ldot,
+                        int &lfrac, int &lscale)
 {
     int i = 0;
     lsign = 1;
     if (s[i] == '-' || s[i] == '+')
     {
-        if (s[i] == '-')
-        {
-            lsign = -1;
-        }
+        if (s[i] == '-') { lsign = -1; }
         i++;
     }
     int len = s.length();
-    if (i >= len)
-    {
-        return -1;
-    }
+    if (i >= len) { return -1; }
     lint = i;
 
-    while (i < len && '0' <= s[i] && s[i] <= '9')
-    {
-        i++;
-    }
+    while (i < len && '0' <= s[i] && s[i] <= '9') { i++; }
     ldot = i;
 
     lscale = 0;
@@ -329,54 +103,57 @@ static int parse_number(const String &s, int &lsign, int &lint, int &ldot, int &
     }
     lfrac = i;
 
-    while (i < len && '0' <= s[i] && s[i] <= '9')
-    {
-        i++;
-    }
+    while (i < len && '0' <= s[i] && s[i] <= '9') { i++; }
 
-    if (i < len)
-    {
-        return -1;
-    }
+    if (i < len) { return -1; }
 
-    while (s[lint] == '0' && lint + 1 < ldot)
-    {
-        lint++;
-    }
+    while (s[lint] == '0' && lint + 1 < ldot) { lint++; }
     if (lscale == 0 && lfrac > ldot)
     {
         lfrac--;
         assert(lfrac == ldot);
     }
 
-    if (lsign < 0 && (lscale == 0 && s[lint] == '0'))
-    {
-        lsign = 1;
-    }
+    if (lsign < 0 && (lscale == 0 && s[lint] == '0')) { lsign = 1; }
     return lscale;
 }
 
+/**
+ * @brief 
+ * @param  scale            
+ * @return String 
+ */
 static String _zero(int scale)
 {
-    if (scale == 0)
-    {
-        return ZERO;
-    }
+    if (scale == 0) { return ZERO; }
     String result(scale + 2, '0');
     result[1] = '.';
     return result;
 }
 
-static int _compareTo(const char *lhs, int lint, int ldot, int lfrac, int lscale, const char *rhs,
-                      int rint, int rdot, int rfrac, int rscale, int scale)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  lint             
+ * @param  ldot             
+ * @param  lfrac            
+ * @param  lscale           
+ * @param  rhs              
+ * @param  rint             
+ * @param  rdot             
+ * @param  rfrac            
+ * @param  rscale           
+ * @param  scale            
+ * @return int 
+ */
+static int _compareTo(const char *lhs, int lint, int ldot, int lfrac,
+                      int lscale, const char *rhs, int rint, int rdot,
+                      int rfrac, int rscale, int scale)
 {
     int llen = ldot - lint;
     int rlen = rdot - rint;
 
-    if (llen != rlen)
-    {
-        return (llen < rlen ? -1 : 1);
-    }
+    if (llen != rlen) { return (llen < rlen ? -1 : 1); }
 
     for (int i = 0; i < llen; i++)
     {
@@ -391,22 +168,30 @@ static int _compareTo(const char *lhs, int lint, int ldot, int lfrac, int lscale
     {
         int lchar = (i < lscale ? lhs[lfrac + i] : '0');
         int rchar = (i < rscale ? rhs[rfrac + i] : '0');
-        if (lchar != rchar)
-        {
-            return (lchar < rchar ? -1 : 1);
-        }
+        if (lchar != rchar) { return (lchar < rchar ? -1 : 1); }
     }
 
     return 0;
 }
 
-static String _round(char *lhs, int lint, int ldot, int lfrac, int lscale, int scale, int sign,
-                       bool add_trailing_zeroes, bool round_last = false)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  lint             
+ * @param  ldot             
+ * @param  lfrac            
+ * @param  lscale           
+ * @param  scale            
+ * @param  sign             
+ * @param  add_trailing_zeroes
+ * @param  round_last       
+ * @return String 
+ */
+static String _round(char *lhs, int lint, int ldot, int lfrac, int lscale,
+                     int scale, int sign, bool add_trailing_zeroes,
+                     bool round_last = false)
 {
-    while (lhs[lint] == '0' && lint + 1 < ldot)
-    {
-        lint++;
-    }
+    while (lhs[lint] == '0' && lint + 1 < ldot) { lint++; }
 
     assert(lint > 0 && lscale >= 0 && scale >= 0);
 
@@ -427,17 +212,15 @@ static String _round(char *lhs, int lint, int ldot, int lfrac, int lscale, int s
     {
         if (lscale > scale)
         {
-            while (scale > 0 && lhs[lfrac + scale - 1] == '9' && lhs[lfrac + scale] >= '5')
+            while (scale > 0 && lhs[lfrac + scale - 1] == '9' &&
+                   lhs[lfrac + scale] >= '5')
             {
                 scale--;
             }
             lscale = scale;
             if (lhs[lfrac + scale] >= '5')
             {
-                if (scale > 0)
-                {
-                    lhs[lfrac + scale - 1]++;
-                }
+                if (scale > 0) { lhs[lfrac + scale - 1]++; }
                 else
                 {
                     lfrac--;
@@ -450,25 +233,16 @@ static String _round(char *lhs, int lint, int ldot, int lfrac, int lscale, int s
                         lhs[ldot - i - 1] = '0';
                     }
                     lhs[ldot - i - 1]++;
-                    if (ldot - i - 1 < lint)
-                    {
-                        lint = ldot - i - 1;
-                    }
+                    if (ldot - i - 1 < lint) { lint = ldot - i - 1; }
                 }
             }
         }
 
-        while (lscale > 0 && lhs[lfrac + lscale - 1] == '0')
-        {
-            lscale--;
-        }
+        while (lscale > 0 && lhs[lfrac + lscale - 1] == '0') { lscale--; }
     }
     else
     {
-        if (lscale > scale)
-        {
-            lscale = scale;
-        }
+        if (lscale > scale) { lscale = scale; }
     }
 
     if (lscale == 0 && lfrac > ldot)
@@ -477,10 +251,7 @@ static String _round(char *lhs, int lint, int ldot, int lfrac, int lscale, int s
         assert(lfrac == ldot);
     }
 
-    if (sign < 0)
-    {
-        lhs[--lint] = '-';
-    }
+    if (sign < 0) { lhs[--lint] = '-'; }
 
     if (lscale == scale || !add_trailing_zeroes)
     {
@@ -489,17 +260,31 @@ static String _round(char *lhs, int lint, int ldot, int lfrac, int lscale, int s
     else
     {
         String result(String(lhs + lint).substr(0, lfrac + lscale - lint));
-        if (lscale == 0)
-        {
-            result += '.';
-        }
+        if (lscale == 0) { result += '.'; }
         for (int kI = 0; kI < scale - lscale; ++kI) result += '0';
         return result;
     }
 }
 
-static String add_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale, const char *rhs,
-                             int rint, int rdot, int rfrac, int rscale, int scale, int sign)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  lint             
+ * @param  ldot             
+ * @param  lfrac            
+ * @param  lscale           
+ * @param  rhs              
+ * @param  rint             
+ * @param  rdot             
+ * @param  rfrac            
+ * @param  rscale           
+ * @param  scale            
+ * @param  sign             
+ * @return String 
+ */
+static String add_positive(const char *lhs, int lint, int ldot, int lfrac,
+                           int lscale, const char *rhs, int rint, int rdot,
+                           int rfrac, int rscale, int scale, int sign)
 {
     int llen = ldot - lint;
     int rlen = rdot - rint;
@@ -516,14 +301,8 @@ static String add_positive(const char *lhs, int lint, int ldot, int lfrac, int l
     int was_frac = 0;
     for (i = result_scale - 1; i >= 0; i--)
     {
-        if (i < lscale)
-        {
-            um += lhs[lfrac + i] - '0';
-        }
-        if (i < rscale)
-        {
-            um += rhs[rfrac + i] - '0';
-        }
+        if (i < lscale) { um += lhs[lfrac + i] - '0'; }
+        if (i < rscale) { um += rhs[rfrac + i] - '0'; }
 
         if (um != 0 || was_frac)
         {
@@ -534,22 +313,13 @@ static String add_positive(const char *lhs, int lint, int ldot, int lfrac, int l
     }
     resscale = result_size - cur_pos;
     resfrac = cur_pos;
-    if (was_frac)
-    {
-        result[--cur_pos] = '.';
-    }
+    if (was_frac) { result[--cur_pos] = '.'; }
     resdot = cur_pos;
 
     for (int i = 0; i < result_len; i++)
     {
-        if (i < llen)
-        {
-            um += lhs[ldot - i - 1] - '0';
-        }
-        if (i < rlen)
-        {
-            um += rhs[rdot - i - 1] - '0';
-        }
+        if (i < llen) { um += lhs[ldot - i - 1] - '0'; }
+        if (i < rlen) { um += rhs[rdot - i - 1] - '0'; }
 
         result[--cur_pos] = (char) (um % 10 + '0');
         um /= 10;
@@ -557,12 +327,29 @@ static String add_positive(const char *lhs, int lint, int ldot, int lfrac, int l
     resint = cur_pos;
     assert(cur_pos > 0);
 
-    return _round((char *) result.data(), resint, resdot, resfrac, resscale, scale, sign, 1);
+    return _round((char *) result.data(), resint, resdot, resfrac, resscale,
+                  scale, sign, 1);
 }
 
-static String subtract_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale,
-                                  const char *rhs, int rint, int rdot, int rfrac, int rscale, int scale,
-                                  int sign)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  lint             
+ * @param  ldot             
+ * @param  lfrac            
+ * @param  lscale           
+ * @param  rhs              
+ * @param  rint             
+ * @param  rdot             
+ * @param  rfrac            
+ * @param  rscale           
+ * @param  scale            
+ * @param  sign             
+ * @return String 
+ */
+static String subtract_positive(const char *lhs, int lint, int ldot, int lfrac,
+                                int lscale, const char *rhs, int rint, int rdot,
+                                int rfrac, int rscale, int scale, int sign)
 {
     int llen = ldot - lint;
     int rlen = rdot - rint;
@@ -580,23 +367,14 @@ static String subtract_positive(const char *lhs, int lint, int ldot, int lfrac, 
     for (i = result_scale - 1; i >= 0; i--)
     {
         um = next_um;
-        if (i < lscale)
-        {
-            um += lhs[lfrac + i] - '0';
-        }
-        if (i < rscale)
-        {
-            um -= rhs[rfrac + i] - '0';
-        }
+        if (i < lscale) { um += lhs[lfrac + i] - '0'; }
+        if (i < rscale) { um -= rhs[rfrac + i] - '0'; }
         if (um < 0)
         {
             next_um = -1;
             um += 10;
         }
-        else
-        {
-            next_um = 0;
-        }
+        else { next_um = 0; }
 
         if (um != 0 || was_frac)
         {
@@ -606,41 +384,49 @@ static String subtract_positive(const char *lhs, int lint, int ldot, int lfrac, 
     }
     resscale = result_size - cur_pos;
     resfrac = cur_pos;
-    if (was_frac)
-    {
-        result[--cur_pos] = '.';
-    }
+    if (was_frac) { result[--cur_pos] = '.'; }
     resdot = cur_pos;
 
     for (int i = 0; i < result_len; i++)
     {
         um = next_um;
         um += lhs[ldot - i - 1] - '0';
-        if (i < rlen)
-        {
-            um -= rhs[rdot - i - 1] - '0';
-        }
+        if (i < rlen) { um -= rhs[rdot - i - 1] - '0'; }
         if (um < 0)
         {
             next_um = -1;
             um += 10;
         }
-        else
-        {
-            next_um = 0;
-        }
+        else { next_um = 0; }
 
         result[--cur_pos] = (char) (um + '0');
     }
     resint = cur_pos;
     assert(cur_pos > 0);
 
-    return _round((char *) result.data(), resint, resdot, resfrac, resscale, scale, sign, 1);
+    return _round((char *) result.data(), resint, resdot, resfrac, resscale,
+                  scale, sign, 1);
 }
 
-static String multiply_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale,
-                                  const char *rhs, int rint, int rdot, int rfrac, int rscale, int scale,
-                                  int sign)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  lint             
+ * @param  ldot             
+ * @param  lfrac            
+ * @param  lscale           
+ * @param  rhs              
+ * @param  rint             
+ * @param  rdot             
+ * @param  rfrac            
+ * @param  rscale           
+ * @param  scale            
+ * @param  sign             
+ * @return String 
+ */
+static String multiply_positive(const char *lhs, int lint, int ldot, int lfrac,
+                                int lscale, const char *rhs, int rint, int rdot,
+                                int rfrac, int rscale, int scale, int sign)
 {
     int llen = ldot - lint;
     int rlen = rdot - rint;
@@ -676,10 +462,7 @@ static String multiply_positive(const char *lhs, int lint, int ldot, int lfrac, 
     }
     resscale = result_size - cur_pos;
     resfrac = cur_pos;
-    if (result_scale > 0)
-    {
-        result[--cur_pos] = '.';
-    }
+    if (result_scale > 0) { result[--cur_pos] = '.'; }
     resdot = cur_pos;
 
     for (int i = result_scale; i < result_len + result_scale; i++)
@@ -693,15 +476,32 @@ static String multiply_positive(const char *lhs, int lint, int ldot, int lfrac, 
 
     char *data = (char *) malloc((result.length() + 1) * sizeof(char));
     sprintf(data, result.c_str());
-    String ret = _round(data, resint, resdot, resfrac, resscale, scale, sign, 0);
+    String ret =
+            _round(data, resint, resdot, resfrac, resscale, scale, sign, 0);
     free(data);
 
     return ret;
 }
 
-static String divide_positive(const char *lhs, int lint, int ldot, int lfrac, int lscale,
-                                const char *rhs, int rint, int rdot, int rfrac, int rscale, int scale,
-                                int sign)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  lint             
+ * @param  ldot             
+ * @param  lfrac            
+ * @param  lscale           
+ * @param  rhs              
+ * @param  rint             
+ * @param  rdot             
+ * @param  rfrac            
+ * @param  rscale           
+ * @param  scale            
+ * @param  sign             
+ * @return String 
+ */
+static String divide_positive(const char *lhs, int lint, int ldot, int lfrac,
+                              int lscale, const char *rhs, int rint, int rdot,
+                              int rfrac, int rscale, int scale, int sign)
 {
     int llen = ldot - lint;
     int rlen = rdot - rint;
@@ -714,16 +514,17 @@ static String divide_positive(const char *lhs, int lint, int ldot, int lfrac, in
 
     if (rscale == 0 && rhs[rint] == '0')
     {
-        std::cerr << ("Division By ZERO") << std::endl
-                  << std::endl;
+        std::cerr << ("Division By ZERO") << std::endl << std::endl;
         return ZERO;
     }
 
     int dividend_len = llen + lscale;
     int divider_len = rlen + rscale;
-    int *dividend = (int *) malloc(sizeof(int) * (result_size + dividend_len + divider_len));
+    int *dividend = (int *) malloc(sizeof(int) *
+                                   (result_size + dividend_len + divider_len));
     int *divider = (int *) malloc(sizeof(int) * divider_len);
-    memset(dividend, 0, sizeof(int) * (result_size + dividend_len + divider_len));
+    memset(dividend, 0,
+           sizeof(int) * (result_size + dividend_len + divider_len));
     memset(divider, 0, sizeof(int) * divider_len);
 
     for (int i = -lscale; i < llen; i++)
@@ -767,10 +568,7 @@ static String divide_positive(const char *lhs, int lint, int ldot, int lfrac, in
         resdot = cur_pos;
         result[cur_pos++] = '.';
         resfrac = cur_pos;
-        for (int i = -1; i > cur_pow; i--)
-        {
-            result[cur_pos++] = '0';
-        }
+        for (int i = -1; i > cur_pow; i--) { result[cur_pos++] = '0'; }
     }
 
     int beg = 0, real_beg = 0;
@@ -779,10 +577,7 @@ static String divide_positive(const char *lhs, int lint, int ldot, int lfrac, in
         char dig = '0';
         while (true)
         {
-            if (real_beg < beg && dividend[real_beg] == 0)
-            {
-                real_beg++;
-            }
+            if (real_beg < beg && dividend[real_beg] == 0) { real_beg++; }
 
             bool less = false;
             if (real_beg == beg)
@@ -796,10 +591,7 @@ static String divide_positive(const char *lhs, int lint, int ldot, int lfrac, in
                     }
                 }
             }
-            if (less)
-            {
-                break;
-            }
+            if (less) { break; }
 
             for (int i = divider_len - 1; i >= 0; i--)
             {
@@ -818,10 +610,7 @@ static String divide_positive(const char *lhs, int lint, int ldot, int lfrac, in
         if (cur_pow == 0)
         {
             resdot = cur_pos;
-            if (scale > 0)
-            {
-                result[cur_pos++] = '.';
-            }
+            if (scale > 0) { result[cur_pos++] = '.'; }
             resfrac = cur_pos;
         }
         cur_pow--;
@@ -836,102 +625,523 @@ static String divide_positive(const char *lhs, int lint, int ldot, int lfrac, in
 
     char *data = (char *) malloc((result.length() + 1) * sizeof(char));
     sprintf(data, result.c_str());
-    String ret = _round(data, resint, resdot, resfrac, resscale, scale, sign, 0);
+    String ret =
+            _round(data, resint, resdot, resfrac, resscale, scale, sign, 0);
     free(data);
 
     return ret;
 }
 
-
-static String _add(const char *lhs, int lsign, int lint, int ldot, int lfrac, int lscale,
-                     const char *rhs, int rsign, int rint, int rdot, int rfrac, int rscale, int scale)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  lsign            
+ * @param  lint             
+ * @param  ldot             
+ * @param  lfrac            
+ * @param  lscale           
+ * @param  rhs              
+ * @param  rsign            
+ * @param  rint             
+ * @param  rdot             
+ * @param  rfrac            
+ * @param  rscale           
+ * @param  scale            
+ * @return String 
+ */
+static String _add(const char *lhs, int lsign, int lint, int ldot, int lfrac,
+                   int lscale, const char *rhs, int rsign, int rint, int rdot,
+                   int rfrac, int rscale, int scale)
 {
     if (lsign > 0 && rsign > 0)
     {
-        return add_positive(lhs, lint, ldot, lfrac, lscale, rhs, rint, rdot, rfrac, rscale, scale, 1);
+        return add_positive(lhs, lint, ldot, lfrac, lscale, rhs, rint, rdot,
+                            rfrac, rscale, scale, 1);
     }
 
     if (lsign > 0 && rsign < 0)
     {
-        if (_compareTo(lhs, lint, ldot, lfrac, lscale, rhs, rint, rdot, rfrac, rscale, 1000000000) >= 0)
+        if (_compareTo(lhs, lint, ldot, lfrac, lscale, rhs, rint, rdot, rfrac,
+                       rscale, 1000000000) >= 0)
         {
-            return subtract_positive(lhs, lint, ldot, lfrac, lscale, rhs, rint, rdot, rfrac, rscale,
-                                     scale, 1);
+            return subtract_positive(lhs, lint, ldot, lfrac, lscale, rhs, rint,
+                                     rdot, rfrac, rscale, scale, 1);
         }
         else
         {
-            return subtract_positive(rhs, rint, rdot, rfrac, rscale, lhs, lint, ldot, lfrac, lscale,
-                                     scale, -1);
+            return subtract_positive(rhs, rint, rdot, rfrac, rscale, lhs, lint,
+                                     ldot, lfrac, lscale, scale, -1);
         }
     }
 
     if (lsign < 0 && rsign > 0)
     {
-        if (_compareTo(lhs, lint, ldot, lfrac, lscale, rhs, rint, rdot, rfrac, rscale, 1000000000) <= 0)
+        if (_compareTo(lhs, lint, ldot, lfrac, lscale, rhs, rint, rdot, rfrac,
+                       rscale, 1000000000) <= 0)
         {
-            return subtract_positive(rhs, rint, rdot, rfrac, rscale, lhs, lint, ldot, lfrac, lscale,
-                                     scale, 1);
+            return subtract_positive(rhs, rint, rdot, rfrac, rscale, lhs, lint,
+                                     ldot, lfrac, lscale, scale, 1);
         }
         else
         {
-            return subtract_positive(lhs, lint, ldot, lfrac, lscale, rhs, rint, rdot, rfrac, rscale,
-                                     scale, -1);
+            return subtract_positive(lhs, lint, ldot, lfrac, lscale, rhs, rint,
+                                     rdot, rfrac, rscale, scale, -1);
         }
     }
 
     if (lsign < 0 && rsign < 0)
     {
-        return add_positive(lhs, lint, ldot, lfrac, lscale, rhs, rint, rdot, rfrac, rscale, scale, -1);
+        return add_positive(lhs, lint, ldot, lfrac, lscale, rhs, rint, rdot,
+                            rfrac, rscale, scale, -1);
     }
 
     assert(0);
     return ZERO;
 }
 
-template<typename T>
-String to_string(const T &t)
+
+/*******************************************************************************
+ * Class BigDecimal functions
+ *******************************************************************************/
+
+/**
+ * @brief Construct a new Big Decimal:: Big Decimal object
+ */
+BigDecimal::BigDecimal() noexcept {}
+
+/**
+ * @brief Construct a new Big Decimal:: Big Decimal object
+ * @param  v                
+ */
+BigDecimal::BigDecimal(const BigDecimal &v) noexcept : value(v.value) {}
+
+/**
+ * @brief Construct a new Big Decimal:: Big Decimal object
+ * @param  v                
+ */
+BigDecimal::BigDecimal(const char *v) : value(v) {}
+
+/**
+ * @brief Construct a new Big Decimal:: Big Decimal object
+ * @param  v                
+ */
+BigDecimal::BigDecimal(String v) : value(v) {}
+
+/**
+ * @brief Construct a new Big Decimal:: Big Decimal object
+ * @param  v                
+ */
+BigDecimal::BigDecimal(int v) noexcept : value()
 {
-    StringStream ss;
-    ss << t;
-    return ss.Str();
+    std::stringstream ss;
+    ss << v;
+    value = ss.str();
 }
 
-String fact(String a)
+/**
+ * @brief Construct a new Big Decimal:: Big Decimal object
+ * @param  v                
+ */
+BigDecimal::BigDecimal(long long v) noexcept : value()
 {
-    String i("1");
-    String fact("1");
-    while (BigDecimal::CompareTo(i, a) <= 0)
+    std::stringstream ss;
+    ss << v;
+    value = ss.str();
+}
+
+/**
+ * @brief Construct a new Big Decimal:: Big Decimal object
+ * @param  v                
+ */
+BigDecimal::BigDecimal(long long int v) noexcept : value()
+{
+    std::stringstream ss;
+    ss << v;
+    value = ss.str();
+}
+
+/**
+ * @brief Construct a new Big Decimal:: Big Decimal object
+ * @param  v                
+ */
+BigDecimal::BigDecimal(unsigned int v) noexcept : value()
+{
+    std::stringstream ss;
+    ss << v;
+    value = ss.str();
+}
+
+/**
+ * @brief Construct a new Big Decimal:: Big Decimal object
+ * @param  v                
+ */
+BigDecimal::BigDecimal(unsigned long long v) noexcept
+{
+    std::stringstream ss;
+    ss << v;
+    value = ss.str();
+}
+
+/**
+ * @brief Construct a new Big Decimal:: Big Decimal object
+ * @param  v                
+ */
+BigDecimal::BigDecimal(unsigned long long int v) noexcept : value()
+{
+    std::stringstream ss;
+    ss << v;
+    value = ss.str();
+}
+
+/**
+ * @brief Construct a new Big Decimal:: Big Decimal object
+ * @param  v                
+ */
+BigDecimal::BigDecimal(float v) noexcept : value()
+{
+    std::stringstream ss;
+    ss << v;
+    value = ss.str();
+}
+
+/**
+ * @brief Construct a new Big Decimal:: Big Decimal object
+ * @param  v                
+ */
+BigDecimal::BigDecimal(double v) noexcept : value()
+{
+    std::stringstream ss;
+    ss << v;
+    value = ss.str();
+}
+
+/**
+ * @brief Construct a new Big Decimal:: Big Decimal object
+ * @param  v                
+ */
+BigDecimal::BigDecimal(long double v) noexcept
+{
+    std::stringstream ss;
+    ss << v;
+    value = ss.str();
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return BigDecimal 
+ */
+BigDecimal BigDecimal::operator+(const BigDecimal &rhs)
+{
+    return BigDecimal::add(value, rhs.value);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return BigDecimal 
+ */
+BigDecimal BigDecimal::operator-(const BigDecimal &rhs)
+{
+    return BigDecimal::subtract(value, rhs.value);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return BigDecimal 
+ */
+BigDecimal BigDecimal::operator*(const BigDecimal &rhs)
+{
+    return BigDecimal::multiply(value, rhs.value);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return BigDecimal 
+ */
+BigDecimal BigDecimal::operator/(const BigDecimal &rhs)
+{
+    return BigDecimal::divide(value, rhs.value);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return BigDecimal 
+ */
+BigDecimal BigDecimal::operator%(const BigDecimal &rhs)
+{
+    return BigDecimal::modulus(value, rhs.value);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return BigDecimal 
+ */
+BigDecimal BigDecimal::operator^(const BigDecimal &rhs)
+{
+    return BigDecimal::pow(value, rhs.value);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ */
+void BigDecimal::operator+=(const BigDecimal &rhs)
+{
+    value = BigDecimal::add(value, rhs.value);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ */
+void BigDecimal::operator-=(const BigDecimal &rhs)
+{
+    value = BigDecimal::subtract(value, rhs.value);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ */
+void BigDecimal::operator*=(const BigDecimal &rhs)
+{
+    value = BigDecimal::multiply(value, rhs.value);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ */
+void BigDecimal::operator/=(const BigDecimal &rhs)
+{
+    value = BigDecimal::divide(value, rhs.value);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ */
+void BigDecimal::operator^=(const BigDecimal &rhs)
+{
+    value = BigDecimal::pow(value, rhs.value);
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
+bool BigDecimal::operator>(const BigDecimal &rhs)
+{
+    return BigDecimal::compareTo(value, rhs.value) > 0;
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
+bool BigDecimal::operator>=(const BigDecimal &rhs)
+{
+    return BigDecimal::compareTo(value, rhs.value) >= 0;
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
+bool BigDecimal::operator==(const BigDecimal &rhs)
+{
+    return BigDecimal::compareTo(value, rhs.value) == 0;
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
+bool BigDecimal::operator<(const BigDecimal &rhs)
+{
+    return BigDecimal::compareTo(value, rhs.value) < 0;
+}
+
+/**
+ * @brief 
+ * @param  rhs              
+ * @return true 
+ * @return false 
+ */
+bool BigDecimal::operator<=(const BigDecimal &rhs)
+{
+    return BigDecimal::compareTo(value, rhs.value) <= 0;
+}
+
+/**
+ * @brief 
+ * @return int 
+ */
+int BigDecimal::toInt()
+{
+    std::istringstream buffer(value.c_str());
+    int ret;
+    buffer >> ret;
+    return ret;
+}
+
+/**
+ * @brief 
+ * @return unsigned int 
+ */
+unsigned int BigDecimal::toUInt()
+{
+    std::istringstream buffer(value.c_str());
+    unsigned int ret;
+    buffer >> ret;
+    return ret;
+}
+
+/**
+ * @brief 
+ * @return long long 
+ */
+long long BigDecimal::toLongLong()
+{
+    std::istringstream buffer(value.c_str());
+    long long ret;
+    buffer >> ret;
+    return ret;
+}
+
+/**
+ * @brief 
+ * @return unsigned long long 
+ */
+unsigned long long BigDecimal::toULongLong()
+{
+    std::istringstream buffer(value.c_str());
+    unsigned long long ret;
+    buffer >> ret;
+    return ret;
+}
+
+/**
+ * @brief 
+ * @return long double 
+ */
+long double BigDecimal::toLongDouble()
+{
+    std::istringstream buffer(value.c_str());
+    long double ret;
+    buffer >> ret;
+    return ret;
+}
+
+/**
+ * @brief 
+ * @return double 
+ */
+double BigDecimal::toDouble()
+{
+    std::istringstream buffer(value.c_str());
+    double ret;
+    buffer >> ret;
+    return ret;
+}
+
+/**
+ * @brief 
+ * @return float 
+ */
+float BigDecimal::toFloat()
+{
+    std::istringstream buffer(value.c_str());
+    float ret;
+    buffer >> ret;
+    return ret;
+}
+
+/**
+ * @brief 
+ * @return String 
+ */
+String BigDecimal::toString() { return value; }
+
+/**
+ * @brief 
+ * @param  scale            
+ */
+void BigDecimal::round(int scale)
+{
+    if (scale >= 1) value = BigDecimal::round(value, scale);
+}
+
+/**
+ * @brief 
+ * @return String 
+ */
+String BigDecimal::integerPart()
+{
+    size_t dot = value.find('.');
+    if (dot != String::npos)
     {
-        fact = BigDecimal::Multiply(fact, to_string(i));
-        i = BigDecimal::Add(i, ONE);
+        if (dot == 0) return String("0");
+        if (dot == 1 && value[0] == '-') return String("-0");
+        return value.substr(0, dot);
     }
-    return fact;
+    else { return value; }
 }
 
-
-void BigDecimal::Scale(int scale)
+/**
+ * @brief 
+ * @return String 
+ */
+String BigDecimal::decimalPart()
 {
-    if (scale < 0)
-        _scale = 0;
+    size_t dot = value.find('.');
+    if (dot != String::npos)
+        return value.length() > dot + 1 ? value.substr(dot + 1) : String("0");
+    else
+        return String("0");
+}
+
+/**
+ * @brief 
+ * @param  scale            
+ */
+void BigDecimal::scale(int scale)
+{
+    if (scale < 0) _scale = 0;
     else
         _scale = scale;
 }
 
-String BigDecimal::Divide(const String &lhs, const String &rhs, int scale)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  rhs              
+ * @param  scale            
+ * @return String 
+ */
+String BigDecimal::divide(const String &lhs, const String &rhs, int scale)
 {
-    if (scale == INT_MIN)
-    {
-        scale = _scale;
-    }
+    if (scale == INT_MIN) { scale = _scale; }
     if (scale < 0)
     {
-        std::cerr << "Scale (" << to_string(scale).c_str() << ") Cant Be Negative!!!" << std::endl;
+        std::cerr << "Scale (" << String::toString(scale).c_str()
+                  << ") Cant Be Negative!!!" << std::endl;
         scale = 0;
     }
-    if (lhs.empty())
-    {
-        return _zero(scale);
-    }
+    if (lhs.empty()) { return _zero(scale); }
     if (rhs.empty())
     {
         std::cerr << "Division By Empty " << rhs.c_str() << std::endl;
@@ -952,16 +1162,21 @@ String BigDecimal::Divide(const String &lhs, const String &rhs, int scale)
         return ZERO;
     }
 
-    return trimTrailingZeros(divide_positive(lhs.c_str(), lint, ldot, lfrac, lscale, rhs.c_str(), rint,
-                                             rdot, rfrac, rscale, scale, lsign * rsign));
+    return trimTrailingZeros(
+            divide_positive(lhs.c_str(), lint, ldot, lfrac, lscale, rhs.c_str(),
+                            rint, rdot, rfrac, rscale, scale, lsign * rsign));
 }
 
-String BigDecimal::Modulus(const String &lhs, const String &rhs, int scale)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  rhs              
+ * @param  scale            
+ * @return String 
+ */
+String BigDecimal::modulus(const String &lhs, const String &rhs, int scale)
 {
-    if (lhs.empty())
-    {
-        return ZERO;
-    }
+    if (lhs.empty()) { return ZERO; }
     if (rhs.empty())
     {
         std::cerr << "Modulo By empty " << std::endl;
@@ -983,15 +1198,14 @@ String BigDecimal::Modulus(const String &lhs, const String &rhs, int scale)
     }
 
     long long mod = 0;
-    for (int i = rint; i < rdot; i++)
-    {
-        mod = mod * 10 + rhs[i] - '0';
-    }
+    for (int i = rint; i < rdot; i++) { mod = mod * 10 + rhs[i] - '0'; }
 
     if (rdot - rint > 18 || mod == 0)
     {
         std::cerr << "\"" << rhs.c_str()
-                  << "\" Is Not A Non Zero Integer Less Than 1e18 By Absolute Value" << std::endl;
+                  << "\" Is Not A Non Zero Integer Less Than 1e18 By Absolute "
+                     "Value"
+                  << std::endl;
         return ZERO;
     }
 
@@ -999,43 +1213,35 @@ String BigDecimal::Modulus(const String &lhs, const String &rhs, int scale)
     for (int i = lint; i < ldot; i++)
     {
         res = res * 2;
-        if (res >= mod)
-        {
-            res -= mod;
-        }
+        if (res >= mod) { res -= mod; }
         res = res * 5 + lhs[i] - '0';
-        while (res >= mod)
-        {
-            res -= mod;
-        }
+        while (res >= mod) { res -= mod; }
     }
 
     char buffer[20];
     int cur_pos = 20;
-    do
-    {
+    do {
         buffer[--cur_pos] = (char) (res % 10 + '0');
         res /= 10;
     } while (res > 0);
 
-    if (lsign < 0)
-    {
-        buffer[--cur_pos] = '-';
-    }
+    if (lsign < 0) { buffer[--cur_pos] = '-'; }
 
-    return String(trimTrailingZeros(String(buffer + cur_pos).substr(0, 20 - cur_pos)));
+    return String(trimTrailingZeros(
+            String(buffer + cur_pos).substr(0, 20 - cur_pos)));
 }
 
-String BigDecimal::Pow(const String &lhs, const String &rhs, int scale)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  rhs              
+ * @param  scale            
+ * @return String 
+ */
+String BigDecimal::pow(const String &lhs, const String &rhs, int scale)
 {
-    if (lhs.empty())
-    {
-        return ZERO;
-    }
-    if (rhs.empty())
-    {
-        return ONE;
-    }
+    if (lhs.empty()) { return ZERO; }
+    if (rhs.empty()) { return ONE; }
 
     int lsign, lint, ldot, lfrac, lscale;
     if (parse_number(lhs, lsign, lint, ldot, lfrac, lscale) != 0)
@@ -1052,52 +1258,46 @@ String BigDecimal::Pow(const String &lhs, const String &rhs, int scale)
     }
 
     long long deg = 0;
-    for (int i = rint; i < rdot; i++)
-    {
-        deg = deg * 10 + rhs[i] - '0';
-    }
+    for (int i = rint; i < rdot; i++) { deg = deg * 10 + rhs[i] - '0'; }
 
     if (rdot - rint > 18 || (rsign < 0 && deg != 0))
     {
-        std::cerr << "\"" << rhs.c_str() << "\" Is Not A Non Negative Integer Less Than 1e18"
+        std::cerr << "\"" << rhs.c_str()
+                  << "\" Is Not A Non Negative Integer Less Than 1e18"
                   << std::endl;
         return ZERO;
     }
 
-    if (deg == 0)
-    {
-        return ONE;
-    }
+    if (deg == 0) { return ONE; }
 
     String result = ONE;
     String mul = lhs;
     while (deg > 0)
     {
-        if (deg & 1)
-        {
-            result = Multiply(result, mul, 0);
-        }
-        mul = Multiply(mul, mul, 0);
+        if (deg & 1) { result = multiply(result, mul, 0); }
+        mul = multiply(mul, mul, 0);
         deg >>= 1;
     }
 
     return trimTrailingZeros(result);
 }
 
-String BigDecimal::Add(const String &lhs, const String &rhs, int scale)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  rhs              
+ * @param  scale            
+ * @return String 
+ */
+String BigDecimal::add(const String &lhs, const String &rhs, int scale)
 {
-    if (lhs.empty())
-    {
-        return Add(ZERO, rhs, scale);
-    }
-    if (rhs.empty())
-    {
-        return Add(lhs, ZERO, scale);
-    }
+    if (lhs.empty()) { return add(ZERO, rhs, scale); }
+    if (rhs.empty()) { return add(lhs, ZERO, scale); }
 
     if (scale < 0)
     {
-        std::cerr << "Scale (" << to_string(scale).c_str() << ") Cant Be Negative!!!" << std::endl;
+        std::cerr << "Scale (" << String::toString(scale).c_str()
+                  << ") Cant Be Negative!!!" << std::endl;
         scale = 0;
     }
 
@@ -1115,24 +1315,27 @@ String BigDecimal::Add(const String &lhs, const String &rhs, int scale)
         return _zero(scale);
     }
 
-    return trimTrailingZeros(_add(lhs.c_str(), lsign, lint, ldot, lfrac, lscale, rhs.c_str(), rsign,
-                                  rint, rdot, rfrac, rscale, std::max(lscale, rscale)));
+    return trimTrailingZeros(_add(lhs.c_str(), lsign, lint, ldot, lfrac, lscale,
+                                  rhs.c_str(), rsign, rint, rdot, rfrac, rscale,
+                                  std::max(lscale, rscale)));
 }
 
-String BigDecimal::Subtract(const String &lhs, const String &rhs, int scale)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  rhs              
+ * @param  scale            
+ * @return String 
+ */
+String BigDecimal::subtract(const String &lhs, const String &rhs, int scale)
 {
-    if (lhs.empty())
-    {
-        return Subtract(ZERO, rhs, scale);
-    }
-    if (rhs.empty())
-    {
-        return Subtract(lhs, ZERO, scale);
-    }
+    if (lhs.empty()) { return subtract(ZERO, rhs, scale); }
+    if (rhs.empty()) { return subtract(lhs, ZERO, scale); }
 
     if (scale < 0)
     {
-        std::cerr << "Scale (" << to_string(scale).c_str() << ") Cant Be Negative!!!" << std::endl;
+        std::cerr << "Scale (" << String::toString(scale).c_str()
+                  << ") Cant Be Negative!!!" << std::endl;
         scale = 0;
     }
 
@@ -1152,24 +1355,27 @@ String BigDecimal::Subtract(const String &lhs, const String &rhs, int scale)
 
     rsign *= -1;
 
-    return trimTrailingZeros(_add(lhs.c_str(), lsign, lint, ldot, lfrac, lscale, rhs.c_str(), rsign,
-                                  rint, rdot, rfrac, rscale, std::max(lscale, rscale)));
+    return trimTrailingZeros(_add(lhs.c_str(), lsign, lint, ldot, lfrac, lscale,
+                                  rhs.c_str(), rsign, rint, rdot, rfrac, rscale,
+                                  std::max(lscale, rscale)));
 }
 
-String BigDecimal::Multiply(const String &lhs, const String &rhs, int scale)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  rhs              
+ * @param  scale            
+ * @return String 
+ */
+String BigDecimal::multiply(const String &lhs, const String &rhs, int scale)
 {
-    if (lhs.empty())
-    {
-        return Multiply(ZERO, rhs, scale);
-    }
-    if (rhs.empty())
-    {
-        return Multiply(lhs, ZERO, scale);
-    }
+    if (lhs.empty()) { return multiply(ZERO, rhs, scale); }
+    if (rhs.empty()) { return multiply(lhs, ZERO, scale); }
 
     if (scale < 0)
     {
-        std::cerr << "Scale (" << to_string(scale).c_str() << ") Cant Be Negative!!!" << std::endl;
+        std::cerr << "Scale (" << String::toString(scale).c_str()
+                  << ") Cant Be Negative!!!" << std::endl;
         scale = 0;
     }
 
@@ -1187,25 +1393,27 @@ String BigDecimal::Multiply(const String &lhs, const String &rhs, int scale)
         return ZERO;
     }
 
-    return trimTrailingZeros(multiply_positive(lhs.c_str(), lint, ldot, lfrac, lscale, rhs.c_str(), rint,
-                                               rdot, rfrac, rscale, lscale + rscale, lsign * rsign));
+    return trimTrailingZeros(multiply_positive(
+            lhs.c_str(), lint, ldot, lfrac, lscale, rhs.c_str(), rint, rdot,
+            rfrac, rscale, lscale + rscale, lsign * rsign));
 }
 
-String BigDecimal::Round(const String &lhs, int scale)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  scale            
+ * @return String 
+ */
+String BigDecimal::round(const String &lhs, int scale)
 {
-    if (lhs.empty())
-    {
-        return BigDecimal::Round(ZERO, scale);
-    }
+    if (lhs.empty()) { return BigDecimal::round(ZERO, scale); }
 
-    if (scale == INT_MIN)
-    {
-        scale = _scale;
-    }
+    if (scale == INT_MIN) { scale = _scale; }
 
     if (scale < 0)
     {
-        std::cerr << "Scale (" << to_string(scale).c_str() << ") Cant Be Negative!!!" << std::endl;
+        std::cerr << "Scale (" << String::toString(scale).c_str()
+                  << ") Cant Be Negative!!!" << std::endl;
         scale = 0;
     }
 
@@ -1218,36 +1426,33 @@ String BigDecimal::Round(const String &lhs, int scale)
 
     int len = lhs.size();
     String result(len + 1, '0');
-    for (int i = len - 1; i >= lint; --i)
-    {
-        result[i + 1] = lhs[i];
-    }
+    for (int i = len - 1; i >= lint; --i) { result[i + 1] = lhs[i]; }
 
     char *data = (char *) malloc((result.length() + 1) * sizeof(char));
     sprintf(data, result.c_str());
-    String ret = _round(data, lint + 1, ldot + 1, lfrac + 1, lscale, scale, lsign, 1, 1);
+    String ret = _round(data, lint + 1, ldot + 1, lfrac + 1, lscale, scale,
+                        lsign, 1, 1);
     free(data);
     return ret;
 }
 
-int BigDecimal::CompareTo(const String &lhs, const String &rhs, int scale)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  rhs              
+ * @param  scale            
+ * @return int 
+ */
+int BigDecimal::compareTo(const String &lhs, const String &rhs, int scale)
 {
-    if (lhs.empty())
-    {
-        return BigDecimal::CompareTo(ZERO, rhs, scale);
-    }
-    if (rhs.empty())
-    {
-        return BigDecimal::CompareTo(lhs, ZERO, scale);
-    }
+    if (lhs.empty()) { return BigDecimal::compareTo(ZERO, rhs, scale); }
+    if (rhs.empty()) { return BigDecimal::compareTo(lhs, ZERO, scale); }
 
-    if (scale == INT_MIN)
-    {
-        scale = _scale;
-    }
+    if (scale == INT_MIN) { scale = _scale; }
     if (scale < 0)
     {
-        std::cerr << "Scale (" << to_string(scale).c_str() << ") Cant Be Negative!!!" << std::endl;
+        std::cerr << "Scale (" << String::toString(scale).c_str()
+                  << ") Cant Be Negative!!!" << std::endl;
         scale = 0;
     }
 
@@ -1265,26 +1470,24 @@ int BigDecimal::CompareTo(const String &lhs, const String &rhs, int scale)
         return 0;
     }
 
-    if (lsign != rsign)
-    {
-        return (lsign - rsign) / 2;
-    }
+    if (lsign != rsign) { return (lsign - rsign) / 2; }
 
-    return (1 - 2 * (lsign < 0)) * _compareTo(lhs.c_str(), lint, ldot, lfrac, lscale, rhs.c_str(), rint,
-                                              rdot, rfrac, rscale, scale);
+    return (1 - 2 * (lsign < 0)) * _compareTo(lhs.c_str(), lint, ldot, lfrac,
+                                              lscale, rhs.c_str(), rint, rdot,
+                                              rfrac, rscale, scale);
 }
 
-String BigDecimal::Log2(const String &lhs, int scale)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  scale            
+ * @return String 
+ */
+String BigDecimal::log2(const String &lhs, int scale)
 {
-    if (lhs.empty())
-    {
-        return BigDecimal::Round(ZERO, scale);
-    }
+    if (lhs.empty()) { return BigDecimal::round(ZERO, scale); }
 
-    if (scale == INT_MIN)
-    {
-        scale = _scale;
-    }
+    if (scale == INT_MIN) { scale = _scale; }
     int lsign, lint, ldot, lfrac, lscale;
     if (parse_number(lhs, lsign, lint, ldot, lfrac, lscale) < 0)
     {
@@ -1293,30 +1496,36 @@ String BigDecimal::Log2(const String &lhs, int scale)
     }
     if (lsign < 0)
     {
-        std::cerr << "\"" << lhs.c_str() << "\" Cannot Be A Negative Number" << std::endl;
+        std::cerr << "\"" << lhs.c_str() << "\" Cannot Be A Negative Number"
+                  << std::endl;
         return "0";
     }
-    return (BigDecimal::CompareTo(lhs, ONE) > 0)
-                   ? String(BigDecimal::Add(ONE, BigDecimal::Log(BigDecimal::Divide(lhs, TEN))))
+    return (BigDecimal::compareTo(lhs, ONE) > 0)
+                   ? String(BigDecimal::add(
+                             ONE,
+                             BigDecimal::log(BigDecimal::divide(lhs, TEN))))
                    : ZERO;
 }
 
-String BigDecimal::Ln(const String &lhs, int scale)
-{
-    return String();
-}
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  scale            
+ * @return String 
+ */
+String BigDecimal::ln(const String &lhs, int scale) { return String(); }
 
-String BigDecimal::Log(const String &lhs, int scale)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  scale            
+ * @return String 
+ */
+String BigDecimal::log(const String &lhs, int scale)
 {
-    if (lhs.empty())
-    {
-        return BigDecimal::Round(ZERO, scale);
-    }
+    if (lhs.empty()) { return BigDecimal::round(ZERO, scale); }
 
-    if (scale == INT_MIN)
-    {
-        scale = _scale;
-    }
+    if (scale == INT_MIN) { scale = _scale; }
 
     int lsign, lint, ldot, lfrac, lscale;
     if (parse_number(lhs, lsign, lint, ldot, lfrac, lscale) < 0)
@@ -1326,49 +1535,58 @@ String BigDecimal::Log(const String &lhs, int scale)
     }
     if (lsign < 0)
     {
-        std::cerr << "\"" << lhs.c_str() << "\" Cannot Be A Negative Number" << std::endl;
+        std::cerr << "\"" << lhs.c_str() << "\" Cannot Be A Negative Number"
+                  << std::endl;
         return _zero(scale);
     }
-    return String(
-            BigDecimal::Divide(BigDecimal::Ln(lhs, 0), BigDecimal::Ln(to_string("10"), 0), 0));
+    return String(BigDecimal::divide(BigDecimal::ln(lhs, 0),
+                                     BigDecimal::ln(String::toString("10"), 0),
+                                     0));
 }
 
-
-String BigDecimal::Sin(const String &lhs, int scale)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  scale            
+ * @return String 
+ */
+String BigDecimal::sin(const String &lhs, int scale)
 {
     String sum("0"), n, d, t, i("0"), j("0");
-    while (BigDecimal::CompareTo(i, lhs) <= 0)
+    while (BigDecimal::compareTo(i, lhs) <= 0)
     {
-        if (BigDecimal::Modulus(i, "2") != "0")
+        if (BigDecimal::modulus(i, "2") != "0")
         {
-            j = BigDecimal::Add(j, ONE);
-            n = BigDecimal::Pow(lhs, i);
+            j = BigDecimal::add(j, ONE);
+            n = BigDecimal::pow(lhs, i);
             d = fact(i);
-            t = BigDecimal::Divide(n, d);
-            if (BigDecimal::Modulus(j, "2") != "0")
+            t = BigDecimal::divide(n, d);
+            if (BigDecimal::modulus(j, "2") != "0")
             {
-                sum = BigDecimal::Subtract(sum, t);
+                sum = BigDecimal::subtract(sum, t);
             }
-            else
-            {
-                sum = BigDecimal::Add(sum, t);
-            }
+            else { sum = BigDecimal::add(sum, t); }
         }
-        i = BigDecimal::Add(i, ONE);
+        i = BigDecimal::add(i, ONE);
     }
     return sum;
 }
 
-String BigDecimal::StringToHex(String &lhs, int caps)
+/**
+ * @brief 
+ * @param  lhs              
+ * @param  caps             
+ * @return String 
+ */
+String BigDecimal::stringToHex(String &lhs, int caps)
 {
     long int i = 1;
     int temp;
     lhs = LeftOfDot(lhs);
     String quotient = lhs, hexoutput("");
-    temp = atoi(Modulus(quotient, to_string("16"), 0).c_str());
+    temp = atoi(modulus(quotient, String::toString("16"), 0).c_str());
     std::cout << temp;
     return hexoutput;
 }
-
 
 }// namespace m2

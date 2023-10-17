@@ -1,35 +1,35 @@
-#include <endian.h>
+#include <m2_endian.h>
 
 namespace m2 {
-namespace EndianConverter {
 
 template<typename T>
-static GS_ALWAYS_INLINE size_t simdSwapLoop(const unsigned char *, size_t, unsigned char *) noexcept
+static M2_ALWAYS_INLINE size_t simdSwapLoop(const unsigned char *, size_t,
+                                            unsigned char *) noexcept
 {
     return 0;
 }
 
 template<typename T>
-static GS_ALWAYS_INLINE void *bswapLoop(const unsigned char *src, size_t n, unsigned char *dst) noexcept
+static M2_ALWAYS_INLINE void *bswapLoop(const unsigned char *src, size_t n,
+                                        unsigned char *dst) noexcept
 {
     if (src != dst)
     {
         size_t s = size_t(src);
         size_t d = size_t(dst);
-        if (s < d)
-            assert(s + n <= d);
+        if (s < d) assert(s + n <= d);
         else
             assert(d + n <= s);
     }
 
     size_t i = simdSwapLoop<T>(src, n, dst);
 
-    for (; i < n; i += sizeof(T)) ByteSwap(FromUnaligned<T>(src + i), dst + i);
+    for (; i < n; i += sizeof(T)) byteSwap(FromUnaligned<T>(src + i), dst + i);
     return dst + i;
 }
 
 template<>
-void *ByteSwap<2>(const void *source, int64_t n, void *dest) noexcept
+void *byteSwap<2>(const void *source, int64_t n, void *dest) noexcept
 {
     const unsigned char *src = reinterpret_cast<const unsigned char *>(source);
     unsigned char *dst = reinterpret_cast<unsigned char *>(dest);
@@ -38,7 +38,7 @@ void *ByteSwap<2>(const void *source, int64_t n, void *dest) noexcept
 }
 
 template<>
-void *ByteSwap<4>(const void *source, int64_t n, void *dest) noexcept
+void *byteSwap<4>(const void *source, int64_t n, void *dest) noexcept
 {
     const unsigned char *src = reinterpret_cast<const unsigned char *>(source);
     unsigned char *dst = reinterpret_cast<unsigned char *>(dest);
@@ -47,7 +47,7 @@ void *ByteSwap<4>(const void *source, int64_t n, void *dest) noexcept
 }
 
 template<>
-void *ByteSwap<8>(const void *source, int64_t n, void *dest) noexcept
+void *byteSwap<8>(const void *source, int64_t n, void *dest) noexcept
 {
     const unsigned char *src = reinterpret_cast<const unsigned char *>(source);
     unsigned char *dst = reinterpret_cast<unsigned char *>(dest);
@@ -55,6 +55,4 @@ void *ByteSwap<8>(const void *source, int64_t n, void *dest) noexcept
     return bswapLoop<uint64_t>(src, n << 3, dst);
 }
 
-
-}// namespace EndianConverter
 }// namespace m2
