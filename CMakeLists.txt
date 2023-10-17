@@ -127,17 +127,21 @@ add_library(M2::libm2 ALIAS libm2)
 add_subdirectory(include)
 add_subdirectory(src)
 
-
-if(WIN32 AND NOT MINGW)
-  set_source_files_properties(trace/stacktrace.cpp PROPERTIES COMPILE_FLAGS -wd4091)
-endif()
-
 if(WIN32 AND NOT MINGW)
   target_link_libraries(libm2 PRIVATE
     dbghelp
   )
 endif()
 
+#-----------------------------------------------------------------------------
+# Tests
+#-----------------------------------------------------------------------------
+if(PROJECT_IS_TOP_LEVEL)
+  include(CTest)
+  if(BUILD_TESTING)
+    add_subdirectory(tests)
+  endif()
+endif()
 
 #-----------------------------------------------------------------------------
 # Install and export targets - support 'make install' or equivalent
@@ -148,6 +152,39 @@ write_basic_package_version_file(
   COMPATIBILITY AnyNewerVersion
 )
 
+configure_file(cmake/m2-config.cmake
+  "{CMAKE_CURRENT_BINARY_DIR}/m2-config.cmake"
+  COPYONLY)
+
+# install(TARGET libm2 
+#   EXPORT libm2-target
+#   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+#   INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+#   )
+
+# install(EXPORT libm2-target
+#   FILE libm2-target.cmake
+#   NAMESPACE libm2::
+#   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libm2)
+
+# install(FILES
+#   "${CMAKE_CURRENT_BINARY_DIR}/libm2-config.cmake"
+#   "${CMAKE_CURRENT_BINARY_DIR}/libm2-config-version.cmake"
+#   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libm2)
+# install(DIRECTORY
+#   "${CMAKE_CURRENT_LIST_DIR}/include/libm2"
+#   "${CMAKE_CURRENT_BINARY_DIR}/include/libm2"
+#   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+#   FILES_MATCHING PATTERN "*.h")
+# install(DIRECTORY
+#   "${CMAKE_CURRENT_LIST_DIR}/include/libm2"
+#   "${CMAKE_CURRENT_BINARY_DIR}/include/libm2"
+#   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+#   FILES_MATCHING PATTERN "*.hpp")
+# install(FILES "${CMAKE_CURRENT_LIST_DIR}/include/libm2.h"
+#   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 #-----------------------------------------------------------------------------
 # Uninstall

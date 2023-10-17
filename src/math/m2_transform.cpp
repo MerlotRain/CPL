@@ -26,7 +26,10 @@ bool Transform::isRotating() const { return false; }
 
 bool Transform::isTranslating() const { return false; }
 
-TransformationType Transform::type() const { return TransformationType(); }
+Transform::TransformationType Transform::type() const
+{
+    return TransformationType();
+}
 
 double Transform::determinant() const { return 0.0; }
 
@@ -116,10 +119,7 @@ void Transform::reset() {}
 
 Point Transform::map(const Point &p) const { return Point(); }
 
-PointF Transform::map(const PointF & p) const
-{
-return PointF();
-}
+PointF Transform::map(const PointF &p) const { return PointF(); }
 
 Line Transform::map(const Line &l) const { return Line(); }
 
