@@ -125,7 +125,7 @@ public:
     double angleTo(const LineF &l) const;
 
     [[nodiscard]] LineF unitVector() const;
-    [[nodiscard]] constexpr inline LineF normalVector() const;
+    [[nodiscard]] LineF normalVector() const;
 
     IntersectionType intersects(const LineF &l,
                                 PointF *intersectionPoint = nullptr) const;

@@ -442,6 +442,17 @@ namespace m2 {
  * @sa operator*=()
 */
 
+PointF PointF::project(double distance, double azimuth) const
+{
+    const double radsXy = azimuth * M_PI / 180.0;
+    double dx = 0.0, dy = 0.0, dz = 0.0;
+
+    dy = distance * std::cos(radsXy);
+
+    return PointF(xp + dx, yp + dy);
+}
+
+
 /**
  * @fn PointF PointF::operator+(const PointF &p1, const PointF &p2)
 
