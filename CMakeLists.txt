@@ -27,237 +27,106 @@ cmake_minimum_required(VERSION 3.20)
 # Version
 #-----------------------------------------------------------------------------
 file(READ VERSION.txt _version_)
-string(REGEX MATCH "GEOS_VERSION_MAJOR=([0-9]+)" _ ${_version_})
+string(REGEX MATCH "M2_VERSION_MAJOR=([0-9]+)" _ ${_version_})
 set(_version_major ${CMAKE_MATCH_1})
-string(REGEX MATCH "")
+string(REGEX MATCH "M2_VERSION_MINOR=([0-9]+)" _ ${_version_})
+set(_version_minor ${CMAKE_MATCH_1})
+string(REGEX MATCH "M2_VERSION_PATCH=([0-9]+)" _ ${_version_})
+set(_version_patch ${CMAKE_MATCH_1})
+string(REGEX MATCH "M2_PATCH_WORD=([a-zA-Z0-9]+)" _ ${_version_})
+set(_version_patch_word ${CMAKE_MATCH_1})
 
+unset(_version_)
 
-project(libm2 LANGUAGES CXX)
-set(CMAKE_CXX_STANDARD 17)
+#-----------------------------------------------------------------------------
+# Project
+#-----------------------------------------------------------------------------
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.9)
+  list(APPEND _project_info DESCRIPTION "M2 - C++ API for cross platform")
+endif()
+
+project(libm2 VERSION "${_version_major}.${_version_minor}.${_version_patch}"
+  LANGUAGES C CXX
+  ${_project_info})
+
+if(NOT "${_version_patch_word}" STREQUAL "")
+  # Re-write VERSION variables after project()
+  set(M2_VERSION "${M2_VERSION}${_version_patch_word}")
+  set(M2_VERSION_PATCH "${_version_patch}${_version_patch_word}")
+endif()
+set(M2_VERSION_NOPATCH "${_version_major}.${_version_minor}.${_version_patch}")
+
+unset(_version_major)
+unset(_version_minor)
+unset(_version_patch)
+unset(_version_patch_word)
+
+message(STATUS "M2: Version ${M2_VERSION}")
+
+if(CMAKE_VERSION VERSION_LESS 3.21)
+  if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    set(PROJECT_IS_TOP_LEVEL ON)
+  else()
+    set(PROJECT_IS_TOP_LEVEL OFF)
+  endif()
+endif()
+
+#-----------------------------------------------------------------------------
+# Setup
+#-----------------------------------------------------------------------------
+
+set(DEFAULT_BUILD_TYPE Release)
+if(${CMAKE_GENERATOR} MATCHES "Visual Studio")
+  cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
+endif()
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+#-----------------------------------------------------------------------------
+# Setup build directories
+#-----------------------------------------------------------------------------
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
+message(STATUS "M2: Run-time output: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+message(STATUS "M2: Archives output: ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+
+#-----------------------------------------------------------------------------
+# Add ASAN build option
+#-----------------------------------------------------------------------------
+set(CMAKE_C_FLAGS_ASAN "${CMAKE_C_FLAGS_DEBUG} -fsanitize=address -fno-omit-frame-pointer -fno-common")
+set(CMAKE_CXX_FLAGS_ASAN "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address -fno-omit-frame-pointer -fno-common")
+set(CMAKE_EXE_LINKER_FLAGS_ASAN "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -fsanitize=address")
+set(CMAKE_SHARED_LINKER_FLAGS_ASAN "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} -fsanitize=address")
+
+get_property(_cmake_build_type_is_cache CACHE CMAKE_BUILD_TYPE PROPERTY TYPE)
+if (_cmake_build_type_is_cache)
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo" "ASAN")
+endif()
+unset(_cmake_build_type_is_cache)
+
+#-----------------------------------------------------------------------------
+# Install directories
+#-----------------------------------------------------------------------------
+
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+
+#-----------------------------------------------------------------------------
+# C++ language version and compilation flags
+#-----------------------------------------------------------------------------
+message(STATUS "M2: Require C++${CMAKE_CXX_STANDARD}")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(m2_include_files 
-    ./include/preconfig.h
-    ./include/m2.h
-    ./include/m2/m2_allocator.h
-    ./include/m2/m2_endian.h
-    ./include/m2/m2_enummaskflag.h
-    ./include/m2/m2_error.h
-    ./include/m2/m2_flags.h
-    ./include/m2/m2_object.h
-    ./include/m2/m2_trace.h
-    ./include/m2/m2_variant.h
+#-----------------------------------------------------------------------------
+# Target libm2
+#-----------------------------------------------------------------------------
+add_library(libm2 "")
+add_library(M2::libm2 ALIAS libm2)
+add_subdirectory(include)
+add_subdirectory(src)
 
-    ./include/m2/crypto/m2_desencrypt.h
-    ./include/m2/crypto/m2_encrypt.h
-    ./include/m2/crypto/m2_key.h
-    ./include/m2/crypto/m2_rasencrypt.h
-    ./include/m2/crypto/m2_sm2encrypt.h
-    ./include/m2/crypto/m2_sm3encrypt.h
-    ./include/m2/crypto/m2_sm4encrypt.h
-    ./include/m2/crypto/m2_xxteaencrypt.h
-
-    ./include/m2/io/m2_buffer.h
-    ./include/m2/io/m2_bytearray.h
-    ./include/m2/io/m2_datastream.h
-    ./include/m2/io/m2_dir.h
-    ./include/m2/io/m2_file.h
-    ./include/m2/io/m2_fileinfo.h
-    ./include/m2/io/m2_iobase.h
-    ./include/m2/io/m2_iodevice.h
-    ./include/m2/io/m2_iot.h
-    ./include/m2/io/m2_library.h
-    ./include/m2/io/m2_lockfile.h
-    ./include/m2/io/m2_logger.h
-    ./include/m2/io/m2_process.h
-    ./include/m2/io/m2_qrcode.h
-    ./include/m2/io/m2_serialize.h
-    ./include/m2/io/m2_sharedmemory.h
-
-    ./include/m2/m2_object.h
-    ./include/m2/text/m2_ascii.h
-    ./include/m2/text/m2_regularexpression.h
-    ./include/m2/text/m2_string.h
-    ./include/m2/text/m2_stringlist.h
-    ./include/m2/text/m2_stringtokenizer.h
-    ./include/m2/text/m2_textconvertor.h
-    ./include/m2/text/m2_wstring.h
-
-    ./include/m2/math/m2_bigdecimal.h
-    ./include/m2/math/m2_biginteger.h
-    ./include/m2/math/m2_cryptographichash.h
-    ./include/m2/math/m2_geometrymath.h
-    ./include/m2/math/m2_math.h
-    ./include/m2/math/m2_random.h
-    ./include/m2/math/m2_transform.h
-    ./include/m2/math/m2_unitsconvertor.h
-    ./include/m2/math/m2_uuid.h
-    ./include/m2/math/m2_vector.h
-
-    ./include/m2/image/m2_bezier.h
-    ./include/m2/image/m2_circle.h
-    ./include/m2/image/m2_color.h
-    ./include/m2/image/m2_colorramp.h
-    ./include/m2/image/m2_ellipse.h
-    ./include/m2/image/m2_image.h
-    ./include/m2/image/m2_line.h
-    ./include/m2/image/m2_margins.h
-    ./include/m2/image/m2_pagesize.h
-    ./include/m2/image/m2_point.h
-    ./include/m2/image/m2_polygon.h
-    ./include/m2/image/m2_rbtree.h
-    ./include/m2/image/m2_rect.h
-    ./include/m2/image/m2_regularpolygon.h
-    ./include/m2/image/m2_size.h
-    ./include/m2/image/m2_triangle.h
-
-    ./include/m2/thread/m2_backgroundtask.h
-    ./include/m2/thread/m2_mutex.h
-    ./include/m2/thread/m2_rwlock.h
-    ./include/m2/thread/m2_safeobject.h
-    ./include/m2/thread/m2_semaphore.h
-    ./include/m2/thread/m2_thread.h
-    ./include/m2/thread/m2_waitcondition.h
-
-    ./include/m2/tm/m2_clock.h
-    ./include/m2/tm/m2_datetime.h
-    ./include/m2/tm/m2_deadlinetimer.h
-    ./include/m2/tm/m2_timer.h
-    ./include/m2/tm/m2_timespan.h
-    ./include/m2/tm/m2_timestamp.h
-    ./include/m2/tm/m2_timezone.h
-
-    ./include/m2/sql/m2_sqldatabase.h
-    ./include/m2/sql/m2_sqlstatement.h
-    )
-
-set(m2_source_files 
-    ./src/image/imagehandler/m2_bmpimagehandler.cpp
-    ./src/image/imagehandler/m2_bmpimagehandler.h
-    ./src/image/imagehandler/m2_ddsimagehandler.cpp
-    ./src/image/imagehandler/m2_ddsimagehandler.h
-    ./src/image/imagehandler/m2_gifimagehandler.cpp
-    ./src/image/imagehandler/m2_gifimagehandler.h
-    ./src/image/imagehandler/m2_icoimagehandler.cpp
-    ./src/image/imagehandler/m2_icoimagehandler.h
-    ./src/image/imagehandler/m2_pngimagehandler.cpp
-    ./src/image/imagehandler/m2_pngimagehandler.h
-    ./src/image/imagehandler/m2_ppmimagehandler.cpp
-    ./src/image/imagehandler/m2_ppmimagehandler.h
-    ./src/image/imagehandler/m2_svgimagehandler.cpp
-    ./src/image/imagehandler/m2_svgimagehandler.h
-    ./src/image/imagehandler/m2_tgaimagehandler.cpp
-    ./src/image/imagehandler/m2_tgaimagehandler.h
-    ./src/image/imagehandler/m2_tiffimagehandler.cpp
-    ./src/image/imagehandler/m2_tiffimagehandler.h
-    ./src/image/imagehandler/m2_wbmpimagehandler.cpp
-    ./src/image/imagehandler/m2_wbmpimagehandler.h
-    ./src/image/imagehandler/m2_webpimagehandler.cpp
-    ./src/image/imagehandler/m2_webpimagehandler.h
-    ./src/image/imagehandler/m2_xbmimagehandler.cpp
-    ./src/image/imagehandler/m2_xbmimagehandler.h
-    ./src/image/imagehandler/m2_xpmimagehandler.cpp
-    ./src/image/imagehandler/m2_xpmimagehandler.h
-    ./src/image/m2_bezier.cpp
-    ./src/image/m2_circle.cpp
-    ./src/image/m2_color.cpp
-    ./src/image/m2_colorramp.cpp
-    ./src/image/m2_ellipse.cpp
-    ./src/image/m2_image.cpp
-    ./src/image/m2_imageiohandler.cpp
-    ./src/image/m2_imageiohandler.h
-    ./src/image/m2_line.cpp
-    ./src/image/m2_margins.cpp
-    ./src/image/m2_pagesize.cpp
-    ./src/image/m2_point.cpp
-    ./src/image/m2_polygon.cpp
-    ./src/image/m2_rbtree.cpp
-    ./src/image/m2_rect.cpp
-    ./src/image/m2_regularpolygon.cpp
-    ./src/image/m2_size.cpp
-    ./src/image/m2_triangle.cpp
-
-    ./src/math/m2_bigdecimal.cpp
-    ./src/math/m2_biginteger.cpp
-    ./src/math/m2_cryptographichash.cpp
-    ./src/math/m2_geometrymath.cpp
-    ./src/math/m2_math.cpp
-    ./src/math/m2_random.cpp
-    ./src/math/m2_unitsconvertor.cpp
-    ./src/math/m2_uuid.cpp
-    ./src/math/m2_vector.cpp
-    
-    ./src/io/m2_buffer.cpp
-    ./src/io/m2_bytearray.cpp
-    
-    ./src/text/m2_ascii.cpp
-    ./src/text/m2_numericstring.cpp
-    ./src/text/m2_numericstring.h
-    ./src/text/m2_regularexpression.cpp
-    ./src/text/m2_string.cpp
-    ./src/text/m2_stringlist.cpp
-    ./src/text/m2_stringstream.cpp
-    ./src/text/m2_stringtokenizer.cpp
-    ./src/text/m2_textconverter.cpp
-    ./src/text/m2_wstring.cpp
-
-    ./src/sql/m2_sqldatabase.cpp
-    ./src/sql/m2_sqldriver.cpp
-    ./src/sql/m2_sqldriver.h
-    ./src/sql/sqldrivers/sqlite/m2_sqlitedriver.cpp
-    ./src/sql/sqldrivers/sqlite/m2_sqlitedriver.h
-)
-
-add_library(libm2 SHARED ${m2_include_files} ${m2_source_files})
-
-if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    target_compile_definitions(libm2 PRIVATE M2_LIBRARY)
-    target_compile_definitions(libm2 PRIVATE XPCORE_EXPORTS)
-    target_compile_definitions(libm2 PRIVATE JSON_DLL_BUILD)
-    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_COLUMN_METADATA)
-    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_FTS3)
-    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_FTS3_PARENTHESIS)
-    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_FTS5)
-    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_JSON1)
-    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_RTREE)
-    target_compile_definitions(libm2 PRIVATE SQLITE_OMIT_COMPLETE)
-    target_compile_definitions(libm2 PRIVATE _NO_CVCONST_H)
-elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_definitions(libm2 PRIVATE -M2_LIBRARY)
-    target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_COLUMN_METADATA)
-    target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_FTS3)
-    target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_FTS3_PARENTHESIS)
-    target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_FTS5)
-    target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_JSON1)
-    target_compile_definitions(libm2 PRIVATE -SQLITE_ENABLE_RTREE)
-    target_compile_definitions(libm2 PRIVATE -SQLITE_OMIT_COMPLETE)
-elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    target_compile_definitions(libm2 PRIVATE M2_LIBRARY)
-    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_COLUMN_METADATA)
-    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_FTS3)
-    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_FTS3_PARENTHESIS)
-    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_FTS5)
-    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_JSON1)
-    target_compile_definitions(libm2 PRIVATE SQLITE_ENABLE_RTREE)
-    target_compile_definitions(libm2 PRIVATE SQLITE_OMIT_COMPLETE)
-endif ()
-
-target_include_directories(libm2 PRIVATE
-    ./include
-    ./include/help
-    ./include/m2
-    ./include/m2/image
-    ./include/m2/io
-    ./include/m2/json
-    ./include/m2/math
-    ./include/m2/network
-    ./include/m2/sql
-    ./include/m2/text
-    ./include/m2/thread
-    ./include/m2/tm
-    ./include/m2/xml
-)
 
 if(WIN32 AND NOT MINGW)
   set_source_files_properties(trace/stacktrace.cpp PROPERTIES COMPILE_FLAGS -wd4091)
@@ -268,3 +137,18 @@ if(WIN32 AND NOT MINGW)
     dbghelp
   )
 endif()
+
+
+#-----------------------------------------------------------------------------
+# Install and export targets - support 'make install' or equivalent
+#-----------------------------------------------------------------------------
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/m2-config-version.cmake"
+  VERSION ${M2_VERSION}
+  COMPATIBILITY AnyNewerVersion
+)
+
+
+#-----------------------------------------------------------------------------
+# Uninstall
+#-----------------------------------------------------------------------------

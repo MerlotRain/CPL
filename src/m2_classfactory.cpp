@@ -1,30 +1,26 @@
-#include "stringhelp.h"
+#include <m2_object.h>
+#include <m2_string.h>
+#include <m2_stringlist.h>
 #include <map>
 #include <mutex>
-#include <object.h>
 
 namespace m2 {
 
-#define DEFAULT_CLASS_CATEGORY "Lite"
+#define DEFAULT_CLASS_CATEGORY "m2"
 
-static std::map<String, std::map<String, ClassFactory::FactoryCreateFun>> g_RegisterClasses;
+static std::map<String, std::map<String, ClassFactory::FactoryCreateFun>>
+        g_RegisterClasses;
 
-void ClassFactory::RegisterFactoryCreate(FactoryCreateFun fun,
+void ClassFactory::registerFactoryCreate(FactoryCreateFun fun,
                                          const char *className,
                                          const char *category)
 {
-    if (!className || !fun)
-    {
-        return;
-    }
+    if (!className || !fun) { return; }
 
     static std::mutex mutex;
     std::lock_guard<std::mutex> l(mutex);
 
-    if (!category)
-    {
-        category = DEFAULT_CLASS_CATEGORY;
-    }
+    if (!category) { category = DEFAULT_CLASS_CATEGORY; }
 
     auto categoryFind = g_RegisterClasses.find(category);
     if (categoryFind == g_RegisterClasses.end())
@@ -35,21 +31,14 @@ void ClassFactory::RegisterFactoryCreate(FactoryCreateFun fun,
 
     auto &classFun = g_RegisterClasses[category];
     auto funFind = classFun.find(className);
-    if (funFind == classFun.end())
-    {
-        classFun.insert({className, fun});
-    }
+    if (funFind == classFun.end()) { classFun.insert({className, fun}); }
 }
 
-std::vector<std::string>
-ClassFactory::GetClassNamesByCategory(const char *category)
+StringList ClassFactory::classNamesByCategory(const char *category)
 {
-    if (!category)
-    {
-        category = DEFAULT_CLASS_CATEGORY;
-    }
+    if (!category) { category = DEFAULT_CLASS_CATEGORY; }
 
-    std::vector<std::string> classNames;
+    StringList classNames;
     auto it = g_RegisterClasses.find(category);
     if (it != g_RegisterClasses.end())
     {
@@ -63,7 +52,7 @@ ClassFactory::GetClassNamesByCategory(const char *category)
     return classNames;
 }
 
-RefObject *ClassFactory::CreateInstancePrivate(const char *className)
+RefObject *ClassFactory::createInstancePrivate(const char *className)
 {
     auto it = g_RegisterClasses.begin();
     while (it != g_RegisterClasses.end())
