@@ -137,7 +137,6 @@ public:
 #define GSLOG_FATAL			m2::Logger::instance() << m2::eLOGFATAL
 #define GS_F				m2::Logger::instance() << m2::eLOGFATAL
 
-
 // clang-format on
 
 }// namespace m2

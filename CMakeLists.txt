@@ -16,6 +16,15 @@ set(m2_include_files
     ./include/m2/m2_trace.h
     ./include/m2/m2_variant.h
 
+    ./include/m2/crypto/m2_desencrypt.h
+    ./include/m2/crypto/m2_encrypt.h
+    ./include/m2/crypto/m2_key.h
+    ./include/m2/crypto/m2_rasencrypt.h
+    ./include/m2/crypto/m2_sm2encrypt.h
+    ./include/m2/crypto/m2_sm3encrypt.h
+    ./include/m2/crypto/m2_sm4encrypt.h
+    ./include/m2/crypto/m2_xxteaencrypt.h
+
     ./include/m2/io/m2_buffer.h
     ./include/m2/io/m2_bytearray.h
     ./include/m2/io/m2_datastream.h
@@ -46,7 +55,6 @@ set(m2_include_files
     ./include/m2/math/m2_bigdecimal.h
     ./include/m2/math/m2_biginteger.h
     ./include/m2/math/m2_cryptographichash.h
-    ./include/m2/math/m2_encryption.h
     ./include/m2/math/m2_geometrymath.h
     ./include/m2/math/m2_math.h
     ./include/m2/math/m2_random.h

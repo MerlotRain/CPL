@@ -30,11 +30,34 @@
 **
 ****************************************************************************/
 
-#ifndef M2_ENCRYPTION_H_
-#define M2_ENCRYPTION_H_
+#ifndef M2_ENCRYPT_H_
+#define M2_ENCRYPT_H_
+
+#include <m2_bytearray.h>
 
 namespace m2 {
 
+class Encrypt
+{
+public:
+    Encrypt() = default;
+    virtual ~Encrypt() = default;
+
+    virtual int encrypt(const unsigned char *data, int len,
+                        ByteArray *output) = 0;
+    virtual int decrypt(const unsigned char *data, int len,
+                        ByteArray *output) = 0;
+
+    int encrypt(const ByteArray &data, ByteArray *output);
+    int decrypt(const ByteArray &data, ByteArray *output);
+    String encrypt(const String &data);
+    String decrypt(const String &data);
+
+private:
+    Encrypt(const Encrypt &) = delete;
+    Encrypt &operator=(const Encrypt &) = delete;
+};
+
 }// namespace m2
 
-#endif//M2_ENCRYPTION_H_
+#endif//M2_ENCRYPT_H_

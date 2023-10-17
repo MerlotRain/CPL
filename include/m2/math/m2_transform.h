@@ -33,16 +33,12 @@
 #ifndef M2_TRANSFORM_H_
 #define M2_TRANSFORM_H_
 
-namespace m2 {
+#include <m2_line.h>
+#include <m2_point.h>
+#include <m2_polygon.h>
+#include <m2_rect.h>
 
-class Point;
-class PointF;
-class Line;
-class LineF;
-class Polygon;
-class PolygonF;
-class Rect;
-class RectF;
+namespace m2 {
 
 class Transform
 {
@@ -74,6 +70,9 @@ public:
     bool isScaling() const;
     bool isRotating() const;
     bool isTranslating() const;
+
+    TransformationType type() const;
+    double determinant() const;
 
     double m11() const;
     double m12() const;
@@ -131,12 +130,63 @@ public:
     static Transform fromScale(double dx, double dy);
 
 private:
-    inline TransformationType transType() const;
+    inline TransformationType inline_type() const;
 
     double m_matrix[3][3];
     mutable unsigned int m_type;
     mutable unsigned int m_dirty;
 };
+
+/*******************************************************************************
+ * class Transform inline members
+ *******************************************************************************/
+
+inline Transform::TransformationType Transform::inline_type() const
+{
+    if (m_dirty == TxNone) return static_cast<TransformationType>(m_type);
+    return type();
+}
+
+inline Point operator*(const Point &p, const Transform &m) { return m.map(p); }
+inline PointF operator*(const PointF &p, const Transform &m)
+{
+    return m.map(p);
+}
+inline LineF operator*(const LineF &l, const Transform &m) { return m.map(l); }
+inline Line operator*(const Line &l, const Transform &m) { return m.map(l); }
+inline Polygon operator*(const Polygon &a, const Transform &m)
+{
+    return m.map(a);
+}
+inline PolygonF operator*(const PolygonF &a, const Transform &m)
+{
+    return m.map(a);
+}
+
+inline Transform operator*(const Transform &a, double n)
+{
+    Transform t(a);
+    t *= n;
+    return t;
+}
+inline Transform operator/(const Transform &a, double n)
+{
+    Transform t(a);
+    t /= n;
+    return t;
+}
+inline Transform operator+(const Transform &a, double n)
+{
+    Transform t(a);
+    t += n;
+    return t;
+}
+inline Transform operator-(const Transform &a, double n)
+{
+    Transform t(a);
+    t -= n;
+    return t;
+}
 
 }// namespace m2
 
