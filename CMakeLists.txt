@@ -41,7 +41,6 @@ set(m2_include_files
     ./include/m2/io/m2_qrcode.h
     ./include/m2/io/m2_serialize.h
     ./include/m2/io/m2_sharedmemory.h
-    ./include/m2/io/m2_urlparser.h
 
     ./include/m2/m2_object.h
     ./include/m2/text/m2_ascii.h
