@@ -4,443 +4,156 @@ namespace m2 {
 
 
 /*****************************************************************************
-  Point member functions
+  Point inline functions
  *****************************************************************************/
 
-/**
- * @fn Point::Point()
-
-    Constructs a null point, i.e. with coordinates (0, 0)
-
- * @sa isNull()
-*/
-
-/**
- * @fn Point::Point(int xpos, int ypos)
-
-    Constructs a point with the given coordinates (\a xpos, \a ypos).
-
- * @sa setX(), setY()
-*/
-
-/**
- * @fn bool Point::isNull() const
-
-    Returns \c true if both the x and y coordinates are set to 0,
-    otherwise returns \c false.
-*/
-
-/**
- * @fn int Point::x() const
-
-    Returns the x coordinate of this point.
-
- * @sa setX(), rx()
-*/
-
-/**
- * @fn int Point::y() const
-
-    Returns the y coordinate of this point.
-
- * @sa setY(), ry()
-*/
-
-/**
- * @fn void Point::setX(int x)
-
-    Sets the x coordinate of this point to the given \a x coordinate.
-
- * @sa x(), setY()
-*/
-
-/**
- * @fn void Point::setY(int y)
-
-    Sets the y coordinate of this point to the given \a y coordinate.
-
- * @sa y(), setX()
-*/
-
-/**
- * @fn Point::transposed() const
-
-    Returns a point with x and y coordinates exchanged:
-    \code
-    Point{1, 2}.transposed() // {2, 1}
-    \endcode
-
- * @sa x(), y(), setX(), setY()
-*/
-
-/**
- * @fn int &Point::rx()
-
-    Returns a reference to the x coordinate of this point.
-
-    Using a reference makes it possible to directly manipulate x.
-
- * @sa x(), setX()
-*/
-
-/**
- * @fn int &Point::ry()
-
-    Returns a reference to the y coordinate of this point.
-
-    Using a reference makes it possible to directly manipulate y.
-
- * @sa y(), setY()
-*/
-
-
-/**
- * @fn Point &Point::operator+=(const Point &point)
-
-    Adds the given \a point to this point and returns a reference to
-    this point.
-
- * @sa operator-=()
-*/
-
-/**
- * @fn Point &Point::operator-=(const Point &point)
-
-    Subtracts the given \a point from this point and returns a
-    reference to this point.
-
- * @sa operator+=()
-*/
-
-/**
- * @fn Point &Point::operator*=(float factor)
-
-    Multiplies this point's coordinates by the given \a factor, and
-    returns a reference to this point.
-
-    Note that the result is rounded to the nearest integer as points are held as
-    integers. Use PointF for floating point accuracy.
-
- * @sa operator/=()
-*/
-
-/**
- * @fn Point &Point::operator*=(double factor)
-
-    Multiplies this point's coordinates by the given \a factor, and
-    returns a reference to this point.
-
-    Note that the result is rounded to the nearest integer as points are held as
-    integers. Use PointF for floating point accuracy.
-
- * @sa operator/=()
-*/
-
-/**
- * @fn Point &Point::operator*=(int factor)
-
-    Multiplies this point's coordinates by the given \a factor, and
-    returns a reference to this point.
-
- * @sa operator/=()
-*/
-
-/**
- * @fn static int Point::dotProduct(const Point &p1, const Point &p2)
-
-    Returns the dot product of \a p1 and \a p2.
-*/
-
-/**
- * @fn bool Point::operator==(const Point &p1, const Point &p2)
-
-    Returns \c true if \a p1 and \a p2 are equal; otherwise returns
-    false.
-*/
-
-/**
- * @fn bool Point::operator!=(const Point &p1, const Point &p2)
-
-    Returns \c true if \a p1 and \a p2 are not equal; otherwise returns \c false.
-*/
-
-/**
- * @fn Point Point::operator+(const Point &p1, const Point &p2)
-
-    Returns a Point object that is the sum of the given points, \a p1
-    and \a p2; each component is added separately.
-
- * @sa Point::operator+=()
-*/
-
-/**
- * @fn Point Point::operator-(const Point &p1, const Point &p2)
-
-    Returns a Point object that is formed by subtracting \a p2 from
-    \a p1; each component is subtracted separately.
-
- * @sa Point::operator-=()
-*/
-
-/**
- * @fn Point Point::operator*(const Point &point, float factor)
-
-    Returns a copy of the given \a point multiplied by the given \a factor.
-
-    Note that the result is rounded to the nearest integer as points
-    are held as integers. Use PointF for floating point accuracy.
-
- * @sa Point::operator*=()
-*/
-
-/**
- * @fn Point Point::operator*(const Point &point, double factor)
-
-    Returns a copy of the given \a point multiplied by the given \a factor.
-
-    Note that the result is rounded to the nearest integer as points
-    are held as integers. Use PointF for floating point accuracy.
-
- * @sa Point::operator*=()
-*/
-
-/**
- * @fn Point Point::operator*(const Point &point, int factor)
-
-    Returns a copy of the given \a point multiplied by the given \a factor.
-
- * @sa Point::operator*=()
-*/
-
-/**
- * @fn Point Point::operator*(float factor, const Point &point)
-    \overload
-
-    Returns a copy of the given \a point multiplied by the given \a factor.
-
-    Note that the result is rounded to the nearest integer as points
-    are held as integers. Use PointF for floating point accuracy.
-
- * @sa Point::operator*=()
-*/
-
-/**
- * @fn Point Point::operator*(double factor, const Point &point)
-    \overload
-
-    Returns a copy of the given \a point multiplied by the given \a factor.
-
-    Note that the result is rounded to the nearest integer as points
-    are held as integers. Use PointF for floating point accuracy.
-
- * @sa Point::operator*=()
-*/
-
-/**
- * @fn Point Point::operator*(int factor, const Point &point)
-    \overload
-
-    Returns a copy of the given \a point multiplied by the given \a factor.
-
- * @sa Point::operator*=()
-*/
-
-/**
- * @fn Point Point::operator+(const Point &point)
-
-    Returns \a point unmodified.
-*/
-
-/**
- * @fn Point Point::operator-(const Point &point)
-    \overload
-
-    Returns a Point object that is formed by changing the sign of
-    both components of the given \a point.
-
-    Equivalent to \c{Point(0,0) - point}.
-*/
-
-/**
- * @fn Point &Point::operator/=(double divisor)
-    \overload
-
-    Divides both x and y by the given \a divisor, and returns a reference to this
-    point.
-
-    Note that the result is rounded to the nearest integer as points are held as
-    integers. Use PointF for floating point accuracy.
-
- * @sa operator*=()
-*/
-
-/**
- * @fn const Point Point::operator/(const Point &point, double divisor)
-
-    Returns the Point formed by dividing both components of the given \a point
-    by the given \a divisor.
-
-    Note that the result is rounded to the nearest integer as points are held as
-    integers. Use PointF for floating point accuracy.
-
- * @sa Point::operator/=()
-*/
-
-/**
- * @fn Point::toPointF() const
-
-    Returns this point as a point with floating point accuracy.
-
- * @sa PointF::toPoint()
-*/
+Point::Point() noexcept : xp(0), yp(0) {}
+
+Point::Point(int xpos, int ypos) noexcept : xp(xpos), yp(ypos) {}
+
+inline bool Point::isValid() const noexcept
+{
+    return std::isfinite(xp) || std::isfinite(yp);
+}
+
+bool Point::isNull() const noexcept { return xp == 0 && yp == 0; }
+
+int Point::x() const noexcept { return xp; }
+
+int Point::y() const noexcept { return yp; }
+
+void Point::setX(int xpos) noexcept { xp = xpos; }
+
+void Point::setY(int ypos) noexcept { yp = ypos; }
+
+inline int Point::manhattanLength() const { return qAbs(x()) + qAbs(y()); }
+
+int &Point::rx() noexcept { return xp; }
+
+int &Point::ry() noexcept { return yp; }
+
+Point &Point::operator+=(const Point &p)
+{
+    xp += p.xp;
+    yp += p.yp;
+    return *this;
+}
+
+Point &Point::operator-=(const Point &p)
+{
+    xp -= p.xp;
+    yp -= p.yp;
+    return *this;
+}
+
+Point &Point::operator*=(float factor)
+{
+    xp = qRound(xp * factor);
+    yp = qRound(yp * factor);
+    return *this;
+}
+
+Point &Point::operator*=(double factor)
+{
+    xp = qRound(xp * factor);
+    yp = qRound(yp * factor);
+    return *this;
+}
+
+Point &Point::operator*=(int factor)
+{
+    xp = xp * factor;
+    yp = yp * factor;
+    return *this;
+}
+
+Point &Point::operator/=(double c)
+{
+    xp = qRound(xp / c);
+    yp = qRound(yp / c);
+    return *this;
+}
 
 /*****************************************************************************
-  PointF member functions
+  PointF inline functions
  *****************************************************************************/
 
+PointF::PointF() noexcept : xp(0), yp(0) {}
 
-/**
- * @fn PointF::PointF()
+PointF::PointF(double xpos, double ypos) noexcept : xp(xpos), yp(ypos) {}
 
-    Constructs a null point, i.e. with coordinates (0.0, 0.0)
+PointF::PointF(const Point &p) noexcept : xp(p.x()), yp(p.y()) {}
 
- * @sa isNull()
-*/
+double PointF::manhattanLength() const { return qAbs(x()) + qAbs(y()); }
 
-/**
- * @fn PointF::PointF(const Point &point)
+inline double PointF::distance(const PointF &other) const
+{
+    return std::sqrt((xp - other.x()) * (xp - other.x()) +
+                     (yp - other.y()) * (yp - other.y()));
+}
 
-    Constructs a copy of the given \a point.
+inline double PointF::azimuth(const PointF &other) const
+{
+    const double dx = other.x() - xp;
+    const double dy = other.y() - yp;
+    return (std::atan2(dx, dy) * 180.0 / M_PI);
+}
 
- * @sa toPoint(), Point::toPointF()
-*/
+inline bool PointF::isNull() const noexcept
+{
+    return qIsNull(xp) && qIsNull(yp);
+}
 
-/**
- * @fn PointF::PointF(double xpos, double ypos)
+inline bool PointF::isValid() const noexcept
+{
+    return std::isfinite(xp) || std::isfinite(yp);
+}
 
-    Constructs a point with the given coordinates (\a xpos, \a ypos).
+double PointF::x() const noexcept { return xp; }
 
- * @sa setX(), setY()
-*/
+double PointF::y() const noexcept { return yp; }
 
-/**
- * @fn bool PointF::isNull() const
+void PointF::setX(double xpos) noexcept { xp = xpos; }
 
-    Returns \c true if both the x and y coordinates are set to 0.0 (ignoring
-    the sign); otherwise returns \c false.
-*/
+void PointF::setY(double ypos) noexcept { yp = ypos; }
 
+PointF PointF::offset(double x, double y) const noexcept
+{
+    return PointF(xp + x, yp + y);
+}
 
-/**
- * @fn double PointF::manhattanLength() const
+double &PointF::rx() noexcept { return xp; }
 
-    Returns the sum of the absolute values of x() and y(),
-    traditionally known as the "Manhattan length" of the vector from
-    the origin to the point.
+double &PointF::ry() noexcept { return yp; }
 
- * @sa Point::manhattanLength()
-*/
+PointF &PointF::operator+=(const PointF &p)
+{
+    xp += p.xp;
+    yp += p.yp;
+    return *this;
+}
 
-/**
- * @fn double PointF::x() const
+PointF &PointF::operator-=(const PointF &p)
+{
+    xp -= p.xp;
+    yp -= p.yp;
+    return *this;
+}
 
-    Returns the x coordinate of this point.
+PointF &PointF::operator*=(double c)
+{
+    xp *= c;
+    yp *= c;
+    return *this;
+}
 
- * @sa setX(), rx()
-*/
-
-/**
- * @fn double PointF::y() const
-
-    Returns the y coordinate of this point.
-
- * @sa setY(), ry()
-*/
-
-/**
- * @fn void PointF::setX(double x)
-
-    Sets the x coordinate of this point to the given finite \a x coordinate.
-
- * @sa x(), setY()
-*/
-
-/**
- * @fn void PointF::setY(double y)
-
-    Sets the y coordinate of this point to the given finite \a y coordinate.
-
- * @sa y(), setX()
-*/
-
-/**
- * @fn PointF::transposed() const
-
-    Returns a point with x and y coordinates exchanged:
-    \code
-    PointF{1.0, 2.0}.transposed() // {2.0, 1.0}
-    \endcode
-
- * @sa x(), y(), setX(), setY()
-*/
-
-/**
- * @fn double& PointF::rx()
-
-    Returns a reference to the x coordinate of this point.
-
-    Using a reference makes it possible to directly manipulate x.
-
- * @sa x(), setX()
-*/
-
-/**
- * @fn double& PointF::ry()
-
-    Returns a reference to the y coordinate of this point.
-
-    Using a reference makes it possible to directly manipulate y.
-
- * @sa y(), setY()
-*/
-
-/**
- * @fn PointF& PointF::operator+=(const PointF &point)
-
-    Adds the given \a point to this point and returns a reference to
-    this point.
-
- * @sa operator-=()
-*/
-
-/**
- * @fn PointF& PointF::operator-=(const PointF &point)
-
-    Subtracts the given \a point from this point and returns a reference
-    to this point.
-
- * @sa operator+=()
-*/
-
-/**
- * @fn PointF& PointF::operator*=(double factor)
-
-    Multiplies this point's coordinates by the given finite \a factor, and
-    returns a reference to this point.
-
- * @sa operator/=()
-*/
-
-/**
- * @fn PointF& PointF::operator/=(double divisor)
-
-    Divides both x and y by the given \a divisor, and returns a reference
-    to this point. For example:
-
-    The \a divisor must not be zero or NaN.
-
- * @sa operator*=()
-*/
+PointF &PointF::operator/=(double divisor)
+{
+    assert(divisor > 0 || divisor < 0);
+    xp /= divisor;
+    yp /= divisor;
+    return *this;
+}
 
 PointF PointF::project(double distance, double azimuth) const
 {
@@ -452,102 +165,8 @@ PointF PointF::project(double distance, double azimuth) const
     return PointF(xp + dx, yp + dy);
 }
 
+PointF Point::toPointF() const noexcept { return *this; }
 
-/**
- * @fn PointF PointF::operator+(const PointF &p1, const PointF &p2)
-
-    Returns a PointF object that is the sum of the given points, \a p1
-    and \a p2; each component is added separately.
-
- * @sa PointF::operator+=()
-*/
-
-/**
- * @fn PointF PointF::operator-(const PointF &p1, const PointF &p2)
-
-    Returns a PointF object that is formed by subtracting \a p2 from \a p1;
-    each component is subtracted separately.
-
- * @sa PointF::operator-=()
-*/
-
-/**
- * @fn PointF PointF::operator*(const PointF &point, double factor)
-
-    Returns a copy of the given \a point, multiplied by the given finite \a factor.
-
- * @sa PointF::operator*=()
-*/
-
-/**
- * @fn PointF PointF::operator*(double factor, const PointF &point)
-
-    \overload
-
-    Returns a copy of the given \a point, multiplied by the given finite \a factor.
-*/
-
-/**
- * @fn PointF PointF::operator+(const PointF &point)
-
-    Returns \a point unmodified.
-*/
-
-/**
- * @fn PointF PointF::operator-(const PointF &point)
-    \overload
-
-    Returns a PointF object that is formed by changing the sign of
-    each component of the given \a point.
-
-    Equivalent to \c {PointF(0,0) - point}.
-*/
-
-/**
- * @fn PointF PointF::operator/(const PointF &point, double divisor)
-
-    Returns the PointF object formed by dividing each component of
-    the given \a point by the given \a divisor.
-
-    The \a divisor must not be zero or NaN.
-
- * @sa PointF::operator/=()
-*/
-
-/**
- * @fn Point PointF::toPoint() const
-
-    Rounds the coordinates of this point to the nearest integer, and
-    returns a Point object with the rounded coordinates.
-
- * @sa PointF(), Point::toPointF()
-*/
-
-/**
- * @fn static double PointF::dotProduct(const PointF &p1, const PointF &p2)
-
-    Returns the dot product of \a p1 and \a p2.
-*/
-
-/**
- * @fn bool PointF::operator==(const PointF &p1, const PointF &p2)
-
-    Returns \c true if \a p1 is approximately equal to \a p2; otherwise
-    returns \c false.
-
-    \warning This function does not check for strict equality; instead,
-    it uses a fuzzy comparison to compare the points' coordinates.
-
- * @sa qFuzzyCompare
-*/
-
-/**
- * @fn bool PointF::operator!=(const PointF &p1, const PointF &p2);
-
-    Returns \c true if \a p1 is sufficiently different from \a p2;
-    otherwise returns \c false.
-
- * @sa qFuzzyCompare
-*/
+Point PointF::toPoint() const { return Point(qRound(xp), qRound(yp)); }
 
 }// namespace m2
