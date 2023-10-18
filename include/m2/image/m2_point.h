@@ -157,6 +157,7 @@ public:
     constexpr inline void setX(double x) noexcept;
     constexpr inline void setY(double y) noexcept;
 
+    constexpr PointF offset(double x, double y) const noexcept;
     constexpr PointF transposed() const noexcept { return {yp, xp}; }
 
     constexpr inline double &rx() noexcept;
@@ -348,6 +349,11 @@ constexpr inline double PointF::y() const noexcept { return yp; }
 constexpr inline void PointF::setX(double xpos) noexcept { xp = xpos; }
 
 constexpr inline void PointF::setY(double ypos) noexcept { yp = ypos; }
+
+constexpr inline PointF PointF::offset(double x, double y) const noexcept
+{
+    return PointF(xp + x, yp + y);
+}
 
 constexpr inline double &PointF::rx() noexcept { return xp; }
 

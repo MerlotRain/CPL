@@ -6,331 +6,202 @@ namespace m2 {
  * class Vector2D  functions
  *******************************************************************************/
 
-Vector2D::Vector2D() noexcept : v{0.0f, 0.0f} {}
+Vector2D::Vector2D() noexcept = default;
 
-Vector2D::Vector2D(float xpos, float ypos) noexcept : v{xpos, ypos} {}
+Vector2D::Vector2D(double x, double y) noexcept : xp(x), yp(y) {}
 
-Vector2D::Vector2D(Point point) noexcept : v{float(point.x()), float(point.y())}
+Vector2D Vector2D::operator-() const { return Vector2D(-xp, -yp); }
+
+Vector2D Vector2D::operator*(double scalar) const
 {
+    return Vector2D(xp * scalar, yp * scalar);
 }
 
-Vector2D::Vector2D(PointF point) noexcept
-    : v{float(point.x()), float(point.y())}
+Vector2D Vector2D::operator/(double scalar) const
 {
+    return *this * (1.0 / scalar);
 }
 
-Vector2D::Vector2D(Vector3D vector) noexcept : v{vector[0], vector[1]} {}
+double Vector2D::operator*(Vector2D v) const { return xp * v.xp + yp * v.yp; }
 
-bool Vector2D::isNull() const noexcept
+Vector2D Vector2D::operator+(Vector2D other) const
 {
-    return qIsNull(v[0]) && qIsNull(v[1]);
+    return Vector2D(xp + other.xp, yp + other.yp);
 }
 
-float Vector2D::x() const noexcept { return v[0]; }
-float Vector2D::y() const noexcept { return v[1]; }
-
-void Vector2D::setX(float aX) noexcept { v[0] = aX; }
-void Vector2D::setY(float aY) noexcept { v[1] = aY; }
-
-float &Vector2D::operator[](int i)
+Vector2D &Vector2D::operator+=(Vector2D other)
 {
-    assert(uint32_t(i) < 2u);
-    return v[i];
-}
-
-float Vector2D::operator[](int i) const
-{
-    assert(uint32_t(i) < 2u);
-    return v[i];
-}
-
-float Vector2D::length() const noexcept
-{
-    double len = double(v[0]) * double(v[0]) + double(v[1]) * double(v[1]);
-    return float(std::sqrt(len));
-}
-
-float Vector2D::lengthSquared() const noexcept
-{
-    return v[0] * v[0] + v[1] * v[1];
-}
-
-Vector2D Vector2D::normalized() const noexcept
-{
-    const float len = length();
-    return qFuzzyIsNull(len - 1.0f) ? *this
-           : qFuzzyIsNull(len)      ? Vector2D()
-                                    : Vector2D(v[0] / len, v[1] / len);
-}
-
-void Vector2D::normalize() noexcept
-{
-    const float len = length();
-    if (qFuzzyIsNull(len - 1.0f) || qFuzzyIsNull(len)) return;
-
-    v[0] /= len;
-    v[1] /= len;
-}
-
-float Vector2D::distanceToPoint(Vector2D point) const noexcept
-{
-    return (*this - point).length();
-}
-
-float Vector2D::distanceToLine(Vector2D point,
-                               Vector2D direction) const noexcept
-{
-    if (direction.isNull()) return (*this - point).length();
-    Vector2D p = point + dotProduct(*this - point, direction) * direction;
-    return (*this - p).length();
-}
-
-Vector2D &Vector2D::operator+=(Vector2D vector) noexcept
-{
-    v[0] += vector.v[0];
-    v[1] += vector.v[1];
+    xp += other.xp;
+    yp += other.yp;
     return *this;
 }
 
-Vector2D &Vector2D::operator-=(Vector2D vector) noexcept
+Vector2D Vector2D::operator-(Vector2D other) const
 {
-    v[0] -= vector.v[0];
-    v[1] -= vector.v[1];
+    return Vector2D(xp - other.xp, yp - other.yp);
+}
+
+Vector2D &Vector2D::operator-=(Vector2D other)
+{
+    xp -= other.xp;
+    yp -= other.yp;
     return *this;
 }
 
-Vector2D &Vector2D::operator*=(float factor) noexcept
+double Vector2D::length() const { return std::sqrt(xp * xp + yp * yp); }
+
+double Vector2D::lengthSquared() const { return xp * xp + yp * yp; }
+
+double Vector2D::x() const noexcept { return xp; }
+
+double Vector2D::y() const noexcept { return yp; }
+
+void Vector2D::setX(double x) noexcept { xp = x; }
+
+void Vector2D::setY(double y) noexcept { yp = y; }
+
+Vector2D Vector2D::perpVector() const { return Vector2D(-yp, xp); }
+
+double Vector2D::angle() const
 {
-    v[0] *= factor;
-    v[1] *= factor;
-    return *this;
+    const double angle = std::atan2(yp, xp);
+    return angle < 0.0 ? angle + 2.0 * M_PI : angle;
 }
 
-Vector2D &Vector2D::operator*=(Vector2D vector) noexcept
+double Vector2D::angle(Vector2D v) const { return v.angle() - angle(); }
+
+double Vector2D::crossProduct(Vector2D v) const
 {
-    v[0] *= vector.v[0];
-    v[1] *= vector.v[1];
-    return *this;
+    return xp * v.y() - yp * v.x();
 }
 
-Vector2D &Vector2D::operator/=(float divisor)
+Vector2D Vector2D::rotateBy(double rot) const
 {
-    assert(divisor < 0 || divisor > 0);
-    v[0] /= divisor;
-    v[1] /= divisor;
-    return *this;
+    const double angle = std::atan2(yp, xp) + rot;
+    const double len = length();
+    return Vector2D(len * std::cos(angle), len * std::sin(angle));
 }
 
-Vector2D &Vector2D::operator/=(Vector2D vector)
+Vector2D Vector2D::normalized() const
 {
-    assert(vector.v[0] > 0 || vector.v[0] < 0);
-    assert(vector.v[1] > 0 || vector.v[1] < 0);
-    v[0] /= vector.v[0];
-    v[1] /= vector.v[1];
-    return *this;
+    const double len = length();
+
+    if (len == 0.0) { return Vector2D(); }
+
+    return *this / len;
 }
 
-float Vector2D::dotProduct(Vector2D v1, Vector2D v2) noexcept
+bool Vector2D::operator==(Vector2D other) const
 {
-    return v1.v[0] * v2.v[0] + v1.v[1] * v2.v[1];
+    return qIsEqual(xp, other.xp) && qIsEqual(yp, other.yp);
 }
 
-Point Vector2D::toPoint() const noexcept
+bool Vector2D::operator!=(Vector2D other) const
 {
-    return Point(qRound(v[0]), qRound(v[1]));
-}
-
-PointF Vector2D::toPointF() const noexcept
-{
-    return PointF(double(v[0]), double(v[1]));
+    return !qIsEqual(xp, other.xp) || !qIsEqual(yp, other.yp);
 }
 
 /*******************************************************************************
  * class Vector3D  functions
  *******************************************************************************/
 
-Vector3D::Vector3D() noexcept : v{0.0f, 0.0f, 0.0f} {}
+Vector3D::Vector3D() noexcept = default;
 
-Vector3D::Vector3D(Point point) noexcept
-    : v{float(point.x()), float(point.y()), 0.0f}
+Vector3D::Vector3D(double x, double y, double z) noexcept : xp(x), yp(y), zp(z)
 {
 }
 
-Vector3D::Vector3D(PointF point) noexcept
-    : v{float(point.x()), float(point.y()), 0.0f}
+bool Vector3D::isNull() const { return xp == 0 && yp == 0 && zp == 0; }
+
+double Vector3D::x() const noexcept { return xp; }
+
+double Vector3D::y() const noexcept { return yp; }
+
+double Vector3D::z() const noexcept { return zp; }
+
+void Vector3D::setX(double x) noexcept { xp = x; }
+
+void Vector3D::setY(double y) noexcept { yp = y; }
+
+void Vector3D::setZ(double z) noexcept { zp = z; }
+
+void Vector3D::set(double x, double y, double z) noexcept
 {
+    xp = x;
+    yp = y;
+    zp = z;
 }
 
-Vector3D::Vector3D(Vector2D vector) noexcept : v{vector[0], vector[1], 0.0f} {}
-Vector3D::Vector3D(Vector2D vector, float zpos) noexcept
-    : v{vector[0], vector[1], zpos}
+bool Vector3D::operator==(const Vector3D &other) const
 {
+    return xp == other.xp && yp == other.yp && zp == other.zp;
 }
 
-bool Vector3D::isNull() const noexcept
+bool Vector3D::operator!=(const Vector3D &other) const
 {
-    return qIsNull(v[0]) && qIsNull(v[1]) && qIsNull(v[2]);
+    return !operator==(other);
 }
 
-float Vector3D::x() const noexcept { return v[0]; }
-float Vector3D::y() const noexcept { return v[1]; }
-float Vector3D::z() const noexcept { return v[2]; }
-
-void Vector3D::setX(float aX) noexcept { v[0] = aX; }
-void Vector3D::setY(float aY) noexcept { v[1] = aY; }
-void Vector3D::setZ(float aZ) noexcept { v[2] = aZ; }
-
-float &Vector3D::operator[](int i)
+Vector3D Vector3D::operator+(const Vector3D &other) const
 {
-    assert(uint32_t(i) < 3u);
-    return v[i];
+    return Vector3D(xp + other.xp, yp + other.yp, zp + other.zp);
 }
 
-float Vector3D::operator[](int i) const
+Vector3D Vector3D::operator-(const Vector3D &other) const
 {
-    assert(uint32_t(i) < 3u);
-    return v[i];
+    return Vector3D(xp - other.xp, yp - other.yp, zp - other.zp);
 }
 
-Vector3D Vector3D::normalized() const noexcept
+Vector3D Vector3D::operator*(const double factor) const
 {
-    const float len = length();
-    return qFuzzyIsNull(len - 1.0f) ? *this
-           : qFuzzyIsNull(len)      ? Vector3D()
-                               : Vector3D(v[0] / len, v[1] / len, v[2] / len);
+    return Vector3D(xp * factor, yp * factor, zp * factor);
 }
 
-void Vector3D::normalize() noexcept
+Vector3D Vector3D::operator/(const double factor) const
 {
-    const float len = length();
-    if (qFuzzyIsNull(len - 1.0f) || qFuzzyIsNull(len)) return;
-
-    v[0] /= len;
-    v[1] /= len;
-    v[2] /= len;
+    return Vector3D(xp / factor, yp / factor, zp / factor);
 }
 
-float Vector3D::length() const noexcept
+double Vector3D::dotProduct(const Vector3D &v1, const Vector3D &v2)
 {
-    double len = double(v[0]) * double(v[0]) + double(v[1]) * double(v[1]) +
-                 double(v[2]) * double(v[2]);
-    return float(std::sqrt(len));
+    return v1.x() * v2.x() + v1.y() * v2.y() + v1.z() * v2.z();
 }
 
-float Vector3D::lengthSquared() const noexcept
+Vector3D Vector3D::crossProduct(const Vector3D &v1, const Vector3D &v2)
 {
-    return v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
+    return Vector3D(v1.y() * v2.z() - v1.z() * v2.y(),
+                    v1.z() * v2.x() - v1.x() * v2.z(),
+                    v1.x() * v2.y() - v1.y() * v2.x());
 }
 
-Vector3D &Vector3D::operator+=(Vector3D vector) noexcept
+double Vector3D::length() const { return sqrt(xp * xp + yp * yp + zp * zp); }
+
+void Vector3D::normalize()
 {
-    v[0] += vector.v[0];
-    v[1] += vector.v[1];
-    v[2] += vector.v[2];
-    return *this;
+    const double len = length();
+    if (!qIsEqual(len, 0.0))
+    {
+        xp /= len;
+        yp /= len;
+        zp /= len;
+    }
 }
 
-Vector3D &Vector3D::operator-=(Vector3D vector) noexcept
+double Vector3D::distance(const Vector3D &other) const
 {
-    v[0] -= vector.v[0];
-    v[1] -= vector.v[1];
-    v[2] -= vector.v[2];
-    return *this;
+    return std::sqrt((xp - other.x()) * (xp - other.x()) +
+                     (yp - other.y()) * (yp - other.y()) +
+                     (zp - other.z()) * (zp - other.z()));
 }
 
-Vector3D &Vector3D::operator*=(float factor) noexcept
+Vector3D Vector3D::perpendicularPoint(const Vector3D &v1, const Vector3D &v2,
+                                      const Vector3D &vp)
 {
-    v[0] *= factor;
-    v[1] *= factor;
-    v[2] *= factor;
-    return *this;
-}
-
-Vector3D &Vector3D::operator*=(Vector3D vector) noexcept
-{
-    v[0] *= vector.v[0];
-    v[1] *= vector.v[1];
-    v[2] *= vector.v[2];
-    return *this;
-}
-
-Vector3D &Vector3D::operator/=(float divisor)
-{
-    assert(divisor < 0 || divisor > 0);
-    v[0] /= divisor;
-    v[1] /= divisor;
-    v[2] /= divisor;
-    return *this;
-}
-
-Vector3D &Vector3D::operator/=(Vector3D vector)
-{
-    assert(vector.v[0] > 0 || vector.v[0] < 0);
-    assert(vector.v[1] > 0 || vector.v[1] < 0);
-    assert(vector.v[2] > 0 || vector.v[2] < 0);
-    v[0] /= vector.v[0];
-    v[1] /= vector.v[1];
-    v[2] /= vector.v[2];
-    return *this;
-}
-
-float Vector3D::dotProduct(Vector3D v1, Vector3D v2) noexcept
-{
-    return v1.v[0] * v2.v[0] + v1.v[1] * v2.v[1] + v1.v[2] * v2.v[2];
-}
-
-Vector3D Vector3D::crossProduct(Vector3D v1, Vector3D v2) noexcept
-{
-    return Vector3D(v1.v[1] * v2.v[2] - v1.v[2] * v2.v[1],
-                    v1.v[2] * v2.v[0] - v1.v[0] * v2.v[2],
-                    v1.v[0] * v2.v[1] - v1.v[1] * v2.v[0]);
-}
-
-Vector3D Vector3D::normal(Vector3D v1, Vector3D v2) noexcept
-{
-    return crossProduct(v1, v2).normalized();
-}
-
-Vector3D Vector3D::normal(Vector3D v1, Vector3D v2, Vector3D v3) noexcept
-{
-    return crossProduct((v2 - v1), (v3 - v1)).normalized();
-}
-
-float Vector3D::distanceToPoint(Vector3D point) const noexcept
-{
-    return (*this - point).length();
-}
-
-float Vector3D::distanceToPlane(Vector3D plane, Vector3D normal) const noexcept
-{
-    return dotProduct(*this - plane, normal);
-}
-
-float Vector3D::distanceToPlane(Vector3D plane1, Vector3D plane2,
-                                Vector3D plane3) const noexcept
-{
-    Vector3D n = normal(plane2 - plane1, plane3 - plane1);
-    return dotProduct(*this - plane1, n);
-}
-
-float Vector3D::distanceToLine(Vector3D point,
-                               Vector3D direction) const noexcept
-{
-    if (direction.isNull()) return (*this - point).length();
-    Vector3D p = point + dotProduct(*this - point, direction) * direction;
-    return (*this - p).length();
-}
-
-Vector2D Vector3D::toVector2D() const noexcept { return Vector2D(v[0], v[1]); }
-
-Point Vector3D::toPoint() const noexcept
-{
-    return Point(qRound(v[0]), qRound(v[1]));
-}
-
-PointF Vector3D::toPointF() const noexcept
-{
-    return PointF(double(v[0]), double(v[1]));
+    const Vector3D d = (v2 - v1) / v2.distance(v1);
+    const Vector3D v = vp - v2;
+    const double t = dotProduct(v, d);
+    Vector3D P = v2 + (d * t);
+    return P;
 }
 
 }// namespace m2

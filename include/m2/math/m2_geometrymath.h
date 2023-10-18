@@ -53,8 +53,8 @@ public:
     static double sqrDistance2D(const PointF &pt1, const PointF &pt2);
 
     static double
-    sqrDistToLine(const PointF &pt, const PointF &pt1, const PointF &pt2,
-                  PointF &minpt,
+    sqrDistToLine(double ptX, double ptY, double x1, double y1, double x2,
+                  double y2, double &minDistX, double &minDistY,
                   double epsilon = std::numeric_limits<double>::epsilon());
 
     static double
@@ -161,8 +161,7 @@ public:
     static void
     segmentizeArc(const PointF &p1, const PointF &p2, const PointF &p3,
                   PointSequence &points, double tolerance = M_PI_2 / 90,
-                  SegmentationToleranceType toleranceType = MaximumAngle,
-                  bool hasZ = false, bool hasM = false);
+                  SegmentationToleranceType toleranceType = MaximumAngle);
 
     static bool pointContinuesArc(const PointF &a1, const PointF &a2,
                                   const PointF &a3, const PointF &b,

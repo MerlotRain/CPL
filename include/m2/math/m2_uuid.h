@@ -33,8 +33,7 @@
 #ifndef M2_UUID_H_
 #define M2_UUID_H_
 
-#include <m2_bytebuffer.h>
-#include <preconfig.h>
+#include <m2_bytearray.h>
 
 namespace m2 {
 

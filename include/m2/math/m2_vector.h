@@ -42,247 +42,78 @@ class Vector3D;
 class Vector2D
 {
 public:
-     Vector2D() noexcept;
-     Vector2D(float xpos, float ypos) noexcept;
-     explicit Vector2D(Point point) noexcept;
-     explicit Vector2D(PointF point) noexcept;
-     explicit Vector2D(Vector3D vector) noexcept;
-     bool isNull() const noexcept;
+    Vector2D() noexcept;
+    Vector2D(double x, double y) noexcept;
 
-     float x() const noexcept;
-     float y() const noexcept;
+    Vector2D operator-() const;
+    Vector2D operator*(double scalar) const;
+    Vector2D operator/(double scalar) const;
+    double operator*(Vector2D v) const;
+    Vector2D operator+(Vector2D other) const;
+    Vector2D &operator+=(Vector2D other);
+    Vector2D operator-(Vector2D other) const;
+    Vector2D &operator-=(Vector2D other);
 
-     void setX(float x) noexcept;
-     void setY(float y) noexcept;
+    double length() const;
+    double lengthSquared() const;
 
-     float &operator[](int i);
-     float operator[](int i) const;
+    double x() const noexcept;
+    double y() const noexcept;
 
-    [[nodiscard]] float length() const noexcept;
-    [[nodiscard]]  float lengthSquared() const noexcept;
+    void setX(double x) noexcept;
+    void setY(double y) noexcept;
 
-    [[nodiscard]] Vector2D normalized() const noexcept;
-    void normalize() noexcept;
+    Vector2D perpVector() const;
 
-    [[nodiscard]] float distanceToPoint(Vector2D point) const noexcept;
-    [[nodiscard]] float distanceToLine(Vector2D point,
-                                       Vector2D direction) const noexcept;
+    double angle() const;
+    double angle(Vector2D v) const;
+    double crossProduct(Vector2D v) const;
+    Vector2D rotateBy(double rot) const;
+    Vector2D normalized() const;
 
-     Vector2D &operator+=(Vector2D vector) noexcept;
-     Vector2D &operator-=(Vector2D vector) noexcept;
-     Vector2D &operator*=(float factor) noexcept;
-     Vector2D &operator*=(Vector2D vector) noexcept;
-     Vector2D &operator/=(float divisor);
-     Vector2D &operator/=(Vector2D vector);
-
-    [[nodiscard]] static  float dotProduct(Vector2D v1,
-                                                    Vector2D v2) noexcept;
-
-     friend inline bool operator==(Vector2D v1, Vector2D v2) noexcept
-    {
-        return v1.v[0] == v2.v[0] && v1.v[1] == v2.v[1];
-    }
-
-     friend inline bool operator!=(Vector2D v1, Vector2D v2) noexcept
-    {
-        return v1.v[0] != v2.v[0] || v1.v[1] != v2.v[1];
-    }
-
-     friend inline Vector2D operator+(Vector2D v1,
-                                               Vector2D v2) noexcept
-    {
-        return Vector2D(v1.v[0] + v2.v[0], v1.v[1] + v2.v[1]);
-    }
-
-     friend inline Vector2D operator-(Vector2D v1,
-                                               Vector2D v2) noexcept
-    {
-        return Vector2D(v1.v[0] - v2.v[0], v1.v[1] - v2.v[1]);
-    }
-
-     friend inline Vector2D operator*(float factor,
-                                               Vector2D vector) noexcept
-    {
-        return Vector2D(vector.v[0] * factor, vector.v[1] * factor);
-    }
-
-     friend inline Vector2D operator*(Vector2D vector,
-                                               float factor) noexcept
-    {
-        return Vector2D(vector.v[0] * factor, vector.v[1] * factor);
-    }
-
-     friend inline Vector2D operator*(Vector2D v1,
-                                               Vector2D v2) noexcept
-    {
-        return Vector2D(v1.v[0] * v2.v[0], v1.v[1] * v2.v[1]);
-    }
-
-     friend inline Vector2D operator-(Vector2D vector) noexcept
-    {
-        return Vector2D(-vector.v[0], -vector.v[1]);
-    }
-
-     friend inline Vector2D operator/(Vector2D vector, float divisor)
-    {
-        assert(divisor < 0 || divisor > 0);
-        return Vector2D(vector.v[0] / divisor, vector.v[1] / divisor);
-    }
-
-     friend inline Vector2D operator/(Vector2D vector,
-                                               Vector2D divisor)
-    {
-        assert(divisor.v[0] < 0 || divisor.v[0] > 0);
-        assert(divisor.v[1] < 0 || divisor.v[1] > 0);
-        return Vector2D(vector.v[0] / divisor.v[0], vector.v[1] / divisor.v[1]);
-    }
-
-    friend bool qFuzzyCompare(Vector2D v1, Vector2D v2) noexcept;
-
-     Vector3D toVector3D() const noexcept;
-     Point toPoint() const noexcept;
-     PointF toPointF() const noexcept;
+    bool operator==(Vector2D other) const;
+    bool operator!=(Vector2D other) const;
 
 private:
-    float v[2];
-    friend class Vector3D;
+    double xp = 0.0;
+    double yp = 0.0;
 };
 
 class Vector3D
 {
 public:
-     Vector3D() noexcept;
-     Vector3D(float xpos, float ypos, float zpos) noexcept
-        : v{xpos, ypos, zpos}
-    {
-    }
+    Vector3D() noexcept;
+    Vector3D(double x, double y, double z) noexcept;
+    bool isNull() const;
 
-     explicit Vector3D(Point point) noexcept;
-     explicit Vector3D(PointF point) noexcept;
-#ifndef QT_NO_VECTOR2D
-     explicit Vector3D(Vector2D vector) noexcept;
-     Vector3D(Vector2D vector, float zpos) noexcept;
-#endif
+    double x() const noexcept;
+    double y() const noexcept;
+    double z() const noexcept;
 
-     bool isNull() const noexcept;
+    void setX(double x) noexcept;
+    void setY(double y) noexcept;
+    void setZ(double z) noexcept;
+    void set(double x, double y, double z) noexcept;
 
-     float x() const noexcept;
-     float y() const noexcept;
-     float z() const noexcept;
+    bool operator==(const Vector3D &other) const;
+    bool operator!=(const Vector3D &other) const;
 
-     void setX(float x) noexcept;
-     void setY(float y) noexcept;
-     void setZ(float z) noexcept;
+    Vector3D operator+(const Vector3D &other) const;
+    Vector3D operator-(const Vector3D &other) const;
+    Vector3D operator*(const double factor) const;
+    Vector3D operator/(const double factor) const;
 
-     float &operator[](int i);
-     float operator[](int i) const;
+    static double dotProduct(const Vector3D &v1, const Vector3D &v2);
+    static Vector3D crossProduct(const Vector3D &v1, const Vector3D &v2);
 
-    [[nodiscard]] float length() const noexcept;
-    [[nodiscard]]  float lengthSquared() const noexcept;
-
-    [[nodiscard]] Vector3D normalized() const noexcept;
-    void normalize() noexcept;
-
-     Vector3D &operator+=(Vector3D vector) noexcept;
-     Vector3D &operator-=(Vector3D vector) noexcept;
-     Vector3D &operator*=(float factor) noexcept;
-     Vector3D &operator*=(Vector3D vector) noexcept;
-     Vector3D &operator/=(float divisor);
-     Vector3D &operator/=(Vector3D vector);
-
-    [[nodiscard]] static  float dotProduct(Vector3D v1,
-                                                    Vector3D v2) noexcept;
-    [[nodiscard]] static  Vector3D crossProduct(Vector3D v1,
-                                                         Vector3D v2) noexcept;
-
-    [[nodiscard]] static Vector3D normal(Vector3D v1, Vector3D v2) noexcept;
-    [[nodiscard]] static Vector3D normal(Vector3D v1, Vector3D v2,
-                                         Vector3D v3) noexcept;
-
-     friend inline bool operator==(Vector3D v1, Vector3D v2) noexcept
-    {
-        return v1.v[0] == v2.v[0] && v1.v[1] == v2.v[1] && v1.v[2] == v2.v[2];
-    }
-
-     friend inline bool operator!=(Vector3D v1, Vector3D v2) noexcept
-    {
-        return v1.v[0] != v2.v[0] || v1.v[1] != v2.v[1] || v1.v[2] != v2.v[2];
-    }
-    float distanceToPoint(Vector3D point) const noexcept;
-     float distanceToPlane(Vector3D plane,
-                                    Vector3D normal) const noexcept;
-    float distanceToPlane(Vector3D plane1, Vector3D plane2,
-                          Vector3D plane3) const noexcept;
-    float distanceToLine(Vector3D point, Vector3D direction) const noexcept;
-
-
-     friend inline Vector3D operator+(Vector3D v1,
-                                               Vector3D v2) noexcept
-    {
-        return Vector3D(v1.v[0] + v2.v[0], v1.v[1] + v2.v[1],
-                        v1.v[2] + v2.v[2]);
-    }
-
-     friend inline Vector3D operator-(Vector3D v1,
-                                               Vector3D v2) noexcept
-    {
-        return Vector3D(v1.v[0] - v2.v[0], v1.v[1] - v2.v[1],
-                        v1.v[2] - v2.v[2]);
-    }
-
-     friend inline Vector3D operator*(float factor,
-                                               Vector3D vector) noexcept
-    {
-        return Vector3D(vector.v[0] * factor, vector.v[1] * factor,
-                        vector.v[2] * factor);
-    }
-
-     friend inline Vector3D operator*(Vector3D vector,
-                                               float factor) noexcept
-    {
-        return Vector3D(vector.v[0] * factor, vector.v[1] * factor,
-                        vector.v[2] * factor);
-    }
-
-     friend inline Vector3D operator*(Vector3D v1,
-                                               Vector3D v2) noexcept
-    {
-        return Vector3D(v1.v[0] * v2.v[0], v1.v[1] * v2.v[1],
-                        v1.v[2] * v2.v[2]);
-    }
-
-     friend inline Vector3D operator-(Vector3D vector) noexcept
-    {
-        return Vector3D(-vector.v[0], -vector.v[1], -vector.v[2]);
-    }
-
-     friend inline Vector3D operator/(Vector3D vector, float divisor)
-    {
-        assert(divisor < 0 || divisor > 0);
-        return Vector3D(vector.v[0] / divisor, vector.v[1] / divisor,
-                        vector.v[2] / divisor);
-    }
-
-     friend inline Vector3D operator/(Vector3D vector,
-                                               Vector3D divisor)
-    {
-        assert(divisor.v[0] > 0 || divisor.v[0] < 0);
-        assert(divisor.v[1] > 0 || divisor.v[1] < 0);
-        assert(divisor.v[2] > 0 || divisor.v[2] < 0);
-        return Vector3D(vector.v[0] / divisor.v[0], vector.v[1] / divisor.v[1],
-                        vector.v[2] / divisor.v[2]);
-    }
-
-    friend bool qFuzzyCompare(Vector3D v1, Vector3D v2) noexcept;
-
-     Vector2D toVector2D() const noexcept;
-
-     Point toPoint() const noexcept;
-     PointF toPointF() const noexcept;
+    double length() const;
+    void normalize();
+    double distance(const Vector3D &other) const;
+    static Vector3D perpendicularPoint(const Vector3D &v1, const Vector3D &v2,
+                                       const Vector3D &vp);
 
 private:
-    float v[3];
-    friend class Vector2D;
+    double xp = 0, yp = 0, zp = 0;
 };
 
 }// namespace m2

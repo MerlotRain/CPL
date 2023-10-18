@@ -1,6 +1,6 @@
-#include <encryption.h>
-#include <endian.h>
-#include <mathhelp.h>
+#include <m2_cryptographichash.h>
+#include <m2_endian.h>
+#include <m2_uuid.h>
 
 namespace m2 {
 namespace MiscUtils {
