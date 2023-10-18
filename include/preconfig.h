@@ -233,6 +233,7 @@
 #include <set>
 #include <sstream>
 #include <stack>
+#include <stdarg.h>
 #include <stdint.h>
 #include <string>
 #include <tuple>

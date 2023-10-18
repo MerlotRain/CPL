@@ -48,9 +48,13 @@ public:
     Triangle &operator=(const Triangle &other);
     bool operator==(const Triangle &other) const;
     bool operator!=(const Triangle &other) const;
+    bool isEmpty() const;
 
     std::vector<double> lengths() const;
     std::vector<double> angles() const;
+
+    double area() const;
+    double perimeter() const;
 
     bool isDegenerate() const;
     bool isIsocele(double lengthTolerance = 0.0001) const;

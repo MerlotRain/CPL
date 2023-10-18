@@ -3,18 +3,32 @@
 
 namespace m2 {
 
+/**
+ * @brief 
+ * @param  length           
+ * @param  angle            
+ * @return LineF 
+ */
 LineF LineF::fromPolar(double length, double angle)
 {
     const double angleR = degreesToRadians(angle);
     return LineF(0, 0, qCos(angleR) * length, -qSin(angleR) * length);
 }
 
+/**
+ * @brief 
+ * @return double 
+ */
 double LineF::length() const
 {
     double len = dx() * dx() + dy() * dy();
     return std::sqrt(len);
 }
 
+/**
+ * @brief 
+ * @param  len              
+ */
 void LineF::setLength(double len)
 {
     assert(std::isfinite(len));
@@ -25,6 +39,10 @@ void LineF::setLength(double len)
                      pt1.y() + len * (dy() / oldLength));
 }
 
+/**
+ * @brief 
+ * @return double 
+ */
 double LineF::angle() const
 {
     const double dx = pt2.x() - pt1.x();
@@ -39,6 +57,10 @@ double LineF::angle() const
         return theta_normalized;
 }
 
+/**
+ * @brief 
+ * @param  angle            
+ */
 void LineF::setAngle(double angle)
 {
     const double angleR = degreesToRadians(angle);
@@ -51,6 +73,11 @@ void LineF::setAngle(double angle)
     pt2.ry() = pt1.y() + dy;
 }
 
+/**
+ * @brief 
+ * @param  l                
+ * @return double 
+ */
 double LineF::angleTo(const LineF &l) const
 {
     if (isNull() || l.isNull()) return 0;
@@ -66,6 +93,10 @@ double LineF::angleTo(const LineF &l) const
         return delta_normalized;
 }
 
+/**
+ * @brief 
+ * @return LineF 
+ */
 LineF LineF::unitVector() const
 {
     const double x = dx();
@@ -78,11 +109,21 @@ LineF LineF::unitVector() const
     return f;
 }
 
+/**
+ * @brief 
+ * @return LineF 
+ */
 LineF LineF::normalVector() const
 {
     return LineF(p1(), p1() + PointF(dy(), -dx()));
 }
 
+/**
+ * @brief 
+ * @param  l                
+ * @param  intersectionPoint
+ * @return LineF::IntersectionType 
+ */
 LineF::IntersectionType LineF::intersects(const LineF &l,
                                           PointF *intersectionPoint) const
 {

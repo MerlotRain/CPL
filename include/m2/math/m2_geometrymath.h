@@ -208,8 +208,8 @@ public:
     static void coefficients(const PointF &pt1, const PointF &pt2, double &a,
                              double &b, double &c);
 
-    static PointSequence perpendicularSegment(const PointF &p, const PointF &s1,
-                                              const PointF &s2);
+    static LineF perpendicularSegment(const PointF &p, const PointF &s1,
+                                      const PointF &s2);
 
     static void perpendicularCenterSegment(
             double centerPointX, double centerPointY, double segmentPoint1x,

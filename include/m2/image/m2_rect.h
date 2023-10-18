@@ -149,7 +149,6 @@ public:
         return r1.x1 != r2.x1 || r1.x2 != r2.x2 || r1.y1 != r2.y1 ||
                r1.y2 != r2.y2;
     }
-    friend constexpr inline size_t qHash(const Rect &, size_t) noexcept;
     [[nodiscard]] constexpr inline RectF toRectF() const noexcept;
 
 private:
@@ -922,9 +921,6 @@ constexpr RectF Rect::toRectF() const noexcept { return *this; }
 
 constexpr inline Rect RectF::toRect() const noexcept
 {
-    // This rounding is designed to minimize the maximum possible difference
-    // in topLeft(), bottomRight(), and size() after rounding.
-    // All dimensions are at most off by 0.75, and topLeft by at most 0.5.
     const int nxp = qRound(xp);
     const int nyp = qRound(yp);
     const int nw = qRound(w + (xp - nxp) / 2);

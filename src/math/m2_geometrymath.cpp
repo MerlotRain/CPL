@@ -673,13 +673,12 @@ void GeometryMath::coefficients(const PointF &pt1, const PointF &pt2, double &a,
  * @param  p                
  * @param  s1               
  * @param  s2               
- * @return PointSequence 
+ * @return LineF 
  */
-PointSequence GeometryMath::perpendicularSegment(const PointF &p,
-                                                 const PointF &s1,
-                                                 const PointF &s2)
+LineF GeometryMath::perpendicularSegment(const PointF &p, const PointF &s1,
+                                         const PointF &s2)
 {
-    return PointSequence();
+    return LineF();
 }
 
 /**

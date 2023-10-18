@@ -124,7 +124,6 @@ public:
         assert(!qFuzzyIsNull(c));
         return Size(qRound(s.wd / c), qRound(s.ht / c));
     }
-    friend inline constexpr size_t qHash(const Size &, size_t) noexcept;
     [[nodiscard]] inline constexpr SizeF toSizeF() const noexcept;
 
 private:

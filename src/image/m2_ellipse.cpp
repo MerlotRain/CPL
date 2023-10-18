@@ -462,6 +462,17 @@ RectF Ellipse::boundingBox() const
 /**
  * @brief 
  */
-void Ellipse::normalizeAxis() {}
+void Ellipse::normalizeAxis()
+{
+    m_semiMajorAxis = std::fabs(m_semiMajorAxis);
+    m_semiMinorAxis = std::fabs(m_semiMinorAxis);
+    if (m_semiMajorAxis < m_semiMinorAxis)
+    {
+        std::swap(m_semiMajorAxis, m_semiMinorAxis);
+        m_azimuth =
+                180.0 / M_PI *
+                GeometryMath::normalizedAngle(M_PI / 180.0 * (m_azimuth + 90));
+    }
+}
 
 }// namespace m2

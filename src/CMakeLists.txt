@@ -23,8 +23,10 @@
 ##############################################################################
 
 file(GLOB_RECURSE _sources ${CMAKE_CURRENT_LIST_DIR}/*.cpp  CONFIGURE_DEPEND)
-target_sources(libm2 PRIVATE ${_sources})
+file(GLOB_RECURSE _headers ${CMAKE_CURRENT_LIST_DIR}/*.h  CONFIGURE_DEPEND)
+target_sources(libm2 PRIVATE ${_sources} ${_headers})
 unset(_sources)
+unset(_headers)
 
 if(WIN32 AND NOT MINGW)
   set_source_files_properties(trace/stacktrace.cpp PROPERTIES COMPILE_FLAGS -wd4091)
