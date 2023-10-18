@@ -60,6 +60,7 @@ public:
     Color &operator=(const Color &color) noexcept;
     Color(Color &&color) noexcept;
     Color &operator=(Color &&color) noexcept;
+    inline bool Color::isValid() const noexcept { return cspec != Invalid; }
 
     static Color random();
 
@@ -152,7 +153,6 @@ public:
     Color toHsv() const noexcept;
     Color toCmyk() const noexcept;
     Color toHsl() const noexcept;
-    Color toExtendedRgb() const noexcept;
 
     static Color fromRgb(Rgb32 rgb) noexcept;
     static Color fromRgba(Rgb32 rgba) noexcept;
@@ -502,6 +502,8 @@ private:
 
         uint16_t array[5];
     } cs;
+
+    Color convertTo(Spec colorSpec) const noexcept;
 };
 
 }// namespace m2

@@ -36,7 +36,7 @@ from2ParallelsLine(const PointF &pt1_par1, const PointF &pt2_par1,
 {
     const double radius =
             GeometryMath::perpendicularSegment(pt1_par2, pt1_par1, pt2_par1)
-                    .size() /
+                    .length() /
             2.0;
 
     bool isInter;
