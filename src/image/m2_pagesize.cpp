@@ -183,7 +183,7 @@ struct StandardPageSize
     const char mediaOption[20];
 };
 
-static const StandardPageSize qt_pageSizes[] = {
+static const StandardPageSize m2_pageSizes[] = {
         {            PageSize::Letter,                DMPAPER_LETTER,       PageSize::Inch,  612,  792, 215.9, 279.4,    8.5,     11,             "Letter"},
         {             PageSize::Legal,                 DMPAPER_LEGAL,       PageSize::Inch,  612, 1008, 215.9, 355.6,    8.5,     14,              "Legal"},
         {         PageSize::Executive,                  DMPAPER_NONE,       PageSize::Inch,  540,  720, 190.5,   254,    7.5,     10, "Executive.7.5x10in"},
@@ -327,5 +327,311 @@ static const StandardPageSize qt_pageSizes[] = {
 
 // clang-format on
 
+/*******************************************************************************
+ * PageSize static functions
+ *******************************************************************************/
+
+static const int pageSizesCount =
+        int(sizeof(m2_pageSizes) / sizeof(m2_pageSizes[0]));
+static_assert(pageSizesCount == PageSize::LastPageSize + 1);
+static_assert(PageSize::LastPageSize < 256);
+
+static String m2_keyForPageSizeId(PageSize::PageSizeId id);
+
+static PageSize::PageSizeId m2_idForPpdKey(const String &ppdKey,
+                                           Size *match = nullptr);
+
+static PageSize::PageSizeId m2_idForWindowsID(int windowsId,
+                                              Size *match = nullptr);
+
+static String m2_keyForCustomSize(const SizeF &size, PageSize::Unit units);
+
+static String m2_nameForCustomSize(const SizeF &size, PageSize::Unit units);
+
+static double m2_pointMultiplier(PageSize::Unit unit);
+
+double m2_pixelMultiplier(int resolution);
+
+static SizeF m2_definitionSize(PageSize::PageSizeId pageSizeId);
+
+static SizeF m2_convertUnits(const SizeF &size, PageSize::Unit fromUnits,
+                             PageSize::Unit toUnits);
+
+static Size m2_convertUnitsToPoints(const SizeF &size, PageSize::Unit units);
+
+static Size m2_convertPointsToPixels(const Size &size, int resolution);
+
+static SizeF m2_convertPointsToUnits(const Size &size, PageSize::Unit units);
+
+static SizeF m2_unitSize(PageSize::PageSizeId pageSizeId, PageSize::Unit units);
+
+static PageSize::PageSizeId
+m2_idForPointSize(const Size &size, PageSize::SizeMatchPolicy matchPolicy,
+                  Size *match);
+
+static PageSize::PageSizeId m2_idForSize(const SizeF &size,
+                                         PageSize::Unit units,
+                                         PageSize::SizeMatchPolicy matchPolicy,
+                                         Size *match);
+
+
+/*******************************************************************************
+ * class PageSizePrivate
+ *******************************************************************************/
+
+class PageSizePrivate
+{
+public:
+    PageSizePrivate();
+    explicit PageSizePrivate(PageSize::PageSizeId pageSizeId);
+    PageSizePrivate(const Size &pointSize, const String &name,
+                    PageSize::SizeMatchPolicy matchPolicy);
+    PageSizePrivate(const SizeF &size, PageSize::Unit units, const String &name,
+                    PageSize::SizeMatchPolicy matchPolicy);
+    PageSizePrivate(const String &key, const Size &size, const String &name);
+    PageSizePrivate(int windowsId, const Size &pointSize, const String &name);
+    ~PageSizePrivate();
+
+    bool operator==(const PageSizePrivate &other) const;
+    bool isEquivalentTo(const PageSizePrivate &other) const;
+
+    bool isValid() const;
+
+    SizeF size(PageSize::Unit units) const;
+    Size sizePixels(int resolution) const;
+
+private:
+    friend class PageSize;
+
+    void init(PageSize::PageSizeId id, const String &name);
+    void init(const Size &size, const String &name);
+    void init(const SizeF &size, PageSize::Unit units, const String &name);
+
+    String m_key;
+    PageSize::PageSizeId m_id;
+    Size m_pointSize;
+    String m_name;
+    int m_windowsId;
+    SizeF m_size;
+    PageSize::Unit m_units;
+};
+
+/*******************************************************************************
+ * class PageSizePrivate functions
+ *******************************************************************************/
+
+PageSizePrivate::PageSizePrivate() {}
+
+PageSizePrivate::PageSizePrivate(PageSize::PageSizeId pageSizeId) {}
+
+PageSizePrivate::PageSizePrivate(const Size &pointSize, const String &name,
+                                 PageSize::SizeMatchPolicy matchPolicy)
+{
+}
+
+PageSizePrivate::PageSizePrivate(const SizeF &size, PageSize::Unit units,
+                                 const String &name,
+                                 PageSize::SizeMatchPolicy matchPolicy)
+{
+}
+
+PageSizePrivate::PageSizePrivate(const String &key, const Size &size,
+                                 const String &name)
+{
+}
+
+PageSizePrivate::PageSizePrivate(int windowsId, const Size &pointSize,
+                                 const String &name)
+{
+}
+
+PageSizePrivate::~PageSizePrivate() {}
+
+bool PageSizePrivate::operator==(const PageSizePrivate &other) const
+{
+    return false;
+}
+
+bool PageSizePrivate::isEquivalentTo(const PageSizePrivate &other) const
+{
+    return false;
+}
+
+bool PageSizePrivate::isValid() const { return false; }
+
+SizeF PageSizePrivate::size(PageSize::Unit units) const { return SizeF(); }
+
+Size PageSizePrivate::sizePixels(int resolution) const { return Size(); }
+
+void PageSizePrivate::init(PageSize::PageSizeId id, const String &name) {}
+
+void PageSizePrivate::init(const Size &size, const String &name) {}
+
+void PageSizePrivate::init(const SizeF &size, PageSize::Unit units,
+                           const String &name)
+{
+}
+
+/*******************************************************************************
+ * class PageSize functions
+ *******************************************************************************/
+
+PageSize::PageSize() {}
+
+PageSize::PageSize(PageSizeId pageSizeId) {}
+
+PageSize::PageSize(const Size &pointSize, const String &name,
+                   SizeMatchPolicy matchPolicy)
+{
+}
+
+PageSize::PageSize(const SizeF &size, Unit units, const String &name,
+                   SizeMatchPolicy matchPolicy)
+{
+}
+
+PageSize::PageSize(const PageSize &other) {}
+
+PageSize &PageSize::operator=(const PageSize &other)
+{
+    // TODO: insert return statement here
+}
+
+PageSize::~PageSize() {}
+
+void PageSize::swap(PageSize &other) noexcept {}
+
+bool PageSize::isEquivalentTo(const PageSize &other) const { return false; }
+
+bool PageSize::isValid() const { return false; }
+
+String PageSize::key() const { return String(); }
+
+String PageSize::name() const { return String(); }
+
+PageSize::PageSizeId PageSize::id() const { return PageSizeId(); }
+
+int PageSize::windowsId() const { return 0; }
+
+SizeF PageSize::definitionSize() const { return SizeF(); }
+
+PageSize::Unit PageSize::definitionUnits() const { return Unit(); }
+
+SizeF PageSize::size(Unit units) const { return SizeF(); }
+
+Size PageSize::sizePoints() const { return Size(); }
+
+Size PageSize::sizePixels(int resolution) const { return Size(); }
+
+String PageSize::key(PageSizeId pageSizeId) { return String(); }
+
+String PageSize::name(PageSizeId pageSizeId) { return String(); }
+
+PageSize::PageSizeId PageSize::id(const Size &pointSize,
+                                  SizeMatchPolicy matchPolicy)
+{
+    return PageSizeId();
+}
+
+PageSize::PageSizeId PageSize::id(const SizeF &size, Unit units,
+                                  SizeMatchPolicy matchPolicy)
+{
+    return PageSizeId();
+}
+
+PageSize::PageSizeId PageSize::id(int windowsId) { return PageSizeId(); }
+
+int PageSize::windowsId(PageSizeId pageSizeId) { return 0; }
+
+SizeF PageSize::definitionSize(PageSizeId pageSizeId) { return SizeF(); }
+
+PageSize::Unit PageSize::definitionUnits(PageSizeId pageSizeId)
+{
+    return Unit();
+}
+
+SizeF PageSize::size(PageSizeId pageSizeId, Unit units) { return SizeF(); }
+
+Size PageSize::sizePoints(PageSizeId pageSizeId) { return Size(); }
+
+Size PageSize::sizePixels(PageSizeId pageSizeId, int resolution)
+{
+    return Size();
+}
+
+bool PageSize::equals(const PageSize &other) const { return false; }
+
+
+/*******************************************************************************
+ * PageSize static function definations
+ *******************************************************************************/
+
+String m2_keyForPageSizeId(PageSize::PageSizeId id) { return String(); }
+
+PageSize::PageSizeId m2_idForPpdKey(const String &ppdKey, Size *match)
+{
+    return PageSize::PageSizeId();
+}
+
+PageSize::PageSizeId m2_idForWindowsID(int windowsId, Size *match)
+{
+    return PageSize::PageSizeId();
+}
+
+String m2_keyForCustomSize(const SizeF &size, PageSize::Unit units)
+{
+    return String();
+}
+
+String m2_nameForCustomSize(const SizeF &size, PageSize::Unit units)
+{
+    return String();
+}
+
+double m2_pointMultiplier(PageSize::Unit unit) { return 0.0; }
+
+double m2_pixelMultiplier(int resolution) { return 0.0; }
+
+SizeF m2_definitionSize(PageSize::PageSizeId pageSizeId) { return SizeF(); }
+
+SizeF m2_convertUnits(const SizeF &size, PageSize::Unit fromUnits,
+                      PageSize::Unit toUnits)
+{
+    return SizeF();
+}
+
+Size m2_convertUnitsToPoints(const SizeF &size, PageSize::Unit units)
+{
+    return Size();
+}
+
+Size m2_convertPointsToPixels(const Size &size, int resolution)
+{
+    return Size();
+}
+
+SizeF m2_convertPointsToUnits(const Size &size, PageSize::Unit units)
+{
+    return SizeF();
+}
+
+SizeF m2_unitSize(PageSize::PageSizeId pageSizeId, PageSize::Unit units)
+{
+    return SizeF();
+}
+
+PageSize::PageSizeId m2_idForPointSize(const Size &size,
+                                       PageSize::SizeMatchPolicy matchPolicy,
+                                       Size *match)
+{
+    return PageSize::PageSizeId();
+}
+
+PageSize::PageSizeId m2_idForSize(const SizeF &size, PageSize::Unit units,
+                                  PageSize::SizeMatchPolicy matchPolicy,
+                                  Size *match)
+{
+    return PageSize::PageSizeId();
+}
 
 }// namespace m2

@@ -76,8 +76,8 @@ public:
     Size size() const;
     Rect rect() const;
 
-    rgb32 color(int i) const;
-    void setColor(int i, rgb32);
+    Rgb32 color(int i) const;
+    void setColor(int i, Rgb32);
     void setColorCount(int);
 
     uint8_t *bits();

@@ -33,8 +33,12 @@
 #ifndef M2_PAGESIZE_H_
 #define M2_PAGESIZE_H_
 
+#include <m2_size.h>
+#include <m2_string.h>
+
 namespace m2 {
 
+class PageSizePrivate;
 class PageSize
 {
 public:
@@ -188,7 +192,6 @@ public:
         Envelope10 = Comm10E
     };
 
-
     enum Unit
     {
         Millimeter,
@@ -198,7 +201,79 @@ public:
         Didot,
         Cicero
     };
+
+    enum SizeMatchPolicy
+    {
+        FuzzyMatch,
+        FuzzyOrientationMatch,
+        ExactMatch
+    };
+
+    PageSize();
+    PageSize(PageSizeId pageSizeId);
+    explicit PageSize(const Size &pointSize, const String &name = String(),
+                      SizeMatchPolicy matchPolicy = FuzzyMatch);
+    explicit PageSize(const SizeF &size, Unit units,
+                      const String &name = String(),
+                      SizeMatchPolicy matchPolicy = FuzzyMatch);
+    PageSize(const PageSize &other);
+    PageSize &operator=(const PageSize &other);
+    ~PageSize();
+
+    void swap(PageSize &other) noexcept;
+
+    friend bool operator==(const PageSize &lhs, const PageSize &rhs);
+    friend bool operator!=(const PageSize &lhs, const PageSize &rhs);
+    bool isEquivalentTo(const PageSize &other) const;
+
+    bool isValid() const;
+
+    String key() const;
+    String name() const;
+
+    PageSizeId id() const;
+
+    int windowsId() const;
+
+    SizeF definitionSize() const;
+    Unit definitionUnits() const;
+
+    SizeF size(Unit units) const;
+    Size sizePoints() const;
+    Size sizePixels(int resolution) const;
+
+    static String key(PageSizeId pageSizeId);
+    static String name(PageSizeId pageSizeId);
+
+    static PageSizeId id(const Size &pointSize,
+                         SizeMatchPolicy matchPolicy = FuzzyMatch);
+    static PageSizeId id(const SizeF &size, Unit units,
+                         SizeMatchPolicy matchPolicy = FuzzyMatch);
+
+    static PageSizeId id(int windowsId);
+    static int windowsId(PageSizeId pageSizeId);
+
+    static SizeF definitionSize(PageSizeId pageSizeId);
+    static Unit definitionUnits(PageSizeId pageSizeId);
+
+    static SizeF size(PageSizeId pageSizeId, Unit units);
+    static Size sizePoints(PageSizeId pageSizeId);
+    static Size sizePixels(PageSizeId pageSizeId, int resolution);
+
+private:
+    bool equals(const PageSize &other) const;
+
+    PageSizePrivate *d;
 };
+
+inline bool operator==(const PageSize &lhs, const PageSize &rhs)
+{
+    return lhs.equals(rhs);
+}
+inline bool operator!=(const PageSize &lhs, const PageSize &rhs)
+{
+    return !(lhs == rhs);
+}
 
 }// namespace m2
 

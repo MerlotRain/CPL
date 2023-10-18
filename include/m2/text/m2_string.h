@@ -109,6 +109,10 @@ public:
     inline bool contains(char c, bool bIgnoringCase = false) const;
     inline bool contains(const char *c, bool bIgnoringCase = false) const;
 
+    [[nodiscard]] String left(int64_t n) const;
+    [[nodiscard]] String right(int64_t n) const;
+    [[nodiscard]] String mid(int64_t position, int64_t n = -1) const;
+
     String &remove(char ch);
     String &remove(const char *src);
 

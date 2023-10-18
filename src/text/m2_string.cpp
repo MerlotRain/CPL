@@ -93,6 +93,12 @@ String::operator bool() const { return this->isNullOrEmpty(); }
 
 String::operator const char *() const { return this->data(); }
 
+String String::left(int64_t n) const { return String(); }
+
+String String::right(int64_t n) const { return String(); }
+
+String String::mid(int64_t position, int64_t n) const { return String(); }
+
 String &String::remove(char ch) { return *this; }
 
 String &String::remove(const char *src) { return *this; }

@@ -48,8 +48,7 @@ public:
         Rgb,
         Hsv,
         Cmyk,
-        Hsl,
-        ExtendedRgb
+        Hsl
     };
 
     Color() noexcept;
@@ -500,14 +499,6 @@ private:
             uint16_t lightness;
             uint16_t pad;
         } ahsl;
-        struct
-        {
-            uint16_t alphaF16;
-            uint16_t redF16;
-            uint16_t greenF16;
-            uint16_t blueF16;
-            uint16_t pad;
-        } argbExtended;
 
         uint16_t array[5];
     } cs;

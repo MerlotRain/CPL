@@ -161,13 +161,17 @@ Color Color::random() { return Color(); }
  * @brief 
  * @return String 
  */
-String Color::name() const { return String(); }
+String Color::name() const
+{
+    uint32_t n = rgba() | M2_INT64_C(0x100000000);
+    return u"#" + String::toString(n, 16).right(8);
+}
 
 /**
  * @brief 
  * @return Color::Spec 
  */
-Color::Spec Color::spec() const noexcept { return Spec(); }
+Color::Spec Color::spec() const noexcept { return cspec; }
 
 /**
  * @brief 
