@@ -89,7 +89,7 @@ public:
     UUID::Variant variant() const noexcept;
     UUID::Version version() const noexcept;
 
-private:
+
     uint32_t data1;
     uint16_t data2;
     uint16_t data3;
