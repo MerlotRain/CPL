@@ -66,29 +66,29 @@ public:
         Id128 = 3
     };
 
-    constexpr UUID() noexcept;
 
-    constexpr UUID(uint32_t l, uint16_t w1, uint16_t w2, uint8_t b1, uint8_t b2,
-                   uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7,
-                   uint8_t b8) noexcept;
-
-    String toString(StringFormat mode = WithBraces) const;
-    ByteArray toByteArray(StringFormat mode = WithBraces) const;
+    UUID() noexcept;
+    UUID(uint32_t l, uint16_t w1, uint16_t w2, uint8_t b1, uint8_t b2,
+         uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7,
+         uint8_t b8) noexcept;
+    UUID(const char *);
+    String toString() const;
+    String toString(StringFormat mode) const;
+    ByteArray toByteArray() const;
+    ByteArray toByteArray(StringFormat mode) const;
     ByteArray toRfc4122() const;
     static UUID fromRfc4122(const ByteArray &);
     bool isNull() const noexcept;
 
-    constexpr bool operator==(const UUID &orig) const noexcept;
-    constexpr bool operator!=(const UUID &orig) const noexcept;
+    bool operator==(const UUID &orig) const noexcept;
+    bool operator!=(const UUID &orig) const noexcept;
     bool operator<(const UUID &other) const noexcept;
     bool operator>(const UUID &other) const noexcept;
 
     static UUID createUuid();
-    static inline UUID createUuidV5(const UUID &ns, const String &baseData);
 
     UUID::Variant variant() const noexcept;
     UUID::Version version() const noexcept;
-
 
     uint32_t data1;
     uint16_t data2;

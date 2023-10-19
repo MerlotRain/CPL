@@ -144,6 +144,18 @@ void ByteArray::clear() {}
 
 /**
  * @brief 
+ * @param  n                
+ */
+void ByteArray::truncate(int64_t n) noexcept {}
+
+/**
+ * @brief 
+ * @param  n                
+ */
+void ByteArray::chop(int64_t n) noexcept {}
+
+/**
+ * @brief 
  * 
  * @param i 
  * @return char 
@@ -263,17 +275,6 @@ ByteArray &ByteArray::prepend(const ByteArray &a)
 /**
  * @brief 
  * 
- * @param a 
- * @return ByteArray& 
- */
-ByteArray &ByteArray::prepend(const ByteArrayView &a)
-{
-    // TODO: insert return statement here
-}
-
-/**
- * @brief 
- * 
  * @param c 
  * @return ByteArray& 
  */
@@ -313,29 +314,6 @@ ByteArray &ByteArray::append(const char *s, uint64_t len)
  * @return ByteArray& 
  */
 ByteArray &ByteArray::append(const ByteArray &a)
-{
-    // TODO: insert return statement here
-}
-
-/**
- * @brief 
- * 
- * @param a 
- * @return ByteArray& 
- */
-ByteArray &ByteArray::append(const ByteArrayView &a)
-{
-    // TODO: insert return statement here
-}
-
-/**
- * @brief 
- * 
- * @param i 
- * @param a 
- * @return ByteArray& 
- */
-ByteArray &ByteArray::insert(uint64_t i, const ByteArrayView &a)
 {
     // TODO: insert return statement here
 }

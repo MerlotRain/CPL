@@ -38,7 +38,6 @@
 
 namespace m2 {
 
-class ByteArrayView;
 class M2_API ByteArray
 {
 public:
@@ -70,6 +69,8 @@ public:
     const char *constData() const noexcept { return data(); }
     void detach();
     void clear();
+    void truncate(int64_t n) noexcept;
+    void chop(int64_t n) noexcept;
 
     char at(uint64_t i) const;
     char operator[](uint64_t i) const;
@@ -84,16 +85,13 @@ public:
     ByteArray &prepend(const char *s);
     ByteArray &prepend(const char *s, uint64_t len);
     ByteArray &prepend(const ByteArray &a);
-    ByteArray &prepend(const ByteArrayView &a);
 
     ByteArray &append(char c);
     ByteArray &append(uint64_t count, char c);
     ByteArray &append(const char *s) { return append(s, -1); }
     ByteArray &append(const char *s, uint64_t len);
     ByteArray &append(const ByteArray &a);
-    ByteArray &append(const ByteArrayView &a);
 
-    ByteArray &insert(uint64_t i, const ByteArrayView &a);
     ByteArray &insert(uint64_t i, const char *s);
     ByteArray &insert(uint64_t i, const ByteArray &data);
     ByteArray &insert(uint64_t i, uint64_t count, char c);
