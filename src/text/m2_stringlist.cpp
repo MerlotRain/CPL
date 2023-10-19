@@ -1,25 +1,20 @@
-#include <stringhelp.h>
+#include <m2_stringlist.h>
 
 namespace m2 {
 
-StringList::StringList() noexcept
+StringList::StringList() noexcept {}
+
+StringList::StringList(const String &str) noexcept { emplace_back(str); }
+
+StringList::StringList(const std::list<String> &l) noexcept
+    : std::list<String>(l)
 {
 }
 
-StringList::StringList(const String &str) noexcept
-{
-    emplace_back(str);
-}
+StringList::StringList(std::list<String> &&l) noexcept : std::list<String>(l) {}
 
-StringList::StringList(const std::list<String> &l) noexcept : std::list<String>(l)
-{
-}
-
-StringList::StringList(std::list<String> &&l) noexcept : std::list<String>(l)
-{
-}
-
-StringList::StringList(std::initializer_list<String> args) noexcept : std::list<String>(args)
+StringList::StringList(std::initializer_list<String> args) noexcept
+    : std::list<String>(args)
 {
 }
 
@@ -35,22 +30,18 @@ StringList &StringList::operator=(std::list<String> &&rhs) noexcept
     return *this;
 }
 
-bool StringList::Contains(const String &str)
+bool StringList::contains(const String &str)
 {
     for (auto it = this->cbegin(); it != this->cend(); ++it)
     {
-        if (it->compare(str.c_str()) == 0)
-        {
-            return true;
-        }
+        if (it->compare(str.c_str()) == 0) { return true; }
     }
     return false;
 }
 
 String StringList::operator[](size_t i)
 {
-    if (i >= size())
-        throw std::out_of_range("out off stringlist max size");
+    if (i >= size()) throw std::out_of_range("out off stringlist max size");
     std::list<String>::iterator it = this->begin();
     std::advance(it, i);
     return *it;
@@ -58,8 +49,7 @@ String StringList::operator[](size_t i)
 
 const String &StringList::operator[](size_t i) const
 {
-    if (i >= size())
-        throw std::out_of_range("out off stringlist max size");
+    if (i >= size()) throw std::out_of_range("out off stringlist max size");
     std::list<String>::const_iterator it = this->cbegin();
     std::advance(it, i);
     return *it;

@@ -89,6 +89,8 @@ public:
     String operator+(const String &str) const;
     String operator+(const StlString &str) const;
 
+    bool compare(const String &) const;
+    bool compare(String &&) const;
     String &toUpper();
     String &toLower();
     String &reverse();

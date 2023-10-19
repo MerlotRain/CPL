@@ -1,20 +1,17 @@
-#include <stringhelp.h>
+#include <m2_regularexpression.h>
 #include <pcre2.h>
 #include <pcre2posix.h>
 
 namespace m2 {
 
-RegularExpression::RegularExpression()
+RegularExpression::RegularExpression() {}
+
+RegularExpression::RegularExpression(const char *pattern,
+                                     RegularOptions options)
 {
 }
 
-RegularExpression::RegularExpression(const char *pattern, RegularOptions options)
-{
-}
-
-RegularExpression::~RegularExpression()
-{
-}
+RegularExpression::~RegularExpression() {}
 
 String RegularExpression::WellknownRegex(WellknownRegex eRegex)
 {
@@ -64,10 +61,12 @@ String RegularExpression::WellknownRegex(WellknownRegex eRegex)
             return "^[1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0$";
         ///@brief 负浮点数
         case eMatchNegativeFloat:
-            return "^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$";
+            return "^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)"
+                   "|([0-9]*[1-9][0-9]*)))$";
         ///@brief 正浮点数
         case eMatchPositiveFloat:
-            return "^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$";
+            return "^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|("
+                   "[0-9]*[1-9][0-9]*))$";
         ///@brief 汉字
         case eMatchChineseCharacter:
             return "^[\u4e00-\u9fa5]{0,}$";
@@ -94,13 +93,16 @@ String RegularExpression::WellknownRegex(WellknownRegex eRegex)
             return "^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
         ///@brief 域名
         case eMatchDomainName:
-            return "[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(/.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+/.?";
+            return "[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(/"
+                   ".[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+/.?";
         ///@brief Internet地址
         case eMatchInternetAddress:
-            return "[a-zA-z]+://[^\s]* 或 ^http://([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?$";
+            return "[a-zA-z]+://[^\s]* 或 "
+                   "^http://([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?$";
         ///@brief 手机号码
         case eMathcHandphoneNumber:
-            return "^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$";
+            return "^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|"
+                   "9])\d{8}$";
         ///@brief 中国固定电话号码区号-号码
         case eMathcChinaLandlineNumber:
             return "\d{3}-\d{8}|\d{4}-\d{7}";
@@ -118,13 +120,16 @@ String RegularExpression::WellknownRegex(WellknownRegex eRegex)
             return "\d+\.\d+\.\d+\.\d+";
         /// @brief IP地址
         case eMatchIPAddress2:
-            return "((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d))";
+            return "((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.){3}(?:25[0-5]|2["
+                   "0-4]\\d|[01]?\\d?\\d))";
         /// @brief 提取IPV4时使用
         case eMatchIPV4:
-            return "\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b";
+            return "\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25["
+                   "0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b";
         /// @brief 匹配子网掩码
         case eMatchNetworkMask:
-            return "((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d))";
+            return "((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.){3}(?:25[0-5]|2["
+                   "0-4]\\d|[01]?\\d?\\d))";
         /// @brief 国内身份证号
         case eMatchIDCard:
             return "^\d{15}|\d{18}$";
@@ -156,79 +161,67 @@ String RegularExpression::WildcardToRegexp(const char *wildcard)
     return String();
 }
 
-String RegularExpression::Description() const
-{
-    return String();
-}
+String RegularExpression::Description() const { return String(); }
 
-void RegularExpression::Description(const char *desc)
-{
-}
+void RegularExpression::Description(const char *desc) {}
 
-String RegularExpression::Pattern() const
-{
-    return String();
-}
+String RegularExpression::Pattern() const { return String(); }
 
 bool RegularExpression::Compile(const char *tstring, RegularOptions flag)
 {
     return false;
 }
 
-MatchResult RegularExpression::Match(const char *tstring, RegularOptions options) const
+MatchResult RegularExpression::Match(const char *tstring,
+                                     RegularOptions options) const
 {
     return MatchResult();
 }
 
-MatchResult RegularExpression::Match(const char *tstring, int start, RegularOptions options) const
+MatchResult RegularExpression::Match(const char *tstring, int start,
+                                     RegularOptions options) const
 {
     return MatchResult();
 }
 
-bool RegularExpression::operator==(const char *tstring) const
+bool RegularExpression::operator==(const char *tstring) const { return false; }
+
+bool RegularExpression::operator!=(const char *tstring) const { return false; }
+
+int RegularExpression::Split(const char *tstring, int start,
+                             StringList &strings, RegularOptions options) const
+{
+    return 0;
+}
+
+int RegularExpression::Substr(char *tstring, const char *replacement,
+                              RegularOptions options) const
+{
+    return 0;
+}
+
+int RegularExpression::Substr(char *tstring, int start, const char *replacement,
+                              RegularOptions options) const
+{
+    return 0;
+}
+
+bool RegularExpression::Match(const char *tstring, const char *pattern,
+                              RegularOptions options)
 {
     return false;
 }
 
-bool RegularExpression::operator!=(const char *tstring) const
-{
-    return false;
-}
-
-int RegularExpression::Split(const char *tstring, int start, StringList &strings, RegularOptions options) const
+int RegularExpression::substOne(char *tstring, int start,
+                                const char *replacement,
+                                RegularOptions options) const
 {
     return 0;
 }
 
-int RegularExpression::Substr(char *tstring, const char *replacement, RegularOptions options) const
-{
-    return 0;
-}
+int RegularExpression::compileOptions(RegularOptions options) { return 0; }
 
-int RegularExpression::Substr(char *tstring, int start, const char *replacement, RegularOptions options) const
-{
-    return 0;
-}
-
-bool RegularExpression::Match(const char *tstring, const char *pattern, RegularOptions options)
-{
-    return false;
-}
-
-int RegularExpression::substOne(char *tstring, int start, const char *replacement, RegularOptions options) const
-{
-    return 0;
-}
-
-int RegularExpression::compileOptions(RegularOptions options)
-{
-    return 0;
-}
-
-int RegularExpression::matchOptions(RegularOptions options)
-{
-    return 0;
-}
+int RegularExpression::matchOptions(RegularOptions options) { return 0; }
 
 
 }// namespace m2

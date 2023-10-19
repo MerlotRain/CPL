@@ -48,8 +48,8 @@ protected:
 public:
     SqlStatement();
     SqlStatement(SqlDatabase *db, const char *strSQL);
-    virtual ~SqlStatement();
-    virtual bool prepare(SqlDatabase *db, const char *sql) = 0;
+    ~SqlStatement();
+    bool prepare(SqlDatabase *db, const char *sql);
     String sqlString();
     long long recordCount();
     Variant value(int n) const;
@@ -83,9 +83,9 @@ public:
     bool last();
     int reset();
 
-    virtual int columnCount() = 0;
-    virtual SqlField::Type colunmType(int n) = 0;
-    virtual String colunmName(int n) = 0;
+    int columnCount();
+    SqlField::Type colunmType(int n);
+    String colunmName(int n);
 };
 
 }// namespace m2

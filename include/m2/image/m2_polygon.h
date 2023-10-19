@@ -52,6 +52,7 @@ class Polygon : public std::vector<Point>
 {
 public:
     Polygon();
+    Polygon(uint32_t size);
     Polygon(const std::vector<Point> &v);
     Polygon(std::vector<Point> &&v) noexcept;
     Polygon(const Rect &r, bool closed = false);

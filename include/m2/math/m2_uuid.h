@@ -71,13 +71,11 @@ public:
     UUID(uint32_t l, uint16_t w1, uint16_t w2, uint8_t b1, uint8_t b2,
          uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7,
          uint8_t b8) noexcept;
-    UUID(const char *);
+    UUID(const char *text);
     String toString() const;
     String toString(StringFormat mode) const;
     ByteArray toByteArray() const;
     ByteArray toByteArray(StringFormat mode) const;
-    ByteArray toRfc4122() const;
-    static UUID fromRfc4122(const ByteArray &);
     bool isNull() const noexcept;
 
     bool operator==(const UUID &orig) const noexcept;

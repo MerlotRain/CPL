@@ -1,8 +1,9 @@
 #include <errno.h>
 #include <iconv.h>
-#include <logger.h>
+#include <m2_logger.h>
+#include <m2_string.h>
+#include <m2_textconvertor.h>
 #include <string.h>
-#include <stringhelp.h>
 
 namespace m2 {
 
@@ -35,8 +36,7 @@ static const char *fix_input_encoding(const char *srcEncoding, int nVal)
 static char *Strdup(const char *pszString)
 
 {
-    if (pszString == nullptr)
-        pszString = "";
+    if (pszString == nullptr) pszString = "";
 
     const size_t nLen = strlen(pszString);
     char *pszReturn = static_cast<char *>(malloc(nLen + 1));
@@ -46,15 +46,16 @@ static char *Strdup(const char *pszString)
 
 static int encoding_char_size(const char *encoding)
 {
-    if (GS_STRCASECMP(encoding, TextConverter::ENCODING_UTF8))
-        return 1;
+    if (GS_STRCASECMP(encoding, TextConverter::ENCODING_UTF8)) return 1;
 }
 
 constexpr size_t RECODE_DSTBUF_SIZE = 32768;
 
-bool TextConverter::Convert(const char *src, const char *srcEncoding, const char *dstEncoding, String &dst)
+bool TextConverter::convert(const char *src, const char *srcEncoding,
+                            const char *dstEncoding, String &dst)
 {
-    srcEncoding = fix_input_encoding(srcEncoding, static_cast<unsigned char>(src[0]));
+    srcEncoding =
+            fix_input_encoding(srcEncoding, static_cast<unsigned char>(src[0]));
 
     iconv_t conv;
     conv = iconv_open(dstEncoding, srcEncoding);
@@ -67,8 +68,9 @@ bool TextConverter::Convert(const char *src, const char *srcEncoding, const char
 #pragma GCC diagnostic pop
 #endif
     {
-        GS_W << String::Format("Recode from %s to %s failed with the error: \"%s\".",
-                                 srcEncoding, dstEncoding, strerror(errno));
+        GS_W << String::format(
+                "Recode from %s to %s failed with the error: \"%s\".",
+                srcEncoding, dstEncoding, strerror(errno));
         dst = Strdup(src);
         return true;
     }
@@ -77,11 +79,13 @@ bool TextConverter::Convert(const char *src, const char *srcEncoding, const char
     size_t srcLen = strlen(src);
     size_t dstCurLen = std::max(srcLen, RECODE_DSTBUF_SIZE);
     size_t dstLen = dstCurLen;
-    char *pszDestination = static_cast<char *>(calloc(dstCurLen + 1, sizeof(char)));
+    char *pszDestination =
+            static_cast<char *>(calloc(dstCurLen + 1, sizeof(char)));
     char *pszDstBuf = pszDestination;
     while (srcLen > 0)
     {
-        size_t nConverted = iconv(conv, &pszSrcBuf, &srcLen, &pszDstBuf, &dstLen);
+        size_t nConverted =
+                iconv(conv, &pszSrcBuf, &srcLen, &pszDstBuf, &dstLen);
         if (nConverted == static_cast<size_t>(-1))
         {
             if (errno == EILSEQ)
@@ -89,14 +93,15 @@ bool TextConverter::Convert(const char *src, const char *srcEncoding, const char
                 if (!bHaveWarned1)
                 {
                     bHaveWarned1 = true;
-                    GS_W << String::Format("One or several characters couldn't be converted "
-                                             "correctly from %s to %s.  "
-                                             "This warning will not be emitted anymore",
-                                             srcEncoding, dstEncoding)
+                    GS_W << String::format(
+                                    "One or several characters couldn't be "
+                                    "converted "
+                                    "correctly from %s to %s.  "
+                                    "This warning will not be emitted anymore",
+                                    srcEncoding, dstEncoding)
                                     .c_str();
                 }
-                if (srcLen == 0)
-                    break;
+                if (srcLen == 0) break;
                 srcLen--;
                 pszSrcBuf++;
                 continue;
@@ -105,7 +110,8 @@ bool TextConverter::Convert(const char *src, const char *srcEncoding, const char
             {
                 size_t tmp = dstCurLen;
                 dstCurLen *= 2;
-                pszDestination = static_cast<char *>(realloc(pszDestination, dstCurLen + 1));
+                pszDestination = static_cast<char *>(
+                        realloc(pszDestination, dstCurLen + 1));
                 pszDstBuf = pszDestination + tmp - dstLen;
                 dstLen += tmp;
                 continue;
@@ -120,35 +126,40 @@ bool TextConverter::Convert(const char *src, const char *srcEncoding, const char
     return true;
 }
 
-bool TextConverter::Convert(const String &src, const char *srcEncoding, const char *dstEncoding, String &dst)
+bool TextConverter::convert(const String &src, const char *srcEncoding,
+                            const char *dstEncoding, String &dst)
 {
-    return TextConverter::Convert(src.c_str(), srcEncoding, dstEncoding, dst);
+    return TextConverter::convert(src.c_str(), srcEncoding, dstEncoding, dst);
 }
 
-bool TextConverter::Convert(const wchar_t *src, const char *srcEncoding, const char *dstEncoding, String &dst)
+bool TextConverter::convert(const wchar_t *src, const char *srcEncoding,
+                            const char *dstEncoding, String &dst)
 {
     srcEncoding = fix_input_encoding(srcEncoding, src[0]);
     // source length
     size_t srcLen = 0;
-    while (src[srcLen] != 0)
-        srcLen++;
+    while (src[srcLen] != 0) srcLen++;
 
     const int nTagCharWidth = encoding_char_size(srcEncoding);
     if (nTagCharWidth < 1)
     {
-        GS_W << String::Format("Recode from %s with CPLRecodeFromWChar() failed because"
-                                 " the width of characters in the encoding are not known.",
-                                 srcEncoding)
+        GS_W << String::format("Recode from %s with CPLRecodeFromWChar() "
+                               "failed because"
+                               " the width of characters in the encoding are "
+                               "not known.",
+                               srcEncoding)
                         .c_str();
         return false;
     }
-    unsigned char *pszIconvSrcBuf = static_cast<unsigned char *>(calloc((srcLen + 1), nTagCharWidth));
+    unsigned char *pszIconvSrcBuf =
+            static_cast<unsigned char *>(calloc((srcLen + 1), nTagCharWidth));
     for (unsigned int i = 0; i < srcLen; ++i)
     {
         if (nTagCharWidth == 1)
             pszIconvSrcBuf[i] = static_cast<unsigned char>(src[i]);
         else if (nTagCharWidth == 2)
-            (reinterpret_cast<short *>(pszIconvSrcBuf))[i] = static_cast<short>(src[i]);
+            (reinterpret_cast<short *>(pszIconvSrcBuf))[i] =
+                    static_cast<short>(src[i]);
         else if (nTagCharWidth == 4)
             (reinterpret_cast<int *>(pszIconvSrcBuf))[i] = src[i];
     }
@@ -167,19 +178,20 @@ bool TextConverter::Convert(const wchar_t *src, const char *srcEncoding, const c
 #endif
     {
         free(pszIconvSrcBuf);
-        GS_W << String::Format("Recode from %s to %s failed with the error: \"%s\".",
-                                 srcEncoding, dstEncoding, strerror(errno))
+        GS_W << String::format(
+                        "Recode from %s to %s failed with the error: \"%s\".",
+                        srcEncoding, dstEncoding, strerror(errno))
                         .c_str();
         return false;
     }
 
-    const char *pszSrcBuf = const_cast<const char *>(reinterpret_cast<char *>(pszIconvSrcBuf));
+    const char *pszSrcBuf =
+            const_cast<const char *>(reinterpret_cast<char *>(pszIconvSrcBuf));
     srcLen *= nTagCharWidth;
 
     size_t dstCurLen = std::max(RECODE_DSTBUF_SIZE, srcLen + 1);
     size_t dstLen = dstCurLen;
-    char *pszDestination =
-            static_cast<char *>(calloc(dstCurLen, sizeof(char)));
+    char *pszDestination = static_cast<char *>(calloc(dstCurLen, sizeof(char)));
     char *pszDstBuf = pszDestination;
 
     while (srcLen > 0)
@@ -197,10 +209,12 @@ bool TextConverter::Convert(const wchar_t *src, const char *srcEncoding, const c
                 if (!bHaveWarned2)
                 {
                     bHaveWarned2 = true;
-                    GS_W << String::Format("One or several characters couldn't be converted "
-                                             "correctly from %s to %s.  "
-                                             "This warning will not be emitted anymore",
-                                             srcEncoding, dstEncoding)
+                    GS_W << String::format(
+                                    "One or several characters couldn't be "
+                                    "converted "
+                                    "correctly from %s to %s.  "
+                                    "This warning will not be emitted anymore",
+                                    srcEncoding, dstEncoding)
                                     .c_str();
                 }
                 continue;
@@ -239,41 +253,48 @@ bool TextConverter::Convert(const wchar_t *src, const char *srcEncoding, const c
     return true;
 }
 
-bool TextConverter::Convert(const WString &src, const char *srcEncoding, const char *dstEncoding, String &dst)
+bool TextConverter::convert(const WString &src, const char *srcEncoding,
+                            const char *dstEncoding, String &dst)
 {
-    return TextConverter::Convert(src.c_str(), srcEncoding, dstEncoding, dst);
+    return TextConverter::convert(src.c_str(), srcEncoding, dstEncoding, dst);
 }
 
-bool TextConverter::Convert(const char *src, const char *srcEncoding, const char *dstEncoding, WString &dst)
+bool TextConverter::convert(const char *src, const char *srcEncoding,
+                            const char *dstEncoding, WString &dst)
 {
     String tmp;
     Convert(src, srcEncoding, dstEncoding, tmp);
     dst.assign(reinterpret_cast<const wchar_t *>(tmp.data()));
 }
 
-bool TextConverter::Convert(const String &src, const char *srcEncoding, const char *dstEncoding, WString &dst)
+bool TextConverter::convert(const String &src, const char *srcEncoding,
+                            const char *dstEncoding, WString &dst)
 {
-    return TextConverter::Convert(src.c_str(), srcEncoding, dstEncoding, dst);
+    return TextConverter::convert(src.c_str(), srcEncoding, dstEncoding, dst);
 }
 
-bool TextConverter::Convert(const String &str, WString &wstr)
+bool TextConverter::convert(const String &str, WString &wstr)
 {
-    return TextConverter::Convert(str, TextConverter::ENCODING_UTF8, TextConverter::ENCODING_UTF16, wstr);
+    return TextConverter::convert(str, TextConverter::ENCODING_UTF8,
+                                  TextConverter::ENCODING_UTF16, wstr);
 }
 
-bool TextConverter::Convert(const char *str, WString &wstr)
+bool TextConverter::convert(const char *str, WString &wstr)
 {
-    return TextConverter::Convert(str, TextConverter::ENCODING_UTF8, TextConverter::ENCODING_UTF16, wstr);
+    return TextConverter::convert(str, TextConverter::ENCODING_UTF8,
+                                  TextConverter::ENCODING_UTF16, wstr);
 }
 
-bool TextConverter::Convert(const WString &wstr, String &str)
+bool TextConverter::convert(const WString &wstr, String &str)
 {
-    return TextConverter::Convert(wstr, TextConverter::ENCODING_UTF16, TextConverter::ENCODING_UTF8, str);
+    return TextConverter::convert(wstr, TextConverter::ENCODING_UTF16,
+                                  TextConverter::ENCODING_UTF8, str);
 }
 
-bool TextConverter::Convert(const wchar_t *wstr, String &str)
+bool TextConverter::convert(const wchar_t *wstr, String &str)
 {
-    return TextConverter::Convert(wstr, TextConverter::ENCODING_UTF16, TextConverter::ENCODING_UTF8, str);
+    return TextConverter::convert(wstr, TextConverter::ENCODING_UTF16,
+                                  TextConverter::ENCODING_UTF8, str);
 }
 
 }// namespace m2

@@ -1,4 +1,4 @@
-#include <stringhelp.h>
+#include <m2_ascii.h>
 
 namespace m2 {
 
@@ -82,12 +82,18 @@ static constexpr int CHARACTER_PROPERTIES[128] = {
         /* 3e > */ eACP_PUNCT | eACP_GRAPH | eACP_PRINT,
         /* 3f ? */ eACP_PUNCT | eACP_GRAPH | eACP_PRINT,
         /* 40 @ */ eACP_PUNCT | eACP_GRAPH | eACP_PRINT,
-        /* 41 A */ eACP_HEXDIGIT | eACP_ALPHA | eACP_UPPER | eACP_GRAPH | eACP_PRINT,
-        /* 42 B */ eACP_HEXDIGIT | eACP_ALPHA | eACP_UPPER | eACP_GRAPH | eACP_PRINT,
-        /* 43 C */ eACP_HEXDIGIT | eACP_ALPHA | eACP_UPPER | eACP_GRAPH | eACP_PRINT,
-        /* 44 D */ eACP_HEXDIGIT | eACP_ALPHA | eACP_UPPER | eACP_GRAPH | eACP_PRINT,
-        /* 45 E */ eACP_HEXDIGIT | eACP_ALPHA | eACP_UPPER | eACP_GRAPH | eACP_PRINT,
-        /* 46 F */ eACP_HEXDIGIT | eACP_ALPHA | eACP_UPPER | eACP_GRAPH | eACP_PRINT,
+        /* 41 A */ eACP_HEXDIGIT | eACP_ALPHA | eACP_UPPER | eACP_GRAPH |
+                eACP_PRINT,
+        /* 42 B */ eACP_HEXDIGIT | eACP_ALPHA | eACP_UPPER | eACP_GRAPH |
+                eACP_PRINT,
+        /* 43 C */ eACP_HEXDIGIT | eACP_ALPHA | eACP_UPPER | eACP_GRAPH |
+                eACP_PRINT,
+        /* 44 D */ eACP_HEXDIGIT | eACP_ALPHA | eACP_UPPER | eACP_GRAPH |
+                eACP_PRINT,
+        /* 45 E */ eACP_HEXDIGIT | eACP_ALPHA | eACP_UPPER | eACP_GRAPH |
+                eACP_PRINT,
+        /* 46 F */ eACP_HEXDIGIT | eACP_ALPHA | eACP_UPPER | eACP_GRAPH |
+                eACP_PRINT,
         /* 47 G */ eACP_ALPHA | eACP_UPPER | eACP_GRAPH | eACP_PRINT,
         /* 48 H */ eACP_ALPHA | eACP_UPPER | eACP_GRAPH | eACP_PRINT,
         /* 49 I */ eACP_ALPHA | eACP_UPPER | eACP_GRAPH | eACP_PRINT,
@@ -114,12 +120,18 @@ static constexpr int CHARACTER_PROPERTIES[128] = {
         /* 5e ^ */ eACP_PUNCT | eACP_GRAPH | eACP_PRINT,
         /* 5f _ */ eACP_PUNCT | eACP_GRAPH | eACP_PRINT,
         /* 60 ` */ eACP_PUNCT | eACP_GRAPH | eACP_PRINT,
-        /* 61 a */ eACP_HEXDIGIT | eACP_ALPHA | eACP_LOWER | eACP_GRAPH | eACP_PRINT,
-        /* 62 b */ eACP_HEXDIGIT | eACP_ALPHA | eACP_LOWER | eACP_GRAPH | eACP_PRINT,
-        /* 63 c */ eACP_HEXDIGIT | eACP_ALPHA | eACP_LOWER | eACP_GRAPH | eACP_PRINT,
-        /* 64 d */ eACP_HEXDIGIT | eACP_ALPHA | eACP_LOWER | eACP_GRAPH | eACP_PRINT,
-        /* 65 e */ eACP_HEXDIGIT | eACP_ALPHA | eACP_LOWER | eACP_GRAPH | eACP_PRINT,
-        /* 66 f */ eACP_HEXDIGIT | eACP_ALPHA | eACP_LOWER | eACP_GRAPH | eACP_PRINT,
+        /* 61 a */ eACP_HEXDIGIT | eACP_ALPHA | eACP_LOWER | eACP_GRAPH |
+                eACP_PRINT,
+        /* 62 b */ eACP_HEXDIGIT | eACP_ALPHA | eACP_LOWER | eACP_GRAPH |
+                eACP_PRINT,
+        /* 63 c */ eACP_HEXDIGIT | eACP_ALPHA | eACP_LOWER | eACP_GRAPH |
+                eACP_PRINT,
+        /* 64 d */ eACP_HEXDIGIT | eACP_ALPHA | eACP_LOWER | eACP_GRAPH |
+                eACP_PRINT,
+        /* 65 e */ eACP_HEXDIGIT | eACP_ALPHA | eACP_LOWER | eACP_GRAPH |
+                eACP_PRINT,
+        /* 66 f */ eACP_HEXDIGIT | eACP_ALPHA | eACP_LOWER | eACP_GRAPH |
+                eACP_PRINT,
         /* 67 g */ eACP_ALPHA | eACP_LOWER | eACP_GRAPH | eACP_PRINT,
         /* 68 h */ eACP_ALPHA | eACP_LOWER | eACP_GRAPH | eACP_PRINT,
         /* 69 i */ eACP_ALPHA | eACP_LOWER | eACP_GRAPH | eACP_PRINT,
@@ -146,101 +158,147 @@ static constexpr int CHARACTER_PROPERTIES[128] = {
         /* 7e ~ */ eACP_PUNCT | eACP_GRAPH | eACP_PRINT,
         /* 7f . */ eACP_LOWER};
 
-
-int Ascii::Properties(int ch)
+/**
+ * @brief 
+ * @param  ch               
+ * @return int 
+ */
+int Ascii::properties(int ch)
 {
-    if (IsAscii(ch))
-    {
-        return CHARACTER_PROPERTIES[ch];
-    }
-    else
-    {
-        return 0;
-    }
+    if (isAscii(ch)) { return CHARACTER_PROPERTIES[ch]; }
+    else { return 0; }
 }
 
-bool Ascii::HasSomeProperties(int ch, int properties)
+/**
+ * @brief 
+ * @param  ch               
+ * @param  prop             
+ * @return true 
+ * @return false 
+ */
+bool Ascii::hasSomeProperties(int ch, int prop)
 {
-    return (Properties(ch) & properties) != 0;
+    return (properties(ch) & prop) != 0;
 }
 
-bool Ascii::HasProperties(int ch, int properties)
+/**
+ * @brief 
+ * @param  ch               
+ * @param  prop             
+ * @return true 
+ * @return false 
+ */
+bool Ascii::hasProperties(int ch, int prop)
 {
-    return (Properties(ch) & properties) == properties;
+    return (properties(ch) & prop) == prop;
 }
 
-bool Ascii::IsAscii(int ch)
+/**
+ * @brief 
+ * @param  ch               
+ * @return true 
+ * @return false 
+ */
+bool Ascii::isAscii(int ch)
 {
     return (static_cast<uint32_t>(ch) & 0xFFFFFF80) == 0;
 }
 
-bool Ascii::IsSpace(int ch)
+/**
+ * @brief 
+ * @param  ch               
+ * @return true 
+ * @return false 
+ */
+bool Ascii::isSpace(int ch) { return hasProperties(ch, eACP_SPACE); }
+
+/**
+ * @brief 
+ * @param  ch               
+ * @return true 
+ * @return false 
+ */
+bool Ascii::isDigit(int ch) { return hasProperties(ch, eACP_DIGIT); }
+
+/**
+ * @brief 
+ * @param  ch               
+ * @return true 
+ * @return false 
+ */
+bool Ascii::isHexDigit(int ch) { return hasProperties(ch, eACP_HEXDIGIT); }
+
+/**
+ * @brief 
+ * @param  ch               
+ * @return true 
+ * @return false 
+ */
+bool Ascii::isPunctuation(int ch) { return hasProperties(ch, eACP_PUNCT); }
+
+/**
+ * @brief 
+ * @param  ch               
+ * @return true 
+ * @return false 
+ */
+bool Ascii::isAlpha(int ch) { return hasProperties(ch, eACP_ALPHA); }
+
+/**
+ * @brief 
+ * @param  ch               
+ * @return true 
+ * @return false 
+ */
+bool Ascii::isAlphaNumeric(int ch)
 {
-    return HasProperties(ch, eACP_SPACE);
+    return hasSomeProperties(ch, eACP_ALPHA | eACP_DIGIT);
 }
 
-bool Ascii::IsDigit(int ch)
+/**
+ * @brief 
+ * @param  ch               
+ * @return true 
+ * @return false 
+ */
+bool Ascii::isLower(int ch) { return hasProperties(ch, eACP_LOWER); }
+
+/**
+ * @brief 
+ * @param  ch               
+ * @return true 
+ * @return false 
+ */
+bool Ascii::isUpper(int ch) { return hasProperties(ch, eACP_UPPER); }
+
+/**
+ * @brief 
+ * @param  ch               
+ * @return true 
+ * @return false 
+ */
+bool Ascii::isPrintable(int ch) { return hasProperties(ch, eACP_PRINT); }
+
+/**
+ * @brief 
+ * @param  ch               
+ * @return int 
+ */
+int Ascii::toLower(int ch)
 {
-    return HasProperties(ch, eACP_DIGIT);
+    if (toUpper(ch)) { return ch + 32; }
+    else { return ch; }
 }
 
-bool Ascii::IsHexDigit(int ch)
+/**
+ * @brief 
+ * @param  ch               
+ * @return int 
+ */
+int Ascii::toUpper(int ch)
 {
-    return HasProperties(ch, eACP_HEXDIGIT);
-}
-
-bool Ascii::IsPunctuation(int ch)
-{
-    return HasProperties(ch, eACP_PUNCT);
-}
-
-bool Ascii::IsAlpha(int ch)
-{
-    return HasProperties(ch, eACP_ALPHA);
-}
-
-bool Ascii::IsAlphaNumeric(int ch)
-{
-    return HasSomeProperties(ch, eACP_ALPHA | eACP_DIGIT);
-}
-
-bool Ascii::IsLower(int ch)
-{
-    return HasProperties(ch, eACP_LOWER);
-}
-
-bool Ascii::IsUpper(int ch)
-{
-    return HasProperties(ch, eACP_UPPER);
-}
-
-bool Ascii::IsPrintable(int ch)
-{
-    return HasProperties(ch, eACP_PRINT);
-}
-
-int Ascii::ToLower(int ch)
-{
-    if (IsUpper(ch))
-    {
-        return ch + 32;
-    }
-    else
-    {
-        return ch;
-    }
-}
-
-int Ascii::ToUpper(int ch)
-{
-    if (IsLower(ch))
-    {
-        return ch - 32;
-    }
-    else
-    {
-        return ch;
-    }
+    if (isLower(ch)) { return ch - 32; }
+    else { return ch; }
 }
 
 }// namespace m2

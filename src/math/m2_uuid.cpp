@@ -89,6 +89,55 @@ bool _m2_fromHex(const char *&src, Integral &value)
     return true;
 }
 
+static ByteArray toRfc4122(const UUID &uuid)
+{
+    ByteArray bytes(16, '\0');
+    uint8_t *data = reinterpret_cast<uint8_t *>(bytes.data());
+
+    toBigEndian(uuid.data1, data);
+    data += sizeof(uint32_t);
+    toBigEndian(uuid.data2, data);
+    data += sizeof(uint16_t);
+    toBigEndian(uuid.data3, data);
+    data += sizeof(uint16_t);
+
+    for (int i = 0; i < 8; ++i)
+    {
+        *(data) = uuid.data4[i];
+        data++;
+    }
+
+    return bytes;
+}
+
+static UUID fromRfc4122(const ByteArray &bytes)
+{
+    if (bytes.isEmpty() || bytes.size() != 16) return UUID();
+
+    uint32_t d1;
+    uint16_t d2, d3;
+    uint8_t d4[8];
+
+    const uint8_t *data = reinterpret_cast<const uint8_t *>(bytes.constData());
+
+    d1 = fromBigEndian<uint32_t>(data);
+    data += sizeof(uint32_t);
+    d2 = fromBigEndian<uint16_t>(data);
+    data += sizeof(uint16_t);
+    d3 = fromBigEndian<uint16_t>(data);
+    data += sizeof(uint16_t);
+
+    for (int i = 0; i < 8; ++i)
+    {
+        d4[i] = *(data);
+        data++;
+    }
+
+    return UUID(d1, d2, d3, d4[0], d4[1], d4[2], d4[3], d4[4], d4[5], d4[6],
+                d4[7]);
+}
+
+
 static char *_m2_uuidToHex(const UUID &uuid, char *dst,
                            UUID::StringFormat mode = UUID::WithBraces)
 {
@@ -136,13 +185,13 @@ static UUID createFromName(const UUID &ns, const ByteArray &baseData,
                            int version)
 {
     CryptographicHash hash(algorithm);
-    hash.addData(ns.toRfc4122());
+    hash.addData(toRfc4122(ns));
     hash.addData(baseData);
     ByteArray hashResult = hash.result();
     assert(hashResult.size() >= 16);
     hashResult.resize(16);// Sha1 will be too long
 
-    UUID result = UUID::fromRfc4122(hashResult);
+    UUID result = fromRfc4122(hashResult);
 
     result.data3 &= 0x0FFF;
     result.data3 |= (version << 12);
@@ -151,6 +200,7 @@ static UUID createFromName(const UUID &ns, const ByteArray &baseData,
 
     return result;
 }
+
 
 /*******************************************************************************
  * class UUID functions
@@ -201,54 +251,6 @@ ByteArray UUID::toByteArray(StringFormat mode) const
             _m2_uuidToHex(*this, const_cast<char *>(result.constData()), mode);
     result.resize(end - result.constData());
     return result;
-}
-
-ByteArray UUID::toRfc4122() const
-{
-    ByteArray bytes(16, '\0');
-    uint8_t *data = reinterpret_cast<uint8_t *>(bytes.data());
-
-    toBigEndian(data1, data);
-    data += sizeof(uint32_t);
-    toBigEndian(data2, data);
-    data += sizeof(uint16_t);
-    toBigEndian(data3, data);
-    data += sizeof(uint16_t);
-
-    for (int i = 0; i < 8; ++i)
-    {
-        *(data) = data4[i];
-        data++;
-    }
-
-    return bytes;
-}
-
-UUID UUID::fromRfc4122(const ByteArray &bytes)
-{
-    if (bytes.isEmpty() || bytes.size() != 16) return UUID();
-
-    uint32_t d1;
-    uint16_t d2, d3;
-    uint8_t d4[8];
-
-    const uint8_t *data = reinterpret_cast<const uint8_t *>(bytes.constData());
-
-    d1 = fromBigEndian<uint32_t>(data);
-    data += sizeof(uint32_t);
-    d2 = fromBigEndian<uint16_t>(data);
-    data += sizeof(uint16_t);
-    d3 = fromBigEndian<uint16_t>(data);
-    data += sizeof(uint16_t);
-
-    for (int i = 0; i < 8; ++i)
-    {
-        d4[i] = *(data);
-        data++;
-    }
-
-    return UUID(d1, d2, d3, d4[0], d4[1], d4[2], d4[3], d4[4], d4[5], d4[6],
-                d4[7]);
 }
 
 bool UUID::isNull() const noexcept

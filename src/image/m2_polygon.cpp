@@ -13,6 +13,8 @@ Polygon functions
  */
 Polygon::Polygon() {}
 
+Polygon::Polygon(uint32_t size) { this->resize(size); }
+
 /**
  * @brief Construct a new Polygon:: Polygon object
  * 

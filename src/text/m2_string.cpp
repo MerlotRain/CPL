@@ -166,6 +166,10 @@ String String::operator+(const StlString &str) const
     return s;
 }
 
+bool String::compare(const String &) const { return false; }
+
+bool String::compare(String &&) const { return false; }
+
 String &String::toUpper()
 {
     std::transform(this->begin(), this->end(), this->begin(), ::toupper);

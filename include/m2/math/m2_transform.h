@@ -115,11 +115,9 @@ public:
     LineF map(const LineF &l) const;
     PolygonF map(const PolygonF &a) const;
     Polygon map(const Polygon &a) const;
-    Polygon mapToPolygon(const Rect &r) const;
-    Rect mapRect(const Rect &) const;
-    RectF mapRect(const RectF &) const;
     void map(int x, int y, int *tx, int *ty) const;
     void map(double x, double y, double *tx, double *ty) const;
+    void map(double* coordinate, int count) const;
 
     Transform &operator*=(double div);
     Transform &operator/=(double div);

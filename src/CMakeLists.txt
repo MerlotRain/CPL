@@ -22,9 +22,10 @@
 # 
 ##############################################################################
 
-file(GLOB_RECURSE _sources ${CMAKE_CURRENT_LIST_DIR}/*.cpp  CONFIGURE_DEPEND)
+file(GLOB_RECURSE _sources_c ${CMAKE_CURRENT_LIST_DIR}/*.c  CONFIGURE_DEPEND)
+file(GLOB_RECURSE _sources_cxx ${CMAKE_CURRENT_LIST_DIR}/*.cpp  CONFIGURE_DEPEND)
 file(GLOB_RECURSE _headers ${CMAKE_CURRENT_LIST_DIR}/*.h  CONFIGURE_DEPEND)
-target_sources(libm2 PRIVATE ${_sources} ${_headers})
+target_sources(libm2 PRIVATE ${_sources_c} ${_sources_cxx} ${_headers})
 unset(_sources)
 unset(_headers)
 
