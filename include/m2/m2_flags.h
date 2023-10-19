@@ -42,8 +42,8 @@ class Flag
     int i;
 
 public:
-    constexpr inline explicit Flag(int val) noexcept : i(val) {}
-    constexpr inline explicit operator int() const noexcept { return i; }
+    constexpr inline Flag(int val) noexcept : i(val) {}
+    constexpr inline operator int() const noexcept { return i; }
 };
 
 template<typename Enum>
@@ -61,8 +61,8 @@ public:
             unsigned int, signed int>::type Integer;
 
     constexpr inline Flags() noexcept : i(0) {}
-    constexpr inline explicit Flags(Enum flags) noexcept : i(Integer(flags)) {}
-    constexpr inline explicit Flags(Flag flag) noexcept : i(flag) {}
+    constexpr inline Flags(Enum flags) noexcept : i(Integer(flags)) {}
+    constexpr inline Flags(Flag flag) noexcept : i(flag) {}
 
     constexpr inline Flags(std::initializer_list<Enum> flags) noexcept
         : i(initializer_list_helper(flags.begin(), flags.end()))
