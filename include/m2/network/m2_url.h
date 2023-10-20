@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-class M2_API Url
+class LIBM2_EXPORT Url
 {
 public:
     using QueryParameters = std::vector<std::pair<String, String>>;

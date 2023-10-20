@@ -50,7 +50,7 @@ using MatchResults = std::vector<MatchResult>;
 using MatchGroup = std::map<int, String>;
 
 
-class M2_API RegularExpression
+class LIBM2_EXPORT RegularExpression
 {
     void *m_Handle;
     String m_Description;

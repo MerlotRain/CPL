@@ -40,7 +40,7 @@
 namespace m2 {
 
 class RectF;
-class M2_API Rect
+class LIBM2_EXPORT Rect
 {
 public:
     Rect() noexcept : x1(0), y1(0), x2(-1), y2(-1) {}
@@ -175,7 +175,7 @@ private:
     int y2;
 };
 
-class M2_API RectF
+class LIBM2_EXPORT RectF
 {
 public:
     RectF() noexcept : xp(0.), yp(0.), w(0.), h(0.) {}

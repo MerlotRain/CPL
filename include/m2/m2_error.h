@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-class M2_API Error
+class LIBM2_EXPORT Error
 {
 public:
     static int lastError();

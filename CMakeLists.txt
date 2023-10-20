@@ -115,9 +115,9 @@ unset(_cmake_build_type_is_cache)
 #-----------------------------------------------------------------------------
 # Install directories
 #-----------------------------------------------------------------------------
-
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
+include(GenerateExportHeader)
 
 #-----------------------------------------------------------------------------
 # C++ language version and compilation flags
@@ -133,6 +133,16 @@ add_library(libm2 "")
 add_library(M2::libm2 ALIAS libm2)
 add_subdirectory(include)
 add_subdirectory(src)
+
+GENERATE_EXPORT_HEADER(
+  libm2
+  BASE_NAME LIBM2
+  EXPORT_FILE_NAME libm2_global.h
+)
+
+target_include_directories(libm2 PUBLIC
+  ${CMAKE_CURRENT_BINARY_DIR}
+)
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     target_compile_definitions(libm2 PRIVATE M2_LIBRARY)

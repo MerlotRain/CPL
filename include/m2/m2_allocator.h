@@ -36,7 +36,7 @@
 
 namespace m2 {
 
-class M2_API ByteAllocator
+class LIBM2_EXPORT ByteAllocator
 {
 public:
     static void *Allocate(size_t size);

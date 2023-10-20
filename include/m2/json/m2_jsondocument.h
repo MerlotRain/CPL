@@ -31,7 +31,7 @@
 ****************************************************************************/
 
 /// @brief Json文档
-class M2_API JsonDocument
+class LIBM2_EXPORT JsonDocument
 {
 public:
     JsonDocument();

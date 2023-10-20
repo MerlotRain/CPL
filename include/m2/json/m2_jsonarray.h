@@ -31,7 +31,7 @@
 ****************************************************************************/
 
 /// @brief Json数组对象
-class M2_API JsonArray : public JsonObject
+class LIBM2_EXPORT JsonArray : public JsonObject
 {
     friend class JsonObject;
     friend class JsonDocument;

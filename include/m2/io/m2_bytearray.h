@@ -38,7 +38,7 @@
 
 namespace m2 {
 
-class M2_API ByteArray
+class LIBM2_EXPORT ByteArray
 {
 public:
     ByteArray() noexcept;
@@ -175,15 +175,15 @@ private:
     char *d;
 };
 
-M2_API ByteArray compress(const uint8_t *data, uint64_t nbytes,
+LIBM2_EXPORT ByteArray compress(const uint8_t *data, uint64_t nbytes,
                           int compressionLevel = -1);
-M2_API ByteArray uncompress(const uint8_t *data, uint64_t nbytes);
-M2_API ByteArray compress(const ByteArray &data, int compressionLevel = -1);
-M2_API ByteArray uncompress(const ByteArray &data);
-M2_API int bacompare(const char *str1, const char *str2);
-M2_API int bacompare(const ByteArray &str1, const ByteArray &str2);
-M2_API int bacompare(const ByteArray &str1, const char *str2);
-M2_API int bacompare(const char *str1, const ByteArray &str2);
+LIBM2_EXPORT ByteArray uncompress(const uint8_t *data, uint64_t nbytes);
+LIBM2_EXPORT ByteArray compress(const ByteArray &data, int compressionLevel = -1);
+LIBM2_EXPORT ByteArray uncompress(const ByteArray &data);
+LIBM2_EXPORT int bacompare(const char *str1, const char *str2);
+LIBM2_EXPORT int bacompare(const ByteArray &str1, const ByteArray &str2);
+LIBM2_EXPORT int bacompare(const ByteArray &str1, const char *str2);
+LIBM2_EXPORT int bacompare(const char *str1, const ByteArray &str2);
 
 
 /*****************************************************************************

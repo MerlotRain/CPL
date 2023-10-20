@@ -40,7 +40,7 @@ namespace m2 {
 class PolygonF;
 class RectF;
 class PointF;
-class M2_API Ellipse
+class LIBM2_EXPORT Ellipse
 {
 public:
     Ellipse();

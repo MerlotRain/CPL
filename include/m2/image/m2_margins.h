@@ -39,7 +39,7 @@
 namespace m2 {
 
 class MarginsF;
-class M2_API Margins
+class LIBM2_EXPORT Margins
 {
 public:
     Margins() noexcept;
@@ -86,7 +86,7 @@ private:
     }
 };
 
-class M2_API MarginsF
+class LIBM2_EXPORT MarginsF
 {
 public:
     MarginsF() noexcept;

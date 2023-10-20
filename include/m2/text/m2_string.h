@@ -38,7 +38,7 @@
 namespace m2 {
 
 class StringList;
-class M2_API String : public StlString
+class LIBM2_EXPORT String : public StlString
 {
 public:
     String() noexcept;

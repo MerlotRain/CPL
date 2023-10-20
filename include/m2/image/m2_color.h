@@ -39,7 +39,7 @@ namespace m2 {
 
 typedef unsigned int Rgb32;
 
-class M2_API Color
+class LIBM2_EXPORT Color
 {
 public:
     enum Spec

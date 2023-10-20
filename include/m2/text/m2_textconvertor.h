@@ -40,7 +40,7 @@ namespace m2 {
 class String;
 class WString;
 
-class M2_API TextConverter
+class LIBM2_EXPORT TextConverter
 {
 public:
     static constexpr auto ENCODING_LOCALE = "";

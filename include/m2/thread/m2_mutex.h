@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-class M2_API Mutex
+class LIBM2_EXPORT Mutex
 {
 public:
     Mutex();
@@ -57,7 +57,7 @@ protected:
     void *m_Handle;
 };
 
-class M2_API RecursiveMutex
+class LIBM2_EXPORT RecursiveMutex
 {
 public:
     RecursiveMutex();

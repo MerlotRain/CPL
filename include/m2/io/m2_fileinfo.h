@@ -40,7 +40,7 @@ namespace m2 {
 class DateTime;
 class Dir;
 class File;
-class M2_API FileInfo
+class LIBM2_EXPORT FileInfo
 {
 public:
     FileInfo();

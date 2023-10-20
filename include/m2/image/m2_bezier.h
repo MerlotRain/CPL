@@ -42,7 +42,7 @@ class PolygonF;
 class PointF;
 class LineF;
 
-class M2_API Bezier
+class LIBM2_EXPORT Bezier
 {
 public:
     static Bezier fromPoints(const PointF &p1, const PointF &p2,

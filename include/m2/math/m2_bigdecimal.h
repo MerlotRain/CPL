@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-class M2_API BigDecimal
+class LIBM2_EXPORT BigDecimal
 {
 public:
     BigDecimal() noexcept;

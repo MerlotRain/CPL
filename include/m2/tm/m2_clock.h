@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-class M2_API Clock
+class LIBM2_EXPORT Clock
 {
 public:
     Clock();

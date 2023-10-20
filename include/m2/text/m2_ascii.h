@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-class M2_API Ascii
+class LIBM2_EXPORT Ascii
 {
 public:
     static int properties(int ch);

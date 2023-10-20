@@ -45,7 +45,7 @@ static constexpr long long TM_DAYS = 24 * TM_HOURS;
 
 class Timestamp;
 class TimeSpan;
-class M2_API DateTime
+class LIBM2_EXPORT DateTime
 {
 public:
     enum

@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-class M2_API RWLock
+class LIBM2_EXPORT RWLock
 {
 public:
     RWLock();
@@ -57,7 +57,7 @@ private:
     void *m_Handle;
 };
 
-class M2_API ScopedRWLock
+class LIBM2_EXPORT ScopedRWLock
 {
 public:
     explicit ScopedRWLock(RWLock &l, bool write = false);
@@ -72,14 +72,14 @@ private:
     RWLock &m_lock;
 };
 
-class M2_API ScopedReadRWLock : public ScopedRWLock
+class LIBM2_EXPORT ScopedReadRWLock : public ScopedRWLock
 {
 public:
     explicit ScopedReadRWLock(RWLock &l);
     ~ScopedReadRWLock();
 };
 
-class M2_API ScopedWriteRWLock : public ScopedRWLock
+class LIBM2_EXPORT ScopedWriteRWLock : public ScopedRWLock
 {
 public:
     explicit ScopedWriteRWLock(RWLock &l);

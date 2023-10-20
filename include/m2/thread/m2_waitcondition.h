@@ -38,7 +38,7 @@
 namespace m2 {
 
 class WaitEvent;
-class M2_API WaitCondition
+class LIBM2_EXPORT WaitCondition
 {
 public:
     WaitCondition();

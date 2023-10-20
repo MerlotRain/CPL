@@ -45,7 +45,7 @@ enum AspectRatioMode
 };
 
 class SizeF;
-class M2_API Size
+class LIBM2_EXPORT Size
 {
 public:
     Size() noexcept;
@@ -119,7 +119,7 @@ private:
     int ht;
 };
 
-class M2_API SizeF
+class LIBM2_EXPORT SizeF
 {
 public:
     SizeF() noexcept;

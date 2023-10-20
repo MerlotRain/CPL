@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-struct M2_API Timestamp
+struct LIBM2_EXPORT Timestamp
 {
 public:
     Timestamp();

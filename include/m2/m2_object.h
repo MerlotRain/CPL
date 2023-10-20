@@ -40,7 +40,7 @@ namespace m2 {
 
 class StringList;
 
-class M2_API NonCopyable
+class LIBM2_EXPORT NonCopyable
 {
 public:
     NonCopyable() = default;
@@ -51,7 +51,7 @@ private:
     NonCopyable &operator=(const NonCopyable &) = delete;
 };
 
-class M2_API RefObject : public NonCopyable
+class LIBM2_EXPORT RefObject : public NonCopyable
 {
 public:
     RefObject();
@@ -73,7 +73,7 @@ protected:
     std::atomic<int> m_RefCount;
 };
 
-class M2_API WeakRefObject : public RefObject
+class LIBM2_EXPORT WeakRefObject : public RefObject
 {
 public:
     WeakRefObject(RefObject *obj);
@@ -343,7 +343,7 @@ public:
     typedef m2::WeakPointer<Class> Class##WPtr;
 
 
-class M2_API ClassFactory
+class LIBM2_EXPORT ClassFactory
 {
 public:
     typedef RefObject *(*FactoryCreateFun)();

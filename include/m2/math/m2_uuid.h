@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-class M2_API UUID
+class LIBM2_EXPORT UUID
 {
 public:
     enum Variant

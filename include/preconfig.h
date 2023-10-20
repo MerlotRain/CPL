@@ -32,6 +32,8 @@
 
 #pragma once
 
+#include <libm2_global.h>
+
 #if defined(_WIN32)
 #define M2_OS_WIN 1
 #define M2_OS_STRING "Windows"
@@ -55,32 +57,6 @@
 #define M2_OS_LINUX 1
 #define M2_OS_POSIX 1
 #define M2_OS_STRING "Linux"
-#endif
-
-
-#ifndef M2_API
-#if defined(M2_DLL)
-#if defined(_WIN32)
-#if M2_IMPLEMENTATION
-#define M2_API __declspec(dllexport)
-#else
-#define M2_API __declspec(dllimport)
-#endif
-#else
-#define M2_API __attribute__((visibility("default")))
-#endif
-#else
-#define M2_API
-#endif
-#endif
-
-
-#ifdef __GNUC__
-#define M2_DEPRECATED(id) id __attribute__((deprecated))
-#elif defined(_MSC_VER)
-#define M2_DEPRECATED(id) __declspec(deprecated) id
-#else
-#define M2_DEPRECATED(id) id
 #endif
 
 

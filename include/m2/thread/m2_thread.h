@@ -35,7 +35,7 @@
 
 #include <preconfig.h>
 
-class M2_API WorkThread
+class LIBM2_EXPORT WorkThread
 {
 public:
     enum ThreadPriority

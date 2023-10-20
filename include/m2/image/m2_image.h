@@ -40,7 +40,7 @@
 namespace m2 {
 
 class ImageData;
-class M2_API Image
+class LIBM2_EXPORT Image
 {
 public:
     enum Format

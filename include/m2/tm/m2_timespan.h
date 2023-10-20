@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-struct M2_API TimeSpan
+struct LIBM2_EXPORT TimeSpan
 {
 public:
     TimeSpan();

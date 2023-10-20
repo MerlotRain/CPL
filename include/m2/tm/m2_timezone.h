@@ -38,7 +38,7 @@
 namespace m2 {
 
 class Timestamp;
-class M2_API TimeZone
+class LIBM2_EXPORT TimeZone
 {
 public:
     static int UTCOffset();

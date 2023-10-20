@@ -51,7 +51,7 @@ enum LogLevel
 
 };
 
-class M2_API LogOutput
+class LIBM2_EXPORT LogOutput
 {
 public:
     ~LogOutput() {}
@@ -59,7 +59,7 @@ public:
     virtual void OnFlush() {}
 };
 
-class M2_API FileLogOutput : public LogOutput
+class LIBM2_EXPORT FileLogOutput : public LogOutput
 {
     std::ofstream m_file;
     bool m_ShowInConsole;
@@ -71,14 +71,14 @@ public:
                   bool ShowInConsole = false);
 };
 
-class M2_API Logger
+class LIBM2_EXPORT Logger
 {
     String m_strName;
     LogOutput *m_pHook;
     volatile bool m_AutoFlush;
     volatile LogLevel m_nLevel;
 
-    class M2_API LogStream : public std::stringstream
+    class LIBM2_EXPORT LogStream : public std::stringstream
     {
         Logger &m_Log;
         bool m_bEnable;

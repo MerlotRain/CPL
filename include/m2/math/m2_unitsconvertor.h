@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-class M2_API Length
+class LIBM2_EXPORT Length
 {
 public:
     enum LengthUnits
@@ -96,7 +96,7 @@ private:
     LengthUnits unit;
 };
 
-class M2_API Area
+class LIBM2_EXPORT Area
 {
 public:
     enum AreaUnits
@@ -157,7 +157,7 @@ private:
     AreaUnits unit;
 };
 
-class M2_API Volume
+class LIBM2_EXPORT Volume
 {
 public:
     enum VolumeUnits

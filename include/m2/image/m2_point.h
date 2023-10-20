@@ -39,7 +39,7 @@
 namespace m2 {
 
 class PointF;
-class M2_API Point
+class LIBM2_EXPORT Point
 {
 public:
     Point() noexcept;
@@ -131,7 +131,7 @@ private:
     int yp;
 };
 
-class M2_API PointF
+class LIBM2_EXPORT PointF
 {
 public:
     PointF() noexcept;

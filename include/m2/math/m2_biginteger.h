@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-class M2_API BigInteger
+class LIBM2_EXPORT BigInteger
 {
 public:
     BigInteger(const String &);

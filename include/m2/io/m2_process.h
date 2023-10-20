@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-class M2_API Pipe
+class LIBM2_EXPORT Pipe
 {
 public:
     enum class PipeCloseMode
@@ -64,7 +64,7 @@ private:
 };
 
 
-class M2_API ProcessHandle
+class LIBM2_EXPORT ProcessHandle
 {
     friend class Process;
     ProcessHandle();
@@ -85,7 +85,7 @@ protected:
     void *m_Handle;
 };
 
-class M2_API Process
+class LIBM2_EXPORT Process
 {
 public:
     static unsigned int pid();

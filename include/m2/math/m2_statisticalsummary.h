@@ -38,7 +38,7 @@
 
 namespace m2 {
 
-class M2_API StatisticalSummary
+class LIBM2_EXPORT StatisticalSummary
 {
 public:
     enum Statistic

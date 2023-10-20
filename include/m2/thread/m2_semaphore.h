@@ -38,7 +38,7 @@
 namespace m2 {
 
 /// @brief 信号量
-class M2_API Semaphore
+class LIBM2_EXPORT Semaphore
 {
 public:
     Semaphore(int n);

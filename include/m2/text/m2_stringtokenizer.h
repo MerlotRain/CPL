@@ -42,7 +42,7 @@
 
 namespace m2 {
 
-class M2_API StringTokenizer
+class LIBM2_EXPORT StringTokenizer
 {
 public:
     enum TokenizerFlag : int

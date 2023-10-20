@@ -37,7 +37,7 @@
 
 namespace m2 {
 
-class M2_API WString : public StlWString
+class LIBM2_EXPORT WString : public StlWString
 {
 public:
     WString() noexcept;

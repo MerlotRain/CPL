@@ -31,7 +31,7 @@
 ****************************************************************************/
 
 /// @brief Json对象
-class M2_API JsonObject
+class LIBM2_EXPORT JsonObject
 {
 public:
     enum class ObjectType

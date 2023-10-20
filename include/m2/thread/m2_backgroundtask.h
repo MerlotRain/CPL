@@ -30,7 +30,7 @@
 **
 ****************************************************************************/
 
-class M2_API BackgroundTask : public RefObject
+class LIBM2_EXPORT BackgroundTask : public RefObject
 {
 public:
     virtual ~BackgroundTask() {}
@@ -56,7 +56,7 @@ enum DispatchOption
 };
 
 class DispatchOp;
-class M2_API PackagedTack : public RefObject
+class LIBM2_EXPORT PackagedTack : public RefObject
 {
     std::queue<BackgroundTaskPtr> m_Tasks;
     std::unique_ptr<DispatchOp> m_Option;
