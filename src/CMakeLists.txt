@@ -22,34 +22,13 @@
 # 
 ##############################################################################
 
-file(GLOB_RECURSE _headers ${CMAKE_CURRENT_SOURCE_DIR}/*.h CONFIGURE_DEPEND)
-target_sources(libm2 PRIVATE ${_headers})
+file(GLOB_RECURSE _sources_c ${CMAKE_CURRENT_LIST_DIR}/*.c  CONFIGURE_DEPEND)
+file(GLOB_RECURSE _sources_cxx ${CMAKE_CURRENT_LIST_DIR}/*.cpp  CONFIGURE_DEPEND)
+file(GLOB_RECURSE _headers ${CMAKE_CURRENT_LIST_DIR}/*.h  CONFIGURE_DEPEND)
+target_sources(libm2 PRIVATE ${_sources_c} ${_sources_cxx} ${_headers})
+unset(_sources)
 unset(_headers)
 
-target_include_directories(libm2 
-  PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>/help
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>/m2
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>/m2/image
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>/m2/json
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>/m2/math
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>/m2/text
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>/m2/thread
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>/m2/tm
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-)
-
-set(VERSION ${M2_VERSION})
-set(VERSION_MAJOR ${M2_VERSION_MAJOR})
-set(VERSION_MINOR ${M2_VERSION_MINOR})
-set(VERSION_PATCH ${M2_VERSION_PATCH})
-
-configure_file(${CMAKE_CURRENT_LIST_DIR}/version.h.in
-  ${CMAKE_CURRENT_BINARY_DIR}/version.h
-  @ONLY)
-
-unset(VERSION)
-unset(VERSION_MAJOR)
-unset(VERSION_MINOR)
-unset(VERSION_PATCH)
+if(WIN32 AND NOT MINGW)
+  set_source_files_properties(trace/stacktrace.cpp PROPERTIES COMPILE_FLAGS -wd4091)
+endif()

@@ -5,11 +5,3 @@
 libm2 is a cross platform C++basic library that encapsulates commonly used 
 C++ classes and functional modules, shields system functions from 
 the outside, and provides a unified interface.
-
-## Licensing
-
-libm2 is licensed under the MIT license. Check the [LICENSE](LICENSE) and
-[LICENSE-extra](LICENSE-extra) files.
-
-The documentation is licensed under the CC BY 4.0 license. Check the
-[LICENSE-docs file](LICENSE-docs).

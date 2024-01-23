@@ -7,6 +7,7 @@ cmake-build-release
 out
 build
 .fleet
+.cache
 
 # Prerequisites
 *.d
@@ -43,3 +44,4 @@ build
 
 *.ilk
 *.pdb
+.DS_Store
