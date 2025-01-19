@@ -211,4 +211,4 @@ private:
 
 }// namespace CPL
 
-#define DECLARE_FLAGS(F, E) typedef Flags<E> F;
+#define CPL_DECLARE_FLAGS(F, E) typedef CPL::Flags<E> F;

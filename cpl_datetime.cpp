@@ -24,9 +24,10 @@
 
 #include <assert.h>
 #include <chrono>
+#include <cpl_datetime.h>
 #include <cstring>
 #include <ctime>
-#include <cpl_datetime.h>
+#include <fmt/core.h>
 #include <iomanip>
 #include <iostream>
 #include <limits>
@@ -34,7 +35,6 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
-#include <fmt/core.h>
 
 namespace CPL {
 
@@ -86,7 +86,7 @@ void Timestamp::update()
     GetSystemTimeAsFileTime(&ft);
 
     ULARGE_INTEGER
-            epoch;// UNIX epoch (1970-01-01 00:00:00) expressed in Windows NT FILETIME
+    epoch;// UNIX epoch (1970-01-01 00:00:00) expressed in Windows NT FILETIME
     epoch.LowPart = 0xD53E8000;
     epoch.HighPart = 0x019DB1DE;
 
@@ -99,7 +99,7 @@ void Timestamp::update()
 #else
     struct timespec ts;
     if (clock_gettime(CLOCK_REALTIME, &ts))
-        throw SystemException("cannot get time of day");
+        throw std::invalid_argument("cannot get time of day");
     _ts = TimeVal(ts.tv_sec) * resolution() + ts.tv_nsec / 1000;
 #endif
 }
@@ -218,7 +218,7 @@ Timestamp Timestamp::fromFileTimeNP(std::uint32_t fileTimeLow,
                                     std::uint32_t fileTimeHigh)
 {
     ULARGE_INTEGER
-            epoch;// UNIX epoch (1970-01-01 00:00:00) expressed in Windows NT FILETIME
+    epoch;// UNIX epoch (1970-01-01 00:00:00) expressed in Windows NT FILETIME
     epoch.LowPart = 0xD53E8000;
     epoch.HighPart = 0x019DB1DE;
 
@@ -234,7 +234,7 @@ void Timestamp::toFileTimeNP(std::uint32_t &fileTimeLow,
                              std::uint32_t &fileTimeHigh) const
 {
     ULARGE_INTEGER
-            epoch;// UNIX epoch (1970-01-01 00:00:00) expressed in Windows NT FILETIME
+    epoch;// UNIX epoch (1970-01-01 00:00:00) expressed in Windows NT FILETIME
     epoch.LowPart = 0xD53E8000;
     epoch.HighPart = 0x019DB1DE;
 
@@ -441,7 +441,6 @@ Timespan &Timespan::operator-=(TimeDiff microSeconds)
     _span -= microSeconds;
     return *this;
 }
-
 
 
 DateTime::DateTime()

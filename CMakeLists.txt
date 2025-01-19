@@ -30,7 +30,7 @@ set(cpl_headers
 	cpl_mathhelp.h
 	cpl_memorymanager.h
 	cpl_object.h
-	cpl_port.h
+	cpl_ports.h
 	cpl_stringhelp.h
 )
 
@@ -71,3 +71,5 @@ target_link_libraries(cpl PRIVATE
 if(WIN32)
 	target_compile_definitions(cpl PUBLIC _USE_MATH_DEFINES)
 endif()
+
+add_library(CPL::cpl ALIAS cpl)

@@ -20,10 +20,10 @@
 
 #pragma once
 
-#include <algorithm>
-#include <deque>
-#include <cpl_exports.h>
 #include "cpl_memorymanager.h"
+#include <algorithm>
+#include <cpl_exports.h>
+#include <deque>
 #include <iomanip>
 #include <list>
 #include <map>
@@ -35,16 +35,6 @@
 #include <vector>
 
 namespace CPL {
-
-typedef std::basic_stringstream<char, std::char_traits<char>,
-                                std::allocator<char>>
-        StlSStream;
-typedef std::basic_ostringstream<char, std::char_traits<char>,
-                                 std::allocator<char>>
-        StlOSStream;
-typedef std::basic_istringstream<char, std::char_traits<char>,
-                                 std::allocator<char>>
-        StlISStream;
 
 /// \brief A single-byte string class that is compatible with std::string methods.
 class CPL_API String : public std::basic_string<char, std::char_traits<char>,
@@ -359,7 +349,7 @@ public:
     template<class STD>
     WString &operator+=(const STD &str)
     {
-        GsStlWString::operator+=(str.c_str());
+        StlWString::operator+=(str.c_str());
         return *this;
     }
 

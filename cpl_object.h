@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include "cpl_delegate.h"
 #include "cpl_atomic.h"
+#include "cpl_delegate.h"
 #include <cpl_exports.h>
 
 namespace CPL {
@@ -72,7 +72,7 @@ public:
 
     /// \brief Destructor
     /// Ensures proper cleanup of the object.
-    virtual ~RefObject() = default;
+    virtual ~RefObject() {}
 
     /// \brief Increment the reference count
     /// Increases the reference count by one, indicating an additional reference

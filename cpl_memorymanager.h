@@ -36,6 +36,7 @@ class CPL_API ByteBuffer
 protected:
     /// \brief Protected constructor, only accessible by derived classes
     ByteBuffer();
+    
 
 public:
     /// \brief Virtual destructor

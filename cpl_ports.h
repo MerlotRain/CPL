@@ -18,15 +18,16 @@
  *
  */
 
-#include <cpl_stringhelp.h>
+#include "cpl_version.h"
 
-#include <cpl_version.h>
-#include <cpl_atomic.h>
-#include <cpl_byteendian.h>
-#include <cpl_datetime.h>
-#include <cpl_delegate.h>
-#include <cpl_flags.h>
+#include "cpl_stringhelp.h"
 
-#include <cpl_mathhelp.h>
-#include <cpl_memorymanager.h>
-#include <cpl_object.h>
+#include "cpl_atomic.h"
+#include "cpl_byteendian.h"
+#include "cpl_datetime.h"
+#include "cpl_delegate.h"
+#include "cpl_flags.h"
+
+#include "cpl_mathhelp.h"
+#include "cpl_memorymanager.h"
+#include "cpl_object.h"
