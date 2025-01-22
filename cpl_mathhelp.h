@@ -24,7 +24,7 @@
 #include <cpl_stringhelp.h>
 
 namespace CPL {
-    
+
 /// \brief Globally Unique Identifier (GUID)
 /// \details A GUID is a unique identifier used for various purposes, such as identifying objects, databases, or resources across systems.
 struct CPL_API Guid
@@ -78,7 +78,7 @@ public:
     /// \brief Move constructor
     /// \param rhs The GUID to move from
     /// \details Moves the GUID value from another `Guid` object.
-    Guid(Guid &&rhs);
+    Guid(Guid &&rhs) noexcept;
 
     /// \brief Equality comparison
     /// \param guid The GUID to compare to
@@ -93,7 +93,7 @@ public:
     /// \brief Move assignment operator
     /// \param guid The GUID to move
     /// \return A reference to this `Guid` object
-    Guid &operator=(Guid &&guid);
+    Guid &operator=(Guid &&guid) noexcept;
 
     /// \brief Swap two GUIDs
     /// \param guid The GUID to swap with

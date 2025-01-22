@@ -24,43 +24,61 @@
 
 namespace CPL {
 
+// Class representing a flag, stores an integer value.
 class Flag
 {
     int i;
 
 public:
+    // Constructor that initializes the flag with a specific value.
     constexpr inline Flag(int value) noexcept : i(value) {}
+
+    // Conversion operator to convert a Flag to an integer.
     constexpr inline operator int() const noexcept { return i; }
 };
 
+// Template class for handling multiple flags. 
 template<typename Enum>
 class Flags
 {
+    // Ensures that the enum fits into an integer.
     static_assert((sizeof(Enum) <= sizeof(int)),
                   "Flags uses an int as storage, so an enum with underlying "
                   "long long will overflow.");
+    
+    // Ensures that the template type is an enum type.
     static_assert((std::is_enum<Enum>::value),
                   "Flags is only usable on enumeration types.");
 
 public:
-    typedef int Int;
-    typedef Enum enum_type;
+    typedef int Int;  // Defines Int as the storage type for flags.
+    typedef Enum enum_type;  // Alias for the enum type.
+
+    // Default constructor, initializes the internal integer to zero.
     constexpr inline Flags() noexcept : i(0) {}
+
+    // Constructor that initializes the flag from an enum value.
     constexpr inline Flags(Enum flags) noexcept : i(Int(flags)) {}
+
+    // Constructor that initializes the flag from a Flag object.
     constexpr inline Flags(Flag flag) noexcept : i(flag) {}
 
+    // Constructor that initializes the flag using an initializer list of enums.
     constexpr inline Flags(std::initializer_list<Enum> flags) noexcept
         : i(initializer_list_helper(flags.begin(), flags.end()))
     {
     }
 
+    // Static method to create Flags from an integer value.
     constexpr static inline Flags fromInt(Int i) noexcept
     {
         return Flags(Flag(i));
     }
+
+    // Converts the Flags object to an integer.
     constexpr inline Int toInt() const noexcept { return i; }
 
-
+    // Bitwise AND assignment operator, works with int, Flags, or Enum.
     constexpr inline Flags &operator&=(int mask) noexcept
     {
         i &= mask;
@@ -81,6 +99,8 @@ public:
         i &= Int(mask);
         return *this;
     }
+
+    // Bitwise OR assignment operator, works with Flags or Enum.
     constexpr inline Flags &operator|=(Flags other) noexcept
     {
         i |= other.i;
@@ -91,6 +111,8 @@ public:
         i |= Int(other);
         return *this;
     }
+
+    // Bitwise XOR assignment operator, works with Flags or Enum.
     constexpr inline Flags &operator^=(Flags other) noexcept
     {
         i ^= other.i;
@@ -102,10 +124,13 @@ public:
         return *this;
     }
 
+    // Converts the Flags object to an integer using conversion operator.
     constexpr inline operator Int() const noexcept { return i; }
+
+    // Logical NOT operator, returns true if the flag is zero.
     constexpr inline bool operator!() const noexcept { return !i; }
 
-
+    // Bitwise OR operator, works with Flags or Enum.
     constexpr inline Flags operator|(Flags other) const noexcept
     {
         return Flags(Flag(i | other.i));
@@ -114,6 +139,8 @@ public:
     {
         return Flags(Flag(i | Int(other)));
     }
+
+    // Bitwise XOR operator, works with Flags or Enum.
     constexpr inline Flags operator^(Flags other) const noexcept
     {
         return Flags(Flag(i ^ other.i));
@@ -122,6 +149,8 @@ public:
     {
         return Flags(Flag(i ^ Int(other)));
     }
+
+    // Bitwise AND operator, works with int, Flags, or Enum.
     constexpr inline Flags operator&(int mask) const noexcept
     {
         return Flags(Flag(i & mask));
@@ -130,7 +159,6 @@ public:
     {
         return Flags(Flag(i & mask));
     }
-
     constexpr inline Flags operator&(Flags other) const noexcept
     {
         return Flags(Flag(i & other.i));
@@ -139,11 +167,14 @@ public:
     {
         return Flags(Flag(i & Int(other)));
     }
+
+    // Bitwise NOT operator, inverts all flags.
     constexpr inline Flags operator~() const noexcept
     {
         return Flags(Flag(~i));
     }
 
+    // Delete operator+ and operator- to prevent their usage.
     constexpr inline void operator+(Flags other) const noexcept = delete;
     constexpr inline void operator+(Enum other) const noexcept = delete;
     constexpr inline void operator+(int other) const noexcept = delete;
@@ -151,27 +182,37 @@ public:
     constexpr inline void operator-(Enum other) const noexcept = delete;
     constexpr inline void operator-(int other) const noexcept = delete;
 
+    // Test if a particular flag is set.
     constexpr inline bool testFlag(Enum flag) const noexcept
     {
         return testFlags(flag);
     }
+
+    // Test if all flags in the given Flags object are set.
     constexpr inline bool testFlags(Flags flags) const noexcept
     {
         return flags.i ? ((i & flags.i) == flags.i) : i == Int(0);
     }
+
+    // Test if any flag is set from the given flag.
     constexpr inline bool testAnyFlag(Enum flag) const noexcept
     {
         return testAnyFlags(flag);
     }
+
+    // Test if any flag is set in the given Flags object.
     constexpr inline bool testAnyFlags(Flags flags) const noexcept
     {
         return (i & flags.i) != Int(0);
     }
+
+    // Set or clear a specific flag (default is to set).
     constexpr inline Flags &setFlag(Enum flag, bool on = true) noexcept
     {
         return on ? (*this |= flag) : (*this &= ~Flags(flag));
     }
 
+    // Comparison operators for equality and inequality with Flags and Enum.
     friend constexpr inline bool operator==(Flags lhs, Flags rhs) noexcept
     {
         return lhs.i == rhs.i;
@@ -198,6 +239,7 @@ public:
     }
 
 private:
+    // Helper function to combine multiple flags in an initializer list.
     constexpr static inline Int initializer_list_helper(
             typename std::initializer_list<Enum>::const_iterator it,
             typename std::initializer_list<Enum>::const_iterator end) noexcept
@@ -206,7 +248,7 @@ private:
                           : (Int(*it) | initializer_list_helper(it + 1, end)));
     }
 
-    Int i;
+    Int i;  // Stores the flags as an integer.
 };
 
 }// namespace CPL

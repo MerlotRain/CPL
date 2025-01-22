@@ -3,6 +3,8 @@ project(CommonPortabilityLibrary)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+option(BUILD_TESTS "Build tests" OFF)
+
 include(GenerateExportHeader)
 
 find_package(double-conversion CONFIG REQUIRED)
@@ -73,3 +75,7 @@ if(WIN32)
 endif()
 
 add_library(CPL::cpl ALIAS cpl)
+if(BUILD_TESTS)
+	include(CTest)
+	add_subdirectory(tests)
+endif()
