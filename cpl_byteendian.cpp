@@ -52,8 +52,7 @@ std::vector<unsigned char> EndianConverter::GetBytes(long long value)
     return GetBytes<long long>(value);
 }
 
-std::vector<unsigned char>
-EndianConverter::GetBytes(unsigned long long value)
+std::vector<unsigned char> EndianConverter::GetBytes(unsigned long long value)
 {
     return GetBytes<unsigned long long>(value);
 }
@@ -116,7 +115,7 @@ double EndianConverter::ToDouble(const unsigned char *bytes)
 class DefaultEndianConverter : public EndianConverter
 {
 public:
-    DefaultEndianConverter()  = default;
+    DefaultEndianConverter() = default;
     ~DefaultEndianConverter() = default;
 
 protected:
@@ -126,7 +125,7 @@ protected:
 class InverseConverter : public EndianConverter
 {
 public:
-    InverseConverter()  = default;
+    InverseConverter() = default;
     ~InverseConverter() = default;
 
 protected:
@@ -144,26 +143,20 @@ protected:
 
 std::unique_ptr<EndianConverter> BigEndianConverter::Instance()
 {
-    if constexpr (is_little_endian)
-    {
-        return std::unique_ptr<EndianConverter>(new InverseConverter());
-    }
-    else
-    {
-        return std::unique_ptr<EndianConverter>(new DefaultEndianConverter());
-    }
+#ifdef CPL_BIG_ENDIAN
+    return std::unique_ptr<EndianConverter>(new DefaultEndianConverter());
+#else
+    return std::unique_ptr<EndianConverter>(new InverseConverter());
+#endif
 }
 
 std::unique_ptr<EndianConverter> LittleEndianConverter::Instance()
 {
-    if constexpr (is_big_endian)
-    {
-        return std::unique_ptr<EndianConverter>(new InverseConverter());
-    }
-    else
-    {
-        return std::unique_ptr<EndianConverter>(new DefaultEndianConverter());
-    }
+#ifdef CPL_BIG_ENDIAN
+    return std::unique_ptr<EndianConverter>(new InverseConverter());
+#else
+    return std::unique_ptr<EndianConverter>(new DefaultEndianConverter());
+#endif
 }
 
 }// namespace CPL

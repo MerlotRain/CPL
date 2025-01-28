@@ -104,22 +104,22 @@ void Timestamp::update()
 #endif
 }
 
-Timestamp Timestamp::operator+(const Timespan &span) const
+Timestamp Timestamp::operator+(const TimeSpan &span) const
 {
     return *this + span.totalMicroseconds();
 }
 
-Timestamp Timestamp::operator-(const Timespan &span) const
+Timestamp Timestamp::operator-(const TimeSpan &span) const
 {
     return *this - span.totalMicroseconds();
 }
 
-Timestamp &Timestamp::operator+=(const Timespan &span)
+Timestamp &Timestamp::operator+=(const TimeSpan &span)
 {
     return *this += span.totalMicroseconds();
 }
 
-Timestamp &Timestamp::operator-=(const Timespan &span)
+Timestamp &Timestamp::operator-=(const TimeSpan &span)
 {
     return *this -= span.totalMicroseconds();
 }
@@ -247,22 +247,22 @@ void Timestamp::toFileTimeNP(std::uint32_t &fileTimeLow,
 #endif
 
 
-const Timespan::TimeDiff Timespan::MILLISECONDS = 1000;
-const Timespan::TimeDiff Timespan::SECONDS = 1000 * Timespan::MILLISECONDS;
-const Timespan::TimeDiff Timespan::MINUTES = 60 * Timespan::SECONDS;
-const Timespan::TimeDiff Timespan::HOURS = 60 * Timespan::MINUTES;
-const Timespan::TimeDiff Timespan::DAYS = 24 * Timespan::HOURS;
+const TimeSpan::TimeDiff TimeSpan::MILLISECONDS = 1000;
+const TimeSpan::TimeDiff TimeSpan::SECONDS = 1000 * TimeSpan::MILLISECONDS;
+const TimeSpan::TimeDiff TimeSpan::MINUTES = 60 * TimeSpan::SECONDS;
+const TimeSpan::TimeDiff TimeSpan::HOURS = 60 * TimeSpan::MINUTES;
+const TimeSpan::TimeDiff TimeSpan::DAYS = 24 * TimeSpan::HOURS;
 
-Timespan::Timespan() : _span(0) {}
+TimeSpan::TimeSpan() : _span(0) {}
 
-Timespan::Timespan(TimeDiff microSeconds) : _span(microSeconds) {}
+TimeSpan::TimeSpan(TimeDiff microSeconds) : _span(microSeconds) {}
 
-Timespan::Timespan(long seconds, long microSeconds)
+TimeSpan::TimeSpan(long seconds, long microSeconds)
     : _span(TimeDiff(seconds) * SECONDS + microSeconds)
 {
 }
 
-Timespan::Timespan(int days, int hours, int minutes, int seconds,
+TimeSpan::TimeSpan(int days, int hours, int minutes, int seconds,
                    int microSeconds)
     : _span(TimeDiff(microSeconds) + TimeDiff(seconds) * SECONDS +
             TimeDiff(minutes) * MINUTES + TimeDiff(hours) * HOURS +
@@ -270,115 +270,115 @@ Timespan::Timespan(int days, int hours, int minutes, int seconds,
 {
 }
 
-Timespan::Timespan(const Timespan &timespan) : _span(timespan._span) {}
+TimeSpan::TimeSpan(const TimeSpan &timespan) : _span(timespan._span) {}
 
-inline Timespan::~Timespan() {}
+inline TimeSpan::~TimeSpan() {}
 
-Timespan &Timespan::operator=(const Timespan &timespan)
+TimeSpan &TimeSpan::operator=(const TimeSpan &timespan)
 {
     _span = timespan._span;
     return *this;
 }
 
-Timespan &Timespan::operator=(TimeDiff microSeconds)
+TimeSpan &TimeSpan::operator=(TimeDiff microSeconds)
 {
     _span = microSeconds;
     return *this;
 }
 
-inline int Timespan::days() const { return int(_span / DAYS); }
+inline int TimeSpan::days() const { return int(_span / DAYS); }
 
-inline int Timespan::hours() const { return int((_span / HOURS) % 24); }
+inline int TimeSpan::hours() const { return int((_span / HOURS) % 24); }
 
-inline int Timespan::totalHours() const { return int(_span / HOURS); }
+inline int TimeSpan::totalHours() const { return int(_span / HOURS); }
 
-inline int Timespan::minutes() const { return int((_span / MINUTES) % 60); }
+inline int TimeSpan::minutes() const { return int((_span / MINUTES) % 60); }
 
-inline int Timespan::totalMinutes() const { return int(_span / MINUTES); }
+inline int TimeSpan::totalMinutes() const { return int(_span / MINUTES); }
 
-inline int Timespan::seconds() const { return int((_span / SECONDS) % 60); }
+inline int TimeSpan::seconds() const { return int((_span / SECONDS) % 60); }
 
-inline int Timespan::totalSeconds() const { return int(_span / SECONDS); }
+inline int TimeSpan::totalSeconds() const { return int(_span / SECONDS); }
 
-inline int Timespan::milliseconds() const
+inline int TimeSpan::milliseconds() const
 {
     return int((_span / MILLISECONDS) % 1000);
 }
 
-inline Timespan::TimeDiff Timespan::totalMilliseconds() const
+inline TimeSpan::TimeDiff TimeSpan::totalMilliseconds() const
 {
     return _span / MILLISECONDS;
 }
 
-inline int Timespan::microseconds() const { return int(_span % 1000); }
+inline int TimeSpan::microseconds() const { return int(_span % 1000); }
 
-inline int Timespan::useconds() const { return int(_span % 1000000); }
+inline int TimeSpan::useconds() const { return int(_span % 1000000); }
 
-inline Timespan::TimeDiff Timespan::totalMicroseconds() const { return _span; }
+inline TimeSpan::TimeDiff TimeSpan::totalMicroseconds() const { return _span; }
 
-inline bool Timespan::operator==(const Timespan &ts) const
+inline bool TimeSpan::operator==(const TimeSpan &ts) const
 {
     return _span == ts._span;
 }
 
-inline bool Timespan::operator!=(const Timespan &ts) const
+inline bool TimeSpan::operator!=(const TimeSpan &ts) const
 {
     return _span != ts._span;
 }
 
-inline bool Timespan::operator>(const Timespan &ts) const
+inline bool TimeSpan::operator>(const TimeSpan &ts) const
 {
     return _span > ts._span;
 }
 
-inline bool Timespan::operator>=(const Timespan &ts) const
+inline bool TimeSpan::operator>=(const TimeSpan &ts) const
 {
     return _span >= ts._span;
 }
 
-inline bool Timespan::operator<(const Timespan &ts) const
+inline bool TimeSpan::operator<(const TimeSpan &ts) const
 {
     return _span < ts._span;
 }
 
-inline bool Timespan::operator<=(const Timespan &ts) const
+inline bool TimeSpan::operator<=(const TimeSpan &ts) const
 {
     return _span <= ts._span;
 }
 
-inline bool Timespan::operator==(TimeDiff microSeconds) const
+inline bool TimeSpan::operator==(TimeDiff microSeconds) const
 {
     return _span == microSeconds;
 }
 
-inline bool Timespan::operator!=(TimeDiff microSeconds) const
+inline bool TimeSpan::operator!=(TimeDiff microSeconds) const
 {
     return _span != microSeconds;
 }
 
-inline bool Timespan::operator>(TimeDiff microSeconds) const
+inline bool TimeSpan::operator>(TimeDiff microSeconds) const
 {
     return _span > microSeconds;
 }
 
-inline bool Timespan::operator>=(TimeDiff microSeconds) const
+inline bool TimeSpan::operator>=(TimeDiff microSeconds) const
 {
     return _span >= microSeconds;
 }
 
-inline bool Timespan::operator<(TimeDiff microSeconds) const
+inline bool TimeSpan::operator<(TimeDiff microSeconds) const
 {
     return _span < microSeconds;
 }
 
-inline bool Timespan::operator<=(TimeDiff microSeconds) const
+inline bool TimeSpan::operator<=(TimeDiff microSeconds) const
 {
     return _span <= microSeconds;
 }
 
-inline void swap(Timespan &s1, Timespan &s2) noexcept { s1.swap(s2); }
+inline void swap(TimeSpan &s1, TimeSpan &s2) noexcept { s1.swap(s2); }
 
-Timespan &Timespan::assign(int days, int hours, int minutes, int seconds,
+TimeSpan &TimeSpan::assign(int days, int hours, int minutes, int seconds,
                            int microSeconds)
 {
     _span = TimeDiff(microSeconds) + TimeDiff(seconds) * SECONDS +
@@ -387,56 +387,56 @@ Timespan &Timespan::assign(int days, int hours, int minutes, int seconds,
     return *this;
 }
 
-Timespan &Timespan::assign(long seconds, long microSeconds)
+TimeSpan &TimeSpan::assign(long seconds, long microSeconds)
 {
     _span = TimeDiff(seconds) * SECONDS + TimeDiff(microSeconds);
     return *this;
 }
 
-void Timespan::swap(Timespan &timespan) noexcept
+void TimeSpan::swap(TimeSpan &timespan) noexcept
 {
     std::swap(_span, timespan._span);
 }
 
-Timespan Timespan::operator+(const Timespan &d) const
+TimeSpan TimeSpan::operator+(const TimeSpan &d) const
 {
-    return Timespan(_span + d._span);
+    return TimeSpan(_span + d._span);
 }
 
-Timespan Timespan::operator-(const Timespan &d) const
+TimeSpan TimeSpan::operator-(const TimeSpan &d) const
 {
-    return Timespan(_span - d._span);
+    return TimeSpan(_span - d._span);
 }
 
-Timespan &Timespan::operator+=(const Timespan &d)
+TimeSpan &TimeSpan::operator+=(const TimeSpan &d)
 {
     _span += d._span;
     return *this;
 }
 
-Timespan &Timespan::operator-=(const Timespan &d)
+TimeSpan &TimeSpan::operator-=(const TimeSpan &d)
 {
     _span -= d._span;
     return *this;
 }
 
-Timespan Timespan::operator+(TimeDiff microSeconds) const
+TimeSpan TimeSpan::operator+(TimeDiff microSeconds) const
 {
-    return Timespan(_span + microSeconds);
+    return TimeSpan(_span + microSeconds);
 }
 
-Timespan Timespan::operator-(TimeDiff microSeconds) const
+TimeSpan TimeSpan::operator-(TimeDiff microSeconds) const
 {
-    return Timespan(_span - microSeconds);
+    return TimeSpan(_span - microSeconds);
 }
 
-Timespan &Timespan::operator+=(TimeDiff microSeconds)
+TimeSpan &TimeSpan::operator+=(TimeDiff microSeconds)
 {
     _span += microSeconds;
     return *this;
 }
 
-Timespan &Timespan::operator-=(TimeDiff microSeconds)
+TimeSpan &TimeSpan::operator-=(TimeDiff microSeconds)
 {
     _span -= microSeconds;
     return *this;
@@ -459,8 +459,8 @@ DateTime::DateTime(const tm &tmStruct)
 {
     checkValid();
     _utcTime = toUtcTime(toJulianDay(_year, _month, _day)) +
-               10 * (_hour * Timespan::HOURS + _minute * Timespan::MINUTES +
-                     _second * Timespan::SECONDS);
+               10 * (_hour * TimeSpan::HOURS + _minute * TimeSpan::MINUTES +
+                     _second * TimeSpan::SECONDS);
 }
 
 DateTime::DateTime(const Timestamp &timestamp) : _utcTime(timestamp.utcTime())
@@ -477,9 +477,9 @@ DateTime::DateTime(int year, int month, int day, int hour, int minute,
 {
     checkValid();
     _utcTime = toUtcTime(toJulianDay(year, month, day)) +
-               10 * (hour * Timespan::HOURS + minute * Timespan::MINUTES +
-                     second * Timespan::SECONDS +
-                     millisecond * Timespan::MILLISECONDS + microsecond);
+               10 * (hour * TimeSpan::HOURS + minute * TimeSpan::MINUTES +
+                     second * TimeSpan::SECONDS +
+                     millisecond * TimeSpan::MILLISECONDS + microsecond);
 }
 
 DateTime::DateTime(double julianDay) : _utcTime(toUtcTime(julianDay))
@@ -544,9 +544,9 @@ DateTime &DateTime::assign(int year, int month, int day, int hour, int minute,
                            int second, int millisecond, int microsecond)
 {
     _utcTime = toUtcTime(toJulianDay(year, month, day)) +
-               10 * (hour * Timespan::HOURS + minute * Timespan::MINUTES +
-                     second * Timespan::SECONDS +
-                     millisecond * Timespan::MILLISECONDS + microsecond);
+               10 * (hour * TimeSpan::HOURS + minute * TimeSpan::MINUTES +
+                     second * TimeSpan::SECONDS +
+                     millisecond * TimeSpan::MILLISECONDS + microsecond);
     _year = year;
     _month = month;
     _day = day;
@@ -645,22 +645,22 @@ int DateTime::week(int firstDayOfWeek) const
 
 double DateTime::julianDay() const { return toJulianDay(_utcTime); }
 
-DateTime DateTime::operator+(const Timespan &span) const
+DateTime DateTime::operator+(const TimeSpan &span) const
 {
     return DateTime(_utcTime, span.totalMicroseconds());
 }
 
-DateTime DateTime::operator-(const Timespan &span) const
+DateTime DateTime::operator-(const TimeSpan &span) const
 {
     return DateTime(_utcTime, -span.totalMicroseconds());
 }
 
-Timespan DateTime::operator-(const DateTime &dateTime) const
+TimeSpan DateTime::operator-(const DateTime &dateTime) const
 {
-    return Timespan((_utcTime - dateTime._utcTime) / 10);
+    return TimeSpan((_utcTime - dateTime._utcTime) / 10);
 }
 
-DateTime &DateTime::operator+=(const Timespan &span)
+DateTime &DateTime::operator+=(const TimeSpan &span)
 {
     _utcTime += span.totalMicroseconds() * 10;
     computeGregorian(julianDay());
@@ -669,7 +669,7 @@ DateTime &DateTime::operator+=(const Timespan &span)
     return *this;
 }
 
-DateTime &DateTime::operator-=(const Timespan &span)
+DateTime &DateTime::operator-=(const TimeSpan &span)
 {
     _utcTime -= span.totalMicroseconds() * 10;
     computeGregorian(julianDay());
@@ -701,12 +701,12 @@ tm DateTime::makeTM() const
 
 void DateTime::makeUTC(int tzd)
 {
-    operator-=(Timespan(((Timestamp::TimeDiff) tzd) * Timespan::SECONDS));
+    operator-=(TimeSpan(((Timestamp::TimeDiff) tzd) * TimeSpan::SECONDS));
 }
 
 void DateTime::makeLocal(int tzd)
 {
-    operator+=(Timespan(((Timestamp::TimeDiff) tzd) * Timespan::SECONDS));
+    operator+=(TimeSpan(((Timestamp::TimeDiff) tzd) * TimeSpan::SECONDS));
 }
 
 double DateTime::toJulianDay(int year, int month, int day, int hour, int minute,
@@ -806,7 +806,7 @@ void DateTime::computeDaytime()
         // keeping hour, minute, second,... for corrections
         ut += std::int64_t(86400) * 1000 * 1000 * 10 * 1600 * 365;
     }
-    Timespan span(ut / 10);
+    TimeSpan span(ut / 10);
     int hour = span.hours();
     // Due to double rounding issues, the previous call to computeGregorian()
     // may have crossed into the next or previous day. We need to correct that.

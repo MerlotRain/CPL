@@ -30,21 +30,21 @@ namespace CPL {
 /// This class is designed to be inherited by other classes to prevent
 /// copying and assignment. It achieves this by deleting the copy constructor
 /// and copy assignment operator.
-class CPL_API GsNoneCopyable
+class CPL_API NoneCopyable
 {
 public:
     /// \brief Default constructor
     /// Allows construction of the derived class instances.
-    GsNoneCopyable() {}
+    NoneCopyable() {}
 
 private:
     /// \brief Deleted copy constructor
     /// Prevents copying of the derived class.
-    GsNoneCopyable(const GsNoneCopyable &) = delete;
+    NoneCopyable(const NoneCopyable &) = delete;
 
     /// \brief Deleted copy assignment operator
     /// Prevents assignment of the derived class.
-    GsNoneCopyable &operator=(const GsNoneCopyable &) = delete;
+    NoneCopyable &operator=(const NoneCopyable &) = delete;
 };
 
 /// \brief Base class for reference-counted objects
@@ -52,7 +52,7 @@ private:
 /// automatic cleanup of objects when their reference count reaches zero.
 /// It is designed to be inherited by other classes requiring reference-counting
 /// functionality.
-class CPL_API RefObject : private GsNoneCopyable
+class CPL_API RefObject : private NoneCopyable
 {
 protected:
     /// \brief The reference count for the object

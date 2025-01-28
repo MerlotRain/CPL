@@ -21,7 +21,7 @@
 #pragma once
 
 #include <cpl_exports.h>
-#include <cpl_stringhelp.h>
+#include <string>
 
 namespace CPL {
 
@@ -103,7 +103,7 @@ public:
     /// \brief Converts the GUID to a formatted string
     /// \param formatType The format in which to return the string
     /// \return A string representing the GUID in the specified format
-    String ToString(Format formatType = Format::eHyphens32) const;
+    std::string ToString(Format formatType = Format::eHyphens32) const;
 };
 
 /// \brief UUID is a universally unique identifier (equivalent to GUID)
@@ -234,7 +234,7 @@ public:
 
     /// \brief Generates a new GUID in the format `E1F17786-DABD-4C0B-9679-514E6566E8B2`.
     /// \return A newly generated GUID as a string.
-    static String NewGUID();
+    static std::string NewGUID();
 
     /// \brief Returns the natural logarithm (base e) of a value.
     /// \param val The value to compute the logarithm for.

@@ -1,7 +1,86 @@
-![M2](./img/m2.svg)
+# Common Portability Library (CPL)
 
-## Overview
+Common Portability Library (CPL) is a C++ library designed to provide portability across platforms. It includes a set of useful classes and functions to help developers write portable code for different operating systems and hardware architectures.
 
-libm2 is a cross platform C++basic library that encapsulates commonly used 
-C++ classes and functional modules, shields system functions from 
-the outside, and provides a unified interface.
+## Features
+
+- Cross-platform support.
+- Provides functionalities for atomic operations, endianness handling, date and time processing, math utilities, memory management, and more.
+- Built with C++17 standard.
+- Includes unit testing support.
+
+## Installation
+
+### Dependencies
+
+CPL depends on the following libraries:
+
+- double-conversion
+- Iconv
+- fmt
+- pcre2
+
+Ensure these libraries are installed on your system before building CPL.
+
+### Using CMake
+
+CPL uses CMake as its build system. Follow these steps to build and install CPL:
+
+1. Clone the CPL repository:
+
+   ```bash
+   git clone https://github.com/MerlotRain/CPL.git
+   cd CPL
+   ```
+
+2. Create a build directory and navigate into it:
+
+   ```bash
+   mkdir build
+   cd build
+   ```
+
+3. Configure the project with CMake:
+
+   ```bash
+   cmake ..
+   ```
+
+4. Build the project:
+
+   ```bash
+   make
+   ```
+
+5. Install the project (you might need superuser privileges):
+   ```bash
+   sudo make install
+   ```
+
+## Testing
+
+CPL includes a suite of unit tests to ensure functionality correctness. To build and run tests, enable the `BUILD_TESTS` option when configuring CPL:
+
+1. Enable testing during CMake configuration:
+
+   ```bash
+   cmake -DBUILD_TESTS=ON ..
+   ```
+
+2. Build and run the tests:
+   ```bash
+   make
+   ctest
+   ```
+
+## Contributing
+
+Contributions are welcome! If you want to contribute to CPL, feel free to submit a Pull Request on GitHub. Please ensure your code adheres to CPL's coding standards and quality requirements.
+
+## License
+
+CPL is licensed under the MIT License. For details, refer to the `LICENSE.md` file.
+
+## Version
+
+The current version of CPL is 1.1.0. You can find version details in the `VERSION.txt` file.

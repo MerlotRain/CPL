@@ -20,14 +20,13 @@
 
 #pragma once
 
-#include <ctime>
-#include <cpl_exports.h>
-#include <string>
 #include <chrono>
+#include <cpl_exports.h>
+#include <ctime>
 
 namespace CPL {
 
-class Timespan;
+class TimeSpan;
 
 /// \class Timestamp
 /// \brief Represents a monotonic UTC-based timestamp with microsecond resolution.
@@ -42,341 +41,344 @@ class Timespan;
 ///
 /// Additional UTC time values are represented with a different base time:
 /// midnight, October 15, 1582, with 100-nanosecond resolution.
-
 class CPL_API Timestamp
 {
 public:
-    using TimeVal = std::int64_t;
     /// \brief Represents monotonic UTC time in microsecond resolution.
     /// Base time: midnight, January 1, 1970.
+    using TimeVal = std::int64_t;
 
-    using UtcTimeVal = std::int64_t;
     /// \brief Represents monotonic UTC time in 100-nanosecond resolution.
     /// Base time: midnight, October 15, 1582.
+    using UtcTimeVal = std::int64_t;
 
-    using TimeDiff = std::int64_t;
     /// \brief Represents the difference between two `TimeVal` values in microseconds.
+    using TimeDiff = std::int64_t;
 
     static const TimeVal TIMEVAL_MIN;///< Minimum timestamp value.
     static const TimeVal TIMEVAL_MAX;///< Maximum timestamp value.
 
-    Timestamp();
     /// \brief Creates a timestamp initialized with the current time.
+    Timestamp();
 
-    Timestamp(TimeVal tv);
     /// \brief Creates a timestamp from the given time value.
     /// \param tv Time value in microseconds since midnight, January 1, 1970.
+    Timestamp(TimeVal tv);
 
-    Timestamp(const Timestamp &other);
     /// \brief Copy constructor.
+    Timestamp(const Timestamp &other);
 
-    ~Timestamp();
     /// \brief Destroys the timestamp.
+    ~Timestamp();
 
-    Timestamp &operator=(const Timestamp &other);
     /// \brief Assigns another timestamp to this timestamp.
+    Timestamp &operator=(const Timestamp &other);
 
-    Timestamp &operator=(TimeVal tv);
     /// \brief Assigns a time value to this timestamp.
     /// \param tv Time value in microseconds since midnight, January 1, 1970.
+    Timestamp &operator=(TimeVal tv);
 
-    void swap(Timestamp &timestamp) noexcept;
     /// \brief Swaps the contents of this timestamp with another timestamp.
+    void Swap(Timestamp &timestamp) noexcept;
 
-    void update();
     /// \brief Updates the timestamp with the current time.
+    void Update();
 
-    bool operator==(const Timestamp &ts) const;
     /// \brief Checks if two timestamps are equal.
+    bool operator==(const Timestamp &ts) const;
 
-    bool operator!=(const Timestamp &ts) const;
     /// \brief Checks if two timestamps are not equal.
+    bool operator!=(const Timestamp &ts) const;
 
-    bool operator>(const Timestamp &ts) const;
     /// \brief Checks if this timestamp is greater than another timestamp.
+    bool operator>(const Timestamp &ts) const;
 
-    bool operator>=(const Timestamp &ts) const;
     /// \brief Checks if this timestamp is greater than or equal to another timestamp.
+    bool operator>=(const Timestamp &ts) const;
 
-    bool operator<(const Timestamp &ts) const;
     /// \brief Checks if this timestamp is less than another timestamp.
+    bool operator<(const Timestamp &ts) const;
 
-    bool operator<=(const Timestamp &ts) const;
     /// \brief Checks if this timestamp is less than or equal to another timestamp.
+    bool operator<=(const Timestamp &ts) const;
 
-    Timestamp operator+(TimeDiff d) const;
     /// \brief Returns a new timestamp offset by a given time difference.
     /// \param d Time difference in microseconds.
+    Timestamp operator+(TimeDiff d) const;
 
-    Timestamp operator+(const Timespan &span) const;
     /// \brief Returns a new timestamp offset by a given timespan.
+    Timestamp operator+(const TimeSpan &span) const;
 
-    Timestamp operator-(TimeDiff d) const;
     /// \brief Returns a new timestamp offset by a negative time difference.
+    Timestamp operator-(TimeDiff d) const;
 
-    Timestamp operator-(const Timespan &span) const;
     /// \brief Returns a new timestamp offset by a negative timespan.
+    Timestamp operator-(const TimeSpan &span) const;
 
-    TimeDiff operator-(const Timestamp &ts) const;
     /// \brief Calculates the difference between two timestamps in microseconds.
+    TimeDiff operator-(const Timestamp &ts) const;
 
-    Timestamp &operator+=(TimeDiff d);
     /// \brief Adds a time difference to this timestamp.
+    Timestamp &operator+=(TimeDiff d);
 
-    Timestamp &operator+=(const Timespan &span);
     /// \brief Adds a timespan to this timestamp.
+    Timestamp &operator+=(const TimeSpan &span);
 
-    Timestamp &operator-=(TimeDiff d);
     /// \brief Subtracts a time difference from this timestamp.
+    Timestamp &operator-=(TimeDiff d);
 
-    Timestamp &operator-=(const Timespan &span);
     /// \brief Subtracts a timespan from this timestamp.
+    Timestamp &operator-=(const TimeSpan &span);
 
-    std::time_t epochTime() const;
     /// \brief Returns the timestamp as a `time_t` value.
     /// \details The `time_t` value represents seconds since midnight, January 1, 1970.
+    std::time_t EpochTime() const;
 
-    UtcTimeVal utcTime() const;
     /// \brief Returns the timestamp as a UTC-based time value.
     /// \details The UTC time value is in 100-nanosecond intervals since midnight,
     /// October 15, 1582.
+    UtcTimeVal UtcTime() const;
 
-    TimeVal epochMicroseconds() const;
     /// \brief Returns the timestamp in microseconds since midnight, January 1, 1970.
+    TimeVal EpochMicroseconds() const;
 
-    TimeDiff elapsed() const;
     /// \brief Returns the time elapsed since the timestamp.
     /// \details Equivalent to `Timestamp() - *this`.
+    TimeDiff Elapsed() const;
 
-    bool isElapsed(TimeDiff interval) const;
     /// \brief Checks if a given time interval has passed since the timestamp.
+    bool IsElapsed(TimeDiff interval) const;
 
-    TimeVal raw() const;
     /// \brief Returns the raw time value in microseconds.
     /// \details Equivalent to `epochMicroseconds()`.
+    TimeVal Raw() const;
 
-    static Timestamp fromEpochTime(std::time_t t);
     /// \brief Creates a timestamp from a `std::time_t` value.
+    static Timestamp FromEpochTime(std::time_t t);
 
-    static Timestamp fromUtcTime(UtcTimeVal val);
     /// \brief Creates a timestamp from a UTC-based time value.
     /// \param val Time value in 100-nanosecond intervals since midnight, October 15, 1582.
+    static Timestamp FromUtcTime(UtcTimeVal val);
 
-    static constexpr TimeDiff resolution();
     /// \brief Returns the resolution in units per second.
     /// \details Since timestamps have microsecond resolution, the value is always 1,000,000.
+    static constexpr TimeDiff Resolution();
 
 #if defined(_WIN32)
-    static Timestamp fromFileTimeNP(std::uint32_t fileTimeLow,
-                                    std::uint32_t fileTimeHigh);
     /// \brief Creates a timestamp from a Windows FILETIME structure.
+    static Timestamp FromFileTimeNP(std::uint32_t fileTimeLow,
+                                    std::uint32_t fileTimeHigh);
 
-    void toFileTimeNP(std::uint32_t &fileTimeLow,
-                      std::uint32_t &fileTimeHigh) const;
     /// \brief Converts the timestamp to a Windows FILETIME structure.
+    void ToFileTimeNP(std::uint32_t &fileTimeLow,
+                      std::uint32_t &fileTimeHigh) const;
 #endif
 
 private:
     TimeVal _ts;///< Stores the timestamp value in microseconds.
 };
 
-
-class CPL_API Timespan
 /// A class that represents time spans up to microsecond resolution.
+class CPL_API TimeSpan
 {
 public:
     using TimeDiff = Timestamp::TimeDiff;
 
-    Timespan();
-    /// Creates a zero Timespan.
+    /// Creates a zero TimeSpan.
+    TimeSpan();
 
-    Timespan(TimeDiff microseconds);
-    /// Creates a Timespan.
+    /// Creates a TimeSpan from a specified number of microseconds.
+    TimeSpan(TimeDiff microseconds);
 
-    Timespan(long seconds, long microseconds);
-    /// Creates a Timespan. Useful for creating
-    /// a Timespan from a struct timeval.
+    /// Creates a TimeSpan from seconds and microseconds.
+    /// Useful for creating a TimeSpan from a struct timeval.
+    TimeSpan(long seconds, long microseconds);
 
-    Timespan(int days, int hours, int minutes, int seconds, int microSeconds);
-    /// Creates a Timespan.
+    /// Creates a TimeSpan from days, hours, minutes, seconds, and microseconds.
+    TimeSpan(int days, int hours, int minutes, int seconds, int microSeconds);
 
-    Timespan(const Timespan &timespan);
-    /// Creates a Timespan from another one.
+    /// Creates a copy of another TimeSpan.
+    TimeSpan(const TimeSpan &timespan);
 
+    /// Creates a TimeSpan from a std::chrono::duration.
+    /// This constructor allows creating a TimeSpan from any chrono duration.
     template<class T, class Period>
-    Timespan(const std::chrono::duration<T, Period> &dtime)
+    TimeSpan(const std::chrono::duration<T, Period> &dtime)
         : _span(std::chrono::duration_cast<std::chrono::microseconds>(dtime)
                         .count())
     {
     }
-    /// Creates a Timespan from std::chrono::duration.
 
-    ~Timespan();
-    /// Destroys the Timespan.
+    /// Destroys the TimeSpan object.
+    ~TimeSpan();
 
-    Timespan &operator=(const Timespan &timespan);
-    /// Assignment operator.
+    /// Assignment operator. Copies the value from another TimeSpan.
+    TimeSpan &operator=(const TimeSpan &timespan);
 
-    Timespan &operator=(TimeDiff microseconds);
-    /// Assignment operator.
+    /// Assignment operator. Assigns from a number of microseconds.
+    TimeSpan &operator=(TimeDiff microseconds);
 
-    Timespan &assign(int days, int hours, int minutes, int seconds,
+    /// Assigns a new time span using days, hours, minutes, seconds, and microseconds.
+    TimeSpan &Assign(int days, int hours, int minutes, int seconds,
                      int microSeconds);
-    /// Assigns a new span.
 
-    Timespan &assign(long seconds, long microseconds);
-    /// Assigns a new span. Useful for assigning
-    /// from a struct timeval.
+    /// Assigns a new time span using seconds and microseconds.
+    /// Useful for assigning from a struct timeval.
+    TimeSpan &Assign(long seconds, long microseconds);
 
+    /// Assigns a new time span from a std::chrono::duration.
     template<class T, class Period>
-    Timespan &assign(const std::chrono::duration<T, Period> &dtime)
-    /// Assigns a new span from std::chrono::duration.
+    TimeSpan &Assign(const std::chrono::duration<T, Period> &dtime)
     {
         _span = std::chrono::duration_cast<std::chrono::microseconds>(dtime)
                         .count();
         return *this;
     }
 
-    void swap(Timespan &timespan) noexcept;
-    /// Swaps the Timespan with another one.
+    /// Swaps the current TimeSpan with another one.
+    void Swap(TimeSpan &timespan) noexcept;
 
-    bool operator==(const Timespan &ts) const;
-    /// Equality operator.
+    /// Equality operator. Compares two TimeSpan objects for equality.
+    bool operator==(const TimeSpan &ts) const;
 
-    bool operator!=(const Timespan &ts) const;
-    /// Inequality operator.
+    /// Inequality operator. Compares two TimeSpan objects for inequality.
+    bool operator!=(const TimeSpan &ts) const;
 
-    bool operator>(const Timespan &ts) const;
-    /// Greater-than operator.
+    /// Greater-than operator. Checks if one TimeSpan is greater than another.
+    bool operator>(const TimeSpan &ts) const;
 
-    bool operator>=(const Timespan &ts) const;
     /// Greater-than-or-equal-to operator.
+    bool operator>=(const TimeSpan &ts) const;
 
-    bool operator<(const Timespan &ts) const;
-    /// Less-than operator.
+    /// Less-than operator. Checks if one TimeSpan is less than another.
+    bool operator<(const TimeSpan &ts) const;
 
-    bool operator<=(const Timespan &ts) const;
     /// Less-than-or-equal-to operator.
+    bool operator<=(const TimeSpan &ts) const;
 
+    /// Equality operator for TimeDiff. Compares a TimeSpan with a number of microseconds.
     bool operator==(TimeDiff microSeconds) const;
-    /// Equality operator for TimeDiff.
 
-    bool operator!=(TimeDiff microSeconds) const;
     /// Inequality operator for TimeDiff.
+    bool operator!=(TimeDiff microSeconds) const;
 
-    bool operator>(TimeDiff microSeconds) const;
     /// Greater-than operator for TimeDiff.
+    bool operator>(TimeDiff microSeconds) const;
 
-    bool operator>=(TimeDiff microSeconds) const;
     /// Greater-than-or-equal-to operator for TimeDiff.
+    bool operator>=(TimeDiff microSeconds) const;
 
-    bool operator<(TimeDiff microSeconds) const;
     /// Less-than operator for TimeDiff.
+    bool operator<(TimeDiff microSeconds) const;
 
-    bool operator<=(TimeDiff microSeconds) const;
     /// Less-than-or-equal-to operator for TimeDiff.
+    bool operator<=(TimeDiff microSeconds) const;
 
-    Timespan operator+(const Timespan &d) const;
-    /// Addition operator.
+    /// Addition operator. Adds two TimeSpan objects.
+    TimeSpan operator+(const TimeSpan &d) const;
 
-    Timespan operator-(const Timespan &d) const;
-    /// Subtraction operator.
+    /// Subtraction operator. Subtracts one TimeSpan from another.
+    TimeSpan operator-(const TimeSpan &d) const;
 
-    Timespan &operator+=(const Timespan &d);
-    /// Addition assignment operator.
+    /// Addition assignment operator. Adds a TimeSpan to the current one.
+    TimeSpan &operator+=(const TimeSpan &d);
 
-    Timespan &operator-=(const Timespan &d);
-    /// Subtraction assignment operator.
+    /// Subtraction assignment operator. Subtracts a TimeSpan from the current one.
+    TimeSpan &operator-=(const TimeSpan &d);
 
-    Timespan operator+(TimeDiff microSeconds) const;
-    /// Addition operator with TimeDiff.
+    /// Addition operator with TimeDiff. Adds a number of microseconds to the current TimeSpan.
+    TimeSpan operator+(TimeDiff microSeconds) const;
 
-    Timespan operator-(TimeDiff microSeconds) const;
-    /// Subtraction operator with TimeDiff.
+    /// Subtraction operator with TimeDiff. Subtracts a number of microseconds from the current TimeSpan.
+    TimeSpan operator-(TimeDiff microSeconds) const;
 
-    Timespan &operator+=(TimeDiff microSeconds);
     /// Addition assignment operator with TimeDiff.
+    TimeSpan &operator+=(TimeDiff microSeconds);
 
-    Timespan &operator-=(TimeDiff microSeconds);
     /// Subtraction assignment operator with TimeDiff.
+    TimeSpan &operator-=(TimeDiff microSeconds);
 
-    int days() const;
-    /// Returns the number of days.
+    /// Returns the number of days in the TimeSpan.
+    int Days() const;
 
-    int hours() const;
-    /// Returns the number of hours (0 to 23).
+    /// Returns the number of hours (0 to 23) in the TimeSpan.
+    int Hours() const;
 
-    int totalHours() const;
-    /// Returns the total number of hours.
+    /// Returns the total number of hours in the TimeSpan, including overflowed days.
+    int TotalHours() const;
 
-    int minutes() const;
-    /// Returns the number of minutes (0 to 59).
+    /// Returns the number of minutes (0 to 59) in the TimeSpan.
+    int Minutes() const;
 
-    int totalMinutes() const;
-    /// Returns the total number of minutes.
+    /// Returns the total number of minutes in the TimeSpan, including overflowed hours.
+    int TotalMinutes() const;
 
-    int seconds() const;
-    /// Returns the number of seconds (0 to 59).
+    /// Returns the number of seconds (0 to 59) in the TimeSpan.
+    int Seconds() const;
 
-    int totalSeconds() const;
-    /// Returns the total number of seconds.
+    /// Returns the total number of seconds in the TimeSpan, including overflowed minutes.
+    int TotalSeconds() const;
 
-    int milliseconds() const;
-    /// Returns the number of milliseconds (0 to 999).
+    /// Returns the number of milliseconds (0 to 999) in the TimeSpan.
+    int Milliseconds() const;
 
-    TimeDiff totalMilliseconds() const;
-    /// Returns the total number of milliseconds.
+    /// Returns the total number of milliseconds in the TimeSpan.
+    TimeDiff TotalMilliseconds() const;
 
-    int microseconds() const;
-    /// Returns the fractions of a millisecond
-    /// in microseconds (0 to 999).
+    /// Returns the number of microseconds (0 to 999) in the TimeSpan.
+    int Microseconds() const;
 
-    int useconds() const;
-    /// Returns the fractions of a second
-    /// in microseconds (0 to 999999).
+    /// Returns the fractions of a second in microseconds (0 to 999999).
+    int Useconds() const;
 
-    TimeDiff totalMicroseconds() const;
-    /// Returns the total number of microseconds.
+    /// Returns the total number of microseconds in the TimeSpan.
+    TimeDiff TotalMicroseconds() const;
 
-    static const TimeDiff
-            MILLISECONDS;/// The number of microseconds in a millisecond.
-    static const TimeDiff SECONDS;/// The number of microseconds in a second.
-    static const TimeDiff MINUTES;/// The number of microseconds in a minute.
-    static const TimeDiff HOURS;  /// The number of microseconds in an hour.
-    static const TimeDiff DAYS;   /// The number of microseconds in a day.
+    /// The number of microseconds in a millisecond.
+    static const TimeDiff MILLISECONDS;
+
+    /// The number of microseconds in a second.
+    static const TimeDiff SECONDS;
+
+    /// The number of microseconds in a minute.
+    static const TimeDiff MINUTES;
+
+    /// The number of microseconds in an hour.
+    static const TimeDiff HOURS;
+
+    /// The number of microseconds in a day.
+    static const TimeDiff DAYS;
 
 private:
     TimeDiff _span;
 };
 
-
-class CPL_API DateTime
 /// This class represents an instant in time, expressed
 /// in years, months, days, hours, minutes, seconds,
 /// and milliseconds based on the Gregorian calendar.
-/// 
+///
 /// The class is mainly useful for conversions between
 /// UTC, Julian day, and Gregorian calendar dates.
-/// 
-/// The date and time stored in a DateTime instance are 
-/// always in UTC (Coordinated Universal Time), ensuring 
+///
+/// The date and time stored in a DateTime instance are
+/// always in UTC (Coordinated Universal Time), ensuring
 /// independence from the system's timezone settings.
-/// 
-/// Conversion calculations are based on algorithms 
+///
+/// Conversion calculations are based on algorithms
 /// described by Peter Baum. Refer to:
 /// http://vsg.cape.com/~pbaum/date/date0.htm for details.
-/// 
-/// Internally, the class optimizes performance by storing 
+///
+/// Internally, the class optimizes performance by storing
 /// the date and time in two forms (UTC and broken down).
-/// It is recommended to use this class only for date/time 
-/// representation conversions. Use the `Timestamp` class 
+/// It is recommended to use this class only for date/time
+/// representation conversions. Use the `Timestamp` class
 /// for general time-related functionalities.
-/// 
+///
 /// Key Notes:
-/// * Year zero (0) is valid and follows ISO 8601 and 
+/// * Year zero (0) is valid and follows ISO 8601 and
 ///   astronomical year numbering conventions.
 /// * Year zero is a leap year.
-/// * Minimum representable date/time: 12:00:00 UTC Monday, 
+/// * Minimum representable date/time: 12:00:00 UTC Monday,
 ///   1 January 4713 BC (Julian Day 0, Gregorian -4713-11-24).
 ///
 /// Further reading:
@@ -384,6 +386,7 @@ class CPL_API DateTime
 ///   * Julian Day: http://en.wikipedia.org/wiki/Julian_day
 ///   * UTC: http://en.wikipedia.org/wiki/UTC
 ///   * ISO 8601: http://en.wikipedia.org/wiki/ISO_8601
+class CPL_API DateTime
 {
 public:
     enum Months
@@ -427,7 +430,7 @@ public:
     DateTime(int year, int month, int day, int hour = 0, int minute = 0,
              int second = 0, int millisecond = 0, int microsecond = 0);
     /// Creates a DateTime instance using the specified Gregorian date and time components.
-    /// 
+    ///
     /// Parameters:
     /// * `year`: Valid range [0, 9999].
     /// * `month`: Valid range [1, 12].
@@ -462,73 +465,149 @@ public:
     DateTime &operator=(double julianDay);
     /// Assigns a Julian day to the DateTime instance.
 
-    DateTime &assign(int year, int month, int day, int hour = 0, int minute = 0,
+    DateTime &Assign(int year, int month, int day, int hour = 0, int minute = 0,
                      int second = 0, int millisecond = 0, int microsecond = 0);
     /// Assigns a Gregorian date and time to the instance. Similar to the parameterized constructor.
 
-    void swap(DateTime &dateTime) noexcept;
+    void Swap(DateTime &dateTime) noexcept;
     /// Efficiently swaps the contents of two DateTime instances.
 
     // Accessor methods for year, month, day, and time components
-    int year() const;          // Gets the year component.
-    int month() const;         // Gets the month (1�C12).
-    int week(int firstDayOfWeek = MONDAY) const; // Gets the ISO 8601 week number.
-    int day() const;           // Gets the day of the month (1�C31).
-    int dayOfWeek() const;     // Gets the weekday (0 = Sunday, ..., 6 = Saturday).
-    int dayOfYear() const;     // Gets the day of the year (1�C365/366).
-    int hour() const;          // Gets the hour (0�C23).
-    int hourAMPM() const;      // Gets the hour in 12-hour format.
-    bool isAM() const;         // Returns true if the time is before noon.
-    bool isPM() const;         // Returns true if the time is afternoon or later.
-    int minute() const;        // Gets the minute (0�C59).
-    int second() const;        // Gets the second (0�C60, accounts for leap seconds).
-    int millisecond() const;   // Gets the millisecond (0�C999).
-    int microsecond() const;   // Gets the microsecond (0�C999).
+    int Year() const;
+    /// Gets the year component.
 
-    double julianDay() const;  // Converts to a Julian day.
+    int Month() const;
+    /// Gets the month (1~12).
 
-    Timestamp timestamp() const; // Converts the DateTime to a Timestamp.
-    Timestamp::UtcTimeVal utcTime() const; // Converts the DateTime to UTC-based time.
+    int Week(int firstDayOfWeek = MONDAY) const;
+    /// Gets the ISO 8601 week number.
+
+    int Day() const;
+    /// Gets the day of the month (1~31).
+
+    int DayOfWeek() const;
+    /// Gets the weekday (0 = Sunday, ..., 6 = Saturday).
+
+    int DayOfYear() const;
+    /// Gets the day of the year (1~365/366).
+
+    int Hour() const;
+    /// Gets the hour (0~23).
+
+    int HourAMPM() const;
+    /// Gets the hour in 12-hour format.
+
+    bool IsAM() const;
+    /// Returns true if the time is before noon.
+
+    bool IsPM() const;
+    /// Returns true if the time is afternoon or later.
+
+    int Minute() const;
+    /// Gets the minute (0~59).
+
+    int Second() const;
+    /// Gets the second (0~60, accounts for leap seconds).
+
+    int Millisecond() const;
+    /// Gets the millisecond (0~999).
+
+    int Microsecond() const;
+    /// Gets the microsecond (0~999).
+
+    double JulianDay() const;
+    /// Converts to a Julian day.
+
+    Timestamp Timestamp() const;
+    /// Converts the DateTime to a Timestamp.
+
+    Timestamp::UtcTimeVal UtcTime() const;
+    /// Converts the DateTime to UTC-based time.
 
     // Comparison operators
     bool operator==(const DateTime &dateTime) const;
+    /// Checks if two DateTime instances are equal.
+
     bool operator!=(const DateTime &dateTime) const;
+    /// Checks if two DateTime instances are not equal.
+
     bool operator<(const DateTime &dateTime) const;
+    /// Checks if this DateTime instance is earlier than another.
+
     bool operator<=(const DateTime &dateTime) const;
+    /// Checks if this DateTime instance is earlier or equal to another.
+
     bool operator>(const DateTime &dateTime) const;
+    /// Checks if this DateTime instance is later than another.
+
     bool operator>=(const DateTime &dateTime) const;
+    /// Checks if this DateTime instance is later or equal to another.
 
     // Arithmetic operators for date/time manipulation
-    DateTime operator+(const Timespan &span) const;
-    DateTime operator-(const Timespan &span) const;
-    Timespan operator-(const DateTime &dateTime) const;
-    DateTime &operator+=(const Timespan &span);
-    DateTime &operator-=(const Timespan &span);
+    DateTime operator+(const TimeSpan &span) const;
+    /// Adds a TimeSpan to the DateTime instance.
 
-    tm makeTM() const;  // Converts DateTime to a `tm` struct.
+    DateTime operator-(const TimeSpan &span) const;
+    /// Subtracts a TimeSpan from the DateTime instance.
 
-    void makeUTC(int tzd); // Converts local time to UTC using a timezone offset.
-    void makeLocal(int tzd); // Converts UTC time to local time using a timezone offset.
+    TimeSpan operator-(const DateTime &dateTime) const;
+    /// Subtracts another DateTime from the current DateTime and returns the TimeSpan.
+
+    DateTime &operator+=(const TimeSpan &span);
+    /// Adds a TimeSpan to the current DateTime instance.
+
+    DateTime &operator-=(const TimeSpan &span);
+    /// Subtracts a TimeSpan from the current DateTime instance.
+
+    tm MakeTM() const;
+    /// Converts DateTime to a `tm` struct.
+
+    void MakeUTC(int tzd);
+    /// Converts local time to UTC using a timezone offset.
+
+    void MakeLocal(int tzd);
+    /// Converts UTC time to local time using a timezone offset.
 
     // Static utility methods
-    static bool isLeapYear(int year); // Checks if the year is a leap year.
-    static int daysOfMonth(int year, int month); // Gets the number of days in a month/year.
-    static bool isValid(int year, int month, int day, int hour = 0, int minute = 0, int second = 0,
-                        int millisecond = 0, int microsecond = 0); // Validates a date/time.
+    static bool IsLeapYear(int year);
+    /// Checks if the year is a leap year.
+
+    static int DaysOfMonth(int year, int month);
+    /// Gets the number of days in a month/year.
+
+    static bool IsValid(int year, int month, int day, int hour = 0,
+                        int minute = 0, int second = 0, int millisecond = 0,
+                        int microsecond = 0);
+    /// Validates a date/time.
 
 protected:
-    void checkValid(); // Validates internal date/time components.
-    static double toJulianDay(Timestamp::UtcTimeVal utcTime); // Converts UTC to Julian day.
-    static double toJulianDay(int year, int month, int day, int hour = 0, int minute = 0,
-                              int second = 0, int millisecond = 0, int microsecond = 0); // Gregorian to Julian.
-    static Timestamp::UtcTimeVal toUtcTime(double julianDay); // Converts Julian to UTC.
-    void computeGregorian(double julianDay); // Converts Julian day to Gregorian date.
-    void computeDaytime(); // Extracts hours, minutes, and seconds from UTC.
+    void CheckValid();
+    /// Validates internal date/time components.
+
+    static double ToJulianDay(Timestamp::UtcTimeVal utcTime);
+    /// Converts UTC to Julian day.
+
+    static double ToJulianDay(int year, int month, int day, int hour = 0,
+                              int minute = 0, int second = 0,
+                              int millisecond = 0, int microsecond = 0);
+    /// Converts Gregorian to Julian.
+
+    static Timestamp::UtcTimeVal ToUtcTime(double julianDay);
+    /// Converts Julian to UTC.
+
+    void ComputeGregorian(double julianDay);
+    /// Converts Julian day to Gregorian date.
+
+    void ComputeDaytime();
+    /// Extracts hours, minutes, and seconds from UTC.
 
 private:
     // Utility methods for internal calculations
-    void checkLimit(short &lower, short &higher, short limit);
-    void normalize();
+    void CheckLimit(short &lower, short &higher, short limit);
+    /// Checks if a date/time component is within valid limits.
+
+    void Normalize();
+    /// Normalizes the date/time components to ensure they are within valid ranges.
 
     // Internal member variables
     Timestamp::UtcTimeVal _utcTime;

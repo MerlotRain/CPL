@@ -18,10 +18,12 @@
  *
  */
 
-#include <cpl_mathhelp.h>
+#include "cpl_mathhelp.h"
 #include <float.h>
+#include <iomanip>
 #include <math.h>
 #include <numbers>
+#include <sstream>
 #ifdef _WIN32
 #include <Windows.h>
 #include <rpc.h>
@@ -78,7 +80,7 @@ void Guid::Swap(Guid &guid)
     std::memcpy(guid.Data, temp, 16);
 }
 
-String Guid::ToString(Format formatType) const
+std::string Guid::ToString(Format formatType) const
 {
     std::ostringstream oss;
 
@@ -253,7 +255,7 @@ bool Math::IsNaN(double val)
 
 double Math::Pi() { return M_PI; }
 
-String Math::NewGUID()
+std::string Math::NewGUID()
 {
     Uuid uuid;
     return uuid.ToString();

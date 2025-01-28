@@ -18,7 +18,7 @@
  *
  */
 
-#include <cpl_atomic.h>
+#include "cpl_atomic.h"
 
 #ifdef _WIN32
 #include <Windows.h>

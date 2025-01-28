@@ -34,6 +34,7 @@ set(cpl_headers
 	cpl_object.h
 	cpl_ports.h
 	cpl_stringhelp.h
+	cpl_any.h
 )
 
 set(cpl_sources
@@ -44,6 +45,7 @@ set(cpl_sources
 	cpl_memorymanager.cpp
 	cpl_object.cpp
 	cpl_stringhelp.cpp
+	cpl_any.cpp
 )
 
 add_library(cpl SHARED)
