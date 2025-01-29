@@ -137,10 +137,13 @@ Any::Any(const Any &rhs) : Type(rhs.Type)
             std::strcpy(strVal, rhs.strVal);
             break;
         case eBinary:
-            int len = std::strlen(reinterpret_cast<const char *>(rhs.blbVal));
-            blbVal = new unsigned char[len];
-            std::memcpy(blbVal, rhs.blbVal, len);
-            break;
+            {
+                int len =
+                        std::strlen(reinterpret_cast<const char *>(rhs.blbVal));
+                blbVal = new unsigned char[len];
+                std::memcpy(blbVal, rhs.blbVal, len);
+                break;
+            }
         case eDateTime:
             dateVal = rhs.dateVal;
             break;
@@ -202,7 +205,7 @@ Any &Any::operator=(Any &&rhs) noexcept
         this->Clear();
         Type = rhs.Type;
         rhs.Type = eEmpty;
-        std::memcpy(this, &rhs, sizeof(Any));// Move memory
+        std::memcpy(this, &rhs, sizeof(Any));
     }
     return *this;
 }
@@ -318,18 +321,6 @@ Any &Any::operator=(RefObject *v)
     Clear();
     Type = eObject;
     objVal = v;
-    return *this;
-}
-
-Any &Any::operator=(Any &&rhs)
-{
-    if (this != &rhs)
-    {
-        this->Clear();
-        Type = rhs.Type;
-        rhs.Type = eEmpty;
-        std::memcpy(this, &rhs, sizeof(Any));
-    }
     return *this;
 }
 
@@ -589,7 +580,8 @@ unsigned char *Any::AllocBlob(int nLen)
     return blbVal;
 }
 
-int Any::ValueSize() const { 
+int Any::ValueSize() const
+{
     switch (Type)
     {
         case eString:
@@ -599,9 +591,10 @@ int Any::ValueSize() const {
         default:
             return 0;
     }
- }
+}
 
-const void *Any::ValuePtr() const { 
+const void *Any::ValuePtr() const
+{
     switch (Type)
     {
         case eString:

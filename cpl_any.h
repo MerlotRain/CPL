@@ -258,7 +258,7 @@ public:
     /// \brief Move assignment operator.
     /// \param v The object to move from.
     /// \return The reference to the current object.
-    Any &operator=(Any &&v);
+    Any &operator=(Any &&v) noexcept;
 
     /// \brief Equality operator.
     /// \param o The object to compare.

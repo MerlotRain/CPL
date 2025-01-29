@@ -36,372 +36,116 @@
 
 namespace CPL {
 
-/// \brief A single-byte string class that is compatible with std::string methods.
-class CPL_API String : public std::basic_string<char, std::char_traits<char>,
-                                                std::allocator<char>>
-{
-public:
-    using StlString = std::basic_string<char>;
-
-    /// \brief Default constructor.
-    String();
-
-    /// \brief Copy constructor.
-    /// \param str The String object to copy from.
-    String(const String &str);
-
-    /// \brief STL string copy constructor.
-    /// \param str The STL string object to copy from.
-    String(const StlString &str);
-
-    /// \brief Constructor from a pointer to another String object.
-    /// \param str The String object to copy from.
-    String(String *str);
-
-    /// \brief Constructor that creates a String from any other standard string type.
-    /// \param str The standard string object to copy from.
-    template<class STD>
-    String(const STD &str)
-    {
-        operator=(str.c_str());
-    }
-
-    /// \brief Constructor from a single-byte string (const char*).
-    /// \param str The C-string to initialize the String with.
-    String(const char *str);
-
-    /// \brief Constructor from a single-byte string (char*).
-    /// \param str The C-string to initialize the String with.
-    String(char *str);
-
-    /// \brief Constructor from a single-byte string with an offset and length.
-    /// \param str The C-string to copy from.
-    /// \param off The offset where the copy starts.
-    /// \param count The number of characters to copy.
-    String(const char *str, int off, int count);
-
-    /// \brief Constructor from a single-byte string with a specified length.
-    /// \param str The C-string to copy from.
-    /// \param count The number of characters to copy.
-    String(const char *str, int count);
-
-    /// \brief Constructor from the start and end pointers of a string.
-    /// \param start Pointer to the start of the string.
-    /// \param end Pointer to the end of the string.
-    String(const char *start, const char *end);
-
-    /// \brief Constructor from arbitrary memory.
-    /// \param start Pointer to the start of the memory.
-    /// \param end Pointer to the end of the memory.
-    String(const unsigned char *start, const unsigned char *end);
-
-    /// \brief Constructor that creates a String by repeating a character.
-    /// \param count The number of times to repeat the character.
-    /// \param e The character to repeat.
-    String(int count, char e);
-
-    /// \brief Constructor using iterators to create a String.
-    /// \param first Iterator to the first character.
-    /// \param last Iterator to the last character.
-    String(String::const_iterator first, String::const_iterator last);
-
-    /// \brief Constructor using iterators to create a String.
-    /// \param first Iterator to the first character.
-    /// \param last Iterator to the last character.
-    String(String::iterator first, String::iterator last);
-
-    /// \brief Constructor using reverse iterators to create a String.
-    /// \param first Reverse iterator to the first character.
-    /// \param last Reverse iterator to the last character.
-    String(String::reverse_iterator first, String::reverse_iterator last);
-
-    /// \brief Constructor using const reverse iterators to create a String.
-    /// \param first Reverse iterator to the first character.
-    /// \param last Reverse iterator to the last character.
-    String(String::const_reverse_iterator first,
-           String::const_reverse_iterator last);
-
-    /// \brief Destructor.
-    ~String();
-
-    /// \brief Checks if a string is null or empty.
-    /// \param str The C-string to check.
-    /// \return True if the string is null or empty, false otherwise.
-    static bool IsNullOrEmpty(const char *str);
-
-    /// \brief Assignment operator to assign a C-string.
-    /// \param str The C-string to assign.
-    /// \return Reference to this String object.
-    String &operator=(const char *str);
-
-    /// \brief Assignment operator to assign an STL string.
-    /// \param str The STL string to assign.
-    /// \return Reference to this String object.
-    String &operator=(const StlString &str);
-
-    /// \brief Assignment operator to assign another String object.
-    /// \param str The String object to assign.
-    /// \return Reference to this String object.
-    String &operator=(const String &str);
-
-    /// \brief Subscript operator to access a character by index.
-    /// \param _Off The index of the character to access.
-    /// \return The character at the specified index.
-    reference operator[](int _Off);
-
-    /// \brief Const subscript operator to access a character by index.
-    /// \param _Off The index of the character to access.
-    /// \return The character at the specified index.
-    const_reference operator[](int _Off) const;
-
-    /// \brief Conversion operator to bool, checks if the string is empty.
-    /// \return True if the string is not empty, false otherwise.
-    operator bool() const;
-
-    /// \brief Conversion operator to const char*, returns the C-string.
-    /// \return The C-string representation of the string.
-    operator const char *() const;
-
-    using StlString::operator+=;
-
-    /// \brief Append operator for any standard string type.
-    /// \param str The string to append.
-    /// \return Reference to this String object.
-    template<class STD>
-    String &operator+=(const STD &str)
-    {
-        StlString::operator+=(str.c_str());
-        return *this;
-    }
-
-    /// \brief Append operator for a C-string.
-    /// \param str The C-string to append.
-    /// \return Reference to this String object.
-    String &operator+=(const char *str);
-
-    /// \brief Append operator for another String object.
-    /// \param str The String object to append.
-    /// \return Reference to this String object.
-    String &operator+=(const String &str);
-
-    /// \brief Concatenation operator for a C-string.
-    /// \param str The C-string to concatenate.
-    /// \return A new String object with the concatenated result.
-    String operator+(const char *str) const;
-
-    /// \brief Concatenation operator for another String object.
-    /// \param str The String object to concatenate.
-    /// \return A new String object with the concatenated result.
-    String operator+(const String &str) const;
-
-    /// \brief Concatenation operator for an STL string.
-    /// \param str The STL string to concatenate.
-    /// \return A new String object with the concatenated result.
-    String operator+(const StlString &str) const;
-
-    /// \brief Converts the string to uppercase.
-    /// \return Reference to this String object with the uppercase result.
-    String &ToUpper();
-
-    /// \brief Converts the string to lowercase.
-    /// \return Reference to this String object with the lowercase result.
-    String &ToLower();
-
-    /// \brief Reverses the string.
-    /// \return Reference to this String object with the reversed result.
-    String &Reverse();
-
-    /// \brief Removes all trailing whitespace characters.
-    /// \return Reference to this String object with the trailing whitespace removed.
-    String &TrimRight();
-
-    /// \brief Removes all leading whitespace characters.
-    /// \return Reference to this String object with the leading whitespace removed.
-    String &TrimLeft();
-
-    /// \brief Removes both leading and trailing whitespace characters.
-    /// \return Reference to this String object with both leading and trailing whitespace removed.
-    String &Trim();
-
-    /// \brief Splits the string into substrings based on the separator.
-    /// \param strSep The separator string to split by.
-    /// \return A vector of String objects containing the split substrings.
-    std::vector<String> Split(const char *strSep);
-
-    /// \brief Splits the string into substrings based on the separator.
-    /// \param strSep The separator string to split by.
-    /// \param vecStr The vector to store the resulting substrings.
-    void Split(const char *strSep, std::vector<String> &vecStr);
-};
-
-
-/// \brief + operator for concatenating a String and a std::string
-/// This operator allows the concatenation of a String object and a std::string object.
-/// It calls the String class's + operator, passing the C-string (char*) from the std::string.
-static String operator+(const String &a, const std::string &b)
-{
-    return a.operator+(b.c_str());
-}
-
-/// \brief Class representing a wide-character string (wchar_t)
-/// This class is a wrapper around std::basic_string<wchar_t> for wide-character strings.
-class CPL_API WString
-    : public std::basic_string<wchar_t, std::char_traits<wchar_t>,
-                               std::allocator<wchar_t>>
-{
-public:
-    using StlWString = std::basic_string<wchar_t, std::char_traits<wchar_t>,
-                                         std::allocator<wchar_t>>;
-
-    /// \brief Default constructor
-    WString();
-
-    /// \brief Copy constructor
-    WString(const WString &str);
-
-    /// \brief Constructor from STL wide-string (std::wstring)
-    WString(const StlWString &str);
-
-    /// \brief Constructor from a generic string (template for various types)
-    /// \param str A generic string-like object.
-    template<class STD>
-    WString(const STD &str)
-    {
-        operator=(str.c_str());
-    }
-
-    /// \brief Constructor from a wide-character string (const wchar_t*)
-    WString(const wchar_t *str);
-
-    /// \brief Constructor from a mutable wide-character string (wchar_t*)
-    WString(wchar_t *str);
-
-    /// \brief Constructor from a wide-character string with offset and length
-    /// \param str A pointer to the wide-character string.
-    /// \param off The starting offset.
-    /// \param count The number of characters to take.
-    WString(const wchar_t *str, int off, int count);
-
-    /// \brief Constructor from a wide-character string with specified length
-    /// \param str A pointer to the wide-character string.
-    /// \param count The number of characters to take.
-    WString(const wchar_t *str, int count);
-
-    /// \brief Constructor from a wide-character string using start and end pointers
-    /// \param start A pointer to the beginning of the string.
-    /// \param end A pointer to the end of the string.
-    WString(const wchar_t *start, const wchar_t *end);
-
-    /// \brief Constructor that repeats a character a specified number of times
-    /// \param count The number of times to repeat the character.
-    /// \param e The character to repeat.
-    WString(int count, wchar_t e);
-
-    /// \brief Constructor using a pair of iterators (forward iterators)
-    WString(WString::iterator first, WString::iterator last);
-
-    /// \brief Constructor using a pair of constant iterators (forward iterators)
-    WString(WString::const_iterator first, WString::const_iterator last);
-
-    /// \brief Constructor using a pair of reverse iterators
-    WString(WString::reverse_iterator first, WString::reverse_iterator last);
-
-    /// \brief Constructor using a pair of constant reverse iterators
-    WString(WString::const_reverse_iterator first,
-            WString::const_reverse_iterator last);
-
-    /// \brief Destructor
-    ~WString();
-
-    /// \brief Check if the string is null or empty
-    /// \param str A pointer to a wide-character string.
-    /// \return True if the string is null or empty, otherwise false.
-    static bool IsNullOrEmpty(const wchar_t *str);
-
-    /// \brief Assignment operator from a wide-character string (const wchar_t*)
-    WString &operator=(const wchar_t *str);
-
-    /// \brief Assignment operator from a STL wide-character string (StlWString)
-    WString &operator=(const StlWString &str);
-
-    /// \brief Assignment operator from another WString object
-    WString &operator=(const WString &str);
-
-    /// \brief Conversion operator to a generic string type (STD)
-    /// \param STD A generic string-like type.
-    /// \return A new string of type STD containing the wide-character string.
-    template<class STD>
-    operator STD() const
-    {
-        return STD(c_str());
-    }
-
-    /// \brief Conversion to bool operator
-    /// This operator indicates whether the string is empty or not.
-    operator bool() const;
-
-    // Inherits operator+= from the STL wide-string type.
-    using StlWString::operator+=;
-
-    /// \brief Append a generic string to this WString (template version)
-    /// \param str A generic string-like object.
-    /// \return The updated WString object.
-    template<class STD>
-    WString &operator+=(const STD &str)
-    {
-        StlWString::operator+=(str.c_str());
-        return *this;
-    }
-
-    /// \brief Append another WString to this WString
-    /// \param str Another WString object.
-    /// \return The updated WString object.
-    WString &operator+=(const WString &str);
-
-    /// \brief Append a wide-character string to this WString
-    /// \param str A pointer to a wide-character string.
-    /// \return The updated WString object.
-    WString &operator+=(const wchar_t *str);
-
-    /// \brief Concatenate a wide-character string to this WString
-    /// \param str A pointer to a wide-character string.
-    /// \return A new WString object that is the concatenation of the two strings.
-    WString operator+(const wchar_t *str) const;
-
-    /// \brief Concatenate an STL wide-character string to this WString
-    /// \param str A STL wide-character string (std::wstring).
-    /// \return A new WString object that is the concatenation of the two strings.
-    WString operator+(const StlWString &str) const;
-
-    /// \brief Concatenate another WString to this WString
-    /// \param str Another WString object.
-    /// \return A new WString object that is the concatenation of the two strings.
-    WString operator+(const WString &str) const;
-};
-
-
-/// \brief + operator for concatenating a WString and a std::wstring
-/// This operator allows the concatenation of a WString object and a std::wstring object.
-/// It calls the WString class's + operator, passing the C-string (const wchar_t*) from the std::wstring.
-static WString operator+(const WString &a, const std::wstring &b)
-{
-    return a.operator+(b.c_str());
-}
-
-
 /// \brief Encoding IDs for character conversions
 enum CodePageID
 {
-    CP_ACP = 0,       ///< Default system code page (ANSI)
-    CP_GBK = 936,     ///< GBK (Simplified Chinese)
-    CP_UTF16 = 1200,  ///< UTF-16
-    CP_UTF7 = 65000,  ///< UTF-7
-    CP_UTF8 = 65001,  ///< UTF-8
-    CP_GB2312 = 20936,///< GB2312 (Simplified Chinese)
+    // Unicode Encodings
+    CP_UTF8 = 65001,// UTF-8: Variable-length encoding for Unicode characters.
+    CP_UTF16LE =
+            1200,// UTF-16 Little Endian: 16-bit encoding with little-endian byte order.
+    CP_UTF16BE =
+            1201,// UTF-16 Big Endian: 16-bit encoding with big-endian byte order.
+    CP_UTF32LE =
+            12000,// UTF-32 Little Endian: 32-bit encoding with little-endian byte order.
+    CP_UTF32BE =
+            12001,// UTF-32 Big Endian: 32-bit encoding with big-endian byte order.
+    CP_UTF7 = 65000,// UTF-7: 7-bit encoding mainly used for email transmission.
+
+    // Simplified Chinese Encodings
+    CP_GB2312 =
+            936,// GB2312: National Standard encoding for Simplified Chinese.
+    CP_GBK =
+            936,// GBK: Extended version of GB2312, supports more Chinese characters.
     CP_GB18030 =
-            54936,///< GB18030 (Simplified Chinese, extended version of GB2312)
-    CP_WINDOWS1252 = 1252,///< Windows-1252 (Western European)
-    CP_ISO8859_1 = 28592, ///< ISO-8859-1 (Latin-1, Western European)
+            54936,// GB18030: Latest Chinese encoding standard, fully compatible with Unicode.
+
+    // Traditional Chinese Encodings
+    CP_BIG5 =
+            950,// Big5: Traditional Chinese character encoding used in Taiwan and Hong Kong.
+
+    // Japanese Encodings
+    CP_SHIFT_JIS =
+            932,// Shift JIS: Common encoding for Japanese text, used in Windows and legacy systems.
+    CP_EUC_JP =
+            20932,// EUC-JP: Encoding used mainly on Unix and Linux systems for Japanese.
+    CP_ISO_2022_JP =
+            50220,// ISO-2022-JP: 7-bit encoding for Japanese text, often used in emails.
+
+    // Korean Encodings
+    CP_EUC_KR = 51949,// EUC-KR: Extended Unix Code for Korean.
+    CP_ISO_2022_KR =
+            50225,// ISO-2022-KR: 7-bit encoding for Korean, mainly used in emails.
+
+    // ISO 8859 Series (Latin-based Encodings)
+    CP_ISO_8859_1 = 28591, // Latin-1 (Western European).
+    CP_ISO_8859_2 = 28592, // Latin-2 (Central European).
+    CP_ISO_8859_3 = 28593, // Latin-3 (South European).
+    CP_ISO_8859_4 = 28594, // Latin-4 (North European).
+    CP_ISO_8859_5 = 28595, // Latin/Cyrillic (Russian).
+    CP_ISO_8859_6 = 28596, // Latin/Arabic.
+    CP_ISO_8859_7 = 28597, // Latin/Greek.
+    CP_ISO_8859_8 = 28598, // Latin/Hebrew.
+    CP_ISO_8859_9 = 28599, // Latin-5 (Turkish).
+    CP_ISO_8859_10 = 28600,// Latin-6 (Nordic).
+    CP_ISO_8859_11 = 28601,// Latin/Thai.
+    CP_ISO_8859_13 = 28603,// Latin-7 (Baltic).
+    CP_ISO_8859_14 = 28604,// Latin-8 (Celtic).
+    CP_ISO_8859_15 = 28605,// Latin-9 (Modified Latin-1 with Euro sign).
+    CP_ISO_8859_16 = 28606,// Latin-10 (Romanian).
+
+    // Windows Code Pages
+    CP_WINDOWS_1250 = 1250,// Windows-1250: Central European languages.
+    CP_WINDOWS_1251 =
+            1251,// Windows-1251: Cyrillic languages (Russian, Bulgarian, etc.).
+    CP_WINDOWS_1252 = 1252,// Windows-1252: Western European languages.
+    CP_WINDOWS_1253 = 1253,// Windows-1253: Greek language.
+    CP_WINDOWS_1254 = 1254,// Windows-1254: Turkish language.
+    CP_WINDOWS_1255 = 1255,// Windows-1255: Hebrew language.
+    CP_WINDOWS_1256 = 1256,// Windows-1256: Arabic language.
+    CP_WINDOWS_1257 = 1257,// Windows-1257: Baltic languages.
+    CP_WINDOWS_1258 = 1258,// Windows-1258: Vietnamese language.
+
+    // Cyrillic Encodings
+    CP_KOI8_R = 20866,// KOI8-R: Encoding for Russian text.
+    CP_KOI8_U = 21866,// KOI8-U: Encoding for Ukrainian text.
+    CP_KOI8_T = 20869,// KOI8-T: Encoding for Tajik text.
+
+    // EBCDIC Code Pages (IBM Mainframe Encodings)
+    CP_EBCDIC_US = 37,      // EBCDIC-US (IBM037): Standard US EBCDIC encoding.
+    CP_EBCDIC_DE = 20273,   // EBCDIC German (IBM273).
+    CP_EBCDIC_DK_NO = 20277,// EBCDIC Danish/Norwegian (IBM277).
+    CP_EBCDIC_FI_SE = 20278,// EBCDIC Finnish/Swedish (IBM278).
+    CP_EBCDIC_IT = 20280,   // EBCDIC Italian (IBM280).
+    CP_EBCDIC_ES = 20284,   // EBCDIC Spanish (IBM284).
+    CP_EBCDIC_PT = 20285,   // EBCDIC Portuguese (IBM285).
+    CP_EBCDIC_FR = 20297,   // EBCDIC French (IBM297).
+    CP_EBCDIC_JP_KANA = 20290,// EBCDIC Japanese Katakana (IBM290).
+    CP_EBCDIC_CP500 = 500,    // EBCDIC Multi-language (IBM500).
+
+    // macOS Code Pages
+    CP_MAC_ROMAN = 10000,// macOS Roman: Default encoding on old macOS versions.
+    CP_MAC_CYRILLIC =
+            10007,// macOS Cyrillic: Used for Russian and other Cyrillic scripts.
+    CP_MAC_GREEK = 10006,  // macOS Greek: Encoding for the Greek language.
+    CP_MAC_TURKISH = 10081,// macOS Turkish: Encoding for the Turkish language.
+    CP_MAC_ICELAND =
+            10079,// macOS Icelandic: Encoding for the Icelandic language.
+
+    // Other Encodings
+    CP_TIS_620 = 620,// TIS-620: Thai language encoding.
+    CP_VISCII = 850, // VISCII: Vietnamese encoding used before Unicode.
+    CP_HZ_GB2312 =
+            52936,// HZ-GB2312: Simplified Chinese encoding, used mainly for email and USENET.
+    CP_ISCII_DEVANAGARI =
+            57002,// ISCII Devanagari: Indian script for Hindi, Marathi, and Sanskrit.
+    CP_ISCII_BENGALI =
+            57003,         // ISCII Bengali: Indian script for Bengali language.
+    CP_ISCII_TAMIL = 57004,// ISCII Tamil: Indian script for Tamil language.
+    CP_ISCII_TELUGU = 57005,// ISCII Telugu: Indian script for Telugu language.
+    CP_ISCII_GUJARATI =
+            57010,// ISCII Gujarati: Indian script for Gujarati language.
+    CP_ISCII_MALAYALAM =
+            57011// ISCII Malayalam: Indian script for Malayalam language.
 };
 
 
@@ -410,7 +154,7 @@ enum CodePageID
 class CPL_API CW2A
 {
 public:
-    String m_Str;///< The resulting narrow-character string (std::string)
+    std::string m_Str;///< The resulting narrow-character string (std::string)
 
     /// \brief Constructor from a wide-character string (const wchar_t*)
     /// \param str A pointer to the wide-character string to convert.
@@ -426,19 +170,19 @@ public:
     /// \param codepage The code page to use for the conversion (as a string).
     CW2A(const wchar_t *str, const char *codepage);
 
-    /// \brief Constructor from a WString object
-    /// \param str A WString object to convert to a narrow-character string.
-    CW2A(const WString &str);
+    /// \brief Constructor from a std::wstring object
+    /// \param str A std::wstring object to convert to a narrow-character string.
+    CW2A(const std::wstring &str);
 
-    /// \brief Constructor from a WString object with a specified code page (CodePageID)
-    /// \param str A WString object to convert to a narrow-character string.
+    /// \brief Constructor from a std::wstring object with a specified code page (CodePageID)
+    /// \param str A std::wstring object to convert to a narrow-character string.
     /// \param eCodePage The code page to use for the conversion.
-    CW2A(const WString &str, CodePageID eCodePage);
+    CW2A(const std::wstring &str, CodePageID eCodePage);
 
-    /// \brief Constructor from a WString object with a specified code page (string format)
-    /// \param str A WString object to convert to a narrow-character string.
+    /// \brief Constructor from a std::wstring object with a specified code page (string format)
+    /// \param str A std::wstring object to convert to a narrow-character string.
     /// \param codepage The code page to use for the conversion (as a string).
-    CW2A(const WString &str, const char *codepage);
+    CW2A(const std::wstring &str, const char *codepage);
 
     /// \brief Destructor
     /// The destructor releases any allocated resources.
@@ -448,9 +192,9 @@ public:
     /// \return A pointer to the resulting narrow-character C-string.
     operator const char *() const;
 
-    /// \brief Conversion operator to a String object (std::string)
-    /// \return The resulting narrow-character string as a String object.
-    operator String() const;
+    /// \brief Conversion operator to a std::string object (std::string)
+    /// \return The resulting narrow-character string as a std::string object.
+    operator std::string() const;
 
 private:
     /// \brief Initializes the conversion from a wide-character string with a specified code page (string format)
@@ -477,7 +221,7 @@ private:
 class CPL_API CA2W
 {
 public:
-    WString m_WStr;///< The resulting wide-character string (WString)
+    std::wstring m_WStr;///< The resulting wide-character string (std::wstring)
 
     /// \brief Constructor from a narrow-character string (const char*)
     /// \param str A pointer to the narrow-character string to convert.
@@ -493,19 +237,19 @@ public:
     /// \param codepage The code page to use for the conversion (as a string).
     CA2W(const char *str, const char *codepage);
 
-    /// \brief Constructor from a String object (std::string)
-    /// \param str A String object to convert to a wide-character string.
-    CA2W(const String &str);
+    /// \brief Constructor from a std::string object (std::string)
+    /// \param str A std::string object to convert to a wide-character string.
+    CA2W(const std::string &str);
 
-    /// \brief Constructor from a String object with a specified code page (CodePageID)
-    /// \param str A String object to convert to a wide-character string.
+    /// \brief Constructor from a std::string object with a specified code page (CodePageID)
+    /// \param str A std::string object to convert to a wide-character string.
     /// \param eCodePage The code page to use for the conversion.
-    CA2W(const String &str, CodePageID eCodePage);
+    CA2W(const std::string &str, CodePageID eCodePage);
 
-    /// \brief Constructor from a String object with a specified code page (string format)
-    /// \param str A String object to convert to a wide-character string.
+    /// \brief Constructor from a std::string object with a specified code page (string format)
+    /// \param str A std::string object to convert to a wide-character string.
     /// \param codepage The code page to use for the conversion (as a string).
-    CA2W(const String &str, const char *codepage);
+    CA2W(const std::string &str, const char *codepage);
 
     /// \brief Destructor
     /// The destructor releases any allocated resources.
@@ -515,9 +259,9 @@ public:
     /// \return A pointer to the resulting wide-character C-string.
     operator const wchar_t *() const;
 
-    /// \brief Conversion operator to a WString object
-    /// \return The resulting wide-character string as a WString object.
-    operator WString() const;
+    /// \brief Conversion operator to a std::wstring object
+    /// \return The resulting wide-character string as a std::wstring object.
+    operator std::wstring() const;
 
 private:
     /// \brief Initializes the conversion from a narrow-character string with a specified code page (string format)
@@ -547,61 +291,55 @@ public:
 
     /// \brief Converts a local string to a UTF-8 encoded string.
     /// \return Returns the string converted to UTF-8 encoding.
-    static String ToUtf8(const char *str);
+    static std::string ToUtf8(const char *str);
 
     /// \brief Converts a local Unicode string to a UTF-8 encoded string.
     /// \return Returns the string converted to UTF-8 encoding.
-    static String ToUtf8(const wchar_t *str);
+    static std::string ToUtf8(const wchar_t *str);
 
     /// \brief Converts a local Unicode string to an MBCS (Multi-Byte Character Set) narrow string.
     /// \return Returns the string converted to MBCS narrow encoding.
-    static String ToLocal(const wchar_t *str);
+    static std::string ToLocal(const wchar_t *str);
 
     /// \brief Converts a UTF-8 narrow string to a Unicode wide string.
     /// \return Returns the string converted to Unicode wide encoding.
-    static WString Utf8ToUnicode(const char *str);
+    static std::wstring Utf8ToUnicode(const char *str);
 
     /// \brief Converts a local MBCS narrow string to a Unicode wide string.
     /// \return Returns the string converted to Unicode wide encoding.
-    static WString LocalToUnicode(const char *str);
+    static std::wstring LocalToUnicode(const char *str);
 
     /// \brief Converts a UTF-8 string to a local string.
     /// \return Returns the string converted to the local encoding.
-    static String ToLocal(const char *str);
-
-private:
-    static String ConvertEncoding(const char *str, const char *fromEncoding,
-                                  const char *toEncoding);
-    static WString ConvertEncoding(const wchar_t *str, const char *fromEncoding,
-                                   const char *toEncoding);
+    static std::string ToLocal(const char *str);
 };
 
 /// \brief A class for converting a string to a UTF-8 encoded string.
 class CPL_API Utf8
 {
     const char *m_Ori;///< Original string (in its native encoding).
-    String m_Utf;     ///< UTF-8 encoded string.
+    std::string m_Utf;///< UTF-8 encoded string.
 
 public:
     /// \brief Constructor that initializes with a C-style string (const char *).
     /// \param ori The original string to be converted to UTF-8.
     Utf8(const char *ori);
 
-    /// \brief Constructor that initializes with a String object.
-    /// \param ori The original String object to be converted to UTF-8.
-    explicit Utf8(const String &ori);
+    /// \brief Constructor that initializes with a std::string object.
+    /// \param ori The original std::string object to be converted to UTF-8.
+    explicit Utf8(const std::string &ori);
 
     /// \brief Implicit conversion operator to a C-style string (const char *).
     /// \return Returns the UTF-8 encoded string as a C-style string.
     operator const char *();
 
-    /// \brief Implicit conversion operator to a String object.
-    /// \return Returns the UTF-8 encoded string as a String object.
-    operator String();
+    /// \brief Implicit conversion operator to a std::string object.
+    /// \return Returns the UTF-8 encoded string as a std::string object.
+    operator std::string();
 
     /// \brief Returns the UTF-8 encoded string.
     /// \return Returns the UTF-8 string stored in the object.
-    String Str();
+    std::string Str();
 };
 
 
@@ -609,28 +347,28 @@ public:
 class CPL_API Local
 {
     const char *m_Ori;///< Original string (in its native encoding).
-    String m_Utf;     ///< Local encoded string.
+    std::string m_Utf;///< Local encoded string.
 
 public:
     /// \brief Constructor that initializes with a C-style string (const char *).
     /// \param ori The original string to be converted to the local encoding.
     Local(const char *ori);
 
-    /// \brief Constructor that initializes with a String object.
-    /// \param ori The original String object to be converted to the local encoding.
-    Local(const String &ori);
+    /// \brief Constructor that initializes with a std::string object.
+    /// \param ori The original std::string object to be converted to the local encoding.
+    Local(const std::string &ori);
 
     /// \brief Implicit conversion operator to a C-style string (const char *).
     /// \return Returns the string converted to the local encoding as a C-style string.
     operator const char *();
 
-    /// \brief Implicit conversion operator to a String object.
-    /// \return Returns the string converted to the local encoding as a String object.
-    operator String();
+    /// \brief Implicit conversion operator to a std::string object.
+    /// \return Returns the string converted to the local encoding as a std::string object.
+    operator std::string();
 
     /// \brief Returns the string in the local encoding.
     /// \return Returns the string stored in the object, converted to the local encoding.
-    String Str();
+    std::string Str();
 };
 
 
@@ -638,10 +376,6 @@ public:
 class CPL_API StringHelp
 {
 public:
-    /// \brief Returns an empty string.
-    /// \return An empty string.
-    static String EmptyString();
-
     /// \brief Compares two strings.
     /// \param strA First string.
     /// \param strB Second string.
@@ -664,69 +398,65 @@ public:
     static bool IsEqual(const char *strA, const char *strB,
                         bool bIgnoreCase = true);
 
-    /// \brief Converts a C-style string to a String object.
+    /// \brief Converts a C-style string to a std::string object.
     /// \param str The C-style string.
-    /// \return Returns the String object.
-    static String ToString(const char *str);
-    /// \brief Converts a char value to a String object.
+    /// \return Returns the std::string object.
+    static std::string ToString(const char *str);
+    /// \brief Converts a char value to a std::string object.
     /// \param v The char value.
-    /// \return Returns the String object.
-    static String ToString(char v);
-    /// \brief Converts an unsigned char value to a String object.
+    /// \return Returns the std::string object.
+    static std::string ToString(char v);
+    /// \brief Converts an unsigned char value to a std::string object.
     /// \param v The unsigned char value.
-    /// \return Returns the String object.
-    static String ToString(unsigned char v);
-    /// \brief Converts a short value to a String object.
+    /// \return Returns the std::string object.
+    static std::string ToString(unsigned char v);
+    /// \brief Converts a short value to a std::string object.
     /// \param v The short value.
-    /// \return Returns the String object.
-    static String ToString(short v);
-    /// \brief Converts an unsigned short value to a String object.
+    /// \return Returns the std::string object.
+    static std::string ToString(short v);
+    /// \brief Converts an unsigned short value to a std::string object.
     /// \param v The unsigned short value.
-    /// \return Returns the String object.
-    static String ToString(unsigned short v);
-    /// \brief Converts an int value to a String object.
+    /// \return Returns the std::string object.
+    static std::string ToString(unsigned short v);
+    /// \brief Converts an int value to a std::string object.
     /// \param v The int value.
-    /// \return Returns the String object.
-    static String ToString(int v);
-    /// \brief Converts an unsigned int value to a String object.
+    /// \return Returns the std::string object.
+    static std::string ToString(int v);
+    /// \brief Converts an unsigned int value to a std::string object.
     /// \param v The unsigned int value.
-    /// \return Returns the String object.
-    static String ToString(unsigned int v);
-    /// \brief Converts a long long value to a String object.
+    /// \return Returns the std::string object.
+    static std::string ToString(unsigned int v);
+    /// \brief Converts a long long value to a std::string object.
     /// \param v The long long value.
-    /// \return Returns the String object.
-    static String ToString(long long v);
-    /// \brief Converts an unsigned long long value to a String object.
+    /// \return Returns the std::string object.
+    static std::string ToString(long long v);
+    /// \brief Converts an unsigned long long value to a std::string object.
     /// \param v The unsigned long long value.
-    /// \return Returns the String object.
-    static String ToString(unsigned long long v);
-    /// \brief Converts a float value to a String object with a specified maximum digit count.
-    /// \param v The float value.
-    /// \param maxDigitCount The maximum number of digits (default: 6).
-    /// \return Returns the String object.
-    static String ToString(float v, int maxDigitCount = 6);
-    /// \brief Converts a double value to a String object with a specified maximum digit count.
-    /// \param v The double value.
-    /// \param maxDigitCount The maximum number of digits (default: 15).
-    /// \return Returns the String object.
-    static String ToString(double v, int maxDigitCount = 15);
+    /// \return Returns the std::string object.
+    static std::string ToString(unsigned long long v);
 
-    /// \brief Converts a boolean value to a String object.
+    static std::string ToString(float v, int precision = -1, int width = 0,
+                                char thSep = 0, char decSep = 0);
+
+    static std::string ToString(double v, int precision = -1, int width = 0,
+                                char thSep = 0, char decSep = 0);
+
+    /// \brief Converts a boolean value to a std::string object.
     /// \param v The boolean value.
-    /// \return Returns the String object.
-    static String ToString(bool v);
+    /// \return Returns the std::string object.
+    static std::string ToString(bool v);
 
-    /// \brief Converts a byte array to a Base64 encoded String object.
+    /// \brief Converts a byte array to a Base64 encoded std::string object.
     /// \param blob The byte array.
     /// \param nLen The length of the byte array.
-    /// \return Returns the Base64 encoded String object.
-    static String ToString(const unsigned char *blob, int nLen);
+    /// \return Returns the Base64 encoded std::string object.
+    static std::string ToString(const unsigned char *blob, int nLen);
 
     /// \brief Formats a string according to the specified format and arguments.
     /// \param nMaxLen The maximum length of the resulting string.
     /// \param format The format string.
-    /// \return Returns the formatted String object.
-    static String Format(int nMaxLen, const char *format, ...);
+    /// \return Returns the formatted std::string object.
+    static std::string Format(int nMaxLen, const char *format, ...);
 
     /// \brief Checks if a string is null or empty.
     /// \param str The string to check.
@@ -742,35 +472,36 @@ public:
     /// \param str The string to split.
     /// \param strSep The separator string.
     /// \return Returns a vector of substrings.
-    static std::vector<String> Split(const char *str, const char *strSep);
+    static std::vector<std::string> Split(const char *str, const char *strSep);
 
     /// \brief Splits a string into substrings using a character separator.
     /// \param str The string to split.
     /// \param sp The separator character.
     /// \return Returns a vector of substrings.
-    static std::vector<String> Split(const char *str, char sp);
+    static std::vector<std::string> Split(const char *str, char sp);
 
     /// \brief Replaces a substring within a string with a new substring.
     /// \param str The original string.
     /// \param src The substring to be replaced.
     /// \param dst The new substring.
     /// \return Returns the string with replacements.
-    static String Replace(const char *str, const char *src, const char *dst);
+    static std::string Replace(const char *str, const char *src,
+                               const char *dst);
 
     /// \brief Trims whitespace characters from the beginning of a string.
     /// \param str The string to trim.
     /// \return Returns the trimmed string.
-    static String Trim(const char *str);
+    static std::string Trim(const char *str);
 
     /// \brief Trims whitespace characters from the left side of a string.
     /// \param str The string to trim.
     /// \return Returns the left-trimmed string.
-    static String TrimLeft(const char *str);
+    static std::string TrimLeft(const char *str);
 
     /// \brief Trims whitespace characters from the right side of a string.
     /// \param str The string to trim.
     /// \return Returns the right-trimmed string.
-    static String TrimRight(const char *str);
+    static std::string TrimRight(const char *str);
 
     /// \brief Checks if a string starts with a specified prefix.
     /// \param str The string to check.
@@ -807,12 +538,12 @@ public:
     /// \brief Converts a string to uppercase.
     /// \param str The string to convert.
     /// \return Returns the uppercase string.
-    static String ToUpper(const char *str);
+    static std::string ToUpper(const char *str);
 
     /// \brief Converts a string to lowercase.
     /// \param str The string to convert.
     /// \return Returns the lowercase string.
-    static String ToLower(const char *str);
+    static std::string ToLower(const char *str);
 
     /// \brief Checks if a string consists of integer characters (including a negative sign).
     /// \param str The string to check.
@@ -842,12 +573,12 @@ public:
     /// \brief Converts a hexadecimal string in the AABB00 format to a regular string.
     /// \param str The hexadecimal string.
     /// \return Returns the decoded string.
-    static String FromHexString(const char *str);
+    static std::string FromHexString(const char *str);
 
     /// \brief Converts a regular string to a hexadecimal string in the AABB00 format.
     /// \param str The string to encode.
     /// \return Returns the hexadecimal encoded string.
-    static String ToHexString(const char *str);
+    static std::string ToHexString(const char *str);
 
     /// \brief Converts a hexadecimal string in the AABB00 format to a binary block.
     /// \param str The hexadecimal string.
@@ -859,7 +590,7 @@ public:
     /// \param blob The binary data.
     /// \param nLen The length of the binary data.
     /// \return Returns the hexadecimal encoded string.
-    static String ToHexString(const unsigned char *blob, int nLen);
+    static std::string ToHexString(const unsigned char *blob, int nLen);
 
     /// \brief Parses a boolean value from a string.
     /// \param strValue The string value to parse.

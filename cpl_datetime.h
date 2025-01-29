@@ -389,8 +389,8 @@ private:
 class CPL_API DateTime
 {
 public:
-    enum Months
     /// Enumeration for symbolic names of months (1 to 12).
+    enum Months
     {
         JANUARY = 1,
         FEBRUARY,
@@ -406,8 +406,8 @@ public:
         DECEMBER
     };
 
-    enum DaysOfWeek
     /// Enumeration for symbolic names of weekdays (0 to 6).
+    enum DaysOfWeek
     {
         SUNDAY = 0,
         MONDAY,
@@ -418,196 +418,186 @@ public:
         SATURDAY
     };
 
-    DateTime();
     /// Default constructor: Creates a DateTime instance for the current date and time.
+    DateTime();
 
-    DateTime(const tm &tmStruct);
     /// Creates a DateTime instance from a standard `tm` struct.
+    DateTime(const tm &tmStruct);
 
-    DateTime(const Timestamp &timestamp);
     /// Initializes a DateTime instance based on a given Timestamp.
+    DateTime(const Timestamp &timestamp);
 
-    DateTime(int year, int month, int day, int hour = 0, int minute = 0,
-             int second = 0, int millisecond = 0, int microsecond = 0);
     /// Creates a DateTime instance using the specified Gregorian date and time components.
     ///
-    /// Parameters:
-    /// * `year`: Valid range [0, 9999].
-    /// * `month`: Valid range [1, 12].
-    /// * `day`: Valid range [1, 31].
-    /// * `hour`: Valid range [0, 23].
-    /// * `minute`: Valid range [0, 59].
-    /// * `second`: Valid range [0, 60] (to account for leap seconds).
-    /// * `millisecond`: Valid range [0, 999].
-    /// * `microsecond`: Valid range [0, 999].
-    ///
-    /// Throws an InvalidArgumentException if the arguments are out of valid ranges.
+    /// @param year Valid range [0, 9999].
+    /// @param month Valid range [1, 12].
+    /// @param day Valid range [1, 31].
+    /// @param hour Valid range [0, 23].
+    /// @param minute Valid range [0, 59].
+    /// @param second Valid range [0, 60] (to account for leap seconds).
+    /// @param millisecond Valid range [0, 999].
+    /// @param microsecond Valid range [0, 999].
+    /// @throws InvalidArgumentException if the arguments are out of valid ranges.
+    DateTime(int year, int month, int day, int hour = 0, int minute = 0,
+             int second = 0, int millisecond = 0, int microsecond = 0);
 
-    DateTime(double julianDay);
     /// Constructs a DateTime instance based on a Julian day.
+    DateTime(double julianDay);
 
-    DateTime(Timestamp::UtcTimeVal utcTime, Timestamp::TimeDiff diff);
     /// Creates a DateTime instance using a UTC-based time value and a time difference.
     /// Used internally by DateTime and related classes.
+    DateTime(Timestamp::UtcTimeVal utcTime, Timestamp::TimeDiff diff);
 
-    DateTime(const DateTime &dateTime);
     /// Copy constructor: Initializes a DateTime instance from another DateTime.
+    DateTime(const DateTime &dateTime);
 
-    ~DateTime();
     /// Destructor: Cleans up resources associated with the DateTime instance.
+    ~DateTime();
 
-    DateTime &operator=(const DateTime &dateTime);
     /// Overloads the assignment operator for DateTime.
+    DateTime &operator=(const DateTime &dateTime);
 
-    DateTime &operator=(const Timestamp &timestamp);
     /// Assigns a Timestamp to the DateTime instance.
+    DateTime &operator=(const Timestamp &timestamp);
 
-    DateTime &operator=(double julianDay);
     /// Assigns a Julian day to the DateTime instance.
+    DateTime &operator=(double julianDay);
 
+    /// Assigns a Gregorian date and time to the instance. Similar to the parameterized constructor.
     DateTime &Assign(int year, int month, int day, int hour = 0, int minute = 0,
                      int second = 0, int millisecond = 0, int microsecond = 0);
-    /// Assigns a Gregorian date and time to the instance. Similar to the parameterized constructor.
 
-    void Swap(DateTime &dateTime) noexcept;
     /// Efficiently swaps the contents of two DateTime instances.
+    void Swap(DateTime &dateTime) noexcept;
 
-    // Accessor methods for year, month, day, and time components
-    int Year() const;
     /// Gets the year component.
+    int Year() const;
 
-    int Month() const;
     /// Gets the month (1~12).
+    int Month() const;
 
-    int Week(int firstDayOfWeek = MONDAY) const;
     /// Gets the ISO 8601 week number.
+    int Week(int firstDayOfWeek = MONDAY) const;
 
-    int Day() const;
     /// Gets the day of the month (1~31).
+    int Day() const;
 
-    int DayOfWeek() const;
     /// Gets the weekday (0 = Sunday, ..., 6 = Saturday).
+    int DayOfWeek() const;
 
-    int DayOfYear() const;
     /// Gets the day of the year (1~365/366).
+    int DayOfYear() const;
 
-    int Hour() const;
     /// Gets the hour (0~23).
+    int Hour() const;
 
-    int HourAMPM() const;
     /// Gets the hour in 12-hour format.
+    int HourAMPM() const;
 
-    bool IsAM() const;
     /// Returns true if the time is before noon.
+    bool IsAM() const;
 
-    bool IsPM() const;
     /// Returns true if the time is afternoon or later.
+    bool IsPM() const;
 
-    int Minute() const;
     /// Gets the minute (0~59).
+    int Minute() const;
 
-    int Second() const;
     /// Gets the second (0~60, accounts for leap seconds).
+    int Second() const;
 
-    int Millisecond() const;
     /// Gets the millisecond (0~999).
+    int Millisecond() const;
 
-    int Microsecond() const;
     /// Gets the microsecond (0~999).
+    int Microsecond() const;
 
-    double JulianDay() const;
     /// Converts to a Julian day.
+    double JulianDay() const;
 
-    Timestamp Timestamp() const;
-    /// Converts the DateTime to a Timestamp.
-
-    Timestamp::UtcTimeVal UtcTime() const;
     /// Converts the DateTime to UTC-based time.
+    Timestamp::UtcTimeVal UtcTime() const;
 
-    // Comparison operators
-    bool operator==(const DateTime &dateTime) const;
     /// Checks if two DateTime instances are equal.
+    bool operator==(const DateTime &dateTime) const;
 
-    bool operator!=(const DateTime &dateTime) const;
     /// Checks if two DateTime instances are not equal.
+    bool operator!=(const DateTime &dateTime) const;
 
-    bool operator<(const DateTime &dateTime) const;
     /// Checks if this DateTime instance is earlier than another.
+    bool operator<(const DateTime &dateTime) const;
 
-    bool operator<=(const DateTime &dateTime) const;
     /// Checks if this DateTime instance is earlier or equal to another.
+    bool operator<=(const DateTime &dateTime) const;
 
-    bool operator>(const DateTime &dateTime) const;
     /// Checks if this DateTime instance is later than another.
+    bool operator>(const DateTime &dateTime) const;
 
-    bool operator>=(const DateTime &dateTime) const;
     /// Checks if this DateTime instance is later or equal to another.
+    bool operator>=(const DateTime &dateTime) const;
 
-    // Arithmetic operators for date/time manipulation
-    DateTime operator+(const TimeSpan &span) const;
     /// Adds a TimeSpan to the DateTime instance.
+    DateTime operator+(const TimeSpan &span) const;
 
-    DateTime operator-(const TimeSpan &span) const;
     /// Subtracts a TimeSpan from the DateTime instance.
+    DateTime operator-(const TimeSpan &span) const;
 
-    TimeSpan operator-(const DateTime &dateTime) const;
     /// Subtracts another DateTime from the current DateTime and returns the TimeSpan.
+    TimeSpan operator-(const DateTime &dateTime) const;
 
-    DateTime &operator+=(const TimeSpan &span);
     /// Adds a TimeSpan to the current DateTime instance.
+    DateTime &operator+=(const TimeSpan &span);
 
-    DateTime &operator-=(const TimeSpan &span);
     /// Subtracts a TimeSpan from the current DateTime instance.
+    DateTime &operator-=(const TimeSpan &span);
 
-    tm MakeTM() const;
     /// Converts DateTime to a `tm` struct.
+    tm MakeTM() const;
 
-    void MakeUTC(int tzd);
     /// Converts local time to UTC using a timezone offset.
+    void MakeUTC(int tzd);
 
-    void MakeLocal(int tzd);
     /// Converts UTC time to local time using a timezone offset.
+    void MakeLocal(int tzd);
 
-    // Static utility methods
-    static bool IsLeapYear(int year);
     /// Checks if the year is a leap year.
+    static bool IsLeapYear(int year);
 
-    static int DaysOfMonth(int year, int month);
     /// Gets the number of days in a month/year.
+    static int DaysOfMonth(int year, int month);
 
+    /// Validates a date/time.
     static bool IsValid(int year, int month, int day, int hour = 0,
                         int minute = 0, int second = 0, int millisecond = 0,
                         int microsecond = 0);
-    /// Validates a date/time.
 
 protected:
-    void CheckValid();
     /// Validates internal date/time components.
+    void CheckValid();
 
-    static double ToJulianDay(Timestamp::UtcTimeVal utcTime);
     /// Converts UTC to Julian day.
+    static double ToJulianDay(Timestamp::UtcTimeVal utcTime);
 
+    /// Converts Gregorian to Julian.
     static double ToJulianDay(int year, int month, int day, int hour = 0,
                               int minute = 0, int second = 0,
                               int millisecond = 0, int microsecond = 0);
-    /// Converts Gregorian to Julian.
 
-    static Timestamp::UtcTimeVal ToUtcTime(double julianDay);
     /// Converts Julian to UTC.
+    static Timestamp::UtcTimeVal ToUtcTime(double julianDay);
 
-    void ComputeGregorian(double julianDay);
     /// Converts Julian day to Gregorian date.
+    void ComputeGregorian(double julianDay);
 
-    void ComputeDaytime();
     /// Extracts hours, minutes, and seconds from UTC.
+    void ComputeDaytime();
 
 private:
-    // Utility methods for internal calculations
-    void CheckLimit(short &lower, short &higher, short limit);
     /// Checks if a date/time component is within valid limits.
+    void CheckLimit(short &lower, short &higher, short limit);
 
-    void Normalize();
     /// Normalizes the date/time components to ensure they are within valid ranges.
+    void Normalize();
 
     // Internal member variables
     Timestamp::UtcTimeVal _utcTime;
