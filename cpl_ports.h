@@ -31,3 +31,5 @@
 #include "cpl_mathhelp.h"
 #include "cpl_memorymanager.h"
 #include "cpl_object.h"
+
+#include "cpl_any.h"

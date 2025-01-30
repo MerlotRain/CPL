@@ -21,8 +21,12 @@
 #include <cpl_ports.h>
 #include <gtest/gtest.h>
 
-TEST(DateTime, Test1)
+TEST(Atomic, Increment)
 {
-    ASSERT_EQ(1 + 1, 2);
-    ASSERT_EQ(1 + 2, 3);
+    CPL::Atomic<int> count;
+    ASSERT_EQ(count, 0);
+    count++;
+    ASSERT_EQ(count, 1);
+    count++;
+    ASSERT_EQ(count, 2);
 }

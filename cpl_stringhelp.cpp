@@ -18,7 +18,9 @@
  *
  */
 
-#include <cpl_stringhelp.h>
+#include "cpl_stringhelp.h"
+
+#include <algorithm>
 #include <double-conversion/double-conversion.h>
 #include <double-conversion/double-to-string.h>
 #include <iconv.h>
@@ -783,9 +785,23 @@ bool StringHelp::IsLike(const char *pattern, const char *str, char chEscape)
     return false;
 }
 
-std::string StringHelp::ToUpper(const char *str) { return std::string(); }
+std::string StringHelp::ToUpper(const char *str)
+{
+    assert(str);
+    std::string result(str);
+    std::transform(result.begin(), result.end(), result.begin(),
+                   [](unsigned char c) { return std::toupper(c); });
+    return result;
+}
 
-std::string StringHelp::ToLower(const char *str) { return std::string(); }
+std::string StringHelp::ToLower(const char *str)
+{
+    assert(str);
+    std::string result(str);
+    std::transform(result.begin(), result.end(), result.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+    return result;
+}
 
 bool StringHelp::IsIntString(const char *str) { return false; }
 

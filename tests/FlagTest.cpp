@@ -21,8 +21,19 @@
 #include <cpl_ports.h>
 #include <gtest/gtest.h>
 
-TEST(DateTime, Test1)
+enum TestFlag
 {
-    ASSERT_EQ(1 + 1, 2);
-    ASSERT_EQ(1 + 2, 3);
-}
+    FLAG_ONE = 1,
+    FLAG_TWO = 2,
+    FLAG_THREE = 4,
+    FLAG_FOUR = 8,
+    FLAG_FIVE = 16,
+    FLAG_SIX = 32,
+    FLAG_SEVEN = 64,
+    FLAG_EIGHT = 128,
+    FLAG_NINE = 256,
+    FLAG_TEN = 512,
+};
+CPL_DECLARE_FLAGS(TestFlags, TestFlag)
+
+TEST(Flag, Test1) { TestFlags flags; }

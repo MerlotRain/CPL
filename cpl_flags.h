@@ -37,7 +37,7 @@ public:
     constexpr inline operator int() const noexcept { return i; }
 };
 
-// Template class for handling multiple flags. 
+// Template class for handling multiple flags.
 template<typename Enum>
 class Flags
 {
@@ -45,14 +45,14 @@ class Flags
     static_assert((sizeof(Enum) <= sizeof(int)),
                   "Flags uses an int as storage, so an enum with underlying "
                   "long long will overflow.");
-    
+
     // Ensures that the template type is an enum type.
     static_assert((std::is_enum<Enum>::value),
                   "Flags is only usable on enumeration types.");
 
 public:
-    typedef int Int;  // Defines Int as the storage type for flags.
-    typedef Enum enum_type;  // Alias for the enum type.
+    typedef int Int;       // Defines Int as the storage type for flags.
+    typedef Enum enum_type;// Alias for the enum type.
 
     // Default constructor, initializes the internal integer to zero.
     constexpr inline Flags() noexcept : i(0) {}
@@ -70,13 +70,13 @@ public:
     }
 
     // Static method to create Flags from an integer value.
-    constexpr static inline Flags fromInt(Int i) noexcept
+    constexpr static inline Flags FromInt(Int i) noexcept
     {
         return Flags(Flag(i));
     }
 
     // Converts the Flags object to an integer.
-    constexpr inline Int toInt() const noexcept { return i; }
+    constexpr inline Int ToInt() const noexcept { return i; }
 
     // Bitwise AND assignment operator, works with int, Flags, or Enum.
     constexpr inline Flags &operator&=(int mask) noexcept
@@ -183,31 +183,31 @@ public:
     constexpr inline void operator-(int other) const noexcept = delete;
 
     // Test if a particular flag is set.
-    constexpr inline bool testFlag(Enum flag) const noexcept
+    constexpr inline bool TestFlag(Enum flag) const noexcept
     {
-        return testFlags(flag);
+        return TestFlags(flag);
     }
 
     // Test if all flags in the given Flags object are set.
-    constexpr inline bool testFlags(Flags flags) const noexcept
+    constexpr inline bool TestFlags(Flags flags) const noexcept
     {
         return flags.i ? ((i & flags.i) == flags.i) : i == Int(0);
     }
 
     // Test if any flag is set from the given flag.
-    constexpr inline bool testAnyFlag(Enum flag) const noexcept
+    constexpr inline bool TestAnyFlag(Enum flag) const noexcept
     {
-        return testAnyFlags(flag);
+        return TestAnyFlag(flag);
     }
 
     // Test if any flag is set in the given Flags object.
-    constexpr inline bool testAnyFlags(Flags flags) const noexcept
+    constexpr inline bool TestAnyFlag(Flags flags) const noexcept
     {
         return (i & flags.i) != Int(0);
     }
 
     // Set or clear a specific flag (default is to set).
-    constexpr inline Flags &setFlag(Enum flag, bool on = true) noexcept
+    constexpr inline Flags &SetFlag(Enum flag, bool on = true) noexcept
     {
         return on ? (*this |= flag) : (*this &= ~Flags(flag));
     }
@@ -248,7 +248,7 @@ private:
                           : (Int(*it) | initializer_list_helper(it + 1, end)));
     }
 
-    Int i;  // Stores the flags as an integer.
+    Int i;// Stores the flags as an integer.
 };
 
 }// namespace CPL
