@@ -33,3 +33,9 @@
 #include "cpl_object.h"
 
 #include "cpl_any.h"
+
+#include <algorithm>
+#include <map>
+#include <string>
+#include <unordered_map>
+#include <vector>

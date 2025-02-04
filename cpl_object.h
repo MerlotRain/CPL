@@ -26,153 +26,230 @@
 
 namespace CPL {
 
-/// \brief Non-copyable utility class
-/// This class is designed to be inherited by other classes to prevent
-/// copying and assignment. It achieves this by deleting the copy constructor
-/// and copy assignment operator.
+/**
+ * @class NoneCopyable
+ * @brief A non-copyable utility class.
+ *
+ * This class is designed to be inherited by other classes to prevent
+ * copying and assignment. It achieves this by deleting the copy constructor
+ * and copy assignment operator.
+ */
 class CPL_API NoneCopyable
 {
 public:
-    /// \brief Default constructor
-    /// Allows construction of the derived class instances.
+    /**
+     * @brief Default constructor.
+     *
+     * Allows construction of the derived class instances.
+     */
     NoneCopyable() {}
 
 private:
-    /// \brief Deleted copy constructor
-    /// Prevents copying of the derived class.
+    /**
+     * @brief Deleted copy constructor.
+     *
+     * Prevents copying of the derived class.
+     */
     NoneCopyable(const NoneCopyable &) = delete;
 
-    /// \brief Deleted copy assignment operator
-    /// Prevents assignment of the derived class.
+    /**
+     * @brief Deleted copy assignment operator.
+     *
+     * Prevents assignment of the derived class.
+     */
     NoneCopyable &operator=(const NoneCopyable &) = delete;
 };
 
-/// \brief Base class for reference-counted objects
-/// This class provides functionality for managing reference counts and ensures
-/// automatic cleanup of objects when their reference count reaches zero.
-/// It is designed to be inherited by other classes requiring reference-counting
-/// functionality.
+/**
+ * @class RefObject
+ * @brief Base class for reference-counted objects.
+ *
+ * This class provides functionality for managing reference counts and ensures
+ * automatic cleanup of objects when their reference count reaches zero.
+ * It is designed to be inherited by other classes requiring reference-counting functionality.
+ */
 class CPL_API RefObject : private NoneCopyable
 {
 protected:
-    /// \brief The reference count for the object
-    /// Manages the number of references to the object.
+    /// The reference count for the object, managing the number of active references.
     Atomic<int> m_RefCount;
 
-    /// \brief Triggered when the reference count reaches zero
-    /// Derived classes can override this method to perform custom cleanup or
-    /// prevent automatic deletion by returning `false`.
-    /// \return Returns `false` if the object should not be automatically deleted.
+    /**
+     * @brief Triggered when the reference count reaches zero.
+     *
+     * Derived classes can override this method to perform custom cleanup or
+     * prevent automatic deletion by returning `false`.
+     * @return Returns `false` if the object should not be automatically deleted.
+     */
     virtual bool OnFinalRelease();
 
 public:
-    /// \brief Constructor
-    /// Initializes the reference count to zero.
+    /**
+     * @brief Constructor.
+     *
+     * Initializes the reference count to zero.
+     */
     RefObject();
 
-    /// \brief Destructor
-    /// Ensures proper cleanup of the object.
+    /**
+     * @brief Destructor.
+     *
+     * Ensures proper cleanup of the object.
+     */
     virtual ~RefObject() {}
 
-    /// \brief Increment the reference count
-    /// Increases the reference count by one, indicating an additional reference
-    /// to the object.
-    /// \return Returns the updated reference count.
+    /**
+     * @brief Increment the reference count.
+     *
+     * Increases the reference count by one, indicating an additional reference
+     * to the object.
+     * @return Returns the updated reference count.
+     */
     virtual int AddRef() noexcept;
 
-    /// \brief Decrement the reference count
-    /// Decreases the reference count by one. When the count reaches zero,
-    /// `OnFinalRelease` is triggered.
-    /// \return Returns the updated reference count.
+    /**
+     * @brief Decrement the reference count.
+     *
+     * Decreases the reference count by one. When the count reaches zero,
+     * `OnFinalRelease` is triggered.
+     * @return Returns the updated reference count.
+     */
     virtual int Release() noexcept;
 
-    /// \brief Retrieve the current reference count
-    /// \return Returns the current value of the reference count.
+    /**
+     * @brief Retrieve the current reference count.
+     * @return Returns the current value of the reference count.
+     */
     virtual int RefCount() noexcept;
 
-    /// \brief Cast the object to a specific type
-    /// Attempts to cast the current object to the specified type using
-    /// `dynamic_cast`.
-    /// \tparam T The target type to cast to.
-    /// \return A pointer to the object cast to the target type, or `nullptr`
-    /// if the cast fails.
+    /**
+     * @brief Cast the object to a specific type.
+     *
+     * Attempts to cast the current object to the specified type using `dynamic_cast`.
+     * @tparam T The target type to cast to.
+     * @return A pointer to the object cast to the target type, or `nullptr` if the cast fails.
+     */
     template<class T>
     T *CastTo()
     {
         return dynamic_cast<T *>(this);
     }
 
-    /// \brief Check if the object is of a specific type
-    /// Verifies whether the current object is of the specified type.
-    /// \tparam T The type to check against.
-    /// \return Returns `true` if the object is of the specified type, `false` otherwise.
+    /**
+     * @brief Check if the object is of a specific type.
+     *
+     * Verifies whether the current object is of the specified type.
+     * @tparam T The type to check against.
+     * @return Returns `true` if the object is of the specified type, `false` otherwise.
+     */
     template<class T>
     bool Is()
     {
         return dynamic_cast<T *>(this) != nullptr;
     }
 
-    /// \brief Event triggered when the object is destructed
-    /// Allows external handlers to be notified when the object is destroyed.
+    /**
+     * @brief Event triggered when the object is destructed.
+     *
+     * Allows external handlers to be notified when the object is destroyed.
+     */
     Delegate<void(RefObject *)> OnDestructor;
 };
 
 
-/// \brief Weak reference to a RefObject
-/// This class allows for a weak reference to a RefObject, meaning it does not
-/// increase the reference count of the target object. It can check if the object
-/// has been destroyed and retrieve it if it is still valid.
+/**
+ * @class WeakReference
+ * @brief Weak reference to a RefObject.
+ *
+ * This class allows for a weak reference to a RefObject, meaning it does not
+ * increase the reference count of the target object. It can check if the object
+ * has been destroyed and retrieve it if it is still valid.
+ */
 class CPL_API WeakReference : public RefObject
 {
-    RefObject *m_RefObject;///< Pointer to the referenced object.
+    /// Pointer to the referenced object.
+    RefObject *m_RefObject;
 
-    /// \brief Triggered when the referenced object is destroyed.
-    /// This method is called to handle cleanup when the referenced RefObject is
-    /// destructed.
-    /// \param obj Pointer to the object that is being destructed.
+    /**
+     * @brief Triggered when the referenced object is destroyed.
+     *
+     * This method is called to handle cleanup when the referenced RefObject is
+     * destructed.
+     * @param obj Pointer to the object that is being destructed.
+     */
     void OnDestructor(RefObject *obj);
 
 public:
-    /// \brief Constructor to create a WeakReference.
-    /// \param ref Pointer to the RefObject to be referenced weakly.
+    /**
+     * @brief Constructor to create a WeakReference.
+     *
+     * @param ref Pointer to the RefObject to be referenced weakly.
+     */
     WeakReference(RefObject *ref);
 
-    /// \brief Destructor to clean up the WeakReference.
+    /**
+     * @brief Destructor to clean up the WeakReference.
+     */
     ~WeakReference();
 
-    /// \brief Locks and retrieves the referenced object.
-    /// \return Pointer to the referenced RefObject if it is still valid, or `nullptr`
-    ///         if the object has already been destroyed.
+    /**
+     * @brief Locks and retrieves the referenced object.
+     *
+     * @return Pointer to the referenced RefObject if it is still valid, or `nullptr`
+     *         if the object has already been destroyed.
+     */
     RefObject *LockReferenceObject();
 
-    /// \brief Checks if the referenced object has expired.
-    /// \return `true` if the referenced object has been destroyed, otherwise `false`.
+    /**
+     * @brief Checks if the referenced object has expired.
+     *
+     * @return `true` if the referenced object has been destroyed, otherwise `false`.
+     */
     bool Expired();
 };
-
 
 /// \brief Smart pointer template for automatic reference counting of RefObject
 /// This template class manages reference counts for objects derived from
 /// RefObject, ensuring proper resource management and preventing memory leaks.
+
+/**
+ * @class SmarterPtr
+ * @brief Smart pointer template for automatic reference counting of RefObject
+ * 
+ * @tparam T 
+ */
 template<class T>
 class SmarterPtr
 {
 public:
-    /// \brief Default constructor
-    /// Initializes the smart pointer to `nullptr`.
+    /**
+     * @brief Default constructor
+     * 
+     * Initializes the smart pointer to `nullptr`.
+     */
     SmarterPtr() noexcept { p = NULL; }
 
-    /// \brief Constructor with integer argument
-    /// \param nNull Dummy parameter, initializes the pointer to `nullptr`.
+    /**
+     * @brief Constructor with integer argument
+     * 
+     * @param nNull Dummy parameter, initializes the pointer to `nullptr`.
+     */
     SmarterPtr(int nNull) noexcept { p = NULL; }
 
-    /// \brief Constructor with long integer argument
-    /// \param nNull Dummy parameter, initializes the pointer to `nullptr`.
+    /**
+     * @brief Constructor with long integer argument
+     * 
+     * @param nNull Dummy parameter, initializes the pointer to `nullptr`.
+     */
     SmarterPtr(long int nNull) noexcept { p = NULL; }
 
-    /// \brief Template constructor to initialize and optionally increment reference count
-    /// \param lp Pointer to the object
-    /// \param bAddRef If true, increments the reference count of the object.
+    /**
+     * @brief Template constructor to initialize and optionally increment reference count
+     * 
+     * @tparam O The type of the object
+     * @param lp Pointer to the object
+     * @param bAddRef If true, increments the reference count of the object.
+     */
     template<class O>
     SmarterPtr(O *lp, bool bAddRef = true) noexcept
     {
@@ -180,8 +257,12 @@ public:
         if (p != NULL && bAddRef) p->AddRef();// Increment reference count
     }
 
-    /// \brief Template copy constructor
-    /// \param lp Another smart pointer whose object will be referenced.
+    /**
+     * @brief Template copy constructor
+     * 
+     * @tparam O The type of the object
+     * @param lp Another smart pointer whose object will be referenced.
+     */
     template<class O>
     SmarterPtr(const SmarterPtr<O> &lp) noexcept
     {
@@ -189,26 +270,35 @@ public:
         if (p != NULL) p->AddRef(); // Increment reference count
     }
 
-    /// \brief Copy constructor
-    /// \param lp Another smart pointer whose object will be referenced.
+    /**
+     * @brief Copy constructor
+     * 
+     * @param lp Another smart pointer whose object will be referenced.
+     */
     SmarterPtr(const SmarterPtr<T> &lp) noexcept
     {
         p = lp.p;
         if (p != NULL) p->AddRef();// Increment reference count
     }
 
-    /// \brief Constructor with RefObject pointer
-    /// \param lp Pointer to the RefObject
-    /// \param bAddRef If true, increments the reference count of the object.
+    /**
+     * @brief Constructor with RefObject pointer
+     * 
+     * @param lp Pointer to the RefObject
+     * @param bAddRef If true, increments the reference count of the object.
+     */
     SmarterPtr(const RefObject *lp, bool bAddRef = true) noexcept
     {
         p = dynamic_cast<T *>(lp);            // Type conversion
         if (p != NULL && bAddRef) p->AddRef();// Increment reference count
     }
 
-    /// \brief Explicit constructor with object pointer
-    /// \param lp Pointer to the object
-    /// \param bAddRef If true, increments the reference count of the object.
+    /**
+     * @brief Explicit constructor with object pointer
+     * 
+     * @param lp Pointer to the object
+     * @param bAddRef If true, increments the reference count of the object.
+     */
     explicit SmarterPtr(T *lp, bool bAddRef = true) noexcept
     {
         p = lp;
@@ -216,8 +306,11 @@ public:
     }
 
 public:
-    /// \brief Destructor
-    /// Decrements the reference count of the object.
+    /**
+     * @brief Destructor
+     * 
+     * Decrements the reference count of the object.
+     */
     ~SmarterPtr() noexcept
     {
         if (p) p->Release();// Decrement reference count
@@ -539,3 +632,15 @@ public:
 #define CPL_SMARTER_PTR(P)             \
     typedef CPL::SmarterPtr<P> P##Ptr; \
     typedef CPL::WeakSmarterPtr<P> P##WPtr;
+
+#define CPL_DISABLE_COPY(P) \
+    P(const P &) = delete;  \
+    P &operator=(const P &) = delete;
+
+#define CPL_DISABLE_MOVE(P) \
+    P(P &&) = delete;       \
+    P &operator=(P &&) = delete;
+
+#define CPL_DISABLE_COPY_AND_MOVE(P) \
+    CPL_DISABLE_COPY(P);             \
+    CPL_DISABLE_MOVE(P);

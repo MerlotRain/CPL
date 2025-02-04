@@ -270,4 +270,94 @@ double Math::Log(double val)
     return std::log(val);// Natural logarithm function from <cmath>
 }
 
+/* ------------------------------ Random impls ------------------------------ */
+
+Random::Random()
+{
+    srand48(time(nullptr));
+    seed48(m_Seed);
+}
+
+Random::Random(int seed)
+{
+    m_Seed[0] = static_cast<unsigned short>(seed & 0xFFFF);
+    m_Seed[1] = static_cast<unsigned short>((seed >> 16) & 0xFFFF);
+    m_Seed[2] = static_cast<unsigned short>(seed >> 32);
+    seed48(m_Seed);
+}
+
+Random::Random(unsigned short seed[7])
+{
+    std::memcpy(m_Seed, seed, sizeof(m_Seed));
+    seed48(m_Seed);
+}
+
+Random::Random(const Random &rhs)
+{
+    std::memcpy(m_Seed, rhs.m_Seed, sizeof(m_Seed));
+}
+
+Random::Random(Random &&rhs) noexcept
+{
+    std::memcpy(m_Seed, rhs.m_Seed, sizeof(m_Seed));
+}
+
+void Random::Swap(Random &rhs) { std::swap(m_Seed, rhs.m_Seed); }
+
+Random &Random::operator=(Random &&rhs) noexcept
+{
+    if (this != &rhs) { std::memcpy(m_Seed, rhs.m_Seed, sizeof(m_Seed)); }
+    return *this;
+}
+
+Random &Random::operator=(const Random &rhs)
+{
+    if (this != &rhs) { std::memcpy(m_Seed, rhs.m_Seed, sizeof(m_Seed)); }
+    return *this;
+}
+
+void Random::XSeed(unsigned short seed[3])
+{
+    std::memcpy(seed, m_Seed, sizeof(m_Seed));
+    seed48(m_Seed);
+}
+
+const unsigned short *Random::Seed() const { return m_Seed; }
+
+const unsigned short *Random::XSeed() const { return m_Seed; }
+
+int Random::NRand(unsigned short xseed[3]) { return nrand48(xseed); }
+
+int Random::LRand() { return lrand48(); }
+
+int Random::JRand(unsigned short xseed[3]) { return jrand48(xseed); }
+
+int Random::MRand() { return mrand48(); }
+
+double Random::ERand(unsigned short xseed[3]) { return erand48(xseed); }
+
+double Random::DRand() { return drand48(); }
+
+int Random::Next() { return LRand(); }
+
+int Random::Next(int minValue, int maxValue)
+{
+    return minValue + (Next() % (maxValue - minValue));
+}
+
+double Random::Next(double minValue, double maxValue)
+{
+    return minValue + DRand() * (maxValue - minValue);
+}
+
+void Random::NextBytes(unsigned char *bytes, int nLen)
+{
+    for (int i = 0; i < nLen; ++i)
+    {
+        bytes[i] = static_cast<unsigned char>(Next(0, 256));
+    }
+}
+
+double Random::NextDouble() { return DRand(); }
+
 }// namespace CPL

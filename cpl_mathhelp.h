@@ -320,4 +320,109 @@ public:
     }
 };
 
+/// \brief Pseudo-random number generator
+/// \details Based on drand48: https://www.man7.org/linux/man-pages/man3/drand48.3.html
+class CPL_API Random
+{
+    unsigned short m_Seed[7];
+
+public:
+    /// \brief Default constructor with a random seed
+    Random();
+
+    /// \brief Constructs a random number generator with a 32-bit integer seed
+    /// \param seed A 32-bit integer seed
+    Random(int seed);
+
+    /// \brief Constructs a random number generator with a full 48-bit seed
+    /// \param seed A 7-element array representing the full seed
+    Random(unsigned short seed[7]);
+
+    /// \brief Copy constructor
+    /// \param rhs The source Random object
+    Random(const Random &rhs);
+
+    /// \brief Move constructor
+    /// \param rhs The source Random object to be moved
+    Random(Random &&rhs) noexcept;
+
+    /// \brief Swaps the internal state with another Random object
+    /// \param rhs The Random object to swap with
+    void Swap(Random &rhs);
+
+    /// \brief Move assignment operator
+    /// \param rhs The source Random object to be moved
+    /// \return Reference to the assigned Random object
+    Random &operator=(Random &&rhs) noexcept;
+
+    /// \brief Copy assignment operator
+    /// \param rhs The source Random object
+    /// \return Reference to the assigned Random object
+    Random &operator=(const Random &rhs);
+
+    /// \brief Sets the XSeed value (first 3 elements of the seed)
+    /// \param seed A 3-element array representing the XSeed
+    void XSeed(unsigned short seed[3]);
+
+    /// \brief Gets the full seed (7 elements)
+    /// \return Pointer to the internal seed array
+    const unsigned short *Seed() const;
+
+    /// \brief Gets the XSeed value (first 3 elements of the seed)
+    /// \return Pointer to the XSeed array
+    const unsigned short *XSeed() const;
+
+    /// \brief Generates a pseudo-random integer in the range [0, 2^31) using a given XSeed
+    /// \param xseed A 3-element array representing the XSeed
+    /// \return A random integer in the range [0, 2^31)
+    int NRand(unsigned short xseed[3]);
+
+    /// \brief Generates a pseudo-random integer in the range [0, 2^31)
+    /// \return A random integer in the range [0, 2^31)
+    int LRand();
+
+    /// \brief Generates a pseudo-random integer in the range [-2^31, 2^31) using a given XSeed
+    /// \param xseed A 3-element array representing the XSeed
+    /// \return A random integer in the range [-2^31, 2^31)
+    int JRand(unsigned short xseed[3]);
+
+    /// \brief Generates a pseudo-random integer in the range [-2^31, 2^31)
+    /// \return A random integer in the range [-2^31, 2^31)
+    int MRand();
+
+    /// \brief Generates a pseudo-random floating-point number in the range [0.0, 1.0) using a given XSeed
+    /// \param xseed A 3-element array representing the XSeed
+    /// \return A random floating-point number in the range [0.0, 1.0)
+    double ERand(unsigned short xseed[3]);
+
+    /// \brief Generates a pseudo-random floating-point number in the range [0.0, 1.0)
+    /// \return A random floating-point number in the range [0.0, 1.0)
+    double DRand();
+
+    /// \brief Generates a pseudo-random integer in the range [0, 2^31)
+    /// \return A random integer in the range [0, 2^31)
+    int Next();
+
+    /// \brief Generates a pseudo-random integer in the specified range [minValue, maxValue)
+    /// \param minValue The lower bound (inclusive)
+    /// \param maxValue The upper bound (exclusive)
+    /// \return A random integer in the range [minValue, maxValue)
+    int Next(int minValue, int maxValue);
+
+    /// \brief Generates a pseudo-random floating-point number in the specified range [minValue, maxValue)
+    /// \param minValue The lower bound (inclusive)
+    /// \param maxValue The upper bound (exclusive)
+    /// \return A random floating-point number in the range [minValue, maxValue)
+    double Next(double minValue, double maxValue);
+
+    /// \brief Fills the specified byte array with random values
+    /// \param bytes Pointer to the byte array to be filled
+    /// \param nLen The number of bytes to fill
+    void NextBytes(unsigned char *bytes, int nLen);
+
+    /// \brief Generates a pseudo-random floating-point number in the range [0.0, 1.0)
+    /// \return A random floating-point number in the range [0.0, 1.0)
+    double NextDouble();
+};
+
 }// namespace CPL
